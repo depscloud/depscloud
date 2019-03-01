@@ -13,7 +13,7 @@ ParserRegistry.registerAll({
     CompositeParser: async (params) => new CompositeParser(params),
     ComposerJsonParser: async (_) => new ComposerJsonParser(),
     GodepsJsonParser: async (_) => new GodepsJsonParser(),
-    GoModParser: async(_) => new GoModParser(),
+    GoModParser: async (_) => new GoModParser(),
     IvyXmlParser: async (_) => new IvyXmlParser(),
     PackageJsonParser: async (_) => new PackageJsonParser(),
     PomXmlParser: async (_) => new PomXmlParser(),

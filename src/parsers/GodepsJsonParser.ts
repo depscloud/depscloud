@@ -1,4 +1,4 @@
-import { DependencyManagementFile } from "../../api/deps";
+import {DependencyManagementFile} from "../../api/deps";
 import {JsonParser} from "./Parser";
 
 interface ID {

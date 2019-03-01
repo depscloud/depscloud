@@ -1,6 +1,7 @@
 import {getLogger} from "log4js";
-import { IDependencyExtractor } from "../../api/extractor";
+import {IDependencyExtractor} from "../../api/extractor";
 import AsyncDependencyExtractor from "./AsyncDependencyExtractor";
+
 const logger = getLogger();
 
 export default function unasyncify(instance: AsyncDependencyExtractor): IDependencyExtractor {

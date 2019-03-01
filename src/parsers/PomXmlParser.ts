@@ -1,5 +1,5 @@
 import cheerio = require("cheerio");
-import { Dependency, DependencyManagementFile } from "../../api/deps";
+import {Dependency, DependencyManagementFile} from "../../api/deps";
 import {XmlParser} from "./Parser";
 
 export default class PomXmlParser extends XmlParser {

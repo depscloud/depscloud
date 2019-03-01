@@ -1,5 +1,5 @@
-import { Dependency, DependencyManagementFile } from "../../api/deps";
-import { IParser } from "./Parser";
+import {Dependency, DependencyManagementFile} from "../../api/deps";
+import {IParser} from "./Parser";
 
 interface ID {
     organization: string;

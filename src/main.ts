@@ -1,13 +1,14 @@
-import { DependencyExtractor } from "../api/extractor"
-import {Cred} from "nodegit"
-import {Server, ServerCredentials} from "grpc"
-import DependencyExtractorImpl from "./service/DependencyExtractorImpl";
-import AsyncDependencyExtractor from "./service/AsyncDependencyExtractor";
+import {promises} from "fs";
+import {Server, ServerCredentials} from "grpc";
+import {configure, getLogger} from "log4js";
+import {Cred} from "nodegit";
+import {DependencyExtractor} from "../api/extractor";
 import {defaultParser} from "./parsers";
-import program = require("caporal");
-import {getLogger, configure} from "log4js";
+import AsyncDependencyExtractor from "./service/AsyncDependencyExtractor";
+import DependencyExtractorImpl from "./service/DependencyExtractorImpl";
 import unasyncify from "./service/unasyncify";
-import { promises } from "fs";
+import program = require("caporal");
+
 const logger = getLogger();
 
 program.name("finch-extractor")

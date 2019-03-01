@@ -1,5 +1,5 @@
 import cheerio = require("cheerio");
-import { DependencyManagementFile } from "../../api/deps";
+import {DependencyManagementFile} from "../../api/deps";
 
 export interface IParser {
     pathMatch(path: string): boolean;

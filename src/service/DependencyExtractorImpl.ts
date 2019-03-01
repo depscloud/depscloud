@@ -1,12 +1,13 @@
 import fs = require("fs");
-import {ServerUnaryCall} from "grpc";
-import { Clone, Cred } from "nodegit";
 import path = require("path");
 import tmp = require("tmp");
-import { DependencyManagementFile } from "../../api/deps";
-import { ExtractRequest, ExtractResponse } from "../../api/extractor";
+import {ServerUnaryCall} from "grpc";
+import {Clone, Cred} from "nodegit";
+import {DependencyManagementFile} from "../../api/deps";
+import {ExtractRequest, ExtractResponse} from "../../api/extractor";
 import {IParser} from "../parsers/Parser";
 import AsyncDependencyExtractor from "./AsyncDependencyExtractor";
+
 const fsp = fs.promises;
 
 function tmpdir(): Promise<[string, () => void]> {
