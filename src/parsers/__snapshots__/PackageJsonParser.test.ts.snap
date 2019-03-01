@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PackageJsonParser fullParse 1`] = `
+Object {
+  "dependencies": Array [
+    Object {
+      "module": "runtimeDependency",
+      "organization": "scoped",
+      "scopes": Array [
+        "",
+      ],
+      "versionConstraint": "1.0.0",
+    },
+    Object {
+      "module": "devDependency",
+      "organization": "_",
+      "scopes": Array [
+        "dev",
+      ],
+      "versionConstraint": "1.0.0",
+    },
+    Object {
+      "module": "peerDependency",
+      "organization": "scoped",
+      "scopes": Array [
+        "peer",
+      ],
+      "versionConstraint": "1.0.0",
+    },
+    Object {
+      "module": "optionalDependency",
+      "organization": "_",
+      "scopes": Array [
+        "optional",
+      ],
+      "versionConstraint": "1.0.0",
+    },
+  ],
+  "language": "node",
+  "module": "module",
+  "organization": "organization",
+  "system": "npm",
+  "version": "9.9.9",
+}
+`;
+
+exports[`PackageJsonParser fullParse 2`] = `
+"{
+  \\"language\\": \\"node\\",
+  \\"system\\": \\"npm\\",
+  \\"organization\\": \\"organization\\",
+  \\"module\\": \\"module\\",
+  \\"version\\": \\"9.9.9\\",
+  \\"dependencies\\": [
+    {
+      \\"organization\\": \\"scoped\\",
+      \\"module\\": \\"runtimeDependency\\",
+      \\"versionConstraint\\": \\"1.0.0\\",
+      \\"scopes\\": [
+        \\"\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"_\\",
+      \\"module\\": \\"devDependency\\",
+      \\"versionConstraint\\": \\"1.0.0\\",
+      \\"scopes\\": [
+        \\"dev\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"scoped\\",
+      \\"module\\": \\"peerDependency\\",
+      \\"versionConstraint\\": \\"1.0.0\\",
+      \\"scopes\\": [
+        \\"peer\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"_\\",
+      \\"module\\": \\"optionalDependency\\",
+      \\"versionConstraint\\": \\"1.0.0\\",
+      \\"scopes\\": [
+        \\"optional\\"
+      ]
+    }
+  ]
+}"
+`;

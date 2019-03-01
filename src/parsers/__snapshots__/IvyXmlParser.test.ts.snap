@@ -1,0 +1,137 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`IvyXmlParser fullParse 1`] = `
+Object {
+  "dependencies": Array [
+    Object {
+      "module": "jcommander",
+      "organization": "com.beust",
+      "scopes": Array [
+        "default",
+      ],
+      "versionConstraint": "1.20",
+    },
+    Object {
+      "module": "lombok",
+      "organization": "org.projectlombok",
+      "scopes": Array [
+        "build->default",
+      ],
+      "versionConstraint": "0.10.4",
+    },
+    Object {
+      "module": "junit",
+      "organization": "junit",
+      "scopes": Array [
+        "test->default",
+      ],
+      "versionConstraint": "4.10",
+    },
+    Object {
+      "module": "cobertura",
+      "organization": "net.sourceforge.cobertura",
+      "scopes": Array [
+        "test->default",
+      ],
+      "versionConstraint": "1.9.4.1",
+    },
+    Object {
+      "module": "checkstyle",
+      "organization": "com.puppycrawl.tools",
+      "scopes": Array [
+        "analysis->default",
+      ],
+      "versionConstraint": "5.5",
+    },
+    Object {
+      "module": "findbugs",
+      "organization": "com.google.code.findbugs",
+      "scopes": Array [
+        "analysis->default",
+      ],
+      "versionConstraint": "2.0.0",
+    },
+    Object {
+      "module": "pmd",
+      "organization": "net.sourceforge.pmd",
+      "scopes": Array [
+        "analysis->default",
+      ],
+      "versionConstraint": "5.0.0",
+    },
+  ],
+  "language": "java",
+  "module": "sample-java-project",
+  "organization": "com.nullprogram",
+  "system": "ivy",
+  "version": null,
+}
+`;
+
+exports[`IvyXmlParser fullParse 2`] = `
+"{
+  \\"language\\": \\"java\\",
+  \\"system\\": \\"ivy\\",
+  \\"organization\\": \\"com.nullprogram\\",
+  \\"module\\": \\"sample-java-project\\",
+  \\"version\\": null,
+  \\"dependencies\\": [
+    {
+      \\"organization\\": \\"com.beust\\",
+      \\"module\\": \\"jcommander\\",
+      \\"versionConstraint\\": \\"1.20\\",
+      \\"scopes\\": [
+        \\"default\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"org.projectlombok\\",
+      \\"module\\": \\"lombok\\",
+      \\"versionConstraint\\": \\"0.10.4\\",
+      \\"scopes\\": [
+        \\"build->default\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"junit\\",
+      \\"module\\": \\"junit\\",
+      \\"versionConstraint\\": \\"4.10\\",
+      \\"scopes\\": [
+        \\"test->default\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"net.sourceforge.cobertura\\",
+      \\"module\\": \\"cobertura\\",
+      \\"versionConstraint\\": \\"1.9.4.1\\",
+      \\"scopes\\": [
+        \\"test->default\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"com.puppycrawl.tools\\",
+      \\"module\\": \\"checkstyle\\",
+      \\"versionConstraint\\": \\"5.5\\",
+      \\"scopes\\": [
+        \\"analysis->default\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"com.google.code.findbugs\\",
+      \\"module\\": \\"findbugs\\",
+      \\"versionConstraint\\": \\"2.0.0\\",
+      \\"scopes\\": [
+        \\"analysis->default\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"net.sourceforge.pmd\\",
+      \\"module\\": \\"pmd\\",
+      \\"versionConstraint\\": \\"5.0.0\\",
+      \\"scopes\\": [
+        \\"analysis->default\\"
+      ]
+    }
+  ]
+}"
+`;

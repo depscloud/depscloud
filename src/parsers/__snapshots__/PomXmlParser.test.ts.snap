@@ -1,0 +1,137 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PomXmlParser fullParse 1`] = `
+Object {
+  "dependencies": Array [
+    Object {
+      "module": "parentArtifactId",
+      "organization": "parentGroupId",
+      "scopes": Array [
+        "parent",
+      ],
+      "versionConstraint": "1.0",
+    },
+    Object {
+      "module": "artifactId",
+      "organization": "groupId",
+      "scopes": Array [
+        "compile",
+      ],
+      "versionConstraint": "1.0.0",
+    },
+    Object {
+      "module": "compileArtifactId",
+      "organization": "compileGroupId",
+      "scopes": Array [
+        "compile",
+      ],
+      "versionConstraint": "1.0.0",
+    },
+    Object {
+      "module": "runtimeArtifactId",
+      "organization": "runtimeGroupId",
+      "scopes": Array [
+        "runtime",
+      ],
+      "versionConstraint": "1.0.0",
+    },
+    Object {
+      "module": "testArtifactId",
+      "organization": "testGroupId",
+      "scopes": Array [
+        "test",
+      ],
+      "versionConstraint": "1.0.0",
+    },
+    Object {
+      "module": "systemArtifactId",
+      "organization": "systemGroupId",
+      "scopes": Array [
+        "system",
+      ],
+      "versionConstraint": "1.0.0",
+    },
+    Object {
+      "module": "providedArtifactId",
+      "organization": "providedGroupId",
+      "scopes": Array [
+        "provided",
+      ],
+      "versionConstraint": "1.0.0",
+    },
+  ],
+  "language": "java",
+  "module": "artifactId",
+  "organization": "groupId",
+  "system": "maven",
+  "version": "9.9.9",
+}
+`;
+
+exports[`PomXmlParser fullParse 2`] = `
+"{
+  \\"language\\": \\"java\\",
+  \\"system\\": \\"maven\\",
+  \\"organization\\": \\"groupId\\",
+  \\"module\\": \\"artifactId\\",
+  \\"version\\": \\"9.9.9\\",
+  \\"dependencies\\": [
+    {
+      \\"organization\\": \\"parentGroupId\\",
+      \\"module\\": \\"parentArtifactId\\",
+      \\"versionConstraint\\": \\"1.0\\",
+      \\"scopes\\": [
+        \\"parent\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"groupId\\",
+      \\"module\\": \\"artifactId\\",
+      \\"versionConstraint\\": \\"1.0.0\\",
+      \\"scopes\\": [
+        \\"compile\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"compileGroupId\\",
+      \\"module\\": \\"compileArtifactId\\",
+      \\"versionConstraint\\": \\"1.0.0\\",
+      \\"scopes\\": [
+        \\"compile\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"runtimeGroupId\\",
+      \\"module\\": \\"runtimeArtifactId\\",
+      \\"versionConstraint\\": \\"1.0.0\\",
+      \\"scopes\\": [
+        \\"runtime\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"testGroupId\\",
+      \\"module\\": \\"testArtifactId\\",
+      \\"versionConstraint\\": \\"1.0.0\\",
+      \\"scopes\\": [
+        \\"test\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"systemGroupId\\",
+      \\"module\\": \\"systemArtifactId\\",
+      \\"versionConstraint\\": \\"1.0.0\\",
+      \\"scopes\\": [
+        \\"system\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"providedGroupId\\",
+      \\"module\\": \\"providedArtifactId\\",
+      \\"versionConstraint\\": \\"1.0.0\\",
+      \\"scopes\\": [
+        \\"provided\\"
+      ]
+    }
+  ]
+}"
+`;

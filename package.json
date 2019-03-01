@@ -1,0 +1,27 @@
+{
+  "name": "@mjpitz/des",
+  "scripts": {
+    "build": "tsc",
+    "lint": "tslint --fix src/**/*.ts",
+    "test": "jest --coverage",
+    "start": "node lib/main.js"
+  },
+  "devDependencies": {
+    "@types/cheerio": "^0.22.10",
+    "@types/jest": "^24.0.6",
+    "@types/nodegit": "^0.24.3",
+    "jest": "^24.1.0",
+    "ts-jest": "^24.0.0",
+    "tslint": "^5.12.1",
+    "typescript": "^3.3.3333"
+  },
+  "dependencies": {
+    "@grpc/proto-loader": "^0.4.0",
+    "caporal": "latest",
+    "cheerio": "^1.0.0-rc.2",
+    "grpc": "^1.18.0",
+    "log4js": "^4.0.2",
+    "nodegit": "^0.24.1",
+    "tmp": "0.0.33"
+  }
+}

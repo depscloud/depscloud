@@ -1,0 +1,105 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GoModParser fullParse 1`] = `
+Object {
+  "dependencies": Array [
+    Object {
+      "module": "gogo/protobuf",
+      "organization": "github.com",
+      "scopes": Array [
+        "direct",
+      ],
+      "versionConstraint": "v1.2.1",
+    },
+    Object {
+      "module": "mjpitz/rds",
+      "organization": "github.com",
+      "scopes": Array [
+        "direct",
+      ],
+      "versionConstraint": "v0.0.2",
+    },
+    Object {
+      "module": "sirupsen/logrus",
+      "organization": "github.com",
+      "scopes": Array [
+        "direct",
+      ],
+      "versionConstraint": "v1.3.0",
+    },
+    Object {
+      "module": "x/net",
+      "organization": "golang.org",
+      "scopes": Array [
+        "direct",
+      ],
+      "versionConstraint": "v0.0.0-20190213061140-3a22650c66bd",
+    },
+    Object {
+      "module": "grpc",
+      "organization": "google.golang.org",
+      "scopes": Array [
+        "direct",
+      ],
+      "versionConstraint": "v1.18.0",
+    },
+  ],
+  "language": "go",
+  "module": "mjpitz/finch",
+  "organization": "github.com",
+  "system": "vgo",
+  "version": "latest",
+}
+`;
+
+exports[`GoModParser fullParse 2`] = `
+"{
+  \\"language\\": \\"go\\",
+  \\"system\\": \\"vgo\\",
+  \\"organization\\": \\"github.com\\",
+  \\"module\\": \\"mjpitz/finch\\",
+  \\"version\\": \\"latest\\",
+  \\"dependencies\\": [
+    {
+      \\"organization\\": \\"github.com\\",
+      \\"module\\": \\"gogo/protobuf\\",
+      \\"versionConstraint\\": \\"v1.2.1\\",
+      \\"scopes\\": [
+        \\"direct\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"github.com\\",
+      \\"module\\": \\"mjpitz/rds\\",
+      \\"versionConstraint\\": \\"v0.0.2\\",
+      \\"scopes\\": [
+        \\"direct\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"github.com\\",
+      \\"module\\": \\"sirupsen/logrus\\",
+      \\"versionConstraint\\": \\"v1.3.0\\",
+      \\"scopes\\": [
+        \\"direct\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"golang.org\\",
+      \\"module\\": \\"x/net\\",
+      \\"versionConstraint\\": \\"v0.0.0-20190213061140-3a22650c66bd\\",
+      \\"scopes\\": [
+        \\"direct\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"google.golang.org\\",
+      \\"module\\": \\"grpc\\",
+      \\"versionConstraint\\": \\"v1.18.0\\",
+      \\"scopes\\": [
+        \\"direct\\"
+      ]
+    }
+  ]
+}"
+`;

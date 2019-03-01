@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ComposerJsonParser fullParse 1`] = `
+Object {
+  "dependencies": Array [
+    Object {
+      "module": "repoModule",
+      "organization": "repoOrganization",
+      "versionConstraint": "repoVersion",
+    },
+    Object {
+      "module": "requireModule",
+      "organization": "requireOrganization",
+      "versionConstraint": "requireVersionConstraint",
+    },
+    Object {
+      "module": "requireDevModule",
+      "organization": "requireDevOrganization",
+      "versionConstraint": "requireDevVersionConstraint",
+    },
+  ],
+  "language": "php",
+  "module": "module",
+  "organization": "organization",
+  "system": "composer",
+  "version": "version",
+}
+`;
+
+exports[`ComposerJsonParser fullParse 2`] = `
+"{
+  \\"language\\": \\"php\\",
+  \\"system\\": \\"composer\\",
+  \\"organization\\": \\"organization\\",
+  \\"module\\": \\"module\\",
+  \\"version\\": \\"version\\",
+  \\"dependencies\\": [
+    {
+      \\"organization\\": \\"repoOrganization\\",
+      \\"module\\": \\"repoModule\\",
+      \\"versionConstraint\\": \\"repoVersion\\"
+    },
+    {
+      \\"organization\\": \\"requireOrganization\\",
+      \\"module\\": \\"requireModule\\",
+      \\"versionConstraint\\": \\"requireVersionConstraint\\"
+    },
+    {
+      \\"organization\\": \\"requireDevOrganization\\",
+      \\"module\\": \\"requireDevModule\\",
+      \\"versionConstraint\\": \\"requireDevVersionConstraint\\"
+    }
+  ]
+}"
+`;

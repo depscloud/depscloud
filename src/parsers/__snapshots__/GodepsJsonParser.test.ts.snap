@@ -1,0 +1,75 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GodepsJsonParser fullParse 1`] = `
+Object {
+  "dependencies": Array [
+    Object {
+      "module": "kr/fs",
+      "organization": "github.com",
+      "versionConstraint": "2788f0dbd16903de03cb8186e5c7d97b69ad387b",
+    },
+    Object {
+      "module": "kr/pretty",
+      "organization": "github.com",
+      "versionConstraint": "f31442d60e51465c69811e2107ae978868dbea5c",
+    },
+    Object {
+      "module": "kr/text",
+      "organization": "github.com",
+      "versionConstraint": "6807e777504f54ad073ecef66747de158294b639",
+    },
+    Object {
+      "module": "pmezard/go-difflib/difflib",
+      "organization": "github.com",
+      "versionConstraint": "f78a839676152fd9f4863704f5d516195c18fc14",
+    },
+    Object {
+      "module": "x/tools/go/vcs",
+      "organization": "golang.org",
+      "versionConstraint": "1f1b3322f67af76803c942fd237291538ec68262",
+    },
+  ],
+  "language": "golang",
+  "module": "tools/godep",
+  "organization": "github.com",
+  "system": "godeps",
+  "version": "",
+}
+`;
+
+exports[`GodepsJsonParser fullParse 2`] = `
+"{
+  \\"language\\": \\"golang\\",
+  \\"system\\": \\"godeps\\",
+  \\"organization\\": \\"github.com\\",
+  \\"module\\": \\"tools/godep\\",
+  \\"version\\": \\"\\",
+  \\"dependencies\\": [
+    {
+      \\"organization\\": \\"github.com\\",
+      \\"module\\": \\"kr/fs\\",
+      \\"versionConstraint\\": \\"2788f0dbd16903de03cb8186e5c7d97b69ad387b\\"
+    },
+    {
+      \\"organization\\": \\"github.com\\",
+      \\"module\\": \\"kr/pretty\\",
+      \\"versionConstraint\\": \\"f31442d60e51465c69811e2107ae978868dbea5c\\"
+    },
+    {
+      \\"organization\\": \\"github.com\\",
+      \\"module\\": \\"kr/text\\",
+      \\"versionConstraint\\": \\"6807e777504f54ad073ecef66747de158294b639\\"
+    },
+    {
+      \\"organization\\": \\"github.com\\",
+      \\"module\\": \\"pmezard/go-difflib/difflib\\",
+      \\"versionConstraint\\": \\"f78a839676152fd9f4863704f5d516195c18fc14\\"
+    },
+    {
+      \\"organization\\": \\"golang.org\\",
+      \\"module\\": \\"x/tools/go/vcs\\",
+      \\"versionConstraint\\": \\"1f1b3322f67af76803c942fd237291538ec68262\\"
+    }
+  ]
+}"
+`;
