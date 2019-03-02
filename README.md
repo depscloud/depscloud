@@ -6,6 +6,10 @@ After parsing out the information, it returns a standard representation making i
 
 ## Support
 
+[![Build Status](https://travis-ci.com/mjpitz/des.svg?branch=master)](https://travis-ci.com/mjpitz/des)
+[![](https://images.microbadger.com/badges/image/mjpitz/des.svg)](https://microbadger.com/images/mjpitz/des)
+[![](https://images.microbadger.com/badges/version/mjpitz/des.svg)](https://microbadger.com/images/mjpitz/des)
+
 ## Getting Started
 
 ```
