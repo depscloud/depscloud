@@ -1,8 +1,8 @@
 import fs = require("fs");
-import path = require("path");
-import tmp = require("tmp");
 import {ServerUnaryCall} from "grpc";
 import {Clone, Cred} from "nodegit";
+import path = require("path");
+import tmp = require("tmp");
 import {DependencyManagementFile} from "../../api/deps";
 import {ExtractRequest, ExtractResponse} from "../../api/extractor";
 import {IParser} from "../parsers/Parser";
