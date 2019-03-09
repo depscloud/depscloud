@@ -6,13 +6,13 @@ const readFileAsync = promisify(readFile);
 
 describe("GoModParser", () => {
     test("fullParse", async () => {
-        const godepsPath = require.resolve("./testdata/go.mod");
-        const buffer = await readFileAsync(godepsPath);
+        const gomodPath = require.resolve("./testdata/go.mod");
+        const buffer = await readFileAsync(gomodPath);
         const content = buffer.toString();
 
         const parser = new GoModParser();
 
-        const actual = parser.parse(godepsPath, content);
+        const actual = parser.parse(gomodPath, content);
 
         expect(actual).toMatchSnapshot();
         expect(JSON.stringify(actual, null, 2)).toMatchSnapshot();

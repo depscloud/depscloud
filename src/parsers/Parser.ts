@@ -1,4 +1,6 @@
 import cheerio = require("cheerio");
+import TOML = require("toml");
+import YAML = require("js-yaml");
 import {DependencyManagementFile} from "../../api/deps";
 
 export interface IParser {
@@ -53,7 +55,34 @@ export class JsonParser implements IParser {
     public parseJson(json: any): DependencyManagementFile {
         throw new MethodNotImplementedError("parseJson");
     }
+}
 
+export class TomlParser implements IParser {
+    public parse(path: string, content: string): DependencyManagementFile {
+        return this.parseToml(TOML.parse(content));
+    }
+
+    public pathMatch(path: string): boolean {
+        throw new MethodNotImplementedError("pathMatch");
+    }
+
+    public parseToml(toml: any): DependencyManagementFile {
+        throw new MethodNotImplementedError("parseToml");
+    }
+}
+
+export class YamlParser implements IParser {
+    public parse(path: string, content: string): DependencyManagementFile {
+        return this.parseYaml(YAML.safeLoad(content));
+    }
+
+    public pathMatch(path: string): boolean {
+        throw new MethodNotImplementedError("pathMatch");
+    }
+
+    public parseYaml(yaml: any): DependencyManagementFile {
+        throw new MethodNotImplementedError("parseToml");
+    }
 }
 
 class MethodNotImplementedError extends Error {

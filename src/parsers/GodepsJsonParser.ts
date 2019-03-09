@@ -1,17 +1,6 @@
 import {DependencyManagementFile} from "../../api/deps";
+import parseImportPath from "./goutils/parseImportPath";
 import {JsonParser} from "./Parser";
-
-interface ID {
-    organization: string;
-    module: string;
-}
-
-function parseImportPath(importPath: string): ID {
-    const pos = importPath.indexOf("/");
-    const organization = importPath.substr(0, pos);
-    const module = importPath.substr(pos + 1);
-    return { organization, module };
-}
 
 export default class GodepsJsonParser extends JsonParser {
 
