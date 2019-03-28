@@ -1,15 +1,13 @@
 import {Dependency, DependencyManagementFile} from "../../api/deps";
-import {TomlParser} from "./Parser";
+import Extractor from "./Extractor";
+import ExtractorFile from "./ExtractorFile";
 
 const organization = "__global__";
 const scopes = [ "direct" ];
 
-export default class CargoTomlParser extends TomlParser {
-    public pathMatch(path: string): boolean {
-        return super.pathMatch(path);
-    }
-
-    public parseToml(toml: any): DependencyManagementFile {
+export default class CargoTomlExtractor implements Extractor {
+    public extract(files: { [p: string]: ExtractorFile }): DependencyManagementFile {
+        const toml = files["Cargo.toml"].toml();
 
         const dependencies: Dependency[] = Object.keys(toml.dependencies)
             .map((name) => {
@@ -40,5 +38,9 @@ export default class CargoTomlParser extends TomlParser {
             version: toml.package.version,
             dependencies,
         };
+    }
+
+    public requires(): string[] {
+        return [ "Cargo.toml" ];
     }
 }

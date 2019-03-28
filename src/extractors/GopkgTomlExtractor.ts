@@ -1,6 +1,7 @@
 import {Dependency, DependencyManagementFile} from "../../api/deps";
+import Extractor from "./Extractor";
+import ExtractorFile from "./ExtractorFile";
 import parseImportPath from "./goutils/parseImportPath";
-import {TomlParser} from "./Parser";
 
 interface Constraint {
     name: string;
@@ -42,12 +43,14 @@ function transformSimple(data: string[], versionConstraint: string, scope: strin
     });
 }
 
-export default class GopkgTomlParser extends TomlParser {
-    public pathMatch(path: string): boolean {
-        return path.endsWith("Gopkg.toml");
+export default class GopkgTomlExtractor implements Extractor {
+    public requires(): string[] {
+        return [ "Gopkg.toml" ];
     }
 
-    public parseToml(toml: any): DependencyManagementFile {
+    public extract(files: { [p: string]: ExtractorFile }): DependencyManagementFile {
+        const toml = files["Gopkg.toml"].toml();
+
         const dependencies: Dependency[] = [];
         dependencies.push(...transformConstraints(toml.constraint, "constraint"));
         dependencies.push(...transformConstraints(toml.override, "override"));

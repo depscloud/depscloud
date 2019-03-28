@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`GoModParser fullParse 1`] = `
+exports[`GoModExtractor fullParse 1`] = `
 Object {
   "dependencies": Array [
     Object {
@@ -52,7 +52,7 @@ Object {
 }
 `;
 
-exports[`GoModParser fullParse 2`] = `
+exports[`GoModExtractor fullParse 2`] = `
 "{
   \\"language\\": \\"go\\",
   \\"system\\": \\"vgo\\",

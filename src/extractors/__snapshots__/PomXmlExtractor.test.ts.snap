@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`PomXmlParser fullParse 1`] = `
+exports[`PomXmlExtractor fullParse 1`] = `
 Object {
   "dependencies": Array [
     Object {
@@ -68,7 +68,7 @@ Object {
 }
 `;
 
-exports[`PomXmlParser fullParse 2`] = `
+exports[`PomXmlExtractor fullParse 2`] = `
 "{
   \\"language\\": \\"java\\",
   \\"system\\": \\"maven\\",

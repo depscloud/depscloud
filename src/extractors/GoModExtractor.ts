@@ -1,13 +1,16 @@
 import {Dependency, DependencyManagementFile} from "../../api/deps";
+import Extractor from "./Extractor";
+import ExtractorFile from "./ExtractorFile";
 import parseImportPath from "./goutils/parseImportPath";
-import {IParser} from "./Parser";
 
-export default class GoModParser implements IParser {
-    public pathMatch(path: string): boolean {
-        return path.endsWith("go.mod");
+export default class GoModExtractor implements Extractor {
+    public requires(): string[] {
+        return [ "go.mod" ];
     }
 
-    public parse(path: string, content: string): DependencyManagementFile {
+    public extract(files: { [p: string]: ExtractorFile }): DependencyManagementFile {
+        const content = files["go.mod"].raw();
+
         const lines = content.split(/\n+/g);
 
         let id = null;

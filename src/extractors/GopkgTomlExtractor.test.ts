@@ -1,18 +1,19 @@
 import {readFile} from "fs";
 import {promisify} from "util";
-import GopkgTomlParser from "./GopkgTomlParser";
+import ExtractorFile from "./ExtractorFile";
+import GopkgTomlExtractor from "./GopkgTomlExtractor";
 
 const readFileAsync = promisify(readFile);
 
-describe("GopkgTomlParser", () => {
+describe("GopkgTomlExtractor", () => {
     test("fullParse", async () => {
         const gopkgToml = require.resolve("./testdata/Gopkg.toml");
         const buffer = await readFileAsync(gopkgToml);
         const content = buffer.toString();
 
-        const parser = new GopkgTomlParser();
+        const parser = new GopkgTomlExtractor();
 
-        const actual = parser.parse(gopkgToml, content);
+        const actual = parser.extract({ "Gopkg.toml": new ExtractorFile(content) });
 
         expect(actual).toMatchSnapshot();
         expect(JSON.stringify(actual, null, 2)).toMatchSnapshot();

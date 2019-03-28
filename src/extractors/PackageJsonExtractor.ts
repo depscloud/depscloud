@@ -1,5 +1,6 @@
 import {Dependency, DependencyManagementFile} from "../../api/deps";
-import {JsonParser} from "./Parser";
+import Extractor from "./Extractor";
+import ExtractorFile from "./ExtractorFile";
 
 interface ID {
     organization: string;
@@ -31,20 +32,22 @@ function extract(dependencyHash: any, scope: string): Dependency[] {
         });
 }
 
-export default class PackageJsonParser extends JsonParser {
-    public pathMatch(path: string): boolean {
-        return path.endsWith("package.json") && path.indexOf("node_modules") === -1;
+export default class PackageJsonExtractor implements Extractor {
+    public requires(): string[] {
+        return [ "package.json" ];
     }
 
-    public parseJson({
-        name,
-        version,
-        dependencies,
-        devDependencies,
-        peerDependencies,
-        bundledDependencies,
-        optionalDependencies,
-    }): DependencyManagementFile {
+    public extract(files: { [p: string]: ExtractorFile }): DependencyManagementFile {
+        const {
+            name,
+            version,
+            dependencies,
+            devDependencies,
+            peerDependencies,
+            bundledDependencies,
+            optionalDependencies,
+        } = files["package.json"].json();
+
         const { organization, module } = parseName(name);
 
         let allDependencies = extract((dependencies || {}), "");
@@ -60,5 +63,4 @@ export default class PackageJsonParser extends JsonParser {
             dependencies: allDependencies,
         };
     }
-
 }

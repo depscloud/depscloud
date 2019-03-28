@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`PackageJsonParser fullParse 1`] = `
+exports[`PackageJsonExtractor fullParse 1`] = `
 Object {
   "dependencies": Array [
     Object {
@@ -44,7 +44,7 @@ Object {
 }
 `;
 
-exports[`PackageJsonParser fullParse 2`] = `
+exports[`PackageJsonExtractor fullParse 2`] = `
 "{
   \\"language\\": \\"node\\",
   \\"system\\": \\"npm\\",

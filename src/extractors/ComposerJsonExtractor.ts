@@ -1,5 +1,6 @@
 import {Dependency, DependencyManagementFile} from "../../api/deps";
-import {JsonParser} from "./Parser";
+import Extractor from "./Extractor";
+import ExtractorFile from "./ExtractorFile";
 
 interface ID {
     organization: string;
@@ -27,18 +28,20 @@ function processRequires(require: { [key: string]: string }): Dependency[] {
         });
 }
 
-export default class ComposerJsonParser extends JsonParser {
-    public pathMatch(path: string): boolean {
-        return path.endsWith("composer.json") && path.indexOf("vendor") === -1;
+export default class ComposerJsonExtractor implements Extractor {
+    public requires(): string[] {
+        return [ "composer.json" ];
     }
 
-    public parseJson({
-        name,
-        version,
-        repositories,
-        require,
-        "require-dev": requireDev,
-    }): DependencyManagementFile {
+    public extract(files: { [p: string]: ExtractorFile }): DependencyManagementFile {
+        const {
+            name,
+            version,
+            repositories,
+            require,
+            "require-dev": requireDev,
+        } = files["composer.json"].json();
+
         const { organization, module } = parseName(name);
 
         let dependencies = (repositories || [])

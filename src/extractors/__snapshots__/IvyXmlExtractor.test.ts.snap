@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`IvyXmlParser fullParse 1`] = `
+exports[`IvyXmlExtractor fullParse 1`] = `
 Object {
   "dependencies": Array [
     Object {
@@ -68,7 +68,7 @@ Object {
 }
 `;
 
-exports[`IvyXmlParser fullParse 2`] = `
+exports[`IvyXmlExtractor fullParse 2`] = `
 "{
   \\"language\\": \\"java\\",
   \\"system\\": \\"ivy\\",

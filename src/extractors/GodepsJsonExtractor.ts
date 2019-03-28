@@ -1,17 +1,19 @@
 import {DependencyManagementFile} from "../../api/deps";
+import Extractor from "./Extractor";
+import ExtractorFile from "./ExtractorFile";
 import parseImportPath from "./goutils/parseImportPath";
-import {JsonParser} from "./Parser";
 
-export default class GodepsJsonParser extends JsonParser {
-
-    public pathMatch(path: string): boolean {
-        return path.endsWith("Godeps.json") && path.indexOf("vendor") === -1;
+export default class GodepsJsonExtractor implements Extractor {
+    public requires(): string[] {
+        return [ "Godeps.json" ];
     }
 
-    public parseJson({
-        ImportPath,
-        Deps,
-    }: any = {}): DependencyManagementFile {
+    public extract(files: { [p: string]: ExtractorFile }): DependencyManagementFile {
+        const {
+            ImportPath,
+            Deps,
+        } = files["Godeps.json"].json();
+
         const { organization, module } = parseImportPath(ImportPath);
 
         const dependencies = Deps.map(({

@@ -1,13 +1,16 @@
 import cheerio = require("cheerio");
 import {Dependency, DependencyManagementFile} from "../../api/deps";
-import {XmlParser} from "./Parser";
+import Extractor from "./Extractor";
+import ExtractorFile from "./ExtractorFile";
 
-export default class PomXmlParser extends XmlParser {
-    public pathMatch(path: string): boolean {
-        return path.endsWith("pom.xml");
+export default class PomXmlExtractor implements Extractor {
+    public requires(): string[] {
+        return [ "pom.xml" ];
     }
 
-    public parseXml(xml: Cheerio): DependencyManagementFile {
+    public extract(files: { [p: string]: ExtractorFile }): DependencyManagementFile {
+        const xml = files["pom.xml"].xml();
+
         const parentGroupId = xml.find("project > parent > groupId").text();
         const parentArtifactId = xml.find("project > parent > artifactId").text();
         const parentVersion = xml.find("project > parent > version").text();

@@ -1,12 +1,14 @@
-import fs = require("fs");
 import {ServerUnaryCall} from "grpc";
 import {Clone, Cred} from "nodegit";
-import path = require("path");
-import tmp = require("tmp");
 import {DependencyManagementFile} from "../../api/deps";
 import {ExtractRequest, ExtractResponse} from "../../api/extractor";
-import {IParser} from "../parsers/Parser";
+import Extractor from "../extractors/Extractor";
+import ExtractorFile from "../extractors/ExtractorFile";
 import AsyncDependencyExtractor from "./AsyncDependencyExtractor";
+
+import fs = require("fs");
+import path = require("path");
+import tmp = require("tmp");
 
 const fsp = fs.promises;
 
@@ -25,52 +27,82 @@ function tmpdir(): Promise<[string, () => void]> {
 }
 
 export default class DependencyExtractorImpl implements AsyncDependencyExtractor {
-    private readonly parser: IParser;
+    private readonly extractors: Extractor[];
     private readonly credentials: (url: string, username: string) => Promise<Cred>;
 
-    constructor(parser: IParser, credentials: (url: string, username: string) => Promise<Cred>) {
-        this.parser = parser;
+    constructor(extractors: Extractor[], credentials: (url: string, username: string) => Promise<Cred>) {
+        this.extractors = extractors;
         this.credentials = credentials;
     }
 
-    private async read({ path: filePath }: any, collector: DependencyManagementFile[]): Promise<void> {
-        const contents = await fsp.readFile(filePath);
-        const dependencyManagementFile = this.parser.parse(filePath, contents.toString());
-        collector.push(dependencyManagementFile);
-    }
+    private async checkDirectory(
+        dir: { [key: string]: [ string, fs.Stats ] },
+        extractor: Extractor,
+    ): Promise<DependencyManagementFile> {
+        const meetsRequirements = extractor.requires()
+            .map((req) => dir[req][1].isFile())
+            .reduce((last, current) => last && current);
 
-    private async walk(url: string, collector: DependencyManagementFile[]): Promise<void> {
-        const files = await fsp.readdir(url);
-        const fileStatPromises: Array<Promise<any>> = files.map((file: string) => {
-            return {
-                name: file,
-                path: path.join(url, file),
-            };
-        }).map((file: any) => {
-            return fsp.stat(file.path)
-                .then((stats) => {
-                    file.stats = stats;
-                    return file;
-                });
-        });
+        if (!meetsRequirements) {
+            return null;
+        }
 
-        const fileStats = await Promise.all(fileStatPromises);
+        const files: { [key: string]: ExtractorFile } = {};
 
-        const outstanding = fileStats
-            .filter((fileStat) => fileStat != null)
-            .map((fileStat) => {
-                if (fileStat.stats.isDirectory()) {
-                    return this.walk(fileStat.path, collector);
-                } else if (this.parser.pathMatch(fileStat.path)) {
-                    return this.read(fileStat, collector);
-                }
+        const readFileReqs = extractor.requires()
+            .map((req) => {
+                return fsp.readFile(dir[req][0])
+                    .then((buf) => {
+                        files[req] = new ExtractorFile(buf.toString());
+                    });
             });
 
-        await Promise.all(outstanding);
+        await Promise.all(readFileReqs);
+
+        return extractor.extract(files);
+    }
+
+    private async walk(url: string): Promise<DependencyManagementFile[]> {
+        const dir: { [key: string]: [ string, fs.Stats ] } = {};
+
+        const fileReqs = await fsp.readdir(url)
+            .then((readdir) => {
+                return readdir.map((fileName) => {
+                    const filePath = path.join(url, fileName);
+
+                    return fsp.stat(filePath)
+                        .then((fileStat) => {
+                            dir[fileName] = [ filePath, fileStat ];
+                        });
+                });
+            });
+
+        await Promise.all(fileReqs);
+
+        const promises: Array<Promise<DependencyManagementFile>> = [];
+        for (const extractor of this.extractors) {
+            promises.push(this.checkDirectory(dir, extractor));
+        }
+
+        const walkReqs: Array<Promise<DependencyManagementFile[]>> = Object.keys(dir)
+            .map((fileName) => ({
+                fileName,
+                filePath: dir[fileName][0],
+                fileStat: dir[fileName][1],
+            }))
+            .filter(({ fileStat }) => fileStat.isDirectory())
+            .map(({ filePath }) => this.walk(filePath));
+
+        walkReqs.push(Promise.all(promises));
+
+        const walk: DependencyManagementFile[][] = await Promise.all(walkReqs);
+        const deps: DependencyManagementFile[] = [].concat(...walk);
+
+        return deps.filter((e) => e != null);
     }
 
     public async extract(call: ServerUnaryCall<ExtractRequest>): Promise<ExtractResponse> {
-        const managementFiles: DependencyManagementFile[] = [];
+        let managementFiles: DependencyManagementFile[] = [];
         const [ tmpPath, cleanup ] = await tmpdir();
         const repositoryUrl = call.request.repositoryUrl;
 
@@ -84,7 +116,7 @@ export default class DependencyExtractorImpl implements AsyncDependencyExtractor
                 },
             });
 
-            await this.walk(tmpPath, managementFiles);
+            managementFiles = await this.walk(tmpPath);
         } finally {
             cleanup();
         }

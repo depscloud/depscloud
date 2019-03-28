@@ -1,13 +1,16 @@
 import cheerio = require("cheerio");
 import {Dependency, DependencyManagementFile} from "../../api/deps";
-import {XmlParser} from "./Parser";
+import Extractor from "./Extractor";
+import ExtractorFile from "./ExtractorFile";
 
-export default class IvyXmlParser extends XmlParser {
-    public pathMatch(path: string): boolean {
-        return path.endsWith("ivy.xml");
+export default class IvyXmlExtractor implements Extractor {
+    public requires(): string[] {
+        return [ "ivy.xml" ];
     }
 
-    public parseXml(xml: Cheerio): DependencyManagementFile {
+    public extract(files: { [p: string]: ExtractorFile }): DependencyManagementFile {
+        const xml = files["ivy.xml"].xml();
+
         const infoNode: Cheerio = xml.find("ivy-module info");
         const dependencyNodes: Cheerio = xml.find("ivy-module dependencies dependency");
 

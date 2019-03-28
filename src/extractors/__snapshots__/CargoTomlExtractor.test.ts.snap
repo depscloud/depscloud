@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CargoTomlParser fullParse 1`] = `
+exports[`CargoTomlExtractor fullParse 1`] = `
 Object {
   "dependencies": Array [
     Object {
@@ -164,7 +164,7 @@ Object {
 }
 `;
 
-exports[`CargoTomlParser fullParse 2`] = `
+exports[`CargoTomlExtractor fullParse 2`] = `
 "{
   \\"language\\": \\"rust\\",
   \\"system\\": \\"cargo\\",

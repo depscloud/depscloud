@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`GodepsJsonParser fullParse 1`] = `
+exports[`GodepsJsonExtractor fullParse 1`] = `
 Object {
   "dependencies": Array [
     Object {
@@ -37,7 +37,7 @@ Object {
 }
 `;
 
-exports[`GodepsJsonParser fullParse 2`] = `
+exports[`GodepsJsonExtractor fullParse 2`] = `
 "{
   \\"language\\": \\"golang\\",
   \\"system\\": \\"godeps\\",

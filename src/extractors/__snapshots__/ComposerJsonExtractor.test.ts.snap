@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ComposerJsonParser fullParse 1`] = `
+exports[`ComposerJsonExtractor fullParse 1`] = `
 Object {
   "dependencies": Array [
     Object {
@@ -27,7 +27,7 @@ Object {
 }
 `;
 
-exports[`ComposerJsonParser fullParse 2`] = `
+exports[`ComposerJsonExtractor fullParse 2`] = `
 "{
   \\"language\\": \\"php\\",
   \\"system\\": \\"composer\\",
