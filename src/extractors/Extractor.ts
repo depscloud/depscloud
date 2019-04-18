@@ -3,5 +3,5 @@ import ExtractorFile from "./ExtractorFile";
 
 export default interface Extractor {
     requires(): string[];
-    extract(files: { [key: string]: ExtractorFile }): DependencyManagementFile;
+    extract(files: { [key: string]: ExtractorFile }): Promise<DependencyManagementFile>;
 }

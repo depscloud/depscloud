@@ -48,7 +48,7 @@ export default class GopkgTomlExtractor implements Extractor {
         return [ "Gopkg.toml" ];
     }
 
-    public extract(files: { [p: string]: ExtractorFile }): DependencyManagementFile {
+    public async extract(files: { [p: string]: ExtractorFile }): Promise<DependencyManagementFile> {
         const toml = files["Gopkg.toml"].toml();
 
         const dependencies: Dependency[] = [];

@@ -13,7 +13,7 @@ describe("PackageJsonExtractor", () => {
 
         const parser = new PackageJsonExtractor();
 
-        const actual = parser.extract({ "package.json": new ExtractorFile(content) });
+        const actual = await parser.extract({ "package.json": new ExtractorFile(content) });
 
         expect(actual).toMatchSnapshot();
         expect(JSON.stringify(actual, null, 2)).toMatchSnapshot();
