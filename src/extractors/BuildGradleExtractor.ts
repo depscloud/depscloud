@@ -1,0 +1,69 @@
+import { parseText } from "gradle-to-js/lib/parser";
+
+import {Dependency, DependencyManagementFile} from "../../api/deps";
+import Extractor from "./Extractor";
+import ExtractorFile from "./ExtractorFile";
+
+export default class BuildGradleExtractor implements Extractor {
+    public async extract(files: { [p: string]: ExtractorFile }): Promise<DependencyManagementFile> {
+        const promises = this.requires()
+            .map((req) => files[req].raw())
+            .map((raw) => parseText(raw));
+
+        const [
+            buildGradle,
+            settingsGradle,
+        ] = await Promise.all(promises);
+
+        const dependencies: { [key: string]: Dependency } = {};
+
+        let [ organization, module ] = [ "", "" ];
+
+        if (settingsGradle.rootProject) {
+            if (settingsGradle.rootProject.name) {
+                [ organization, module ] = settingsGradle.rootProject.name.split(":");
+            }
+
+            if (settingsGradle.rootProject.parent && settingsGradle.rootProject.parent) {
+                const key = settingsGradle.rootProject.parent.name;
+                const [ parentOrganization, parentModule, parentVersion ] = key.split(":");
+
+                dependencies[key] = {
+                    organization: parentOrganization,
+                    module: parentModule,
+                    versionConstraint: parentVersion,
+                    scopes: [ "parent" ],
+                };
+            }
+        }
+
+        (buildGradle.dependencies || []).forEach((dep) => {
+            const key = [ dep.group, dep.name, dep.version ].join(":");
+
+            if (dependencies[key]) {
+                dependencies[key].scopes.push(dep.type);
+            } else {
+                dependencies[key] = {
+                    organization: dep.group,
+                    module: dep.name,
+                    versionConstraint: dep.version,
+                    scopes: [ dep.type ],
+                };
+            }
+        });
+
+        return {
+            language: "java",
+            system: "gradle",
+            organization,
+            module,
+            version: buildGradle.version,
+            dependencies: Object.keys(dependencies)
+                .map((k) => dependencies[k]),
+        };
+    }
+
+    public requires(): string[] {
+        return [ "build.gradle", "settings.gradle" ];
+    }
+}
