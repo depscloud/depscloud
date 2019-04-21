@@ -13,7 +13,7 @@ import PomXmlExtractor from "./PomXmlExtractor";
 const ExtractorRegistry = new Registry<Extractor>("Extractor");
 
 ExtractorRegistry.registerAll({
-    BuildGradleExtractor: async(_) => new BuildGradleExtractor(),
+    BuildGradleExtractor: async (_) => new BuildGradleExtractor(),
     CargoTomlExtractor: async (_) => new CargoTomlExtractor(),
     ComposerJsonExtractor: async (_) => new ComposerJsonExtractor(),
     GodepsJsonExtractor: async (_) => new GodepsJsonExtractor(),
