@@ -1,0 +1,1159 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DependencyExtractorImpl fullParse 1`] = `
+Array [
+  "testdata/build.gradle",
+  "testdata/settings.gradle",
+  "testdata/Cargo.toml",
+  "testdata/composer.json",
+  "testdata/Godeps.json",
+  "testdata/go.mod",
+  "testdata/Gopkg.toml",
+  "testdata/ivy.xml",
+  "testdata/package.json",
+  "testdata/pom.xml",
+]
+`;
+
+exports[`DependencyExtractorImpl fullParse 2`] = `
+Array [
+  Object {
+    "dependencies": Array [
+      Object {
+        "module": "parent_module",
+        "organization": "parent_organization",
+        "scopes": Array [
+          "parent",
+        ],
+        "versionConstraint": undefined,
+      },
+      Object {
+        "module": "kubernetes-client",
+        "organization": "io.fabric8",
+        "scopes": Array [
+          "compile",
+          "annotationProcessor",
+        ],
+        "versionConstraint": "4.1.3",
+      },
+      Object {
+        "module": "commons-collections4",
+        "organization": "org.apache.commons",
+        "scopes": Array [
+          "compile",
+        ],
+        "versionConstraint": "4.2",
+      },
+      Object {
+        "module": "commons-text",
+        "organization": "org.apache.commons",
+        "scopes": Array [
+          "compile",
+        ],
+        "versionConstraint": "1.6",
+      },
+      Object {
+        "module": "jackson-core",
+        "organization": "com.fasterxml.jackson.core",
+        "scopes": Array [
+          "compile",
+        ],
+        "versionConstraint": "2.9.7",
+      },
+      Object {
+        "module": "spring-boot-starter",
+        "organization": "org.springframework.boot",
+        "scopes": Array [
+          "compile",
+        ],
+        "versionConstraint": "2.1.1.RELEASE",
+      },
+      Object {
+        "module": "spring-boot-starter-log4j2",
+        "organization": "org.springframework.boot",
+        "scopes": Array [
+          "compile",
+        ],
+        "versionConstraint": "2.1.1.RELEASE",
+      },
+      Object {
+        "module": "builder-annotations",
+        "organization": "io.sundr",
+        "scopes": Array [
+          "compileOnly",
+        ],
+        "versionConstraint": "0.14.7",
+      },
+      Object {
+        "module": "mockito-core",
+        "organization": "org.mockito",
+        "scopes": Array [
+          "testCompile",
+        ],
+        "versionConstraint": "2.24.0",
+      },
+      Object {
+        "module": "junit-jupiter-api",
+        "organization": "org.junit.jupiter",
+        "scopes": Array [
+          "testCompile",
+        ],
+        "versionConstraint": "5.4.0",
+      },
+      Object {
+        "module": "junit-jupiter-engine",
+        "organization": "org.junit.jupiter",
+        "scopes": Array [
+          "testRuntime",
+        ],
+        "versionConstraint": "5.4.0",
+      },
+    ],
+    "language": "java",
+    "module": "module",
+    "organization": "organization",
+    "system": "gradle",
+    "version": "1.2",
+  },
+  Object {
+    "dependencies": Array [
+      Object {
+        "module": "bytes",
+        "organization": "__global__",
+        "scopes": Array [
+          "direct",
+        ],
+        "versionConstraint": undefined,
+      },
+      Object {
+        "module": "clap",
+        "organization": "__global__",
+        "scopes": Array [
+          "direct",
+        ],
+        "versionConstraint": undefined,
+      },
+      Object {
+        "module": "futures",
+        "organization": "__global__",
+        "scopes": Array [
+          "direct",
+        ],
+        "versionConstraint": undefined,
+      },
+      Object {
+        "module": "hyper",
+        "organization": "__global__",
+        "scopes": Array [
+          "direct",
+        ],
+        "versionConstraint": undefined,
+      },
+      Object {
+        "module": "log",
+        "organization": "__global__",
+        "scopes": Array [
+          "direct",
+        ],
+        "versionConstraint": undefined,
+      },
+      Object {
+        "module": "ordermap",
+        "organization": "__global__",
+        "scopes": Array [
+          "direct",
+        ],
+        "versionConstraint": undefined,
+      },
+      Object {
+        "module": "pretty_env_logger",
+        "organization": "__global__",
+        "scopes": Array [
+          "direct",
+        ],
+        "versionConstraint": undefined,
+      },
+      Object {
+        "module": "rand",
+        "organization": "__global__",
+        "scopes": Array [
+          "direct",
+        ],
+        "versionConstraint": undefined,
+      },
+      Object {
+        "module": "rustls",
+        "organization": "__global__",
+        "scopes": Array [
+          "direct",
+        ],
+        "versionConstraint": "make_server_sni_public",
+      },
+      Object {
+        "module": "serde",
+        "organization": "__global__",
+        "scopes": Array [
+          "direct",
+        ],
+        "versionConstraint": undefined,
+      },
+      Object {
+        "module": "serde_derive",
+        "organization": "__global__",
+        "scopes": Array [
+          "direct",
+        ],
+        "versionConstraint": undefined,
+      },
+      Object {
+        "module": "serde_json",
+        "organization": "__global__",
+        "scopes": Array [
+          "direct",
+        ],
+        "versionConstraint": undefined,
+      },
+      Object {
+        "module": "serde_yaml",
+        "organization": "__global__",
+        "scopes": Array [
+          "direct",
+        ],
+        "versionConstraint": undefined,
+      },
+      Object {
+        "module": "tacho",
+        "organization": "__global__",
+        "scopes": Array [
+          "direct",
+        ],
+        "versionConstraint": undefined,
+      },
+      Object {
+        "module": "tokio-core",
+        "organization": "__global__",
+        "scopes": Array [
+          "direct",
+        ],
+        "versionConstraint": undefined,
+      },
+      Object {
+        "module": "tokio-io",
+        "organization": "__global__",
+        "scopes": Array [
+          "direct",
+        ],
+        "versionConstraint": undefined,
+      },
+      Object {
+        "module": "tokio-service",
+        "organization": "__global__",
+        "scopes": Array [
+          "direct",
+        ],
+        "versionConstraint": undefined,
+      },
+      Object {
+        "module": "tokio-timer",
+        "organization": "__global__",
+        "scopes": Array [
+          "direct",
+        ],
+        "versionConstraint": undefined,
+      },
+      Object {
+        "module": "url",
+        "organization": "__global__",
+        "scopes": Array [
+          "direct",
+        ],
+        "versionConstraint": undefined,
+      },
+    ],
+    "language": "rust",
+    "module": "linkerd-tcp",
+    "organization": "__global__",
+    "system": "cargo",
+    "version": "0.1.1",
+  },
+  Object {
+    "dependencies": Array [
+      Object {
+        "module": "repoModule",
+        "organization": "repoOrganization",
+        "versionConstraint": "repoVersion",
+      },
+      Object {
+        "module": "requireModule",
+        "organization": "requireOrganization",
+        "versionConstraint": "requireVersionConstraint",
+      },
+      Object {
+        "module": "requireDevModule",
+        "organization": "requireDevOrganization",
+        "versionConstraint": "requireDevVersionConstraint",
+      },
+    ],
+    "language": "php",
+    "module": "module",
+    "organization": "organization",
+    "system": "composer",
+    "version": "version",
+  },
+  Object {
+    "dependencies": Array [
+      Object {
+        "module": "kr/fs",
+        "organization": "github.com",
+        "versionConstraint": "2788f0dbd16903de03cb8186e5c7d97b69ad387b",
+      },
+      Object {
+        "module": "kr/pretty",
+        "organization": "github.com",
+        "versionConstraint": "f31442d60e51465c69811e2107ae978868dbea5c",
+      },
+      Object {
+        "module": "kr/text",
+        "organization": "github.com",
+        "versionConstraint": "6807e777504f54ad073ecef66747de158294b639",
+      },
+      Object {
+        "module": "pmezard/go-difflib/difflib",
+        "organization": "github.com",
+        "versionConstraint": "f78a839676152fd9f4863704f5d516195c18fc14",
+      },
+      Object {
+        "module": "x/tools/go/vcs",
+        "organization": "golang.org",
+        "versionConstraint": "1f1b3322f67af76803c942fd237291538ec68262",
+      },
+    ],
+    "language": "golang",
+    "module": "tools/godep",
+    "organization": "github.com",
+    "system": "godeps",
+    "version": "",
+  },
+  Object {
+    "dependencies": Array [
+      Object {
+        "module": "gogo/protobuf",
+        "organization": "github.com",
+        "scopes": Array [
+          "direct",
+        ],
+        "versionConstraint": "v1.2.1",
+      },
+      Object {
+        "module": "mjpitz/rds",
+        "organization": "github.com",
+        "scopes": Array [
+          "direct",
+        ],
+        "versionConstraint": "v0.0.2",
+      },
+      Object {
+        "module": "sirupsen/logrus",
+        "organization": "github.com",
+        "scopes": Array [
+          "direct",
+        ],
+        "versionConstraint": "v1.3.0",
+      },
+      Object {
+        "module": "x/net",
+        "organization": "golang.org",
+        "scopes": Array [
+          "direct",
+        ],
+        "versionConstraint": "v0.0.0-20190213061140-3a22650c66bd",
+      },
+      Object {
+        "module": "grpc",
+        "organization": "google.golang.org",
+        "scopes": Array [
+          "direct",
+        ],
+        "versionConstraint": "v1.18.0",
+      },
+    ],
+    "language": "go",
+    "module": "mjpitz/finch",
+    "organization": "github.com",
+    "system": "vgo",
+    "version": "latest",
+  },
+  Object {
+    "dependencies": Array [
+      Object {
+        "module": "go",
+        "organization": "cloud.google.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": ">=0.20.0, <1.0.0",
+      },
+      Object {
+        "module": "go.opencensus.io",
+        "organization": "",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": ">=0.15.0",
+      },
+      Object {
+        "module": "exporter/stackdriver",
+        "organization": "contrib.go.opencensus.io",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": ">=0.2.0",
+      },
+      Object {
+        "module": "copilot",
+        "organization": "code.cloudfoundry.org",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "master",
+      },
+      Object {
+        "module": "DataDog/datadog-go",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "2.0.0",
+      },
+      Object {
+        "module": "alicebob/miniredis",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "2.3.2",
+      },
+      Object {
+        "module": "aws/aws-sdk-go",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "1.13.24",
+      },
+      Object {
+        "module": "cactus/go-statsd-client",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "3.1.1",
+      },
+      Object {
+        "module": "cenkalti/backoff",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "2.0.0",
+      },
+      Object {
+        "module": "circonus-labs/circonus-gometrics",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "2.1.0",
+      },
+      Object {
+        "module": "coreos/go-oidc",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "v2",
+      },
+      Object {
+        "module": "davecgh/go-spew",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "1.1.0",
+      },
+      Object {
+        "module": "envoyproxy/go-control-plane",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "^0.6.7",
+      },
+      Object {
+        "module": "fluent/fluent-logger-golang",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "1.3.0",
+      },
+      Object {
+        "module": "ghodss/yaml",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "1.0.0",
+      },
+      Object {
+        "module": "go-redis/redis",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "6.10.2",
+      },
+      Object {
+        "module": "gogo/googleapis",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "master",
+      },
+      Object {
+        "module": "gogo/protobuf",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "^1.1.1",
+      },
+      Object {
+        "module": "golang/protobuf",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "1.1.0",
+      },
+      Object {
+        "module": "golang/sync",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "master",
+      },
+      Object {
+        "module": "google/go-github",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "15.0.0",
+      },
+      Object {
+        "module": "google/uuid",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "0.2.0",
+      },
+      Object {
+        "module": "googleapis/gax-go",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "2.0.0",
+      },
+      Object {
+        "module": "gorilla/mux",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "1.6.1",
+      },
+      Object {
+        "module": "gorilla/websocket",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "1.2.0",
+      },
+      Object {
+        "module": "grpc-ecosystem/go-grpc-middleware",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "master",
+      },
+      Object {
+        "module": "grpc-ecosystem/go-grpc-prometheus",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "1.1.0",
+      },
+      Object {
+        "module": "grpc-ecosystem/grpc-opentracing",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "master",
+      },
+      Object {
+        "module": "hashicorp/consul",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "1.3.0",
+      },
+      Object {
+        "module": "hashicorp/go-multierror",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "master",
+      },
+      Object {
+        "module": "hashicorp/vault",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "0.10.0",
+      },
+      Object {
+        "module": "howeyc/fsnotify",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "0.9.0",
+      },
+      Object {
+        "module": "natefinch/lumberjack",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "2.1.0",
+      },
+      Object {
+        "module": "onsi/gomega",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "1.3.0",
+      },
+      Object {
+        "module": "open-policy-agent/opa",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "0.8.2",
+      },
+      Object {
+        "module": "openshift/api",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "master",
+      },
+      Object {
+        "module": "opentracing/opentracing-go",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "1.0.2",
+      },
+      Object {
+        "module": "pmezard/go-difflib",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "1.0.0",
+      },
+      Object {
+        "module": "prometheus/client_golang",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "0.9.2",
+      },
+      Object {
+        "module": "prometheus/client_model",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "master",
+      },
+      Object {
+        "module": "prometheus/common",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "master",
+      },
+      Object {
+        "module": "prometheus/prom2json",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "master",
+      },
+      Object {
+        "module": "satori/go.uuid",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "1.2.0",
+      },
+      Object {
+        "module": "spf13/cobra",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "0.0.2",
+      },
+      Object {
+        "module": "stretchr/testify",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "1.2.1",
+      },
+      Object {
+        "module": "uber/jaeger-client-go",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "master",
+      },
+      Object {
+        "module": "atomic",
+        "organization": "go.uber.org",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "1.2.0",
+      },
+      Object {
+        "module": "multierr",
+        "organization": "go.uber.org",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "1.1.0",
+      },
+      Object {
+        "module": "zap",
+        "organization": "go.uber.org",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "1.7.1",
+      },
+      Object {
+        "module": "x/net",
+        "organization": "golang.org",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "master",
+      },
+      Object {
+        "module": "x/oauth2",
+        "organization": "golang.org",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "master",
+      },
+      Object {
+        "module": "x/time",
+        "organization": "golang.org",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "master",
+      },
+      Object {
+        "module": "x/tools",
+        "organization": "golang.org",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "master",
+      },
+      Object {
+        "module": "api",
+        "organization": "google.golang.org",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "master",
+      },
+      Object {
+        "module": "genproto",
+        "organization": "google.golang.org",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "master",
+      },
+      Object {
+        "module": "grpc",
+        "organization": "google.golang.org",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "^1.13.0",
+      },
+      Object {
+        "module": "yaml.v2",
+        "organization": "gopkg.in",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "2.2.1",
+      },
+      Object {
+        "module": "api",
+        "organization": "istio.io",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "master",
+      },
+      Object {
+        "module": "api",
+        "organization": "k8s.io",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "release-1.11",
+      },
+      Object {
+        "module": "apimachinery",
+        "organization": "k8s.io",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "release-1.11",
+      },
+      Object {
+        "module": "apiextensions-apiserver",
+        "organization": "k8s.io",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "release-1.11",
+      },
+      Object {
+        "module": "helm",
+        "organization": "k8s.io",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "2.9.1",
+      },
+      Object {
+        "module": "kubernetes",
+        "organization": "k8s.io",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "release-1.11",
+      },
+      Object {
+        "module": "gogo/status",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "d60b5acac426cb52f7e28124c6aaa862d9f339f5",
+      },
+      Object {
+        "module": "google/go-cmp",
+        "organization": "github.com",
+        "scopes": Array [
+          "constraint",
+        ],
+        "versionConstraint": "0.2.0",
+      },
+      Object {
+        "module": "docker/distribution",
+        "organization": "github.com",
+        "scopes": Array [
+          "override",
+        ],
+        "versionConstraint": "master",
+      },
+      Object {
+        "module": "client-go",
+        "organization": "k8s.io",
+        "scopes": Array [
+          "override",
+        ],
+        "versionConstraint": "release-8.0",
+      },
+      Object {
+        "module": "Azure/go-autorest",
+        "organization": "github.com",
+        "scopes": Array [
+          "override",
+        ],
+        "versionConstraint": "bca49d5b51a50dc5bb17bbf6204c711c6dbded06",
+      },
+      Object {
+        "module": "golang/glog",
+        "organization": "github.com",
+        "scopes": Array [
+          "override",
+        ],
+        "versionConstraint": undefined,
+      },
+      Object {
+        "module": "imdario/mergo",
+        "organization": "github.com",
+        "scopes": Array [
+          "override",
+        ],
+        "versionConstraint": "6633656539c1639d9d78127b7d47c622b5d7b6dc",
+      },
+      Object {
+        "module": "istio/mixer/adapter/stackdriver/contextgraph",
+        "organization": "istio.io",
+        "scopes": Array [
+          "ignored",
+        ],
+        "versionConstraint": "*",
+      },
+      Object {
+        "module": "client9/misspell",
+        "organization": "github.com",
+        "scopes": Array [
+          "required",
+        ],
+        "versionConstraint": "*",
+      },
+      Object {
+        "module": "istio/tools/protoc-gen-docs",
+        "organization": "github.com",
+        "scopes": Array [
+          "required",
+        ],
+        "versionConstraint": "*",
+      },
+      Object {
+        "module": "fortio",
+        "organization": "fortio.org",
+        "scopes": Array [
+          "required",
+        ],
+        "versionConstraint": "*",
+      },
+    ],
+    "language": "go",
+    "module": "",
+    "organization": "",
+    "system": "gopkg",
+    "version": "",
+  },
+  Object {
+    "dependencies": Array [
+      Object {
+        "module": "jcommander",
+        "organization": "com.beust",
+        "scopes": Array [
+          "default",
+        ],
+        "versionConstraint": "1.20",
+      },
+      Object {
+        "module": "lombok",
+        "organization": "org.projectlombok",
+        "scopes": Array [
+          "build->default",
+        ],
+        "versionConstraint": "0.10.4",
+      },
+      Object {
+        "module": "junit",
+        "organization": "junit",
+        "scopes": Array [
+          "test->default",
+        ],
+        "versionConstraint": "4.10",
+      },
+      Object {
+        "module": "cobertura",
+        "organization": "net.sourceforge.cobertura",
+        "scopes": Array [
+          "test->default",
+        ],
+        "versionConstraint": "1.9.4.1",
+      },
+      Object {
+        "module": "checkstyle",
+        "organization": "com.puppycrawl.tools",
+        "scopes": Array [
+          "analysis->default",
+        ],
+        "versionConstraint": "5.5",
+      },
+      Object {
+        "module": "findbugs",
+        "organization": "com.google.code.findbugs",
+        "scopes": Array [
+          "analysis->default",
+        ],
+        "versionConstraint": "2.0.0",
+      },
+      Object {
+        "module": "pmd",
+        "organization": "net.sourceforge.pmd",
+        "scopes": Array [
+          "analysis->default",
+        ],
+        "versionConstraint": "5.0.0",
+      },
+    ],
+    "language": "java",
+    "module": "sample-java-project",
+    "organization": "com.nullprogram",
+    "system": "ivy",
+    "version": null,
+  },
+  Object {
+    "dependencies": Array [
+      Object {
+        "module": "runtimeDependency",
+        "organization": "scoped",
+        "scopes": Array [
+          "",
+        ],
+        "versionConstraint": "1.0.0",
+      },
+      Object {
+        "module": "devDependency",
+        "organization": "_",
+        "scopes": Array [
+          "dev",
+        ],
+        "versionConstraint": "1.0.0",
+      },
+      Object {
+        "module": "peerDependency",
+        "organization": "scoped",
+        "scopes": Array [
+          "peer",
+        ],
+        "versionConstraint": "1.0.0",
+      },
+      Object {
+        "module": "optionalDependency",
+        "organization": "_",
+        "scopes": Array [
+          "optional",
+        ],
+        "versionConstraint": "1.0.0",
+      },
+    ],
+    "language": "node",
+    "module": "module",
+    "organization": "organization",
+    "system": "npm",
+    "version": "9.9.9",
+  },
+  Object {
+    "dependencies": Array [
+      Object {
+        "module": "parentArtifactId",
+        "organization": "parentGroupId",
+        "scopes": Array [
+          "parent",
+        ],
+        "versionConstraint": "1.0",
+      },
+      Object {
+        "module": "artifactId",
+        "organization": "groupId",
+        "scopes": Array [
+          "compile",
+        ],
+        "versionConstraint": "1.0.0",
+      },
+      Object {
+        "module": "compileArtifactId",
+        "organization": "compileGroupId",
+        "scopes": Array [
+          "compile",
+        ],
+        "versionConstraint": "1.0.0",
+      },
+      Object {
+        "module": "runtimeArtifactId",
+        "organization": "runtimeGroupId",
+        "scopes": Array [
+          "runtime",
+        ],
+        "versionConstraint": "1.0.0",
+      },
+      Object {
+        "module": "testArtifactId",
+        "organization": "testGroupId",
+        "scopes": Array [
+          "test",
+        ],
+        "versionConstraint": "1.0.0",
+      },
+      Object {
+        "module": "systemArtifactId",
+        "organization": "systemGroupId",
+        "scopes": Array [
+          "system",
+        ],
+        "versionConstraint": "1.0.0",
+      },
+      Object {
+        "module": "providedArtifactId",
+        "organization": "providedGroupId",
+        "scopes": Array [
+          "provided",
+        ],
+        "versionConstraint": "1.0.0",
+      },
+    ],
+    "language": "java",
+    "module": "artifactId",
+    "organization": "groupId",
+    "system": "maven",
+    "version": "9.9.9",
+  },
+]
+`;

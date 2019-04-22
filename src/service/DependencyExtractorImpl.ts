@@ -1,128 +1,131 @@
 import {ServerUnaryCall} from "grpc";
-import {Clone, Cred} from "nodegit";
 import {DependencyManagementFile} from "../../api/deps";
-import {ExtractRequest, ExtractResponse} from "../../api/extractor";
+import {ExtractRequest, ExtractResponse, MatchRequest, MatchResponse} from "../../api/extractor";
 import Extractor from "../extractors/Extractor";
 import ExtractorFile from "../extractors/ExtractorFile";
 import AsyncDependencyExtractor from "./AsyncDependencyExtractor";
 
-import fs = require("fs");
-import path = require("path");
-import tmp = require("tmp");
+function constructTree(separator: string, paths: string[]): any {
+    const root: any = {};
 
-const fsp = fs.promises;
+    paths.forEach((key) => {
+        const parts = key.split(separator);
 
-function tmpdir(): Promise<[string, () => void]> {
-    return new Promise((resolve, reject) => {
-        tmp.dir({
-            unsafeCleanup: true,
-        }, (err, tmpPath, cleanup) => {
-            if (err != null) {
-                reject(err);
-            } else {
-                resolve([ tmpPath, cleanup ]);
+        let ptr = root;
+        let i = 0;
+        for (; i < parts.length - 1; i++) {
+            const part = parts[i];
+            if (!ptr[part]) {
+                ptr[part] = {};
             }
-        });
+            ptr = ptr[part];
+        }
+        ptr[parts[i]] = key;
     });
+
+    return root;
 }
 
 export default class DependencyExtractorImpl implements AsyncDependencyExtractor {
     private readonly extractors: Extractor[];
-    private readonly credentials: (url: string, username: string) => Promise<Cred>;
 
-    constructor(extractors: Extractor[], credentials: (url: string, username: string) => Promise<Cred>) {
+    constructor(extractors: Extractor[]) {
         this.extractors = extractors;
-        this.credentials = credentials;
     }
 
-    private async checkDirectory(
-        dir: { [key: string]: [ string, fs.Stats ] },
-        extractor: Extractor,
-    ): Promise<DependencyManagementFile> {
-        const meetsRequirements = extractor.requires()
-            .map((req) => dir[req][1].isFile())
-            .reduce((last, current) => last && current);
+    public matchInternal(separator: string, paths: string[]): string[] {
+        const root = constructTree(separator, paths);
 
-        if (!meetsRequirements) {
-            return null;
+        let level = [ root ];
+        const matchedPaths = [];
+
+        while (level.length > 0) {
+            const size = level.length;
+
+            for (let i = 0; i < size; i++) {
+                const dir = level.shift();
+
+                this.extractors
+                    .filter((extractor) =>
+                        extractor.requires()
+                            .map((req) => dir[req] && typeof dir[req] === "string")
+                            .reduce((last, current) => last && current))
+                    .forEach((extractor) =>
+                        extractor.requires()
+                            .forEach((req) => matchedPaths.push(dir[req])));
+
+                const nextLevel = Object.keys(dir)
+                    .map((name) => dir[name])
+                    .filter((val) => typeof val !== "string");
+
+                level = level.concat(nextLevel);
+            }
         }
 
-        const files: { [key: string]: ExtractorFile } = {};
-
-        const readFileReqs = extractor.requires()
-            .map((req) => {
-                return fsp.readFile(dir[req][0])
-                    .then((buf) => {
-                        files[req] = new ExtractorFile(buf.toString());
-                    });
-            });
-
-        await Promise.all(readFileReqs);
-
-        return extractor.extract(files);
+        return matchedPaths;
     }
 
-    private async walk(url: string): Promise<DependencyManagementFile[]> {
-        const dir: { [key: string]: [ string, fs.Stats ] } = {};
+    public async match(call: ServerUnaryCall<MatchRequest>): Promise<MatchResponse> {
+        const { separator, paths } = call.request;
 
-        const fileReqs = await fsp.readdir(url)
-            .then((readdir) => {
-                return readdir.map((fileName) => {
-                    const filePath = path.join(url, fileName);
+        return {
+            matchedPaths: this.matchInternal(separator, paths),
+        };
+    }
 
-                    return fsp.stat(filePath)
-                        .then((fileStat) => {
-                            dir[fileName] = [ filePath, fileStat ];
+    public async extractInternal(
+        separator: string,
+        fileContents: { [key: string]: string },
+    ): Promise<DependencyManagementFile[]> {
+        const matchedPaths = this.matchInternal(separator, Object.keys(fileContents));
+
+        const root = constructTree(separator, matchedPaths);
+
+        let level = [ root ];
+        let managementFilePromises: Array<Promise<DependencyManagementFile>> = [];
+
+        while (level.length > 0) {
+            const size = level.length;
+
+            for (let i = 0; i < size; i++) {
+                const dir = level.shift();
+
+                const nextManagementFilePromises = this.extractors
+                    .filter((extractor) =>
+                        extractor.requires()
+                            .map((req) => dir[req] && typeof dir[req] === "string")
+                            .reduce((last, current) => last && current))
+                    .map((extractor) => {
+                        const files = {};
+                        extractor.requires().forEach((req) => {
+                            const key = dir[req];
+                            files[req] = new ExtractorFile(fileContents[key]);
                         });
-                });
-            });
+                        return extractor.extract(files);
+                    });
 
-        await Promise.all(fileReqs);
+                managementFilePromises = managementFilePromises.concat(nextManagementFilePromises);
 
-        const promises: Array<Promise<DependencyManagementFile>> = [];
-        for (const extractor of this.extractors) {
-            promises.push(this.checkDirectory(dir, extractor));
+                const nextLevel = Object.keys(dir)
+                    .map((name) => dir[name])
+                    .filter((val) => typeof val !== "string");
+
+                level = level.concat(nextLevel);
+            }
         }
 
-        const walkReqs: Array<Promise<DependencyManagementFile[]>> = Object.keys(dir)
-            .map((fileName) => ({
-                fileName,
-                filePath: dir[fileName][0],
-                fileStat: dir[fileName][1],
-            }))
-            .filter(({ fileStat }) => fileStat.isDirectory())
-            .map(({ filePath }) => this.walk(filePath));
+        let managementFiles = await Promise.all(managementFilePromises);
+        managementFiles = managementFiles.filter((f) => !!f);
 
-        walkReqs.push(Promise.all(promises));
-
-        const walk: DependencyManagementFile[][] = await Promise.all(walkReqs);
-        const deps: DependencyManagementFile[] = [].concat(...walk);
-
-        return deps.filter((e) => e != null);
+        return managementFiles;
     }
 
     public async extract(call: ServerUnaryCall<ExtractRequest>): Promise<ExtractResponse> {
-        let managementFiles: DependencyManagementFile[] = [];
-        const [ tmpPath, cleanup ] = await tmpdir();
-        const repositoryUrl = call.request.repositoryUrl;
+        const { separator, fileContents } = call.request;
 
-        try {
-            await Clone.clone(repositoryUrl, tmpPath, {
-                fetchOpts: {
-                    callbacks: {
-                        certificateCheck: () => 1,
-                        credentials: this.credentials,
-                    },
-                },
-            });
-
-            managementFiles = await this.walk(tmpPath);
-        } finally {
-            cleanup();
-        }
+        const managementFiles = await this.extractInternal(separator, fileContents);
 
         return {
-            repositoryUrl,
             managementFiles,
         };
     }
