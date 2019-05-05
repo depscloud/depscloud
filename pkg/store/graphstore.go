@@ -24,7 +24,8 @@ func GraphItemEncodings() []GraphItemEncoding {
 
 // GraphItem defines an item that is stored withing the graph store.
 // This can represent either a node or an edge. The format is flexible
-// enough to support either structures with minimal overhead.
+// enough to support either structures with minimal overhead. Implementation
+// is loosely based off of Dropbox's edgestore system.
 //
 // K1 == K2 implies a node
 // k1 != K2 implies an edge

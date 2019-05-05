@@ -1,0 +1,37 @@
+language: go
+
+go:
+- 1.11.x
+
+env:
+- GO111MODULE=on
+
+before_install:
+  # gox simplifies building for multiple architectures
+  - go get golang.org/x/lint/golint
+  - go get github.com/mitchellh/gox
+
+install:
+  # skip
+
+script:
+  - make deps
+  - make test
+  - make deploy
+
+deploy:
+  provider: releases
+  skip_cleanup: true
+  api_key:
+    secure: "${GITHUB_OAUTH_TOKEN_SECURE}"
+  file:
+    - bin/dts_darwin_386
+    - bin/dts_darwin_amd64
+    - bin/dts_linux_386
+    - bin/dts_linux_amd64
+    - bin/dts_linux_arm
+    - bin/dts_windows_386.exe
+    - bin/dts_windows_amd64.exe
+  on:
+    repo: mjpitz/dts
+    tags: true

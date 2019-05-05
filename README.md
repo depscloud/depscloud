@@ -1,6 +1,6 @@
 # Dependency Tracking Service - DTS
 
-Dependency Tracking Service (DTS) is a system that tracks library dependencies across systems.
+Dependency Tracking Service (DTS) is a system that tracks library dependencies across languages.
 This system provides a storage backend so that dependencies can be stored, indexed, and queried.
 
 ## Support
