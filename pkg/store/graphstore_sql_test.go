@@ -24,18 +24,18 @@ func generateData() []byte {
 
 func TestNewSQLGraphStore_sqlite(t *testing.T) {
 	data := []*store.GraphItem{
-		{ GraphItemType: "node", K1: k1, K2: k1, Version: 1, Encoding: 0, GraphItemData: generateData() },
-		{ GraphItemType: "node", K1: k2, K2: k2, Version: 1, Encoding: 0, GraphItemData: generateData() },
-		{ GraphItemType: "node", K1: k3, K2: k3, Version: 1, Encoding: 0, GraphItemData: generateData() },
-		{ GraphItemType: "node", K1: k4, K2: k4, Version: 1, Encoding: 0, GraphItemData: generateData() },
-		{ GraphItemType: "node", K1: k5, K2: k5, Version: 1, Encoding: 0, GraphItemData: generateData() },
-		{ GraphItemType: "node", K1: k6, K2: k6, Version: 1, Encoding: 0, GraphItemData: generateData() },
+		{ GraphItemType: "node", K1: k1, K2: k1, Encoding: 0, GraphItemData: generateData() },
+		{ GraphItemType: "node", K1: k2, K2: k2, Encoding: 0, GraphItemData: generateData() },
+		{ GraphItemType: "node", K1: k3, K2: k3, Encoding: 0, GraphItemData: generateData() },
+		{ GraphItemType: "node", K1: k4, K2: k4, Encoding: 0, GraphItemData: generateData() },
+		{ GraphItemType: "node", K1: k5, K2: k5, Encoding: 0, GraphItemData: generateData() },
+		{ GraphItemType: "node", K1: k6, K2: k6, Encoding: 0, GraphItemData: generateData() },
 
-		{ GraphItemType: "edge", K1: k1, K2: k2, Version: 1, Encoding: 0, GraphItemData: generateData() },
-		{ GraphItemType: "edge", K1: k2, K2: k3, Version: 1, Encoding: 0, GraphItemData: generateData() },
-		{ GraphItemType: "edge", K1: k2, K2: k4, Version: 2, Encoding: 0, GraphItemData: generateData() },
-		{ GraphItemType: "edge", K1: k3, K2: k5, Version: 1, Encoding: 0, GraphItemData: generateData() },
-		{ GraphItemType: "edge", K1: k4, K2: k6, Version: 1, Encoding: 0, GraphItemData: generateData() },
+		{ GraphItemType: "edge", K1: k1, K2: k2, Encoding: 0, GraphItemData: generateData() },
+		{ GraphItemType: "edge", K1: k2, K2: k3, Encoding: 0, GraphItemData: generateData() },
+		{ GraphItemType: "edge", K1: k2, K2: k4, Encoding: 0, GraphItemData: generateData() },
+		{ GraphItemType: "edge", K1: k3, K2: k5, Encoding: 0, GraphItemData: generateData() },
+		{ GraphItemType: "edge", K1: k4, K2: k6, Encoding: 0, GraphItemData: generateData() },
 	}
 
 	db, err := sql.Open("sqlite3", ":memory:")

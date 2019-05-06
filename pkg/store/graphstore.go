@@ -31,12 +31,10 @@ func GraphItemEncodings() []GraphItemEncoding {
 // k1 != K2 implies an edge
 //
 // Primary key: { GraphItemType, K1, K2 }
-// Unique key: { GraphItemType, K1, Version }
 type GraphItem struct {
 	GraphItemType string `json:"graph_type"`
 	K1 []byte `json:"k1"`
 	K2 []byte `json:"k2"`
-	Version uint64 `json:"version"`
 	Encoding GraphItemEncoding `json:"encoding"`
 	GraphItemData []byte `json:"graph_item_data"`
 }
@@ -48,19 +46,11 @@ type PrimaryKey struct {
 	K2 []byte `json:"k2"`
 }
 
-// SecondaryKey is an alternate unique key to a GraphItem
-type SecondaryKey struct {
-	GraphItemType string `json:"graph_type"`
-	K1 []byte `json:"k1"`
-	Version uint64 `json:"version"`
-}
-
 // GraphStore is an interface that allows the backing data storage to be replaced.
 // This helps for testing and provides flexibility for alternative implementations.
 type GraphStore interface {
 	Put(item *GraphItem) error
 	FindByPrimary(key *PrimaryKey) (*GraphItem, error)
-	FindBySecondary(key *SecondaryKey) (*GraphItem, error)
 
 	FindUpstream(key []byte) ([]*GraphItem, error)
 	FindDownstream(key []byte) ([]*GraphItem, error)
