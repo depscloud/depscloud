@@ -24,18 +24,18 @@ func generateData() []byte {
 
 func TestNewSQLGraphStore_sqlite(t *testing.T) {
 	data := []*store.GraphItem{
-		{ GraphItemType: "node", K1: k1, K2: k1, Encoding: 0, GraphItemData: generateData() },
-		{ GraphItemType: "node", K1: k2, K2: k2, Encoding: 0, GraphItemData: generateData() },
-		{ GraphItemType: "node", K1: k3, K2: k3, Encoding: 0, GraphItemData: generateData() },
-		{ GraphItemType: "node", K1: k4, K2: k4, Encoding: 0, GraphItemData: generateData() },
-		{ GraphItemType: "node", K1: k5, K2: k5, Encoding: 0, GraphItemData: generateData() },
-		{ GraphItemType: "node", K1: k6, K2: k6, Encoding: 0, GraphItemData: generateData() },
+		{GraphItemType: "node", K1: k1, K2: k1, Encoding: 0, GraphItemData: generateData()},
+		{GraphItemType: "node", K1: k2, K2: k2, Encoding: 0, GraphItemData: generateData()},
+		{GraphItemType: "node", K1: k3, K2: k3, Encoding: 0, GraphItemData: generateData()},
+		{GraphItemType: "node", K1: k4, K2: k4, Encoding: 0, GraphItemData: generateData()},
+		{GraphItemType: "node", K1: k5, K2: k5, Encoding: 0, GraphItemData: generateData()},
+		{GraphItemType: "node", K1: k6, K2: k6, Encoding: 0, GraphItemData: generateData()},
 
-		{ GraphItemType: "edge", K1: k1, K2: k2, Encoding: 0, GraphItemData: generateData() },
-		{ GraphItemType: "edge", K1: k2, K2: k3, Encoding: 0, GraphItemData: generateData() },
-		{ GraphItemType: "edge", K1: k2, K2: k4, Encoding: 0, GraphItemData: generateData() },
-		{ GraphItemType: "edge", K1: k3, K2: k5, Encoding: 0, GraphItemData: generateData() },
-		{ GraphItemType: "edge", K1: k4, K2: k6, Encoding: 0, GraphItemData: generateData() },
+		{GraphItemType: "edge", K1: k1, K2: k2, Encoding: 0, GraphItemData: generateData()},
+		{GraphItemType: "edge", K1: k2, K2: k3, Encoding: 0, GraphItemData: generateData()},
+		{GraphItemType: "edge", K1: k2, K2: k4, Encoding: 0, GraphItemData: generateData()},
+		{GraphItemType: "edge", K1: k3, K2: k5, Encoding: 0, GraphItemData: generateData()},
+		{GraphItemType: "edge", K1: k4, K2: k6, Encoding: 0, GraphItemData: generateData()},
 	}
 
 	db, err := sql.Open("sqlite3", ":memory:")
@@ -44,10 +44,8 @@ func TestNewSQLGraphStore_sqlite(t *testing.T) {
 	graphStore, err := store.NewSQLGraphStore(db)
 	require.Nil(t, err)
 
-	for _, item := range data {
-		err := graphStore.Put(item)
-		require.Nil(t, err)
-	}
+	err = graphStore.Put(data)
+	require.Nil(t, err)
 
 	downstream, err := graphStore.FindDownstream(k2)
 	require.Nil(t, err)
@@ -62,4 +60,16 @@ func TestNewSQLGraphStore_sqlite(t *testing.T) {
 
 	require.Equal(t, upstream[0].K1, k3)
 	require.Equal(t, upstream[1].K1, k4)
+
+	keys := make([]*store.PrimaryKey, 0, len(data))
+	for _, data := range data {
+		keys = append(keys, &store.PrimaryKey{
+			GraphItemType: data.GraphItemType,
+			K1:            data.K1,
+			K2:            data.K2,
+		})
+	}
+
+	err = graphStore.Delete(keys)
+	require.Nil(t, err)
 }
