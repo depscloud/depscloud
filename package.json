@@ -1,12 +1,12 @@
 {
-  "name": "@mjpitz/des",
+  "name": "@deps-cloud/des",
   "version": "0.1.0",
   "scripts": {
     "build": "tsc",
     "lint": "tslint --fix src/**/*.ts",
     "test": "jest --coverage",
     "start": "node lib/main.js",
-    "docker-buildx": "docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t mjpitz/des:latest ."
+    "docker-buildx": "docker buildx build --platform linux/amd64,linux/arm64 -t depscloud/des:latest ."
   },
   "devDependencies": {
     "@types/cheerio": "^0.22.10",

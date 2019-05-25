@@ -30,8 +30,8 @@ github.com/kr/pretty v0.1.0/go.mod h1:dAy3ld7l9f0ibDNOQOHHMYYIIbhfbHSm3C4ZsoJORN
 github.com/kr/pty v1.1.1/go.mod h1:pFQYn66WHrOpPYNljwOMqo10TkYh1fy3cYio2l3bCsQ=
 github.com/kr/text v0.1.0/go.mod h1:4Jbv+DJW3UT/LiOwJeYQe1efqtUx/iVham/4vfdArNI=
 github.com/mitchellh/go-homedir v1.0.0/go.mod h1:SfyaCUpYCn1Vlf4IUYiD9fPX4A5wJrkLzIz1N1q0pr0=
-github.com/mjpitz/gitfs v0.0.3/go.mod h1:mVWegvpauc/oX7Bal65l9LobigDFk1126DEIMz0IlB0=
-github.com/mjpitz/rds v0.0.2/go.mod h1:8BL/IRhkKHH8cEHS7d2vYb42lxmXQ8rZmrCYBoX2a5c=
+github.com/deps-cloud/gitfs v0.0.3/go.mod h1:mVWegvpauc/oX7Bal65l9LobigDFk1126DEIMz0IlB0=
+github.com/deps-cloud/rds v0.0.2/go.mod h1:8BL/IRhkKHH8cEHS7d2vYb42lxmXQ8rZmrCYBoX2a5c=
 github.com/nytlabs/gojee v0.0.0-20140331152115-5a79a1542dc0/go.mod h1:m12KGQ2nN4fGxy+5fbn3yY0qVUX8p2f6X4h8DisEeuU=
 github.com/pelletier/go-buffruneio v0.2.0/go.mod h1:JkE26KsDizTr40EUHkXVtNPvgGtbSNq5BcowyYOWdKo=
 github.com/pkg/errors v0.8.0/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=

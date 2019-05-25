@@ -16,11 +16,11 @@ After parsing out the information, it returns a standard representation making i
 A docker image is regularly built and uploaded to docker.io.
 
 ```bash
-docker run --rm mjpitz/des
+docker run --rm depscloud/des
 ```
 
 If you make changes and want to test them out, you can run via a locally built docker image or using `npm start`.
 
 ```bash
-docker build . -t mjpitz/des
+docker build . -t depscloud/des
 ```

@@ -345,7 +345,7 @@ Array [
         "versionConstraint": "v1.2.1",
       },
       Object {
-        "module": "mjpitz/rds",
+        "module": "deps-cloud/rds",
         "organization": "github.com",
         "scopes": Array [
           "direct",
@@ -378,7 +378,7 @@ Array [
       },
     ],
     "language": "go",
-    "module": "mjpitz/finch",
+    "module": "deps-cloud/finch",
     "organization": "github.com",
     "system": "vgo",
     "version": "latest",
