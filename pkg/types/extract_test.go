@@ -1,13 +1,14 @@
 package types_test
 
 import (
-	"github.com/gogo/protobuf/proto"
-	desapi "github.com/mjpitz/des/api"
-	dtsapi "github.com/mjpitz/dts/api"
-	"github.com/mjpitz/dts/pkg/store"
-	"github.com/mjpitz/dts/pkg/types"
-	"github.com/stretchr/testify/require"
 	"testing"
+
+	"github.com/gogo/protobuf/proto"
+	desapi "github.com/deps-cloud/des/api"
+	dtsapi "github.com/deps-cloud/dts/api"
+	"github.com/deps-cloud/dts/pkg/store"
+	"github.com/deps-cloud/dts/pkg/types"
+	"github.com/stretchr/testify/require"
 )
 
 func TestExtractSource(t *testing.T) {

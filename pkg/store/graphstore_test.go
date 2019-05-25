@@ -1,9 +1,10 @@
 package store_test
 
 import (
-	"github.com/mjpitz/dts/pkg/store"
-	"github.com/stretchr/testify/require"
 	"testing"
+
+	"github.com/deps-cloud/dts/pkg/store"
+	"github.com/stretchr/testify/require"
 )
 
 func TestGraphItemEncodings(t *testing.T) {

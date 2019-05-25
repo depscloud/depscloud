@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	_ "github.com/mattn/go-sqlite3"
-	"github.com/mjpitz/dts/pkg/store"
+	"github.com/deps-cloud/dts/pkg/store"
 	"github.com/stretchr/testify/require"
 )
 

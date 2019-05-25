@@ -2,9 +2,10 @@ package service
 
 import (
 	"fmt"
-	dtsapi "github.com/mjpitz/dts/api"
-	"github.com/mjpitz/dts/pkg/store"
-	"github.com/mjpitz/dts/pkg/types"
+
+	dtsapi "github.com/deps-cloud/dts/api"
+	"github.com/deps-cloud/dts/pkg/store"
+	"github.com/deps-cloud/dts/pkg/types"
 	"golang.org/x/net/context"
 )
 
