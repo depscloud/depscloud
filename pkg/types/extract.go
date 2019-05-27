@@ -1,27 +1,10 @@
 package types
 
 import (
-	"crypto/sha256"
-	"encoding/json"
-
 	desapi "github.com/deps-cloud/des/api"
 	dtsapi "github.com/deps-cloud/dts/api"
 	"github.com/deps-cloud/dts/pkg/store"
 )
-
-func encodeJSON(i interface{}) []byte {
-	data, err := json.Marshal(i)
-	if err != nil {
-		panic(err)
-	}
-	return data
-}
-
-func sha(body []byte) []byte {
-	hash := sha256.New()
-	hash.Write(body)
-	return hash.Sum(nil)
-}
 
 // ExtractSource will convert the provided SourceInformation into it's
 // corresponding GraphItem.
