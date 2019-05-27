@@ -50,6 +50,6 @@ type GraphStore interface {
 	Delete(items []*PrimaryKey) error
 
 	FindByPrimary(key *PrimaryKey) (*GraphItem, error)
-	FindUpstream(key []byte) ([]*GraphItem, error)
-	FindDownstream(key []byte) ([]*GraphItem, error)
+	FindUpstream(key []byte, edgeTypes []string) ([]*GraphItem, error)
+	FindDownstream(key []byte, edgeTypes []string) ([]*GraphItem, error)
 }

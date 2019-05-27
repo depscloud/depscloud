@@ -34,13 +34,13 @@ WHERE graph_item_type = ? and k1 = ? and k2 = ?;`
 const selectGraphDataUpstreamDependencies = `SELECT
 graph_item_type, k1, k2, encoding, graph_item_data
 FROM dts_graphdata 
-WHERE k1 IN (SELECT k2 FROM dts_graphdata WHERE k1 = ? and k1 != k2 and date_deleted is NULL)
+WHERE k1 IN (SELECT k2 FROM dts_graphdata WHERE k1 = ? and graph_item_type in (%s) and k1 != k2 and date_deleted is NULL)
 AND k1 == k2 and date_deleted is NULL;`
 
 const selectGraphDataDownstreamDependencies = `SELECT
 graph_item_type, k1, k2, encoding, graph_item_data
 FROM dts_graphdata
-WHERE k2 IN (SELECT k1 FROM dts_graphdata WHERE k2 = ? and k1 != k2 and date_deleted is NULL)
+WHERE k2 IN (SELECT k1 FROM dts_graphdata WHERE k2 = ? and graph_item_type in (%s) and k1 != k2 and date_deleted is NULL)
 AND k1 == k2 and date_deleted is NULL;`
 
 // NewSQLGraphStore constructs a new GraphStore with a sql driven backend. Current
@@ -115,8 +115,20 @@ func (gs *sqlGraphStore) FindByPrimary(key *PrimaryKey) (*GraphItem, error) {
 	return res[0], nil
 }
 
-func (gs *sqlGraphStore) FindUpstream(key []byte) ([]*GraphItem, error) {
-	rows, err := gs.db.Query(selectGraphDataUpstreamDependencies, Base64encode(key))
+func (gs *sqlGraphStore) FindUpstream(key []byte, edgeTypes []string) ([]*GraphItem, error) {
+	//strings.Join(make([]string, len(edgeTypes)))
+	arr := make([]string, 0, len(edgeTypes))
+	args := make([]interface{}, 0, len(edgeTypes) + 1)
+	args = append(args, Base64encode(key))
+
+	for i := 0; i < len(edgeTypes); i++ {
+		arr = append(arr, "?")
+		args = append(args, edgeTypes[i])
+	}
+
+	statement := fmt.Sprintf(selectGraphDataUpstreamDependencies, strings.Join(arr, ", "))
+
+	rows, err := gs.db.Query(statement, args...)
 	if err != nil {
 		return nil, err
 	}
@@ -129,8 +141,19 @@ func (gs *sqlGraphStore) FindUpstream(key []byte) ([]*GraphItem, error) {
 	return res, nil
 }
 
-func (gs *sqlGraphStore) FindDownstream(key []byte) ([]*GraphItem, error) {
-	rows, err := gs.db.Query(selectGraphDataDownstreamDependencies, Base64encode(key))
+func (gs *sqlGraphStore) FindDownstream(key []byte, edgeTypes []string) ([]*GraphItem, error) {
+	arr := make([]string, 0, len(edgeTypes))
+	args := make([]interface{}, 0, len(edgeTypes) + 1)
+	args = append(args, Base64encode(key))
+
+	for i := 0; i < len(edgeTypes); i++ {
+		arr = append(arr, "?")
+		args = append(args, edgeTypes[i])
+	}
+
+	statement := fmt.Sprintf(selectGraphDataDownstreamDependencies, strings.Join(arr, ", "))
+
+	rows, err := gs.db.Query(statement, args...)
 	if err != nil {
 		return nil, err
 	}

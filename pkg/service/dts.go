@@ -2,10 +2,12 @@ package service
 
 import (
 	"fmt"
+	"net/http"
 
 	dtsapi "github.com/deps-cloud/dts/api"
 	"github.com/deps-cloud/dts/pkg/store"
 	"github.com/deps-cloud/dts/pkg/types"
+	"github.com/sirupsen/logrus"
 	"golang.org/x/net/context"
 )
 
@@ -21,6 +23,7 @@ func quickKey(gi *store.GraphItem) string {
 }
 
 func (d *dependencyTrackingService) Put(ctx context.Context, req *dtsapi.PutRequest) (*dtsapi.PutResponse, error) {
+	traversalUtil := &TraversalUtil{ d.graphStore, dtsapi.Direction_DOWNSTREAM }
 	graphItems := types.ExtractGraphItems(req)
 
 	currentIndex := make(map[string]*store.GraphItem)
@@ -29,7 +32,7 @@ func (d *dependencyTrackingService) Put(ctx context.Context, req *dtsapi.PutRequ
 	}
 
 	sourceGraphItem := graphItems[0]
-	managedModules, err := d.graphStore.FindDownstream(sourceGraphItem.K1)
+	managedModules, err := traversalUtil.GetAdjacent(sourceGraphItem.K1, []string{ types.ManagesType })
 	if err != nil {
 		return nil, err
 	}
@@ -49,7 +52,7 @@ func (d *dependencyTrackingService) Put(ctx context.Context, req *dtsapi.PutRequ
 			continue
 		}
 
-		dependedModules, err := d.graphStore.FindDownstream(managedModule.K1)
+		dependedModules, err := traversalUtil.GetAdjacent(managedModule.K1, []string{ types.DependsType })
 		if err != nil {
 			return nil, err
 		}
@@ -68,21 +71,58 @@ func (d *dependencyTrackingService) Put(ctx context.Context, req *dtsapi.PutRequ
 	}
 
 	if err := d.graphStore.Delete(toRemove); err != nil {
-		return nil, err
+		logrus.Errorf("[service.dts] failed to delete removed edges: %v", err)
+		return &dtsapi.PutResponse{
+			Code:	 http.StatusInternalServerError,
+			Message: "failed to delete removed edges",
+		}, nil
 	}
 
 	if err := d.graphStore.Put(graphItems); err != nil {
-		return nil, err
+		logrus.Errorf("[service.dts] failed to add new edges: %v", err)
+		return &dtsapi.PutResponse{
+			Code:	 http.StatusInternalServerError,
+			Message: "failed to add new edges",
+		}, nil
 	}
 
 	return &dtsapi.PutResponse{
-		Code:    "dts-200",
-		Message: "Success",
+		Code:    http.StatusOK,
+		Message: "successfully updated source",
 	}, nil
 }
 
 func (d *dependencyTrackingService) GetDependencies(req *dtsapi.Request, resp dtsapi.DependencyTrackingService_GetDependenciesServer) error {
-	panic("implement me")
+	traversalUtil := &TraversalUtil{ d.graphStore, req.Direction }
+	key := types.ExtractModuleKey(req)
+
+	dependencies, err := traversalUtil.GetAdjacent(key, []string{ types.DependsType })
+	if err != nil {
+		return fmt.Errorf("failed to find dependences: %v", err)
+	}
+
+	for _, dep := range dependencies {
+		item, err := types.Decode(dep)
+		if err != nil {
+			// type / encoding problem, skip
+			logrus.Errorf("[service.dts] failed to decode dependency: %v", err)
+			continue
+		}
+
+		module := item.(*types.Module)
+		response := &dtsapi.Response{
+			Dependency: &dtsapi.DependencyId{
+				Organization: module.Organization,
+				Module: module.Module,
+			},
+		}
+
+		if err = resp.Send(response); err != nil {
+			logrus.Errorf("[service.dts] failed to send response: %v", err)
+		}
+	}
+
+	return nil
 }
 
 func (d *dependencyTrackingService) GetTopology(req *dtsapi.Request, resp dtsapi.DependencyTrackingService_GetTopologyServer) error {

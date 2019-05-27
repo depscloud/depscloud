@@ -26,17 +26,18 @@ func sha(body []byte) []byte {
 // ExtractSource will convert the provided SourceInformation into it's
 // corresponding GraphItem.
 func ExtractSource(si *dtsapi.SourceInformation) *store.GraphItem {
-	data := encodeJSON(&Source{
+	source := &Source{
 		URL: si.GetUrl(),
-	})
+	}
 
-	key := sha(data)
+	data, encoding, _ := Encode(source)
+	key := SourceKey(source)
 
 	return &store.GraphItem{
 		GraphItemType: SourceType,
 		K1:            key,
 		K2:            key,
-		Encoding:      store.EncodingJSON,
+		Encoding:      encoding,
 		GraphItemData: data,
 	}
 }
@@ -44,15 +45,16 @@ func ExtractSource(si *dtsapi.SourceInformation) *store.GraphItem {
 // ExtractManagesModule will convert the provided management file into it's
 // manages edge and module node
 func ExtractManagesModule(sourceKey []byte, mf *desapi.DependencyManagementFile) (*store.GraphItem, *store.GraphItem) {
-	moduleData := encodeJSON(&Module{
+	module := &Module{
 		Language:     mf.GetLanguage(),
 		Organization: mf.GetOrganization(),
 		Module:       mf.GetModule(),
-	})
+	}
 
-	moduleKey := sha(moduleData)
+	moduleData, moduleEncoding, _ := Encode(module)
+	moduleKey := ModuleKey(module)
 
-	managesData := encodeJSON(&Manages{
+	managesData, managesEncoding, _ := Encode(&Manages{
 		Language: mf.GetLanguage(),
 		System:   mf.GetSystem(),
 		Version:  mf.GetVersion(),
@@ -62,29 +64,39 @@ func ExtractManagesModule(sourceKey []byte, mf *desapi.DependencyManagementFile)
 			GraphItemType: ManagesType,
 			K1:            sourceKey,
 			K2:            moduleKey,
-			Encoding:      store.EncodingJSON,
+			Encoding:      managesEncoding,
 			GraphItemData: managesData,
 		}, &store.GraphItem{
 			GraphItemType: ModuleType,
 			K1:            moduleKey,
 			K2:            moduleKey,
-			Encoding:      store.EncodingJSON,
+			Encoding:      moduleEncoding,
 			GraphItemData: moduleData,
 		}
+}
+
+// ExtractModuleKey will pull a Module's key from the provided request
+func ExtractModuleKey(request *dtsapi.Request) []byte {
+	return ModuleKey(&Module{
+		Language: request.GetLanguage(),
+		Organization: request.GetOrganization(),
+		Module: request.GetModule(),
+	})
 }
 
 // ExtractDependsModule will convert the provided dependency into it's depends
 // edge and module node
 func ExtractDependsModule(language string, modKey []byte, dep *desapi.Dependency) (*store.GraphItem, *store.GraphItem) {
-	moduleData := encodeJSON(&Module{
+	module := &Module{
 		Language:     language,
 		Organization: dep.GetOrganization(),
 		Module:       dep.GetModule(),
-	})
+	}
 
-	moduleKey := sha(moduleData)
+	moduleData, moduleEncoding, _ := Encode(module)
+	moduleKey := ModuleKey(module)
 
-	dependsData := encodeJSON(&Depends{
+	dependsData, dependsEncoding, _ := Encode(&Depends{
 		VersionConstraint: dep.GetVersionConstraint(),
 		Scopes:            dep.GetScopes(),
 	})
@@ -93,13 +105,13 @@ func ExtractDependsModule(language string, modKey []byte, dep *desapi.Dependency
 			GraphItemType: DependsType,
 			K1:            modKey,
 			K2:            moduleKey,
-			Encoding:      store.EncodingJSON,
+			Encoding:      dependsEncoding,
 			GraphItemData: dependsData,
 		}, &store.GraphItem{
 			GraphItemType: ModuleType,
 			K1:            moduleKey,
 			K2:            moduleKey,
-			Encoding:      store.EncodingJSON,
+			Encoding:      moduleEncoding,
 			GraphItemData: moduleData,
 		}
 }

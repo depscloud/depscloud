@@ -47,10 +47,10 @@ func TestNewSQLGraphStore_sqlite(t *testing.T) {
 	err = graphStore.Put(data)
 	require.Nil(t, err)
 
-	downstream, err := graphStore.FindDownstream(k2)
+	downstream, err := graphStore.FindDownstream(k2, []string{ "edge" })
 	require.Nil(t, err)
 
-	upstream, err := graphStore.FindUpstream(k2)
+	upstream, err := graphStore.FindUpstream(k2, []string{ "edge" })
 	require.Nil(t, err)
 
 	require.Len(t, downstream, 1)
