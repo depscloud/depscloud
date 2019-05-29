@@ -11,6 +11,7 @@ import (
 	"golang.org/x/net/context"
 )
 
+// NewDependencyTrackingService constructs a service using the specified graphstore.
 func NewDependencyTrackingService(graphStore store.GraphStore) (dtsapi.DependencyTrackingServiceServer, error) {
 	return &dependencyTrackingService{
 		graphStore: graphStore,
