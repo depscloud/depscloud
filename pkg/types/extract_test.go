@@ -3,11 +3,11 @@ package types_test
 import (
 	"testing"
 
-	"github.com/gogo/protobuf/proto"
 	desapi "github.com/deps-cloud/des/api"
 	dtsapi "github.com/deps-cloud/dts/api"
 	"github.com/deps-cloud/dts/pkg/store"
 	"github.com/deps-cloud/dts/pkg/types"
+	"github.com/gogo/protobuf/proto"
 	"github.com/stretchr/testify/require"
 )
 

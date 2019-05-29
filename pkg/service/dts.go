@@ -11,6 +11,12 @@ import (
 	"golang.org/x/net/context"
 )
 
+func NewDependencyTrackingService(graphStore store.GraphStore) (dtsapi.DependencyTrackingServiceServer, error) {
+	return &dependencyTrackingService{
+		graphStore: graphStore,
+	}, nil
+}
+
 var _ dtsapi.DependencyTrackingServiceServer = &dependencyTrackingService{}
 
 type dependencyTrackingService struct {
@@ -126,25 +132,25 @@ func (d *dependencyTrackingService) GetDependencies(req *dtsapi.Request, resp dt
 }
 
 func (d *dependencyTrackingService) GetTopology(req *dtsapi.Request, resp dtsapi.DependencyTrackingService_GetTopologyServer) error {
-	panic("implement me")
+	return fmt.Errorf("unimplemented")
 }
 
 func (d *dependencyTrackingService) GetTopologyTiered(req *dtsapi.Request, resp dtsapi.DependencyTrackingService_GetTopologyTieredServer) error {
-	panic("implement me")
+	return fmt.Errorf("unimplemented")
 }
 
 func (d *dependencyTrackingService) GetSources(req *dtsapi.GetSourcesRequest, resp dtsapi.DependencyTrackingService_GetSourcesServer) error {
-	panic("implement me")
+	return fmt.Errorf("unimplemented")
 }
 
 func (d *dependencyTrackingService) ListLanguages(ctx context.Context, req *dtsapi.ListLanguagesRequest) (*dtsapi.ListLanguagesResponse, error) {
-	panic("implement me")
+	return nil, fmt.Errorf("unimplemented")
 }
 
 func (d *dependencyTrackingService) ListOrganizations(ctx context.Context, req *dtsapi.ListOrganizationsRequest) (*dtsapi.ListOrganizationsResponse, error) {
-	panic("implement me")
+	return nil, fmt.Errorf("unimplemented")
 }
 
 func (d *dependencyTrackingService) ListModules(ctx context.Context, req *dtsapi.ListModulesRequest) (*dtsapi.ListModulesResponse, error) {
-	panic("implement me")
+	return nil, fmt.Errorf("unimplemented")
 }
