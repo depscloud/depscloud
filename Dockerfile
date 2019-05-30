@@ -1,6 +1,6 @@
 FROM depscloud/base:latest
 
-ARG VERSION=0.0.1
+ARG VERSION=0.0.2
 
 RUN install-depscloud-binary dis ${VERSION}
 
