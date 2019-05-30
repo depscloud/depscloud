@@ -34,5 +34,5 @@ deploy:
     - bin/dts_windows_386.exe
     - bin/dts_windows_amd64.exe
   on:
-    repo: mjpitz/dts
+    repo: deps-cloud/dts
     tags: true
