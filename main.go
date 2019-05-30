@@ -180,4 +180,8 @@ func main() {
 	flags.StringVar(&rdsAddress, "rds-address", rdsAddress, "(optional) address to rds")
 	flags.StringVar(&desAddress, "des-address", desAddress, "(optional) address to des")
 	flags.StringVar(&dtsAddress, "dts-address", dtsAddress, "(optional) address to dts")
+
+	if err := cmd.Execute(); err != nil {
+		panic(err.Error())
+	}
 }
