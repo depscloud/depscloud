@@ -6,7 +6,9 @@
     "lint": "tslint --fix src/**/*.ts",
     "test": "jest --coverage",
     "start": "node lib/main.js",
-    "docker-buildx": "docker buildx build --platform linux/amd64,linux/arm64 -t depscloud/des:latest ."
+    "clean": "rm -rf coverage lib node_modules",
+    "docker": "docker build -t depscloud/des:latest -f Dockerfile.dev .",
+    "dockerx": "docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t depscloud/des:latest ."
   },
   "devDependencies": {
     "@types/cheerio": "^0.22.10",
