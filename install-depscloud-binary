@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
 ARCH=$(uname -m)
@@ -23,13 +23,11 @@ fi
 readonly APP="${1}"
 readonly APP_VERSION="${2}"
 
-echo <<EOF
-  os:       ${OS}
-  arch:     ${ARCH}
-  app:      ${APP}
-  version:  ${APP_VERSION}
-EOF
+echo "os:       ${OS}"
+echo "arch:     ${ARCH}"
+echo "app:      ${APP}"
+echo "version:  ${APP_VERSION}"
 
-curl -L -o ${APP} https://github.com/deps-cloud/${APP}/releases/download/v${APP_VERSION}/${APP}_${OS}_${ARCH}
-chmod 755 ${APP}
-mv ${APP} /bin/depscloud--${APP}
+curl -L -O "https://github.com/deps-cloud/${APP}/releases/download/v${APP_VERSION}/${APP}_${OS}_${ARCH}"
+chmod 755 ${APP}_${OS}_${ARCH}
+mv ${APP}_${OS}_${ARCH} /usr/bin/${APP}
