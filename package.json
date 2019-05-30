@@ -10,6 +10,10 @@
     "docker": "docker build -t depscloud/des:latest -f Dockerfile.dev .",
     "dockerx": "docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t depscloud/des:latest ."
   },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:deps-cloud/des.git"
+  },
   "devDependencies": {
     "@types/cheerio": "^0.22.10",
     "@types/jest": "^24.0.6",
