@@ -23,7 +23,7 @@ fi
 readonly APP="${1}"
 readonly APP_VERSION="${2}"
 
-cat <<EOF
+echo <<EOF
   os:       ${OS}
   arch:     ${ARCH}
   app:      ${APP}
@@ -31,4 +31,5 @@ cat <<EOF
 EOF
 
 curl -L -o ${APP} https://github.com/deps-cloud/${APP}/releases/download/v${APP_VERSION}/${APP}_${OS}_${ARCH}
-sudo mv ${APP} /usr/local/bin/${APP}
+chmod 755 ${APP}
+mv ${APP} /bin/depscloud--${APP}
