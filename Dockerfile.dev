@@ -10,4 +10,8 @@ COPY . .
 
 RUN make deps && make test && make install
 
+RUN useradd -ms /bin/sh dts
+WORKDIR /home/dts
+USER dts
+
 ENTRYPOINT [ "dts" ]

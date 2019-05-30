@@ -56,8 +56,6 @@ func main() {
 	flags.StringVar(&configPath, "config", configPath, "The path to the config file")
 	flags.IntVar(&port, "port", port, "The port to run on")
 
-	if err := cmd.Execute(); err != nil {
-		logrus.Errorf("")
-		panic(err)
-	}
+	err := cmd.Execute()
+	panicIff(err)
 }
