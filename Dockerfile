@@ -1,6 +1,10 @@
 FROM node:10
 
-COPY . /app
+ARG VERSION=0.1.2
+
+RUN curl -L -o des.zip https://github.com/deps-cloud/des/archive/v${VERSION}.zip && \
+    unzip des.zip && \
+    mv des-${VERSION} /app
 
 WORKDIR /app
 
