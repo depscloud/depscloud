@@ -4,7 +4,7 @@ RUN go get golang.org/x/lint/golint
 
 ENV GO111MODULE on
 
-WORKDIR /go/src/rds
+WORKDIR /go/src/dts
 
 COPY . .
 
