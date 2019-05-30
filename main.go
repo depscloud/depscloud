@@ -31,6 +31,7 @@ func dial(target string) *grpc.ClientConn {
 	return cc
 }
 
+// NewConsumer creates a consumer process that is agnostic to the ingress channel.
 func NewConsumer(
 	desClient desapi.DependencyExtractorClient,
 	dtsClient dtsapi.DependencyTrackingServiceClient,
@@ -129,6 +130,7 @@ func NewConsumer(
 	}
 }
 
+// NewWorker encapsulates logic for pulling information off a channel and invoking the consumer
 func NewWorker(in chan string, consumer func(string)) {
 	for str := range in {
 		consumer(str)
