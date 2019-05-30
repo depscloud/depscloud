@@ -18,4 +18,9 @@ deploy:
 	GOOS=linux GOARCH=arm64 go build -o bin/dts_linux_arm64
 
 docker:
+	docker build -t depscloud/dts:latest -f Dockerfile.dev .
+
+dockerx:
+	docker buildx rm depscloud--dts || echo "depscloud--dts does not exist"
+	docker buildx create --name depscloud--dts --use
 	docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t depscloud/dts:latest .
