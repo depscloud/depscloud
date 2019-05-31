@@ -34,7 +34,7 @@ func main() {
 			panicIff(err)
 
 			// todo: make this configurable
-			db, err := sql.Open("sqlite3", ":memory:")
+			db, err := sql.Open("sqlite3", "file::memory:?cache=shared")
 			panicIff(err)
 
 			graphStore, err := store.NewSQLGraphStore(db)

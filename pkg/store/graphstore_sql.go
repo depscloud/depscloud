@@ -3,6 +3,7 @@ package store
 import (
 	"database/sql"
 	"fmt"
+	"github.com/sirupsen/logrus"
 	"strings"
 	"time"
 )
@@ -20,11 +21,11 @@ const createGraphDataTable = `CREATE TABLE IF NOT EXISTS dts_graphdata(
 
 const insertGraphData = `INSERT OR REPLACE INTO dts_graphdata 
 (graph_item_type, k1, k2, encoding, graph_item_data, last_modified, date_deleted)
-VALUES %s;`
+VALUES (?, ?, ?, ?, ?, ?, NULL);`
 
 const deleteGraphData = `UPDATE dts_graphdata
 SET date_deleted = ?
-WHERE %s;`
+WHERE (graph_item_type = ? and k1 = ? and k2 = ?);`
 
 const selectGraphDataPrimaryKey = `SELECT
 graph_item_type, k1, k2, encoding, graph_item_data
@@ -62,39 +63,55 @@ type sqlGraphStore struct {
 }
 
 func (gs *sqlGraphStore) Put(items []*GraphItem) error {
-	timestamp := time.Now()
-
-	blocks := make([]string, 0, len(items))
-	args := make([]interface{}, 0, len(items)*6)
-
-	for _, item := range items {
-		blocks = append(blocks, "(?, ?, ?, ?, ?, ?, NULL)")
-		args = append(args, item.GraphItemType, Base64encode(item.K1), Base64encode(item.K2),
-			item.Encoding, string(item.GraphItemData), timestamp)
+	if len(items) == 0 {
+		return nil
 	}
 
-	statement := fmt.Sprintf(insertGraphData, strings.Join(blocks, ", "))
-	_, err := gs.db.Exec(statement, args...)
+	timestamp := time.Now()
+	errors := make([]error, 0)
 
-	return err
+	for _, item := range items {
+		_, err := gs.db.Exec(insertGraphData, item.GraphItemType, Base64encode(item.K1), Base64encode(item.K2),
+			item.Encoding, string(item.GraphItemData), timestamp)
+		if err != nil {
+			errors = append(errors, err)
+		}
+	}
+
+	if len(errors) > 0 {
+		for _, err := range errors {
+			logrus.Errorf(err.Error())
+		}
+		return fmt.Errorf("failed to put all items into store")
+	}
+
+
+	return nil
 }
 
 func (gs *sqlGraphStore) Delete(keys []*PrimaryKey) error {
-	timestamp := time.Now()
-
-	blocks := make([]string, 0, len(keys))
-	args := make([]interface{}, 0, 1+(len(keys)*3))
-	args = append(args, timestamp)
-
-	for _, key := range keys {
-		blocks = append(blocks, "(graph_item_type = ? and k1 = ? and k2 = ?)")
-		args = append(args, key.GraphItemType, Base64encode(key.K1), Base64encode(key.K2))
+	if len(keys) == 0 {
+		return nil
 	}
 
-	statement := fmt.Sprintf(deleteGraphData, strings.Join(blocks, " OR "))
-	_, err := gs.db.Exec(statement, args...)
+	timestamp := time.Now()
+	errors := make([]error, 0)
 
-	return err
+	for _, key := range keys {
+		_, err := gs.db.Exec(deleteGraphData, timestamp, key.GraphItemType, Base64encode(key.K1), Base64encode(key.K2))
+		if err != nil {
+			errors = append(errors, err)
+		}
+	}
+
+	if len(errors) > 0 {
+		for _, err := range errors {
+			logrus.Errorf(err.Error())
+		}
+		return fmt.Errorf("failed to delete keys from store")
+	}
+
+	return nil
 }
 
 func (gs *sqlGraphStore) FindByPrimary(key *PrimaryKey) (*GraphItem, error) {
