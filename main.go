@@ -46,6 +46,7 @@ func NewConsumer(
 
 		storage := filesystem.NewStorage(gitfs, cache.NewObjectLRUDefault())
 
+		logrus.Infof("[%s] cloning repository", url)
 		_, err = git.Clone(storage, fs, &git.CloneOptions{
 			URL: 	url,
 			Depth: 	1,
@@ -84,6 +85,7 @@ func NewConsumer(
 			queue = newQueue
 		}
 
+		logrus.Infof("[%s] matching dependency files", url)
 		matchedResponse, err := desClient.Match(context.Background(), &desapi.MatchRequest{
 			Separator: string(filepath.Separator),
 			Paths: paths,
@@ -106,6 +108,7 @@ func NewConsumer(
 			fileContents[matched] = string(data)
 		}
 
+		logrus.Infof("[%s] extracting dependencies", url)
 		extractResponse, err := desClient.Extract(context.Background(), &desapi.ExtractRequest{
 			Separator: string(filepath.Separator),
 			FileContents: fileContents,
@@ -116,6 +119,7 @@ func NewConsumer(
 			return
 		}
 
+		logrus.Infof("[%s] storing dependencies", url)
 		_, err = dtsClient.Put(context.Background(), &dtsapi.PutRequest{
 			SourceInformation: &dtsapi.SourceInformation{
 				Url: url,
