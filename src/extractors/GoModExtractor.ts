@@ -26,6 +26,9 @@ export default class GoModExtractor implements Extractor {
             const directive = parts[0];
 
             switch (directive) {
+                case "go":
+                    break;
+
                 case "module":
                     id = parseImportPath(parts[1]);
                     break;
@@ -59,9 +62,13 @@ export default class GoModExtractor implements Extractor {
                     break;
 
                 case "replace":
-                    i++;    // replace on subsequent lines
-                    for (; i < lines.length && lines[i] !== ")"; i++) {
-                        // intentionally empty
+                    if (parts.length > 2) {
+                        // inline replace, intentionally empty
+                    } else {
+                        i++;    // replace on subsequent lines
+                        for (; i < lines.length && lines[i] !== ")"; i++) {
+                            // intentionally empty
+                        }
                     }
                     break;
 
