@@ -34,7 +34,7 @@ func dial(target string) *grpc.ClientConn {
 // NewConsumer creates a consumer process that is agnostic to the ingress channel.
 func NewConsumer(
 	desClient desapi.DependencyExtractorClient,
-	dtsClient dtsapi.DependencyTrackingServiceClient,
+	dtsClient dtsapi.DependencyTrackerClient,
 ) func(string) {
 	return func(url string) {
 		fs := memfs.New()
@@ -151,9 +151,9 @@ func main() {
 		Use: "dis",
 		Short: "",
 		Run: func(cmd *cobra.Command, args []string) {
-			rdsClient := rdsapi.NewRepositoryDiscoveryServiceClient(dial(rdsAddress))
+			rdsClient := rdsapi.NewRepositoryDiscoveryClient(dial(rdsAddress))
 			desClient := desapi.NewDependencyExtractorClient(dial(desAddress))
-			dtsClient := dtsapi.NewDependencyTrackingServiceClient(dial(dtsAddress))
+			dtsClient := dtsapi.NewDependencyTrackerClient(dial(dtsAddress))
 
 			repositories := make(chan string, workers)
 
