@@ -12,13 +12,13 @@ import (
 )
 
 // NewDependencyTrackingService constructs a service using the specified graphstore.
-func NewDependencyTrackingService(graphStore store.GraphStore) (dtsapi.DependencyTrackingServiceServer, error) {
+func NewDependencyTrackingService(graphStore store.GraphStore) (dtsapi.DependencyTrackerServer, error) {
 	return &dependencyTrackingService{
 		graphStore: graphStore,
 	}, nil
 }
 
-var _ dtsapi.DependencyTrackingServiceServer = &dependencyTrackingService{}
+var _ dtsapi.DependencyTrackerServer = &dependencyTrackingService{}
 
 type dependencyTrackingService struct {
 	graphStore store.GraphStore
@@ -99,7 +99,7 @@ func (d *dependencyTrackingService) Put(ctx context.Context, req *dtsapi.PutRequ
 	}, nil
 }
 
-func (d *dependencyTrackingService) GetDependencies(req *dtsapi.Request, resp dtsapi.DependencyTrackingService_GetDependenciesServer) error {
+func (d *dependencyTrackingService) GetDependencies(req *dtsapi.Request, resp dtsapi.DependencyTracker_GetDependenciesServer) error {
 	traversalUtil := &TraversalUtil{ d.graphStore, req.Direction }
 	key := types.ExtractModuleKey(req)
 
@@ -132,15 +132,15 @@ func (d *dependencyTrackingService) GetDependencies(req *dtsapi.Request, resp dt
 	return nil
 }
 
-func (d *dependencyTrackingService) GetTopology(req *dtsapi.Request, resp dtsapi.DependencyTrackingService_GetTopologyServer) error {
+func (d *dependencyTrackingService) GetTopology(req *dtsapi.Request, resp dtsapi.DependencyTracker_GetTopologyServer) error {
 	return fmt.Errorf("unimplemented")
 }
 
-func (d *dependencyTrackingService) GetTopologyTiered(req *dtsapi.Request, resp dtsapi.DependencyTrackingService_GetTopologyTieredServer) error {
+func (d *dependencyTrackingService) GetTopologyTiered(req *dtsapi.Request, resp dtsapi.DependencyTracker_GetTopologyTieredServer) error {
 	return fmt.Errorf("unimplemented")
 }
 
-func (d *dependencyTrackingService) GetSources(req *dtsapi.GetSourcesRequest, resp dtsapi.DependencyTrackingService_GetSourcesServer) error {
+func (d *dependencyTrackingService) GetSources(req *dtsapi.GetSourcesRequest, resp dtsapi.DependencyTracker_GetSourcesServer) error {
 	return fmt.Errorf("unimplemented")
 }
 

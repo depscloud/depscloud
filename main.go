@@ -46,7 +46,7 @@ func main() {
 			panicIff(err)
 
 			server := grpc.NewServer()
-			api.RegisterDependencyTrackingServiceServer(server, dts)
+			api.RegisterDependencyTrackerServer(server, dts)
 
 			logrus.Infof("[main] starting gRPC on %s", address)
 			err = server.Serve(listener)
