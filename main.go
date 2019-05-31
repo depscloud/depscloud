@@ -8,6 +8,7 @@ import (
 	"github.com/deps-cloud/dts/api"
 	"github.com/deps-cloud/dts/pkg/service"
 	"github.com/deps-cloud/dts/pkg/store"
+	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -23,6 +24,8 @@ func panicIff(err error) {
 func main() {
 	configPath := "${HOME}/.dts/config.yaml"
 	port := 8090
+	storageDriver := "sqlite3"
+	storageAddress := "file::memory:?cache=shared"
 
 	cmd := &cobra.Command{
 		Use: "",
@@ -33,8 +36,7 @@ func main() {
 			listener, err := net.Listen("tcp", address)
 			panicIff(err)
 
-			// todo: make this configurable
-			db, err := sql.Open("sqlite3", "file::memory:?cache=shared")
+			db, err := sql.Open(storageDriver, storageAddress)
 			panicIff(err)
 
 			graphStore, err := store.NewSQLGraphStore(db)
@@ -53,8 +55,10 @@ func main() {
 	}
 
 	flags := cmd.Flags()
-	flags.StringVar(&configPath, "config", configPath, "The path to the config file")
-	flags.IntVar(&port, "port", port, "The port to run on")
+	flags.StringVar(&configPath, "config", configPath, "(optional) the path to the config file")
+	flags.IntVar(&port, "port", port, "(optional) the port to run on")
+	flags.StringVar(&storageDriver, "storage-driver", storageDriver, "(optional) the driver used to configure the storage tier")
+	flags.StringVar(&storageAddress, "storage-address", storageAddress, "(optional) the address of the storage tier")
 
 	err := cmd.Execute()
 	panicIff(err)

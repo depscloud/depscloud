@@ -4,6 +4,7 @@ go 1.12
 
 require (
 	github.com/deps-cloud/des v0.1.2
+	github.com/go-sql-driver/mysql v1.4.1
 	github.com/gogo/protobuf v1.2.1
 	github.com/mattn/go-sqlite3 v1.10.0
 	github.com/sirupsen/logrus v1.4.2
