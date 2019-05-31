@@ -14,7 +14,7 @@ function toString(error: Error): string {
 export default function unasyncify(instance: AsyncDependencyExtractor): IDependencyExtractor {
     return {
         match(request, callback) {
-            logger.debug(`[service] match request: ${JSON.stringify(request)}`);
+            logger.trace(`[service] match request: ${JSON.stringify(request)}`);
 
             instance.match(request)
                 .then((response) => callback(null, response))
@@ -24,7 +24,7 @@ export default function unasyncify(instance: AsyncDependencyExtractor): IDepende
                 });
         },
         extract(request, callback) {
-            logger.debug(`[service] extract request: ${JSON.stringify(request)}`);
+            logger.trace(`[service] extract request: ${JSON.stringify(request)}`);
 
             instance.extract(request)
                 .then((response) => callback(null, response))
