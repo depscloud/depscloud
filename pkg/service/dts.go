@@ -100,6 +100,8 @@ func (d *dependencyTrackingService) Put(ctx context.Context, req *dtsapi.PutRequ
 }
 
 func (d *dependencyTrackingService) GetDependencies(req *dtsapi.Request, resp dtsapi.DependencyTracker_GetDependenciesServer) error {
+	logrus.Infof("looking up dependencies for %s://%s;%s", req.Language, req.Organization, req.Module)
+
 	traversalUtil := &TraversalUtil{ d.graphStore, req.Direction }
 	key := types.ExtractModuleKey(req)
 
