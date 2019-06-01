@@ -40,10 +40,10 @@ func main() {
 
 			ctx := context.Background()
 
-			err := desapi.RegisterDependencyExtractorHandlerFromEndpoint(ctx, mux, desAddress, opts)
+			err := dtsapi.RegisterDependencyTrackerHandlerFromEndpoint(ctx, mux, dtsAddress, opts)
 			panicIff(err)
 
-			err = dtsapi.RegisterDependencyTrackerHandlerFromEndpoint(ctx, mux, dtsAddress, opts)
+			err = desapi.RegisterDependencyExtractorHandlerFromEndpoint(ctx, mux, desAddress, opts)
 			panicIff(err)
 
 			err = rdsapi.RegisterRepositoryDiscoveryHandlerFromEndpoint(ctx, mux, rdsAddress, opts)
