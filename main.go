@@ -13,6 +13,7 @@ import (
 	"gopkg.in/src-d/go-git.v4/plumbing/cache"
 	"gopkg.in/src-d/go-git.v4/storage/filesystem"
 	"io/ioutil"
+	"net/http"
 	"path/filepath"
 	"time"
 )
@@ -120,7 +121,7 @@ func NewConsumer(
 		}
 
 		logrus.Infof("[%s] storing dependencies", url)
-		_, err = dtsClient.Put(context.Background(), &dtsapi.PutRequest{
+		resp, err := dtsClient.Put(context.Background(), &dtsapi.PutRequest{
 			SourceInformation: &dtsapi.SourceInformation{
 				Url: url,
 			},
@@ -130,6 +131,12 @@ func NewConsumer(
 		if err != nil {
 			logrus.Errorf("failed to update deps for repo: %s", url)
 			return
+		}
+
+		if resp.Code != http.StatusOK {
+			logrus.Infof("[%s] %s", url, resp.Message)
+		} else {
+			logrus.Errorf("[%s] %s", url, resp.Message)
 		}
 	}
 }
