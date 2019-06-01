@@ -44,7 +44,7 @@ Object {
       "versionConstraint": "v1.18.0",
     },
   ],
-  "language": "go",
+  "language": "golang",
   "module": "deps-cloud/finch",
   "organization": "github.com",
   "system": "vgo",
@@ -54,7 +54,7 @@ Object {
 
 exports[`GoModExtractor fullParse 2`] = `
 "{
-  \\"language\\": \\"go\\",
+  \\"language\\": \\"golang\\",
   \\"system\\": \\"vgo\\",
   \\"organization\\": \\"github.com\\",
   \\"module\\": \\"deps-cloud/finch\\",
