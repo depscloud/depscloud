@@ -89,7 +89,7 @@ export default class GoModExtractor implements Extractor {
         }
 
         return {
-            language: "go",
+            language: "golang",
             system: "vgo",
             organization: id.organization,
             module: id.module,

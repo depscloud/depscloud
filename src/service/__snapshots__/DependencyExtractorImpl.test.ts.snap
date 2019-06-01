@@ -377,7 +377,7 @@ Array [
         "versionConstraint": "v1.18.0",
       },
     ],
-    "language": "go",
+    "language": "golang",
     "module": "deps-cloud/finch",
     "organization": "github.com",
     "system": "vgo",
