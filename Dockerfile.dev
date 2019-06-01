@@ -1,0 +1,18 @@
+FROM golang:1.12
+
+RUN go get golang.org/x/lint/golint
+
+ENV GO111MODULE on
+
+WORKDIR /go/src/gateway
+
+#COPY . .
+#
+#RUN make deps && make test && make install
+COPY gateway /go/bin/gateway
+
+RUN useradd -ms /bin/sh gateway
+WORKDIR /home/gateway
+USER gateway
+
+ENTRYPOINT [ "gateway" ]
