@@ -32,7 +32,7 @@ func quickKey(gi *store.GraphItem) string {
 func (d *dependencyTrackingService) Put(ctx context.Context, req *dtsapi.PutRequest) (*dtsapi.PutResponse, error) {
 	url := req.GetSourceInformation().GetUrl()
 
-	traversalUtil := &TraversalUtil{ d.graphStore, dtsapi.Direction_DOWNSTREAM }
+	traversalUtil := &TraversalUtil{ d.graphStore, dtsapi.Direction_UPSTREAM }
 	graphItems := types.ExtractGraphItems(req)
 
 	currentIndex := make(map[string]*store.GraphItem)
@@ -136,10 +136,9 @@ func (d *dependencyTrackingService) GetDependencies(req *dtsapi.Request, resp dt
 }
 
 func (d *dependencyTrackingService) GetManaged(ctx context.Context, req *dtsapi.GetManagedRequest) (*dtsapi.GetManagedResponse, error) {
-	traversalUtil := &TraversalUtil{ d.graphStore, dtsapi.Direction_DOWNSTREAM }
 	key := types.ExtractSourceKey(req)
 
-	managed, err := traversalUtil.GetAdjacent(key, []string{ types.ManagesType })
+	managed, err := d.graphStore.FindUpstream(key, []string{ types.ManagesType })
 	if err != nil {
 		logrus.Errorf("failed to fetch managed: %s, %v", req.Url, err)
 		return nil, dtsapi.ErrModuleNotFound
