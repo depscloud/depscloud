@@ -1,9 +1,9 @@
 {
-  "name": "@deps-cloud/dts",
-  "description": "Dependency tracking service",
-  "version": "0.0.4",
+  "name": "@deps-cloud/gateway",
+  "description": "HTTP to gRPC proxy",
+  "version": "0.0.0",
   "repository": {
     "type": "git",
-    "url": "git@github.com:deps-cloud/dts.git"
+    "url": "git@github.com:deps-cloud/gateway.git"
   }
 }
