@@ -30,6 +30,8 @@ func quickKey(gi *store.GraphItem) string {
 }
 
 func (d *dependencyTrackingService) Put(ctx context.Context, req *dtsapi.PutRequest) (*dtsapi.PutResponse, error) {
+	url := req.GetSourceInformation().GetUrl()
+
 	traversalUtil := &TraversalUtil{ d.graphStore, dtsapi.Direction_DOWNSTREAM }
 	graphItems := types.ExtractGraphItems(req)
 
@@ -41,7 +43,8 @@ func (d *dependencyTrackingService) Put(ctx context.Context, req *dtsapi.PutRequ
 	sourceGraphItem := graphItems[0]
 	managedModules, err := traversalUtil.GetAdjacent(sourceGraphItem.K1, []string{ types.ManagesType })
 	if err != nil {
-		return nil, err
+		logrus.Errorf("failed to fetch managed modules: %s, %v", url, err)
+		return nil, dtsapi.ErrModuleNotFound
 	}
 
 	toRemove := make([]*store.PrimaryKey, 0)
@@ -61,7 +64,8 @@ func (d *dependencyTrackingService) Put(ctx context.Context, req *dtsapi.PutRequ
 
 		dependedModules, err := traversalUtil.GetAdjacent(managedModule.K1, []string{ types.DependsType })
 		if err != nil {
-			return nil, err
+			logrus.Errorf("failed to fetch depended modules: %s, %v", url, err)
+			return nil, dtsapi.ErrModuleNotFound
 		}
 
 		for _, dependedModule := range dependedModules {
@@ -79,18 +83,12 @@ func (d *dependencyTrackingService) Put(ctx context.Context, req *dtsapi.PutRequ
 
 	if err := d.graphStore.Delete(toRemove); err != nil {
 		logrus.Errorf("[service.dts] failed to delete removed edges: %v", err)
-		return &dtsapi.PutResponse{
-			Code:	 http.StatusInternalServerError,
-			Message: "failed to delete removed edges",
-		}, nil
+		return nil, dtsapi.ErrPartialDeletion
 	}
 
 	if err := d.graphStore.Put(graphItems); err != nil {
 		logrus.Errorf("[service.dts] failed to add new edges: %v", err)
-		return &dtsapi.PutResponse{
-			Code:	 http.StatusInternalServerError,
-			Message: "failed to add new edges",
-		}, nil
+		return nil, dtsapi.ErrPartialInsertion
 	}
 
 	return &dtsapi.PutResponse{
@@ -100,14 +98,16 @@ func (d *dependencyTrackingService) Put(ctx context.Context, req *dtsapi.PutRequ
 }
 
 func (d *dependencyTrackingService) GetDependencies(req *dtsapi.Request, resp dtsapi.DependencyTracker_GetDependenciesServer) error {
-	logrus.Infof("looking up dependencies for %s://%s;%s", req.Language, req.Organization, req.Module)
+	url := fmt.Sprintf("%s://%s;%s", req.Language, req.Organization, req.Module)
+	logrus.Infof("looking up dependencies for %s", url)
 
 	traversalUtil := &TraversalUtil{ d.graphStore, req.Direction }
 	key := types.ExtractModuleKey(req)
 
 	dependencies, err := traversalUtil.GetAdjacent(key, []string{ types.DependsType })
 	if err != nil {
-		return fmt.Errorf("failed to find dependences: %v", err)
+		logrus.Errorf("failed to fetch dependencies: %s, %v", url, err)
+		return dtsapi.ErrModuleNotFound
 	}
 
 	for _, dep := range dependencies {
@@ -121,6 +121,7 @@ func (d *dependencyTrackingService) GetDependencies(req *dtsapi.Request, resp dt
 		module := item.(*types.Module)
 		response := &dtsapi.Response{
 			Dependency: &dtsapi.DependencyId{
+				Language: module.Language,
 				Organization: module.Organization,
 				Module: module.Module,
 			},
@@ -134,12 +135,46 @@ func (d *dependencyTrackingService) GetDependencies(req *dtsapi.Request, resp dt
 	return nil
 }
 
+func (d *dependencyTrackingService) GetManaged(ctx context.Context, req *dtsapi.GetManagedRequest) (*dtsapi.GetManagedResponse, error) {
+	traversalUtil := &TraversalUtil{ d.graphStore, dtsapi.Direction_DOWNSTREAM }
+	key := types.ExtractSourceKey(req)
+
+	managed, err := traversalUtil.GetAdjacent(key, []string{ types.ManagesType })
+	if err != nil {
+		logrus.Errorf("failed to fetch managed: %s, %v", req.Url, err)
+		return nil, dtsapi.ErrModuleNotFound
+	}
+
+	depIds := make([]*dtsapi.DependencyId, 0, len(managed))
+	for _, dep := range managed {
+		item, err := types.Decode(dep)
+
+		if err != nil {
+			// type / encoding problem, skip
+			logrus.Errorf("[service.dts] failed to decode dependency: %v", err)
+			continue
+		}
+
+		module := item.(*types.Module)
+		depIds = append(depIds, &dtsapi.DependencyId{
+			Language: module.Language,
+			Organization: module.Organization,
+			Module: module.Module,
+		})
+	}
+
+	return &dtsapi.GetManagedResponse{
+		Url: req.Url,
+		Managed: depIds,
+	}, nil
+}
+
 func (d *dependencyTrackingService) GetTopology(req *dtsapi.Request, resp dtsapi.DependencyTracker_GetTopologyServer) error {
-	return fmt.Errorf("unimplemented")
+	return dtsapi.ErrUnimplemented
 }
 
 func (d *dependencyTrackingService) GetTopologyTiered(req *dtsapi.Request, resp dtsapi.DependencyTracker_GetTopologyTieredServer) error {
-	return fmt.Errorf("unimplemented")
+	return dtsapi.ErrUnimplemented
 }
 
 func (d *dependencyTrackingService) GetSources(req *dtsapi.GetSourcesRequest, resp dtsapi.DependencyTracker_GetSourcesServer) error {

@@ -25,6 +25,13 @@ func ExtractSource(si *dtsapi.SourceInformation) *store.GraphItem {
 	}
 }
 
+// ExtractSourceKey will pull the source key based on the request
+func ExtractSourceKey(req *dtsapi.GetManagedRequest) []byte {
+	return SourceKey(&Source{
+		URL: req.Url,
+	})
+}
+
 // ExtractManagesModule will convert the provided management file into it's
 // manages edge and module node
 func ExtractManagesModule(sourceKey []byte, mf *desapi.DependencyManagementFile) (*store.GraphItem, *store.GraphItem) {

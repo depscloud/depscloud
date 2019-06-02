@@ -86,7 +86,6 @@ func (gs *sqlGraphStore) Put(items []*GraphItem) error {
 		return fmt.Errorf("failed to put all items into store")
 	}
 
-
 	return nil
 }
 
