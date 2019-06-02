@@ -3,6 +3,7 @@ module github.com/deps-cloud/finch
 go 1.12
 
 replace github.com/gogo/protobuf v1.2.1 => github.com/gogo/protobuf v1.2.1
+
 replace github.com/deps-cloud/rds v0.0.2 => ../rds
 
 replace (
