@@ -130,7 +130,7 @@ func NewConsumer(
 		})
 
 		if err != nil {
-			logrus.Errorf("failed to update deps for repo: %s", url)
+			logrus.Errorf("failed to update deps for repo: %s, %v", url, err)
 			return
 		}
 
