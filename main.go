@@ -2,6 +2,11 @@ package main
 
 import (
 	"context"
+	"io/ioutil"
+	"net/http"
+	"path/filepath"
+	"time"
+
 	desapi "github.com/deps-cloud/des/api"
 	dtsapi "github.com/deps-cloud/dts/api"
 	rdsapi "github.com/deps-cloud/rds/api"
@@ -12,10 +17,6 @@ import (
 	"gopkg.in/src-d/go-git.v4"
 	"gopkg.in/src-d/go-git.v4/plumbing/cache"
 	"gopkg.in/src-d/go-git.v4/storage/filesystem"
-	"io/ioutil"
-	"net/http"
-	"path/filepath"
-	"time"
 )
 
 func dial(target string) *grpc.ClientConn {
@@ -156,7 +157,7 @@ func main() {
 
 	cmd := &cobra.Command{
 		Use: "dis",
-		Short: "",
+		Short: "dependency indexing service",
 		Run: func(cmd *cobra.Command, args []string) {
 			rdsClient := rdsapi.NewRepositoryDiscoveryClient(dial(rdsAddress))
 			desClient := desapi.NewDependencyExtractorClient(dial(desAddress))
