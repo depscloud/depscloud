@@ -19,7 +19,8 @@ const createGraphDataTable = `CREATE TABLE IF NOT EXISTS dts_graphdata(
 	PRIMARY KEY (graph_item_type, k1, k2)
 );`
 
-const insertGraphData = `INSERT OR REPLACE INTO dts_graphdata 
+// TODO: move away from this replace operation since it does a delete and insert
+const insertGraphData = `REPLACE INTO dts_graphdata 
 (graph_item_type, k1, k2, encoding, graph_item_data, last_modified, date_deleted)
 VALUES (?, ?, ?, ?, ?, ?, NULL);`
 
@@ -36,13 +37,13 @@ const selectGraphDataUpstreamDependencies = `SELECT
 graph_item_type, k1, k2, encoding, graph_item_data
 FROM dts_graphdata 
 WHERE k1 IN (SELECT k2 FROM dts_graphdata WHERE k1 = ? and graph_item_type in (%s) and k1 != k2 and date_deleted is NULL)
-AND k1 == k2 and date_deleted is NULL;`
+AND k1 = k2 and date_deleted is NULL;`
 
 const selectGraphDataDownstreamDependencies = `SELECT
 graph_item_type, k1, k2, encoding, graph_item_data
 FROM dts_graphdata
 WHERE k2 IN (SELECT k1 FROM dts_graphdata WHERE k2 = ? and graph_item_type in (%s) and k1 != k2 and date_deleted is NULL)
-AND k1 == k2 and date_deleted is NULL;`
+AND k1 = k2 and date_deleted is NULL;`
 
 // NewSQLGraphStore constructs a new GraphStore with a sql driven backend. Current
 // queries support sqlite3 but should be able to work on mysql as well.
