@@ -18,7 +18,6 @@ deploy:
 	GOOS=linux GOARCH=arm64 go build -o bin/gateway_linux_arm64
 
 docker:
-	GOOS=linux GOARCH=amd64 go build
 	docker build -t depscloud/gateway:latest -f Dockerfile.dev .
 
 dockerx:

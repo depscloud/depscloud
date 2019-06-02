@@ -6,10 +6,9 @@ ENV GO111MODULE on
 
 WORKDIR /go/src/gateway
 
-#COPY . .
-#
-#RUN make deps && make test && make install
-COPY gateway /go/bin/gateway
+COPY . .
+
+RUN make deps && make test && make install
 
 RUN useradd -ms /bin/sh gateway
 WORKDIR /home/gateway
