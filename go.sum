@@ -13,12 +13,12 @@ github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSs
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davidji99/go-bitbucket v0.5.0/go.mod h1:RZ0Wi8jc2GTijS8hyHtgVyBnFUS3BtxjxKO/Ta6cOgw=
 github.com/deps-cloud/des v0.1.2/go.mod h1:ysptXv7LoQEnulrk6iYx8kYPCdyilrm+n63q4mzNP2Q=
-github.com/deps-cloud/des v0.1.4 h1:RQX4BWFF8c8byImjIi+i2Y+sqk9pssGld+Nujw5tyyA=
-github.com/deps-cloud/des v0.1.4/go.mod h1:ysptXv7LoQEnulrk6iYx8kYPCdyilrm+n63q4mzNP2Q=
-github.com/deps-cloud/dts v0.0.3 h1:4cyxLaoVtItPpqxsyLYP4m5YIQRs12LDx0p2z7evRx8=
-github.com/deps-cloud/dts v0.0.3/go.mod h1:CDe1wh1HscWauZiDmfyiUKHLkBM4lnANpxA7FY7Awbs=
-github.com/deps-cloud/rds v0.0.8 h1:1XXRySUTw/6KAlEo/n7+M5DZUb62rGACpONpVZW9S40=
-github.com/deps-cloud/rds v0.0.8/go.mod h1:parullleBEStEZIXJxVw97AkrMkUhZ1//8MyXovcNRc=
+github.com/deps-cloud/des v0.1.6 h1:8ByyumDXm+Y84CfizVXoAMnbImYCjRx6ipaRt1TSGYs=
+github.com/deps-cloud/des v0.1.6/go.mod h1:xx/Cd0mE+LLw5t43b6gnP3xPvTkdBWuXNP5EvbLRAwY=
+github.com/deps-cloud/dts v0.0.5 h1:uGyb+6GCSaBgMX+PLZPbq/BIJFGxCtfwnHe/xFGj8kQ=
+github.com/deps-cloud/dts v0.0.5/go.mod h1:jwZnmrV4wnHBhGJunOnMQjB4h3LXcV+QewNXf1Fh/jc=
+github.com/deps-cloud/rds v0.0.9 h1:aG2SxHsV/XtJJ1ZhtqIq7Q2Kk+Ojdz0xS5fWiDnQkts=
+github.com/deps-cloud/rds v0.0.9/go.mod h1:KmFcZ4o4SRMxJzHMLxGMaldBNS1Lo7p1U6LcaNfPTL4=
 github.com/fsnotify/fsnotify v1.4.7/go.mod h1:jwhsz4b93w/PPRr/qN1Yymfu8t87LnFCMoQvtojpjFo=
 github.com/ghodss/yaml v1.0.0/go.mod h1:4dBDuWmgqj2HViK6kFavaiC9ZROes6MMH2rRYeMEF04=
 github.com/go-sql-driver/mysql v1.4.1/go.mod h1:zAC/RDZ24gD3HViQzih4MyKcchzm+sOG5ZlKdlhCg5w=
@@ -134,6 +134,8 @@ golang.org/x/sys v0.0.0-20190422165155-953cdadca894/go.mod h1:h1NjWce9XRLGQEsW7w
 golang.org/x/sys v0.0.0-20190516110030-61b9204099cb/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/sys v0.0.0-20190524152521-dbbf3f1254d4 h1:VSJ45BzqrVgR4clSx415y1rHH7QAGhGt71J0ZmhLYrc=
 golang.org/x/sys v0.0.0-20190524152521-dbbf3f1254d4/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
+golang.org/x/sys v0.0.0-20190602015325-4c4f7f33c9ed h1:uPxWBzB3+mlnjy9W58qY1j/cjyFjutgw/Vhan2zLy/A=
+golang.org/x/sys v0.0.0-20190602015325-4c4f7f33c9ed/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/text v0.3.0/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=
 golang.org/x/text v0.3.1-0.20180807135948-17ff2d5776d2/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=
 golang.org/x/text v0.3.2 h1:tW2bmiBqwgJj/UpqtC8EpXEZVYOwU0yG4iWbprSVAcs=
@@ -161,6 +163,8 @@ google.golang.org/genproto v0.0.0-20190508193815-b515fa19cec8/go.mod h1:VzzqZJRn
 google.golang.org/genproto v0.0.0-20190516172635-bb713bdc0e52/go.mod h1:z3L6/3dTEVtUr6QSP8miRzeRqwQOioJ9I66odjN4I7s=
 google.golang.org/genproto v0.0.0-20190522204451-c2c4e71fbf69 h1:4rNOqY4ULrKzS6twXa619uQgI7h9PaVd4ZhjFQ7C5zs=
 google.golang.org/genproto v0.0.0-20190522204451-c2c4e71fbf69/go.mod h1:z3L6/3dTEVtUr6QSP8miRzeRqwQOioJ9I66odjN4I7s=
+google.golang.org/genproto v0.0.0-20190530194941-fb225487d101 h1:wuGevabY6r+ivPNagjUXGGxF+GqgMd+dBhjsxW4q9u4=
+google.golang.org/genproto v0.0.0-20190530194941-fb225487d101/go.mod h1:z3L6/3dTEVtUr6QSP8miRzeRqwQOioJ9I66odjN4I7s=
 google.golang.org/grpc v1.19.0/go.mod h1:mqu4LbDTu4XGKhr4mRzUsmM4RtVoemTSY81AxZiDr8c=
 google.golang.org/grpc v1.20.1/go.mod h1:10oTOabMzJvdu6/UiuZezV6QK5dSlG84ov/aaiqXj38=
 google.golang.org/grpc v1.21.0 h1:G+97AoqBnmZIT91cLG/EkCoK9NSelj64P8bOHHNmGn0=
