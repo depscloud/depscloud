@@ -4,7 +4,7 @@ go 1.12
 
 require (
 	github.com/deps-cloud/des v0.1.6
-	github.com/deps-cloud/dts v0.0.5
+	github.com/deps-cloud/dts v0.0.8
 	github.com/deps-cloud/rds v0.0.9
 	github.com/grpc-ecosystem/grpc-gateway v1.9.0
 	github.com/spf13/cobra v0.0.4

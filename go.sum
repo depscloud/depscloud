@@ -15,8 +15,8 @@ github.com/davidji99/go-bitbucket v0.5.0/go.mod h1:RZ0Wi8jc2GTijS8hyHtgVyBnFUS3B
 github.com/deps-cloud/des v0.1.2/go.mod h1:ysptXv7LoQEnulrk6iYx8kYPCdyilrm+n63q4mzNP2Q=
 github.com/deps-cloud/des v0.1.6 h1:8ByyumDXm+Y84CfizVXoAMnbImYCjRx6ipaRt1TSGYs=
 github.com/deps-cloud/des v0.1.6/go.mod h1:xx/Cd0mE+LLw5t43b6gnP3xPvTkdBWuXNP5EvbLRAwY=
-github.com/deps-cloud/dts v0.0.5 h1:uGyb+6GCSaBgMX+PLZPbq/BIJFGxCtfwnHe/xFGj8kQ=
-github.com/deps-cloud/dts v0.0.5/go.mod h1:jwZnmrV4wnHBhGJunOnMQjB4h3LXcV+QewNXf1Fh/jc=
+github.com/deps-cloud/dts v0.0.8 h1:uksSOgEa3LteEeeaHLB2EZN15xrABcxN8qbLkXZyrTk=
+github.com/deps-cloud/dts v0.0.8/go.mod h1:jwZnmrV4wnHBhGJunOnMQjB4h3LXcV+QewNXf1Fh/jc=
 github.com/deps-cloud/rds v0.0.9 h1:aG2SxHsV/XtJJ1ZhtqIq7Q2Kk+Ojdz0xS5fWiDnQkts=
 github.com/deps-cloud/rds v0.0.9/go.mod h1:KmFcZ4o4SRMxJzHMLxGMaldBNS1Lo7p1U6LcaNfPTL4=
 github.com/fsnotify/fsnotify v1.4.7/go.mod h1:jwhsz4b93w/PPRr/qN1Yymfu8t87LnFCMoQvtojpjFo=
