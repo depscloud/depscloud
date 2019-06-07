@@ -978,7 +978,7 @@ Array [
         "versionConstraint": "*",
       },
     ],
-    "language": "go",
+    "language": "golang",
     "module": "",
     "organization": "",
     "system": "gopkg",

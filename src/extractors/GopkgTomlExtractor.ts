@@ -58,7 +58,7 @@ export default class GopkgTomlExtractor implements Extractor {
         dependencies.push(...transformSimple(toml.required, "*", "required"));
 
         return {
-            language: "go",
+            language: "golang",
             system: "gopkg",
             organization: "",
             module: "",

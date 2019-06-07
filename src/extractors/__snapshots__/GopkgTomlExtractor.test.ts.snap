@@ -596,7 +596,7 @@ Object {
       "versionConstraint": "*",
     },
   ],
-  "language": "go",
+  "language": "golang",
   "module": "",
   "organization": "",
   "system": "gopkg",
@@ -606,7 +606,7 @@ Object {
 
 exports[`GopkgTomlExtractor fullParse 2`] = `
 "{
-  \\"language\\": \\"go\\",
+  \\"language\\": \\"golang\\",
   \\"system\\": \\"gopkg\\",
   \\"organization\\": \\"\\",
   \\"module\\": \\"\\",
