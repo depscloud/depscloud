@@ -2,6 +2,7 @@ import {Dependency, DependencyManagementFile} from "../../api/deps";
 import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
 import parseImportPath from "./goutils/parseImportPath";
+import Languages from "./Languages";
 
 export default class GoModExtractor implements Extractor {
     public requires(): string[] {
@@ -89,7 +90,7 @@ export default class GoModExtractor implements Extractor {
         }
 
         return {
-            language: "golang",
+            language: Languages.GO,
             system: "vgo",
             organization: id.organization,
             module: id.module,

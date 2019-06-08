@@ -1,6 +1,7 @@
 import {Dependency, DependencyManagementFile} from "../../api/deps";
 import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
+import Languages from "./Languages";
 
 interface ID {
     organization: string;
@@ -57,7 +58,7 @@ export default class PackageJsonExtractor implements Extractor {
         allDependencies = allDependencies.concat(extract((optionalDependencies || {}), "optional"));
 
         return {
-            language: "node",
+            language: Languages.NODE,
             system: "npm",
             organization, module, version,
             dependencies: allDependencies,

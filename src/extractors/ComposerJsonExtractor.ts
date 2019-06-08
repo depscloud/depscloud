@@ -1,6 +1,7 @@
 import {Dependency, DependencyManagementFile} from "../../api/deps";
 import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
+import Languages from "./Languages";
 
 interface ID {
     organization: string;
@@ -63,7 +64,7 @@ export default class ComposerJsonExtractor implements Extractor {
         dependencies = dependencies.concat(processRequires(requireDev || {}));
 
         return {
-            language: "php",
+            language: Languages.PHP,
             system: "composer",
             organization,
             module,

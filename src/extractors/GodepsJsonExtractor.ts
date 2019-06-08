@@ -2,6 +2,7 @@ import {DependencyManagementFile} from "../../api/deps";
 import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
 import parseImportPath from "./goutils/parseImportPath";
+import Languages from "./Languages";
 
 export default class GodepsJsonExtractor implements Extractor {
     public requires(): string[] {
@@ -33,7 +34,7 @@ export default class GodepsJsonExtractor implements Extractor {
         });
 
         return {
-            language: "golang",
+            language: Languages.GO,
             system: "godeps",
             organization,
             module,

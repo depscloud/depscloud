@@ -3,6 +3,7 @@ import { parseText } from "gradle-to-js/lib/parser";
 import {Dependency, DependencyManagementFile} from "../../api/deps";
 import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
+import Languages from "./Languages";
 
 export default class BuildGradleExtractor implements Extractor {
     public async extract(files: { [p: string]: ExtractorFile }): Promise<DependencyManagementFile> {
@@ -53,7 +54,7 @@ export default class BuildGradleExtractor implements Extractor {
         });
 
         return {
-            language: "java",
+            language: Languages.JAVA,
             system: "gradle",
             organization,
             module,

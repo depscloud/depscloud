@@ -2,6 +2,7 @@ import {Dependency, DependencyManagementFile} from "../../api/deps";
 import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
 import parseImportPath from "./goutils/parseImportPath";
+import Languages from "./Languages";
 
 interface Constraint {
     name: string;
@@ -58,7 +59,7 @@ export default class GopkgTomlExtractor implements Extractor {
         dependencies.push(...transformSimple(toml.required, "*", "required"));
 
         return {
-            language: "golang",
+            language: Languages.GO,
             system: "gopkg",
             organization: "",
             module: "",

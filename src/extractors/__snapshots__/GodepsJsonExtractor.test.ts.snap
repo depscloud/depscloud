@@ -29,7 +29,7 @@ Object {
       "versionConstraint": "1f1b3322f67af76803c942fd237291538ec68262",
     },
   ],
-  "language": "golang",
+  "language": "go",
   "module": "tools/godep",
   "organization": "github.com",
   "system": "godeps",
@@ -39,7 +39,7 @@ Object {
 
 exports[`GodepsJsonExtractor fullParse 2`] = `
 "{
-  \\"language\\": \\"golang\\",
+  \\"language\\": \\"go\\",
   \\"system\\": \\"godeps\\",
   \\"organization\\": \\"github.com\\",
   \\"module\\": \\"tools/godep\\",

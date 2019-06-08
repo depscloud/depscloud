@@ -1,6 +1,7 @@
 import {Dependency, DependencyManagementFile} from "../../api/deps";
 import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
+import Languages from "./Languages";
 
 const organization = "__global__";
 const scopes = [ "direct" ];
@@ -31,7 +32,7 @@ export default class CargoTomlExtractor implements Extractor {
             });
 
         return {
-            language: "rust",
+            language: Languages.RUST,
             system: "cargo",
             organization,
             module: toml.package.name,

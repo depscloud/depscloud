@@ -2,6 +2,7 @@ import cheerio = require("cheerio");
 import {Dependency, DependencyManagementFile} from "../../api/deps";
 import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
+import Languages from "./Languages";
 
 export default class PomXmlExtractor implements Extractor {
     public requires(): string[] {
@@ -42,7 +43,7 @@ export default class PomXmlExtractor implements Extractor {
         });
 
         return {
-            language: "java",
+            language: Languages.JAVA,
             system: "maven",
             organization: groupId,
             module: artifactId,
