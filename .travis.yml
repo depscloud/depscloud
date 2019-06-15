@@ -4,8 +4,7 @@ go:
 - 1.11.x
 
 env:
-- GO111MODULE=on
-- CGO_ENABLED=1
+- GO111MODULE=on CGO_ENABLED=1
 
 before_install:
   # gox simplifies building for multiple architectures
