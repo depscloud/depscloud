@@ -30,8 +30,8 @@ func main() {
 	storageAddress := "file::memory:?cache=shared"
 
 	cmd := &cobra.Command{
-		Use: "",
-		Short: "",
+		Use: "dts",
+		Short: "dts runs the dependency tracking service.",
 		Run: func(cmd *cobra.Command, args []string) {
 			address := fmt.Sprintf(":%d", port)
 
