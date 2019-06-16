@@ -6,6 +6,7 @@ import AsyncDependencyExtractor from "./service/AsyncDependencyExtractor";
 import DependencyExtractorImpl from "./service/DependencyExtractorImpl";
 import unasyncify from "./service/unasyncify";
 import program = require("caporal");
+import health = require("grpc-health-check/health");
 
 const logger = getLogger();
 
@@ -30,10 +31,16 @@ program.name("finch-extractor")
         const extractors = await Promise.all(extractorReqs);
 
         const port = options.port || 8090;
-        const service: AsyncDependencyExtractor = new DependencyExtractorImpl(extractors);
+        const impl: AsyncDependencyExtractor = new DependencyExtractorImpl(extractors);
+
+        const healthcheck = new health.Implementation({});
+        // toggle the service health as such
+        // healthcheck.setStatus("", "NOT_SERVING");
 
         const server = new Server();
-        server.addService(DependencyExtractor.service, unasyncify(service));
+        server.addService(DependencyExtractor.service, unasyncify(impl));
+        server.addService(health.service, healthcheck);
+
         server.bind(`0.0.0.0:${port}`, ServerCredentials.createInsecure());
         logger.info(`[main] starting gRPC on :${port}`);
         server.start();

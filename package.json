@@ -30,6 +30,7 @@
     "cheerio": "^1.0.0-rc.2",
     "gradle-to-js": "^1.2.1",
     "grpc": "^1.18.0",
+    "grpc-health-check": "^1.6.6",
     "js-yaml": "^3.13.1",
     "log4js": "^4.0.2",
     "tmp": "0.0.33",
