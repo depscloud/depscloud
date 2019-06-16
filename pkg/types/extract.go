@@ -65,8 +65,17 @@ func ExtractManagesModule(sourceKey []byte, mf *desapi.DependencyManagementFile)
 		}
 }
 
-// ExtractModuleKey will pull a Module's key from the provided request
-func ExtractModuleKey(request *dtsapi.Request) []byte {
+// ExtractModuleKeyFromRequest will pull a Module's key from the provided Request
+func ExtractModuleKeyFromRequest(request *dtsapi.Request) []byte {
+	return ModuleKey(&Module{
+		Language: request.GetLanguage(),
+		Organization: request.GetOrganization(),
+		Module: request.GetModule(),
+	})
+}
+
+// ExtractModuleKeyFromGetSourcesRequest will pull a Module's key from the provided GetSourcesRequest
+func ExtractModuleKeyFromGetSourcesRequest(request *dtsapi.GetSourcesRequest) []byte {
 	return ModuleKey(&Module{
 		Language: request.GetLanguage(),
 		Organization: request.GetOrganization(),

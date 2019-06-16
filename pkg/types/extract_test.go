@@ -73,7 +73,7 @@ func TestExtractDependsModule(t *testing.T) {
 }
 
 func TestExtractModuleKey(t *testing.T) {
-	key := types.ExtractModuleKey(&dtsapi.Request{
+	key := types.ExtractModuleKeyFromRequest(&dtsapi.Request{
 		Language: "go",
 		Organization: "github.com",
 		Module: "deps-cloud/dts",

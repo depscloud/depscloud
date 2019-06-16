@@ -102,7 +102,7 @@ func (d *dependencyTrackingService) GetDependencies(req *dtsapi.Request, resp dt
 	logrus.Infof("looking up dependencies for %s", url)
 
 	traversalUtil := &TraversalUtil{ d.graphStore, req.Direction }
-	key := types.ExtractModuleKey(req)
+	key := types.ExtractModuleKeyFromRequest(req)
 
 	dependencies, err := traversalUtil.GetAdjacent(key, []string{ types.DependsType })
 	if err != nil {
@@ -177,17 +177,45 @@ func (d *dependencyTrackingService) GetTopologyTiered(req *dtsapi.Request, resp 
 }
 
 func (d *dependencyTrackingService) GetSources(req *dtsapi.GetSourcesRequest, resp dtsapi.DependencyTracker_GetSourcesServer) error {
-	return fmt.Errorf("unimplemented")
+	key := types.ExtractModuleKeyFromGetSourcesRequest(req)
+
+	sources, err := d.graphStore.FindDownstream(key, []string{ types.ManagesType })
+	if err != nil {
+		logrus.Errorf("failed to fetch sources: %s, %v", req, err)
+		return dtsapi.ErrModuleNotFound
+	}
+
+	for _, source := range sources {
+		item, err := types.Decode(source)
+		if err != nil {
+			// type / encoding problem, skip
+			logrus.Errorf("[service.dts] failed to decode source: %v", err)
+			continue
+		}
+
+		source := item.(*types.Source)
+		response := &dtsapi.GetSourcesResponse{
+			Source: &dtsapi.SourceInformation{
+				Url: source.URL,
+			},
+		}
+
+		if err = resp.Send(response); err != nil {
+			logrus.Errorf("[service.dts] failed to send response: %v", err)
+		}
+	}
+
+	return nil
 }
 
 func (d *dependencyTrackingService) ListLanguages(ctx context.Context, req *dtsapi.ListLanguagesRequest) (*dtsapi.ListLanguagesResponse, error) {
-	return nil, fmt.Errorf("unimplemented")
+	return nil, dtsapi.ErrUnimplemented
 }
 
 func (d *dependencyTrackingService) ListOrganizations(ctx context.Context, req *dtsapi.ListOrganizationsRequest) (*dtsapi.ListOrganizationsResponse, error) {
-	return nil, fmt.Errorf("unimplemented")
+	return nil, dtsapi.ErrUnimplemented
 }
 
 func (d *dependencyTrackingService) ListModules(ctx context.Context, req *dtsapi.ListModulesRequest) (*dtsapi.ListModulesResponse, error) {
-	return nil, fmt.Errorf("unimplemented")
+	return nil, dtsapi.ErrUnimplemented
 }
