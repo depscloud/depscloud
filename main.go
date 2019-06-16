@@ -13,6 +13,8 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/health"
+	healthpb "google.golang.org/grpc/health/grpc_health_v1"
 )
 
 func panicIff(err error) {
@@ -45,8 +47,13 @@ func main() {
 			dts, err := service.NewDependencyTrackingService(graphStore)
 			panicIff(err)
 
+			healthcheck := health.NewServer()
+			// toggle the service health as such
+			// healthcheck.SetServingStatus("", healthpb.HealthCheckResponse_NOT_SERVING)
+
 			server := grpc.NewServer()
 			api.RegisterDependencyTrackerServer(server, dts)
+			healthpb.RegisterHealthServer(server, healthcheck)
 
 			logrus.Infof("[main] starting gRPC on %s", address)
 			err = server.Serve(listener)
