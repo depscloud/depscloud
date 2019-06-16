@@ -8,6 +8,7 @@
     "start": "node lib/main.js",
     "clean": "rm -rf coverage lib node_modules",
     "docker": "docker build -t depscloud/des:latest -f Dockerfile.dev .",
+    "predockerx": "docker buildx rm depscloud--des || echo \"depscloud--des does not exist\"; docker buildx create --append --name depscloud--des --use",
     "dockerx": "docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t depscloud/des:latest ."
   },
   "repository": {
