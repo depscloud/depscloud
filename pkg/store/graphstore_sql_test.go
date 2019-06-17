@@ -38,10 +38,13 @@ func TestNewSQLGraphStore_sqlite(t *testing.T) {
 		{GraphItemType: "edge", K1: k4, K2: k6, Encoding: 0, GraphItemData: generateData()},
 	}
 
-	db, err := sql.Open("sqlite3", ":memory:")
+	rwdb, err := sql.Open("sqlite3", "file::memory:?cache=shared")
 	require.Nil(t, err)
 
-	graphStore, err := store.NewSQLGraphStore(db)
+	rodb, err := sql.Open("sqlite3", "file::memory:?cache=shared&mode=ro")
+	require.Nil(t, err)
+
+	graphStore, err := store.NewSQLGraphStore(rwdb, rodb)
 	require.Nil(t, err)
 
 	err = graphStore.Put(data)

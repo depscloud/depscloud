@@ -61,20 +61,22 @@ AND k1 = k2 AND date_deleted IS NULL;`
 
 // NewSQLGraphStore constructs a new GraphStore with a sql driven backend. Current
 // queries support sqlite3 but should be able to work on mysql as well.
-func NewSQLGraphStore(db *sql.DB) (GraphStore, error) {
-	if _, err := db.Exec(createGraphDataTable); err != nil {
+func NewSQLGraphStore(rwdb, rodb *sql.DB) (GraphStore, error) {
+	if _, err := rwdb.Exec(createGraphDataTable); err != nil {
 		return nil, err
 	}
 
 	return &sqlGraphStore{
-		db: db,
+		rwdb: rwdb,
+		rodb: rodb,
 	}, nil
 }
 
 var _ GraphStore = &sqlGraphStore{}
 
 type sqlGraphStore struct {
-	db *sql.DB
+	rwdb *sql.DB
+	rodb *sql.DB
 }
 
 func (gs *sqlGraphStore) Put(items []*GraphItem) error {
@@ -86,7 +88,7 @@ func (gs *sqlGraphStore) Put(items []*GraphItem) error {
 	errors := make([]error, 0)
 
 	for _, item := range items {
-		_, err := gs.db.Exec(insertGraphData, item.GraphItemType, Base64encode(item.K1), Base64encode(item.K2),
+		_, err := gs.rwdb.Exec(insertGraphData, item.GraphItemType, Base64encode(item.K1), Base64encode(item.K2),
 			item.Encoding, string(item.GraphItemData), timestamp)
 		if err != nil {
 			errors = append(errors, err)
@@ -112,7 +114,7 @@ func (gs *sqlGraphStore) Delete(keys []*PrimaryKey) error {
 	errors := make([]error, 0)
 
 	for _, key := range keys {
-		_, err := gs.db.Exec(deleteGraphData, timestamp, key.GraphItemType, Base64encode(key.K1), Base64encode(key.K2))
+		_, err := gs.rwdb.Exec(deleteGraphData, timestamp, key.GraphItemType, Base64encode(key.K1), Base64encode(key.K2))
 		if err != nil {
 			errors = append(errors, err)
 		}
@@ -129,7 +131,7 @@ func (gs *sqlGraphStore) Delete(keys []*PrimaryKey) error {
 }
 
 func (gs *sqlGraphStore) FindByPrimary(key *PrimaryKey) (*GraphItem, error) {
-	rows, err := gs.db.Query(selectGraphDataPrimaryKey, key.GraphItemType, Base64encode(key.K1), Base64encode(key.K2))
+	rows, err := gs.rodb.Query(selectGraphDataPrimaryKey, key.GraphItemType, Base64encode(key.K1), Base64encode(key.K2))
 	if err != nil {
 		return nil, err
 	}
@@ -159,7 +161,7 @@ func (gs *sqlGraphStore) FindUpstream(key []byte, edgeTypes []string) ([]*GraphI
 
 	statement := fmt.Sprintf(selectGraphDataUpstreamDependencies, strings.Join(arr, ", "))
 
-	rows, err := gs.db.Query(statement, args...)
+	rows, err := gs.rodb.Query(statement, args...)
 	if err != nil {
 		return nil, err
 	}
@@ -184,7 +186,7 @@ func (gs *sqlGraphStore) FindDownstream(key []byte, edgeTypes []string) ([]*Grap
 
 	statement := fmt.Sprintf(selectGraphDataDownstreamDependencies, strings.Join(arr, ", "))
 
-	rows, err := gs.db.Query(statement, args...)
+	rows, err := gs.rodb.Query(statement, args...)
 	if err != nil {
 		return nil, err
 	}

@@ -28,20 +28,22 @@ func main() {
 	port := 8090
 	storageDriver := "sqlite3"
 	storageAddress := "file::memory:?cache=shared"
+	storageReadOnlyAddress := ""
 
 	cmd := &cobra.Command{
 		Use: "dts",
 		Short: "dts runs the dependency tracking service.",
 		Run: func(cmd *cobra.Command, args []string) {
-			address := fmt.Sprintf(":%d", port)
-
-			listener, err := net.Listen("tcp", address)
+			rwdb, err := sql.Open(storageDriver, storageAddress)
 			panicIff(err)
 
-			db, err := sql.Open(storageDriver, storageAddress)
-			panicIff(err)
+			rodb := rwdb
+			if len(storageReadOnlyAddress) > 0 {
+				rodb, err = sql.Open(storageDriver, storageReadOnlyAddress)
+				panicIff(err)
+			}
 
-			graphStore, err := store.NewSQLGraphStore(db)
+			graphStore, err := store.NewSQLGraphStore(rwdb, rodb)
 			panicIff(err)
 
 			dts, err := service.NewDependencyTrackingService(graphStore)
@@ -55,6 +57,12 @@ func main() {
 			api.RegisterDependencyTrackerServer(server, dts)
 			healthpb.RegisterHealthServer(server, healthcheck)
 
+			// setup server
+			address := fmt.Sprintf(":%d", port)
+
+			listener, err := net.Listen("tcp", address)
+			panicIff(err)
+
 			logrus.Infof("[main] starting gRPC on %s", address)
 			err = server.Serve(listener)
 			panicIff(err)
@@ -66,6 +74,7 @@ func main() {
 	flags.IntVar(&port, "port", port, "(optional) the port to run on")
 	flags.StringVar(&storageDriver, "storage-driver", storageDriver, "(optional) the driver used to configure the storage tier")
 	flags.StringVar(&storageAddress, "storage-address", storageAddress, "(optional) the address of the storage tier")
+	flags.StringVar(&storageReadOnlyAddress, "storage-readonly-address", storageReadOnlyAddress, "(optional) the readonly address of the storage tier")
 
 	err := cmd.Execute()
 	panicIff(err)
