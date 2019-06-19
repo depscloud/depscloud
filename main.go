@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	gitssh "gopkg.in/src-d/go-git.v4/plumbing/transport/ssh"
 	"io/ioutil"
 	"net/http"
 	"path/filepath"
@@ -17,6 +16,7 @@ import (
 	"gopkg.in/src-d/go-billy.v4/memfs"
 	"gopkg.in/src-d/go-git.v4"
 	"gopkg.in/src-d/go-git.v4/plumbing/cache"
+	"gopkg.in/src-d/go-git.v4/plumbing/transport/ssh"
 	"gopkg.in/src-d/go-git.v4/storage/filesystem"
 )
 
@@ -40,7 +40,7 @@ func dial(target string) *grpc.ClientConn {
 
 // NewConsumer creates a consumer process that is agnostic to the ingress channel.
 func NewConsumer(
-	publicKeys *gitssh.PublicKeys,
+	publicKeys *ssh.PublicKeys,
 	desClient desapi.DependencyExtractorClient,
 	dtsClient dtsapi.DependencyTrackerClient,
 ) func(string) {
@@ -173,12 +173,12 @@ func main() {
 			desClient := desapi.NewDependencyExtractorClient(dial(desAddress))
 			dtsClient := dtsapi.NewDependencyTrackerClient(dial(dtsAddress))
 
-			var publicKeys *gitssh.PublicKeys
+			var publicKeys *ssh.PublicKeys
 
 			if len(sshKeyPath) > 0 {
 				logrus.Infof("[main] loading ssh key")
 				var err error
-				publicKeys, err = gitssh.NewPublicKeysFromFile(sshUser, sshKeyPath, "")
+				publicKeys, err = ssh.NewPublicKeysFromFile(sshUser, sshKeyPath, "")
 				panicIff(err)
 			}
 
