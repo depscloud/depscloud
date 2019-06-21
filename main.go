@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"gopkg.in/src-d/go-git.v4/plumbing/transport"
 	"io/ioutil"
 	"net/http"
 	"path/filepath"
@@ -16,8 +17,15 @@ import (
 	"gopkg.in/src-d/go-billy.v4/memfs"
 	"gopkg.in/src-d/go-git.v4"
 	"gopkg.in/src-d/go-git.v4/plumbing/cache"
+	"gopkg.in/src-d/go-git.v4/plumbing/transport/ssh"
 	"gopkg.in/src-d/go-git.v4/storage/filesystem"
 )
+
+func panicIff(err error) {
+	if err != nil {
+		panic(err.Error())
+	}
+}
 
 func dial(target string) *grpc.ClientConn {
 	dialOptions := []grpc.DialOption{
@@ -26,15 +34,14 @@ func dial(target string) *grpc.ClientConn {
 	}
 
 	cc, err := grpc.Dial(target, dialOptions...)
-	if err != nil {
-		panic(err)
-	}
+	panicIff(err)
 
 	return cc
 }
 
 // NewConsumer creates a consumer process that is agnostic to the ingress channel.
 func NewConsumer(
+	authMethod transport.AuthMethod,
 	desClient desapi.DependencyExtractorClient,
 	dtsClient dtsapi.DependencyTrackerClient,
 ) func(string) {
@@ -47,12 +54,17 @@ func NewConsumer(
 		}
 
 		storage := filesystem.NewStorage(gitfs, cache.NewObjectLRUDefault())
+		options := &git.CloneOptions{
+			URL:   url,
+			Depth: 1,
+		}
+
+		if authMethod != nil {
+			options.Auth = authMethod
+		}
 
 		logrus.Infof("[%s] cloning repository", url)
-		_, err = git.Clone(storage, fs, &git.CloneOptions{
-			URL: 	url,
-			Depth: 	1,
-		})
+		_, err = git.Clone(storage, fs, options)
 
 		if err != nil {
 			logrus.Errorf("failed to clone: %v", err)
@@ -155,6 +167,9 @@ func main() {
 	desAddress := "des:8090"
 	dtsAddress := "dts:8090"
 
+	sshUser := "git"
+	sshKeyPath := ""
+
 	cmd := &cobra.Command{
 		Use: "dis",
 		Short: "dependency indexing service",
@@ -163,9 +178,18 @@ func main() {
 			desClient := desapi.NewDependencyExtractorClient(dial(desAddress))
 			dtsClient := dtsapi.NewDependencyTrackerClient(dial(dtsAddress))
 
+			var authMethod transport.AuthMethod
+
+			if len(sshKeyPath) > 0 {
+				logrus.Infof("[main] loading ssh key")
+				var err error
+				authMethod, err = ssh.NewPublicKeysFromFile(sshUser, sshKeyPath, "")
+				panicIff(err)
+			}
+
 			repositories := make(chan string, workers)
 
-			consumer := NewConsumer(desClient, dtsClient)
+			consumer := NewConsumer(authMethod, desClient, dtsClient)
 			for i := 0; i < workers; i++ {
 				go NewWorker(repositories, consumer)
 			}
@@ -173,7 +197,7 @@ func main() {
 			for {
 				listResponse, err := rdsClient.List(context.Background(), &rdsapi.ListRepositoriesRequest{})
 				if err != nil {
-					logrus.Errorf("encountered an error trying to list repositories from rds: %v", err)
+					logrus.Errorf("[main] encountered an error trying to list repositories from rds: %v", err)
 
 					time.Sleep(30 * time.Second)
 				} else {
@@ -192,6 +216,8 @@ func main() {
 	flags.StringVar(&rdsAddress, "rds-address", rdsAddress, "(optional) address to rds")
 	flags.StringVar(&desAddress, "des-address", desAddress, "(optional) address to des")
 	flags.StringVar(&dtsAddress, "dts-address", dtsAddress, "(optional) address to dts")
+	flags.StringVar(&sshUser, "ssh-user", sshUser, "(optional) the ssh user, typically git")
+	flags.StringVar(&sshKeyPath, "ssh-keypath", sshKeyPath, "(optional) the path to the ssh key file")
 
 	if err := cmd.Execute(); err != nil {
 		panic(err.Error())
