@@ -13,9 +13,8 @@ install:
 
 deploy:
 	mkdir -p bin
-	gox -os="windows linux darwin" -arch="amd64 386" -output="bin/{{.Dir}}_{{.OS}}_{{.Arch}}"
-	gox -os="linux" -arch="arm" -output="bin/{{.Dir}}_{{.OS}}_{{.Arch}}"
-	GOOS=linux GOARCH=arm64 go build -o bin/dis_linux_arm64
+	gox -os="windows darwin" -arch="amd64 386" -output="bin/{{.Dir}}_{{.OS}}_{{.Arch}}"
+	gox -os="linux" -arch="amd64 386 arm arm64" -output="bin/{{.Dir}}_{{.OS}}_{{.Arch}}"
 
 docker:
 	docker build -t depscloud/dis:latest -f Dockerfile.dev .

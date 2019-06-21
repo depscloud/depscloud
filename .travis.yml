@@ -24,15 +24,7 @@ deploy:
   skip_cleanup: true
   api_key:
     secure: "${GITHUB_OAUTH_TOKEN_SECURE}"
-  file:
-    - bin/dis_darwin_386
-    - bin/dis_darwin_amd64
-    - bin/dis_linux_386
-    - bin/dis_linux_amd64
-    - bin/dis_linux_arm
-    - bin/dis_linux_arm64
-    - bin/dis_windows_386.exe
-    - bin/dis_windows_amd64.exe
+  file: bin/*
   on:
     repo: deps-cloud/dis
     tags: true
