@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"gopkg.in/src-d/go-git.v4/plumbing/transport"
 	"io/ioutil"
 	"net/http"
 	"path/filepath"
@@ -40,7 +41,7 @@ func dial(target string) *grpc.ClientConn {
 
 // NewConsumer creates a consumer process that is agnostic to the ingress channel.
 func NewConsumer(
-	publicKeys *ssh.PublicKeys,
+	authMethod transport.AuthMethod,
 	desClient desapi.DependencyExtractorClient,
 	dtsClient dtsapi.DependencyTrackerClient,
 ) func(string) {
@@ -53,13 +54,17 @@ func NewConsumer(
 		}
 
 		storage := filesystem.NewStorage(gitfs, cache.NewObjectLRUDefault())
+		options := &git.CloneOptions{
+			URL:   url,
+			Depth: 1,
+		}
+
+		if authMethod != nil {
+			options.Auth = authMethod
+		}
 
 		logrus.Infof("[%s] cloning repository", url)
-		_, err = git.Clone(storage, fs, &git.CloneOptions{
-			URL: 	url,
-			Auth: 	publicKeys,
-			Depth: 	1,
-		})
+		_, err = git.Clone(storage, fs, options)
 
 		if err != nil {
 			logrus.Errorf("failed to clone: %v", err)
@@ -173,18 +178,18 @@ func main() {
 			desClient := desapi.NewDependencyExtractorClient(dial(desAddress))
 			dtsClient := dtsapi.NewDependencyTrackerClient(dial(dtsAddress))
 
-			var publicKeys *ssh.PublicKeys
+			var authMethod transport.AuthMethod
 
 			if len(sshKeyPath) > 0 {
 				logrus.Infof("[main] loading ssh key")
 				var err error
-				publicKeys, err = ssh.NewPublicKeysFromFile(sshUser, sshKeyPath, "")
+				authMethod, err = ssh.NewPublicKeysFromFile(sshUser, sshKeyPath, "")
 				panicIff(err)
 			}
 
 			repositories := make(chan string, workers)
 
-			consumer := NewConsumer(publicKeys, desClient, dtsClient)
+			consumer := NewConsumer(authMethod, desClient, dtsClient)
 			for i := 0; i < workers; i++ {
 				go NewWorker(repositories, consumer)
 			}
