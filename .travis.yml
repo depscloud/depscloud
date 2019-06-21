@@ -24,6 +24,7 @@ deploy:
   skip_cleanup: true
   api_key:
     secure: "${GITHUB_OAUTH_TOKEN_SECURE}"
+  file_glob: true
   file: bin/*
   on:
     repo: deps-cloud/dis
