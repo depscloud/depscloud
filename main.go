@@ -2,9 +2,9 @@ package main
 
 import (
 	"context"
-	"gopkg.in/src-d/go-git.v4/plumbing/transport"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"path/filepath"
 	"time"
 
@@ -14,9 +14,10 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"google.golang.org/grpc"
-	"gopkg.in/src-d/go-billy.v4/memfs"
+	"gopkg.in/src-d/go-billy.v4/osfs"
 	"gopkg.in/src-d/go-git.v4"
 	"gopkg.in/src-d/go-git.v4/plumbing/cache"
+	"gopkg.in/src-d/go-git.v4/plumbing/transport"
 	"gopkg.in/src-d/go-git.v4/plumbing/transport/ssh"
 	"gopkg.in/src-d/go-git.v4/storage/filesystem"
 )
@@ -46,7 +47,13 @@ func NewConsumer(
 	dtsClient dtsapi.DependencyTrackerClient,
 ) func(string) {
 	return func(url string) {
-		fs := memfs.New()
+		dir, err := ioutil.TempDir(os.TempDir(), "dis")
+		if err != nil {
+			logrus.Errorf("failed to create tempdir")
+			return
+		}
+
+		fs := osfs.New(dir)
 		gitfs, err := fs.Chroot(git.GitDirName)
 		if err != nil {
 			logrus.Errorf("failed to chroot for .git: %v", err)
@@ -150,6 +157,10 @@ func NewConsumer(
 			logrus.Infof("[%s] %s", url, resp.Message)
 		} else {
 			logrus.Errorf("[%s] %s", url, resp.Message)
+		}
+
+		if err := os.RemoveAll(dir); err != nil {
+			logrus.Errorf("failed to cleanup scratch directory: %s", err.Error())
 		}
 	}
 }
