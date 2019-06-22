@@ -185,11 +185,12 @@ func run(rdsClient rdsapi.RepositoryDiscoveryClient, repositories chan string, d
 	wg := &sync.WaitGroup{}
 	wg.Add(1)
 
-	go func(size int) {
+	go func(size int, wg *sync.WaitGroup) {
 		for i := 0; i < size; i++ {
 			<- done
 		}
-	}(len(listResponse.Repositories))
+		wg.Done()
+	}(len(listResponse.Repositories), wg)
 
 	for _, repository := range listResponse.Repositories {
 		repositories <- repository
