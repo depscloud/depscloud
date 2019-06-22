@@ -79,10 +79,10 @@ func NewConsumer(
 		}
 
 		logrus.Infof("[%s] walking file system", url)
-		queue := []string{ "" }
+		queue := []string{""}
 		paths := make([]string, 0)
 
-		for ; len(queue) > 0 ; {
+		for len(queue) > 0 {
 			newQueue := make([]string, 0)
 			size := len(queue)
 
@@ -110,7 +110,7 @@ func NewConsumer(
 		logrus.Infof("[%s] matching dependency files", url)
 		matchedResponse, err := desClient.Match(context.Background(), &desapi.MatchRequest{
 			Separator: string(filepath.Separator),
-			Paths: paths,
+			Paths:     paths,
 		})
 
 		fileContents := make(map[string]string)
@@ -132,7 +132,7 @@ func NewConsumer(
 
 		logrus.Infof("[%s] extracting dependencies", url)
 		extractResponse, err := desClient.Extract(context.Background(), &desapi.ExtractRequest{
-			Separator: string(filepath.Separator),
+			Separator:    string(filepath.Separator),
 			FileContents: fileContents,
 		})
 
@@ -168,13 +168,33 @@ func NewConsumer(
 }
 
 // NewWorker encapsulates logic for pulling information off a channel and invoking the consumer
-func NewWorker(in chan string, consumer func(string)) {
+func NewWorker(in chan string, done chan bool, consumer func(string)) {
 	for str := range in {
 		consumer(str)
+		done <- true
 	}
 }
 
+// run is an internal method that represents a single pass over the set of repositories returned from the discovery service.
+func run(rdsClient rdsapi.RepositoryDiscoveryClient, repositories chan string, done chan bool) error {
+	listResponse, err := rdsClient.List(context.Background(), &rdsapi.ListRepositoriesRequest{})
+	if err != nil {
+		return err
+	}
+
+	for _, repository := range listResponse.Repositories {
+		repositories <- repository
+	}
+
+	for i := 0; i < len(listResponse.Repositories); i++ {
+		<-done
+	}
+
+	return nil
+}
+
 func main() {
+	cron := false
 	workers := 5
 	rdsAddress := "rds:8090"
 	desAddress := "des:8090"
@@ -184,7 +204,7 @@ func main() {
 	sshKeyPath := ""
 
 	cmd := &cobra.Command{
-		Use: "dis",
+		Use:   "dis",
 		Short: "dependency indexing service",
 		Run: func(cmd *cobra.Command, args []string) {
 			rdsClient := rdsapi.NewRepositoryDiscoveryClient(dial(rdsAddress))
@@ -201,30 +221,37 @@ func main() {
 			}
 
 			repositories := make(chan string, workers)
+			done := make(chan bool, workers)
 
 			consumer := NewConsumer(authMethod, desClient, dtsClient)
 			for i := 0; i < workers; i++ {
-				go NewWorker(repositories, consumer)
+				go NewWorker(repositories, done, consumer)
 			}
 
-			for {
-				listResponse, err := rdsClient.List(context.Background(), &rdsapi.ListRepositoriesRequest{})
-				if err != nil {
+			if cron {
+				logrus.Infof("[main] running as cron")
+				if err := run(rdsClient, repositories, done); err != nil {
 					logrus.Errorf("[main] encountered an error trying to list repositories from rds: %v", err)
+					os.Exit(1)
+				}
+			} else {
+				logrus.Infof("[main] running as daemon")
+				for {
+					sleep := time.Hour
 
-					time.Sleep(30 * time.Second)
-				} else {
-					for _, repository := range listResponse.Repositories {
-						repositories <- repository
+					if err := run(rdsClient, repositories, done); err != nil {
+						logrus.Errorf("[main] encountered an error trying to list repositories from rds: %v", err)
+						sleep = 30 * time.Second
 					}
 
-					time.Sleep(1 * time.Hour)
+					time.Sleep(sleep)
 				}
 			}
 		},
 	}
 
 	flags := cmd.Flags()
+	flags.BoolVar(&cron, "cron", cron, "(optional) run the process as a cron job instead of a daemon")
 	flags.IntVar(&workers, "workers", workers, "(optional) number of workers to process repositories")
 	flags.StringVar(&rdsAddress, "rds-address", rdsAddress, "(optional) address to rds")
 	flags.StringVar(&desAddress, "des-address", desAddress, "(optional) address to des")
