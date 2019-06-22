@@ -179,7 +179,9 @@ func NewWorker(in chan string, done chan bool, consumer func(string)) {
 // run is an internal method that represents a single pass over the set of repositories returned from the discovery service.
 func run(rdsClient rdsapi.RepositoryDiscoveryClient, repositories chan string, done chan bool) error {
 	listResponse, err := rdsClient.List(context.Background(), &rdsapi.ListRepositoriesRequest{})
-	panicIff(err)
+	if err != nil {
+		return err
+	}
 
 	// wait for the done goroutine to finish
 	wg := &sync.WaitGroup{}
