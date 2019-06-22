@@ -1,7 +1,7 @@
 {
   "name": "@deps-cloud/dis",
   "description": "Dependency indexing service",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "repository": {
     "type": "git",
     "url": "git@github.com:deps-cloud/dis.git"
