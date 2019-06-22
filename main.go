@@ -155,9 +155,9 @@ func NewConsumer(
 		}
 
 		if resp.Code != http.StatusOK {
-			logrus.Infof("[%s] %s", url, resp.Message)
-		} else {
 			logrus.Errorf("[%s] %s", url, resp.Message)
+		} else {
+			logrus.Infof("[%s] %s", url, resp.Message)
 		}
 
 		logrus.Infof("[%s] cleaning up file system", url)
