@@ -78,6 +78,7 @@ func NewConsumer(
 			return
 		}
 
+		logrus.Infof("[%s] walking file system", url)
 		queue := []string{ "" }
 		paths := make([]string, 0)
 
@@ -159,6 +160,7 @@ func NewConsumer(
 			logrus.Errorf("[%s] %s", url, resp.Message)
 		}
 
+		logrus.Infof("[%s] cleaning up file system", url)
 		if err := os.RemoveAll(dir); err != nil {
 			logrus.Errorf("failed to cleanup scratch directory: %s", err.Error())
 		}
