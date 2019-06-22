@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"sync"
 	"time"
 
 	desapi "github.com/deps-cloud/des/api"
@@ -178,18 +179,23 @@ func NewWorker(in chan string, done chan bool, consumer func(string)) {
 // run is an internal method that represents a single pass over the set of repositories returned from the discovery service.
 func run(rdsClient rdsapi.RepositoryDiscoveryClient, repositories chan string, done chan bool) error {
 	listResponse, err := rdsClient.List(context.Background(), &rdsapi.ListRepositoriesRequest{})
-	if err != nil {
-		return err
-	}
+	panicIff(err)
+
+	// wait for the done goroutine to finish
+	wg := &sync.WaitGroup{}
+	wg.Add(1)
+
+	go func(size int) {
+		for i := 0; i < size; i++ {
+			<- done
+		}
+	}(len(listResponse.Repositories))
 
 	for _, repository := range listResponse.Repositories {
 		repositories <- repository
 	}
 
-	for i := 0; i < len(listResponse.Repositories); i++ {
-		<-done
-	}
-
+	wg.Wait()
 	return nil
 }
 
