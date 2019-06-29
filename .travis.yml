@@ -24,15 +24,8 @@ deploy:
   skip_cleanup: true
   api_key:
     secure: "${GITHUB_OAUTH_TOKEN_SECURE}"
-  file:
-    - bin/dts_darwin_386
-    - bin/dts_darwin_amd64
-    - bin/dts_linux_386
-    - bin/dts_linux_amd64
-    - bin/dts_linux_arm
-    - bin/dts_linux_arm64
-    - bin/dts_windows_386.exe
-    - bin/dts_windows_amd64.exe
+  file_glob: true
+  file: bin/*
   on:
     repo: deps-cloud/dts
     tags: true
