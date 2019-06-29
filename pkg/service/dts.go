@@ -5,14 +5,18 @@ import (
 	"net/http"
 
 	dtsapi "github.com/deps-cloud/dts/api"
-	"github.com/deps-cloud/dts/pkg/store"
+	"github.com/deps-cloud/dts/api/v1alpha/schema"
+	"github.com/deps-cloud/dts/api/v1alpha/store"
+	"github.com/deps-cloud/dts/pkg/services"
 	"github.com/deps-cloud/dts/pkg/types"
+
 	"github.com/sirupsen/logrus"
+
 	"golang.org/x/net/context"
 )
 
 // NewDependencyTrackingService constructs a service using the specified graphstore.
-func NewDependencyTrackingService(graphStore store.GraphStore) (dtsapi.DependencyTrackerServer, error) {
+func NewDependencyTrackingService(graphStore store.GraphStoreClient) (dtsapi.DependencyTrackerServer, error) {
 	return &dependencyTrackingService{
 		graphStore: graphStore,
 	}, nil
@@ -21,7 +25,7 @@ func NewDependencyTrackingService(graphStore store.GraphStore) (dtsapi.Dependenc
 var _ dtsapi.DependencyTrackerServer = &dependencyTrackingService{}
 
 type dependencyTrackingService struct {
-	graphStore store.GraphStore
+	graphStore store.GraphStoreClient
 }
 
 func quickKey(gi *store.GraphItem) string {
@@ -32,8 +36,8 @@ func quickKey(gi *store.GraphItem) string {
 func (d *dependencyTrackingService) Put(ctx context.Context, req *dtsapi.PutRequest) (*dtsapi.PutResponse, error) {
 	url := req.GetSourceInformation().GetUrl()
 
-	traversalUtil := &TraversalUtil{ d.graphStore, dtsapi.Direction_UPSTREAM }
-	graphItems := types.ExtractGraphItems(req)
+	traversalUtil := &TraversalUtil{d.graphStore, dtsapi.Direction_UPSTREAM}
+	graphItems := ExtractGraphItems(req)
 
 	currentIndex := make(map[string]*store.GraphItem)
 	for _, gi := range graphItems {
@@ -41,28 +45,24 @@ func (d *dependencyTrackingService) Put(ctx context.Context, req *dtsapi.PutRequ
 	}
 
 	sourceGraphItem := graphItems[0]
-	managedModules, err := traversalUtil.GetAdjacent(sourceGraphItem.K1, []string{ types.ManagesType })
+	managedModules, err := traversalUtil.GetAdjacent(sourceGraphItem.GetK1(), []string{types.ManagesType})
 	if err != nil {
 		logrus.Errorf("failed to fetch managed modules: %s, %v", url, err)
 		return nil, dtsapi.ErrModuleNotFound
 	}
 
-	toRemove := make([]*store.PrimaryKey, 0)
+	toRemove := make([]*store.GraphItem, 0)
 
 	for _, managedModule := range managedModules {
 		_, managedExists := currentIndex[quickKey(managedModule)]
 
 		if !managedExists {
-			toRemove = append(toRemove, &store.PrimaryKey{
-				GraphItemType: types.ManagesType,
-				K1:            sourceGraphItem.K1,
-				K2:            managedModule.K1,
-			})
+			toRemove = append(toRemove, managedModule)
 
 			continue
 		}
 
-		dependedModules, err := traversalUtil.GetAdjacent(managedModule.K1, []string{ types.DependsType })
+		dependedModules, err := traversalUtil.GetAdjacent(managedModule.GetK1(), []string{types.DependsType})
 		if err != nil {
 			logrus.Errorf("failed to fetch depended modules: %s, %v", url, err)
 			return nil, dtsapi.ErrModuleNotFound
@@ -72,22 +72,18 @@ func (d *dependencyTrackingService) Put(ctx context.Context, req *dtsapi.PutRequ
 			_, dependedExists := currentIndex[quickKey(dependedModule)]
 
 			if !dependedExists {
-				toRemove = append(toRemove, &store.PrimaryKey{
-					GraphItemType: types.DependsType,
-					K1:            managedModule.K1,
-					K2:            dependedModule.K2,
-				})
+				toRemove = append(toRemove, dependedModule)
 			}
 		}
 	}
 
-	if err := d.graphStore.Delete(toRemove); err != nil {
-		logrus.Errorf("[service.dts] failed to delete removed edges: %v", err)
+	if _, err := d.graphStore.Delete(ctx, &store.DeleteRequest{Items: toRemove}); err != nil {
+		logrus.Errorf("[service.source] %s", err.Error())
 		return nil, dtsapi.ErrPartialDeletion
 	}
 
-	if err := d.graphStore.Put(graphItems); err != nil {
-		logrus.Errorf("[service.dts] failed to add new edges: %v", err)
+	if _, err := d.graphStore.Put(ctx, &store.PutRequest{Items: graphItems}); err != nil {
+		logrus.Errorf("[service.source] %s", err.Error())
 		return nil, dtsapi.ErrPartialInsertion
 	}
 
@@ -101,29 +97,29 @@ func (d *dependencyTrackingService) GetDependencies(req *dtsapi.Request, resp dt
 	url := fmt.Sprintf("%s://%s;%s", req.Language, req.Organization, req.Module)
 	logrus.Infof("looking up dependencies for %s", url)
 
-	traversalUtil := &TraversalUtil{ d.graphStore, req.Direction }
-	key := types.ExtractModuleKeyFromRequest(req)
+	traversalUtil := &TraversalUtil{d.graphStore, req.Direction}
+	key := ExtractModuleKeyFromRequest(req)
 
-	dependencies, err := traversalUtil.GetAdjacent(key, []string{ types.DependsType })
+	dependencies, err := traversalUtil.GetAdjacent(key, []string{types.DependsType})
 	if err != nil {
 		logrus.Errorf("failed to fetch dependencies: %s, %v", url, err)
 		return dtsapi.ErrModuleNotFound
 	}
 
 	for _, dep := range dependencies {
-		item, err := types.Decode(dep)
+		item, err := services.Decode(dep)
 		if err != nil {
 			// type / encoding problem, skip
 			logrus.Errorf("[service.dts] failed to decode dependency: %v", err)
 			continue
 		}
 
-		module := item.(*types.Module)
+		module := item.(*schema.Module)
 		response := &dtsapi.Response{
 			Dependency: &dtsapi.DependencyId{
-				Language: module.Language,
-				Organization: module.Organization,
-				Module: module.Module,
+				Language:     module.GetLanguage(),
+				Organization: module.GetOrganization(),
+				Module:       module.GetModule(),
 			},
 		}
 
@@ -136,17 +132,20 @@ func (d *dependencyTrackingService) GetDependencies(req *dtsapi.Request, resp dt
 }
 
 func (d *dependencyTrackingService) GetManaged(ctx context.Context, req *dtsapi.GetManagedRequest) (*dtsapi.GetManagedResponse, error) {
-	key := types.ExtractSourceKey(req)
+	key := ExtractSourceKey(req)
 
-	managed, err := d.graphStore.FindUpstream(key, []string{ types.ManagesType })
+	managed, err := d.graphStore.FindUpstream(context.Background(), &store.FindRequest{
+		Key:       key,
+		EdgeTypes: []string{types.ManagesType},
+	})
 	if err != nil {
 		logrus.Errorf("failed to fetch managed: %s, %v", req.Url, err)
 		return nil, dtsapi.ErrModuleNotFound
 	}
 
-	depIds := make([]*dtsapi.DependencyId, 0, len(managed))
-	for _, dep := range managed {
-		item, err := types.Decode(dep)
+	depIds := make([]*dtsapi.DependencyId, 0, len(managed.GetPairs()))
+	for _, dep := range managed.GetPairs() {
+		item, err := services.Decode(dep.GetNode())
 
 		if err != nil {
 			// type / encoding problem, skip
@@ -154,16 +153,16 @@ func (d *dependencyTrackingService) GetManaged(ctx context.Context, req *dtsapi.
 			continue
 		}
 
-		module := item.(*types.Module)
+		module := item.(*schema.Module)
 		depIds = append(depIds, &dtsapi.DependencyId{
-			Language: module.Language,
-			Organization: module.Organization,
-			Module: module.Module,
+			Language:     module.GetLanguage(),
+			Organization: module.GetOrganization(),
+			Module:       module.GetModule(),
 		})
 	}
 
 	return &dtsapi.GetManagedResponse{
-		Url: req.Url,
+		Url:     req.Url,
 		Managed: depIds,
 	}, nil
 }
@@ -177,26 +176,29 @@ func (d *dependencyTrackingService) GetTopologyTiered(req *dtsapi.Request, resp 
 }
 
 func (d *dependencyTrackingService) GetSources(req *dtsapi.GetSourcesRequest, resp dtsapi.DependencyTracker_GetSourcesServer) error {
-	key := types.ExtractModuleKeyFromGetSourcesRequest(req)
+	key := ExtractModuleKeyFromGetSourcesRequest(req)
 
-	sources, err := d.graphStore.FindDownstream(key, []string{ types.ManagesType })
+	sources, err := d.graphStore.FindDownstream(context.Background(), &store.FindRequest{
+		Key:       key,
+		EdgeTypes: []string{types.ManagesType},
+	})
 	if err != nil {
 		logrus.Errorf("failed to fetch sources: %s, %v", req, err)
 		return dtsapi.ErrModuleNotFound
 	}
 
-	for _, source := range sources {
-		item, err := types.Decode(source)
+	for _, source := range sources.GetPairs() {
+		item, err := services.Decode(source.GetNode())
 		if err != nil {
 			// type / encoding problem, skip
 			logrus.Errorf("[service.dts] failed to decode source: %v", err)
 			continue
 		}
 
-		source := item.(*types.Source)
+		source := item.(*schema.Source)
 		response := &dtsapi.GetSourcesResponse{
 			Source: &dtsapi.SourceInformation{
-				Url: source.URL,
+				Url: source.GetUrl(),
 			},
 		}
 

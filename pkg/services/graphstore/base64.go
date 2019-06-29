@@ -1,4 +1,4 @@
-package store
+package graphstore
 
 import "encoding/base64"
 

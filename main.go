@@ -6,12 +6,19 @@ import (
 	"net"
 
 	"github.com/deps-cloud/dts/api"
+	"github.com/deps-cloud/dts/api/v1alpha/store"
 	"github.com/deps-cloud/dts/pkg/service"
-	"github.com/deps-cloud/dts/pkg/store"
+	"github.com/deps-cloud/dts/pkg/services"
+	"github.com/deps-cloud/dts/pkg/services/graphstore"
+
 	_ "github.com/go-sql-driver/mysql"
+
 	_ "github.com/mattn/go-sqlite3"
+
 	"github.com/sirupsen/logrus"
+
 	"github.com/spf13/cobra"
+
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/health"
 	healthpb "google.golang.org/grpc/health/grpc_health_v1"
@@ -23,6 +30,23 @@ func panicIff(err error) {
 	}
 }
 
+func registerV1Alpha(rwdb, rodb *sql.DB, server *grpc.Server) {
+	graphStore, err := graphstore.NewSQLGraphStore(rwdb, rodb)
+	panicIff(err)
+
+	graphStoreClient := store.NewInProcessGraphStoreClient(graphStore)
+
+	// poc
+	dts, _ := service.NewDependencyTrackingService(graphStoreClient)
+	api.RegisterDependencyTrackerServer(server, dts)
+
+	// v1alpha
+	services.RegisterDependencyService(server, graphStoreClient)
+	services.RegisterModuleService(server, graphStoreClient)
+	services.RegisterSourceService(server, graphStoreClient)
+	services.RegisterTopologyService(server, graphStoreClient)
+}
+
 func main() {
 	configPath := "${HOME}/.dts/config.yaml"
 	port := 8090
@@ -31,7 +55,7 @@ func main() {
 	storageReadOnlyAddress := ""
 
 	cmd := &cobra.Command{
-		Use: "dts",
+		Use:   "dts",
 		Short: "dts runs the dependency tracking service.",
 		Run: func(cmd *cobra.Command, args []string) {
 			rwdb, err := sql.Open(storageDriver, storageAddress)
@@ -43,19 +67,9 @@ func main() {
 				panicIff(err)
 			}
 
-			graphStore, err := store.NewSQLGraphStore(rwdb, rodb)
-			panicIff(err)
-
-			dts, err := service.NewDependencyTrackingService(graphStore)
-			panicIff(err)
-
-			healthcheck := health.NewServer()
-			// toggle the service health as such
-			// healthcheck.SetServingStatus("", healthpb.HealthCheckResponse_NOT_SERVING)
-
 			server := grpc.NewServer()
-			api.RegisterDependencyTrackerServer(server, dts)
-			healthpb.RegisterHealthServer(server, healthcheck)
+			healthpb.RegisterHealthServer(server, health.NewServer())
+			registerV1Alpha(rwdb, rodb, server)
 
 			// setup server
 			address := fmt.Sprintf(":%d", port)
