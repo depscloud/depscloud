@@ -7,12 +7,16 @@ import (
 
 	desapi "github.com/deps-cloud/des/api"
 	"github.com/deps-cloud/dis/internal/consumer"
-	dtsapi "github.com/deps-cloud/dts/api"
+	"github.com/deps-cloud/dts/api/v1alpha"
 	"github.com/deps-cloud/rds/pkg/config"
 	"github.com/deps-cloud/rds/pkg/remotes"
+
 	"github.com/sirupsen/logrus"
+
 	"github.com/spf13/cobra"
+
 	"google.golang.org/grpc"
+
 	"gopkg.in/src-d/go-git.v4/plumbing/transport"
 	"gopkg.in/src-d/go-git.v4/plumbing/transport/ssh"
 )
@@ -86,11 +90,11 @@ func main() {
 		Short: "dependency indexing service",
 		Run: func(cmd *cobra.Command, args []string) {
 			desClient := desapi.NewDependencyExtractorClient(dial(desAddress))
-			dtsClient := dtsapi.NewDependencyTrackerClient(dial(dtsAddress))
+			sourceService := v1alpha.NewSourceServiceClient(dial(dtsAddress))
 
 			rdsConfig := &config.Configuration{
 				Accounts: []*config.Account{
-					{ Rds: &config.Rds{ Target: rdsAddress } },
+					{Rds: &config.Rds{Target: rdsAddress}},
 				},
 			}
 
@@ -115,7 +119,7 @@ func main() {
 			repositories := make(chan string, workers)
 			done := make(chan bool, workers)
 
-			rc := consumer.NewConsumer(authMethod, desClient, dtsClient)
+			rc := consumer.NewConsumer(authMethod, desClient, sourceService)
 			for i := 0; i < workers; i++ {
 				go NewWorker(repositories, done, rc)
 			}

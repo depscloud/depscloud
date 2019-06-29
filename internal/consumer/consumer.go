@@ -3,13 +3,15 @@ package consumer
 import (
 	"context"
 	"io/ioutil"
-	"net/http"
 	"os"
 	"path/filepath"
 
 	desapi "github.com/deps-cloud/des/api"
-	dtsapi "github.com/deps-cloud/dts/api"
+	"github.com/deps-cloud/dts/api/v1alpha"
+	"github.com/deps-cloud/dts/api/v1alpha/schema"
+
 	"github.com/sirupsen/logrus"
+
 	"gopkg.in/src-d/go-billy.v4/osfs"
 	"gopkg.in/src-d/go-git.v4"
 	"gopkg.in/src-d/go-git.v4/plumbing/cache"
@@ -25,20 +27,20 @@ type RepositoryConsumer interface {
 // NewConsumer creates a consumer process that is agnostic to the ingress channel.
 func NewConsumer(
 	authMethod transport.AuthMethod,
-	desClient  desapi.DependencyExtractorClient,
-	dtsClient  dtsapi.DependencyTrackerClient,
+	desClient desapi.DependencyExtractorClient,
+	sourceService v1alpha.SourceServiceClient,
 ) RepositoryConsumer {
 	return &consumer{
-		authMethod: authMethod,
-		desClient: desClient,
-		dtsClient: dtsClient,
+		authMethod:    authMethod,
+		desClient:     desClient,
+		sourceService: sourceService,
 	}
 }
 
 type consumer struct {
-	authMethod transport.AuthMethod
-	desClient  desapi.DependencyExtractorClient
-	dtsClient  dtsapi.DependencyTrackerClient
+	authMethod    transport.AuthMethod
+	desClient     desapi.DependencyExtractorClient
+	sourceService v1alpha.SourceServiceClient
 }
 
 var _ RepositoryConsumer = &consumer{}
@@ -139,22 +141,16 @@ func (c *consumer) Consume(repository string) {
 	}
 
 	logrus.Infof("[%s] storing dependencies", repository)
-	resp, err := c.dtsClient.Put(context.Background(), &dtsapi.PutRequest{
-		SourceInformation: &dtsapi.SourceInformation{
+	_, err = c.sourceService.Track(context.Background(), &v1alpha.SourceRequest{
+		Source: &schema.Source{
 			Url: repository,
 		},
-		ManagementFiles: extractResponse.ManagementFiles,
+		ManagementFiles: extractResponse.GetManagementFiles(),
 	})
 
 	if err != nil {
 		logrus.Errorf("failed to update deps for repo: %s, %v", repository, err)
 		return
-	}
-
-	if resp.Code != http.StatusOK {
-		logrus.Errorf("[%s] %s", repository, resp.Message)
-	} else {
-		logrus.Infof("[%s] %s", repository, resp.Message)
 	}
 
 	logrus.Infof("[%s] cleaning up file system", repository)
