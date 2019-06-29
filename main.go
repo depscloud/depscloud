@@ -4,14 +4,18 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
-	"github.com/spf13/cobra"
-	"golang.org/x/net/context"
-	"google.golang.org/grpc"
-
 	desapi "github.com/deps-cloud/des/api"
 	dtsapi "github.com/deps-cloud/dts/api"
+	"github.com/deps-cloud/dts/api/v1alpha"
 	rdsapi "github.com/deps-cloud/rds/api"
+
+	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+
+	"github.com/spf13/cobra"
+
+	"golang.org/x/net/context"
+
+	"google.golang.org/grpc"
 )
 
 func panicIff(err error) {
@@ -35,12 +39,24 @@ func main() {
 			opts := []grpc.DialOption{
 				grpc.WithInsecure(),
 			}
-			
+
 			mux := runtime.NewServeMux()
 
 			ctx := context.Background()
 
-			err := dtsapi.RegisterDependencyTrackerHandlerFromEndpoint(ctx, mux, dtsAddress, opts)
+			err := v1alpha.RegisterSourceServiceHandlerFromEndpoint(ctx, mux, dtsAddress, opts)
+			panicIff(err)
+
+			err = v1alpha.RegisterModuleServiceHandlerFromEndpoint(ctx, mux, dtsAddress, opts)
+			panicIff(err)
+
+			err = v1alpha.RegisterDependencyServiceHandlerFromEndpoint(ctx, mux, dtsAddress, opts)
+			panicIff(err)
+
+			err = v1alpha.RegisterTopologyServiceHandlerFromEndpoint(ctx, mux, dtsAddress, opts)
+			panicIff(err)
+
+			err = dtsapi.RegisterDependencyTrackerHandlerFromEndpoint(ctx, mux, dtsAddress, opts)
 			panicIff(err)
 
 			err = desapi.RegisterDependencyExtractorHandlerFromEndpoint(ctx, mux, desAddress, opts)
