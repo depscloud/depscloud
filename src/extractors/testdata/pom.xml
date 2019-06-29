@@ -14,12 +14,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>groupId</groupId>
-            <artifactId>artifactId</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-
-        <dependency>
             <groupId>compileGroupId</groupId>
             <artifactId>compileArtifactId</artifactId>
             <version>1.0.0</version>

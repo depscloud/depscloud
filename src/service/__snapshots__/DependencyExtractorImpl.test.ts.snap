@@ -1101,14 +1101,6 @@ Array [
         "versionConstraint": "1.0",
       },
       Object {
-        "module": "artifactId",
-        "organization": "groupId",
-        "scopes": Array [
-          "compile",
-        ],
-        "versionConstraint": "1.0.0",
-      },
-      Object {
         "module": "compileArtifactId",
         "organization": "compileGroupId",
         "scopes": Array [
