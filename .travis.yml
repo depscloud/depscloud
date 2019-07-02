@@ -27,5 +27,5 @@ deploy:
   file_glob: true
   file: bin/*
   on:
-    repo: deps-cloud/dts
+    repo: deps-cloud/tracker
     tags: true
