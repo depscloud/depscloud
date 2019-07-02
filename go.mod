@@ -1,4 +1,4 @@
-module github.com/deps-cloud/dependency-extractor
+module github.com/deps-cloud/extractor
 
 go 1.12
 

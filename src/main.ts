@@ -10,7 +10,7 @@ import health = require("grpc-health-check/health");
 
 const logger = getLogger();
 
-program.name("dependency-extractor")
+program.name("extractor")
     .option("--port <port>", "The port to bind to.", program.INT)
     .action(async (args: any, options: any) => {
         configure({
