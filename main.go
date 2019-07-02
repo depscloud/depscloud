@@ -5,11 +5,11 @@ import (
 	"sync"
 	"time"
 
-	desapi "github.com/deps-cloud/des/api"
-	"github.com/deps-cloud/dis/internal/consumer"
-	"github.com/deps-cloud/dts/api/v1alpha"
-	"github.com/deps-cloud/rds/pkg/config"
-	"github.com/deps-cloud/rds/pkg/remotes"
+	"github.com/deps-cloud/discovery/pkg/config"
+	"github.com/deps-cloud/discovery/pkg/remotes"
+	desapi "github.com/deps-cloud/extractor/api"
+	"github.com/deps-cloud/indexer/internal/consumer"
+	"github.com/deps-cloud/tracker/api/v1alpha"
 
 	"github.com/sirupsen/logrus"
 
@@ -86,7 +86,7 @@ func main() {
 	sshKeyPath := ""
 
 	cmd := &cobra.Command{
-		Use:   "dis",
+		Use:   "indexer",
 		Short: "dependency indexing service",
 		Run: func(cmd *cobra.Command, args []string) {
 			desClient := desapi.NewDependencyExtractorClient(dial(desAddress))

@@ -6,9 +6,9 @@ import (
 	"os"
 	"path/filepath"
 
-	desapi "github.com/deps-cloud/des/api"
-	"github.com/deps-cloud/dts/api/v1alpha"
-	"github.com/deps-cloud/dts/api/v1alpha/schema"
+	desapi "github.com/deps-cloud/extractor/api"
+	"github.com/deps-cloud/tracker/api/v1alpha"
+	"github.com/deps-cloud/tracker/api/v1alpha/schema"
 
 	"github.com/sirupsen/logrus"
 
