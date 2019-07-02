@@ -98,13 +98,22 @@ func (gs *graphStore) Put(ctx context.Context, req *store.PutRequest) (*store.Pu
 	timestamp := time.Now()
 	errors := make([]error, 0)
 
+	tx, err := gs.rwdb.Begin()
+	if err != nil {
+		return nil, err
+	}
+
 	for _, item := range req.GetItems() {
-		_, err := gs.rwdb.Exec(insertGraphData,
+		_, err := tx.Exec(insertGraphData,
 			item.GetGraphItemType(), Base64encode(item.GetK1()), Base64encode(item.GetK2()),
 			item.GetEncoding(), string(item.GetGraphItemData()), timestamp)
 		if err != nil {
 			errors = append(errors, err)
 		}
+	}
+
+	if err := tx.Commit(); err != nil {
+		return nil, err
 	}
 
 	if len(errors) > 0 {
@@ -129,12 +138,21 @@ func (gs *graphStore) Delete(ctx context.Context, req *store.DeleteRequest) (*st
 	timestamp := time.Now()
 	errors := make([]error, 0)
 
+	tx, err := gs.rwdb.Begin()
+	if err != nil {
+		return nil, err
+	}
+
 	for _, key := range req.GetItems() {
-		_, err := gs.rwdb.Exec(deleteGraphData, timestamp, key.GetGraphItemType(),
+		_, err := tx.Exec(deleteGraphData, timestamp, key.GetGraphItemType(),
 			Base64encode(key.GetK1()), Base64encode(key.GetK2()))
 		if err != nil {
 			errors = append(errors, err)
 		}
+	}
+
+	if err := tx.Commit(); err != nil {
+		return nil, err
 	}
 
 	if len(errors) > 0 {
