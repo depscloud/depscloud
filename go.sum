@@ -11,8 +11,8 @@ github.com/coreos/go-semver v0.2.0/go.mod h1:nnelYz7RCh+5ahJtPPxZlU+153eP4D4r3Ee
 github.com/cpuguy83/go-md2man v1.0.10/go.mod h1:SmD6nW6nTyfqj6ABTjUi3V3JVMnlJmwcJI5acqYI6dE=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
-github.com/deps-cloud/des v0.1.2 h1:ZW1HCzBR2smyyPANxtqmTRjkujdRUP+Y6JtWP6MYK5k=
-github.com/deps-cloud/des v0.1.2/go.mod h1:ysptXv7LoQEnulrk6iYx8kYPCdyilrm+n63q4mzNP2Q=
+github.com/deps-cloud/extractor v0.1.9 h1:XTno8aJA7ge8m7SGQqzxvFRTc2zufcOrOJWbgIdpt8o=
+github.com/deps-cloud/extractor v0.1.9/go.mod h1:b/VPHjHq91SrL3K3vIqXvQm1VUf/NBGqoaY7ZrUi1HM=
 github.com/fsnotify/fsnotify v1.4.7/go.mod h1:jwhsz4b93w/PPRr/qN1Yymfu8t87LnFCMoQvtojpjFo=
 github.com/ghodss/yaml v1.0.0/go.mod h1:4dBDuWmgqj2HViK6kFavaiC9ZROes6MMH2rRYeMEF04=
 github.com/go-sql-driver/mysql v1.4.1 h1:g24URVg0OFbNUTx9qqY1IRZ9D9z3iPyi5zKhQZpNwpA=

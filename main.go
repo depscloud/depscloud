@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"net"
 
-	"github.com/deps-cloud/dts/api"
-	"github.com/deps-cloud/dts/api/v1alpha/store"
-	"github.com/deps-cloud/dts/pkg/service"
-	"github.com/deps-cloud/dts/pkg/services"
-	"github.com/deps-cloud/dts/pkg/services/graphstore"
+	"github.com/deps-cloud/tracker/api"
+	"github.com/deps-cloud/tracker/api/v1alpha/store"
+	"github.com/deps-cloud/tracker/pkg/service"
+	"github.com/deps-cloud/tracker/pkg/services"
+	"github.com/deps-cloud/tracker/pkg/services/graphstore"
 
 	_ "github.com/go-sql-driver/mysql"
 
@@ -55,8 +55,8 @@ func main() {
 	storageReadOnlyAddress := ""
 
 	cmd := &cobra.Command{
-		Use:   "dts",
-		Short: "dts runs the dependency tracking service.",
+		Use:   "tracker",
+		Short: "tracker runs the dependency tracking service.",
 		Run: func(cmd *cobra.Command, args []string) {
 			rwdb, err := sql.Open(storageDriver, storageAddress)
 			panicIff(err)

@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/deps-cloud/dts/api/v1alpha/schema"
-	"github.com/deps-cloud/dts/api/v1alpha/store"
-	"github.com/deps-cloud/dts/pkg/types"
+	"github.com/deps-cloud/tracker/api/v1alpha/schema"
+	"github.com/deps-cloud/tracker/api/v1alpha/store"
+	"github.com/deps-cloud/tracker/pkg/types"
 )
 
 // Decode turns the provided GraphItem into the corresponding schmea type

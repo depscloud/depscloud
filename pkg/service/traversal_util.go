@@ -3,8 +3,8 @@ package service
 import (
 	"context"
 
-	"github.com/deps-cloud/dts/api"
-	"github.com/deps-cloud/dts/api/v1alpha/store"
+	"github.com/deps-cloud/tracker/api"
+	"github.com/deps-cloud/tracker/api/v1alpha/store"
 )
 
 // TraversalUtil encapsulates logic for traversing the dependency graph in the

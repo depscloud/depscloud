@@ -3,12 +3,12 @@ package service_test
 import (
 	"testing"
 
-	desapi "github.com/deps-cloud/des/api"
-	dtsapi "github.com/deps-cloud/dts/api"
-	"github.com/deps-cloud/dts/api/v1alpha/store"
-	"github.com/deps-cloud/dts/pkg/service"
-	"github.com/deps-cloud/dts/pkg/services/graphstore"
-	"github.com/deps-cloud/dts/pkg/types"
+	desapi "github.com/deps-cloud/extractor/api"
+	dtsapi "github.com/deps-cloud/tracker/api"
+	"github.com/deps-cloud/tracker/api/v1alpha/store"
+	"github.com/deps-cloud/tracker/pkg/service"
+	"github.com/deps-cloud/tracker/pkg/services/graphstore"
+	"github.com/deps-cloud/tracker/pkg/types"
 
 	"github.com/gogo/protobuf/proto"
 

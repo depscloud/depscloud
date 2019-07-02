@@ -4,9 +4,9 @@ import (
 	"database/sql"
 	"testing"
 
-	"github.com/deps-cloud/dts/api"
-	"github.com/deps-cloud/dts/api/v1alpha/store"
-	"github.com/deps-cloud/dts/pkg/services/graphstore"
+	"github.com/deps-cloud/tracker/api"
+	"github.com/deps-cloud/tracker/api/v1alpha/store"
+	"github.com/deps-cloud/tracker/pkg/services/graphstore"
 
 	_ "github.com/mattn/go-sqlite3"
 

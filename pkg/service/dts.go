@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"net/http"
 
-	dtsapi "github.com/deps-cloud/dts/api"
-	"github.com/deps-cloud/dts/api/v1alpha/schema"
-	"github.com/deps-cloud/dts/api/v1alpha/store"
-	"github.com/deps-cloud/dts/pkg/services"
-	"github.com/deps-cloud/dts/pkg/types"
+	dtsapi "github.com/deps-cloud/tracker/api"
+	"github.com/deps-cloud/tracker/api/v1alpha/schema"
+	"github.com/deps-cloud/tracker/api/v1alpha/store"
+	"github.com/deps-cloud/tracker/pkg/services"
+	"github.com/deps-cloud/tracker/pkg/types"
 
 	"github.com/sirupsen/logrus"
 

@@ -1,9 +1,9 @@
 package services
 
 import (
-	"github.com/deps-cloud/dts/api"
-	"github.com/deps-cloud/dts/api/v1alpha"
-	"github.com/deps-cloud/dts/api/v1alpha/store"
+	"github.com/deps-cloud/tracker/api"
+	"github.com/deps-cloud/tracker/api/v1alpha"
+	"github.com/deps-cloud/tracker/api/v1alpha/store"
 
 	"google.golang.org/grpc"
 )
