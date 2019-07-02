@@ -25,14 +25,13 @@ install:
 
 deploy:
 	mkdir -p bin
-	gox -os="windows linux darwin" -arch="amd64 386" -output="bin/{{.Dir}}_{{.OS}}_{{.Arch}}"
-	gox -os="linux" -arch="arm" -output="bin/{{.Dir}}_{{.OS}}_{{.Arch}}"
-	GOOS=linux GOARCH=arm64 go build -o bin/dts_linux_arm64
+	gox -os="windows darwin" -arch="amd64 386" -output="bin/{{.Dir}}_{{.OS}}_{{.Arch}}"
+	gox -os="linux" -arch="amd64 386 arm arm64" -output="bin/{{.Dir}}_{{.OS}}_{{.Arch}}"
 
 docker:
-	docker build -t depscloud/dts:latest -f Dockerfile.dev .
+	docker build -t depscloud/tracker:latest -f Dockerfile.dev .
 
 dockerx:
-	docker buildx rm depscloud--dts || echo "depscloud--dts does not exist"
-	docker buildx create --name depscloud--dts --use
-	docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t depscloud/dts:latest .
+	docker buildx rm depscloud--tracker || echo "depscloud--tracker does not exist"
+	docker buildx create --name depscloud--tracker --use
+	docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t depscloud/tracker:latest .

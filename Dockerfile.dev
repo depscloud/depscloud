@@ -4,14 +4,14 @@ RUN go get golang.org/x/lint/golint
 
 ENV GO111MODULE on
 
-WORKDIR /go/src/dts
+WORKDIR /go/src/tracker
 
 COPY . .
 
 RUN make deps && make test && make install
 
-RUN useradd -ms /bin/sh dts
-WORKDIR /home/dts
-USER dts
+RUN useradd -ms /bin/sh tracker
+WORKDIR /home/tracker
+USER tracker
 
-ENTRYPOINT [ "dts" ]
+ENTRYPOINT [ "tracker" ]

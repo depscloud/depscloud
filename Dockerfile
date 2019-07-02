@@ -2,10 +2,10 @@ FROM depscloud/base:latest
 
 ARG VERSION=0.0.1
 
-RUN install-depscloud-binary dts ${VERSION}
+RUN install-depscloud-binary tracker ${VERSION}
 
-RUN useradd -ms /bin/sh dts
-WORKDIR /home/dts
-USER dts
+RUN useradd -ms /bin/sh tracker
+WORKDIR /home/tracker
+USER tracker
 
-ENTRYPOINT [ "dts" ]
+ENTRYPOINT [ "tracker" ]

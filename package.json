@@ -1,9 +1,9 @@
 {
-  "name": "@deps-cloud/dts",
+  "name": "@deps-cloud/tracker",
   "description": "Dependency tracking service",
   "version": "0.1.1",
   "repository": {
     "type": "git",
-    "url": "git@github.com:deps-cloud/dts.git"
+    "url": "git@github.com:deps-cloud/tracker.git"
   }
 }
