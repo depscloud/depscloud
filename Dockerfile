@@ -3,8 +3,8 @@ FROM node:10
 ARG VERSION=0.1.2
 
 RUN curl -L -o des.zip https://github.com/deps-cloud/des/archive/v${VERSION}.zip && \
-    unzip des.zip && \
-    mv des-${VERSION} /app
+    unzip dependency-extractor.zip && \
+    mv dependency-extractor-${VERSION} /app
 
 WORKDIR /app
 

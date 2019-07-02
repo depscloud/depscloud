@@ -1,5 +1,5 @@
 {
-  "name": "@deps-cloud/des",
+  "name": "@deps-cloud/dependency-extractor",
   "version": "0.1.7",
   "scripts": {
     "build": "tsc",
@@ -7,13 +7,13 @@
     "test": "jest --coverage",
     "start": "node lib/main.js",
     "clean": "rm -rf coverage lib node_modules",
-    "docker": "docker build -t depscloud/des:latest -f Dockerfile.dev .",
-    "predockerx": "docker buildx rm depscloud--des || echo \"depscloud--des does not exist\"; docker buildx create --append --name depscloud--des --use",
-    "dockerx": "docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t depscloud/des:latest ."
+    "docker": "docker build -t depscloud/dependency-extractor:latest -f Dockerfile.dev .",
+    "predockerx": "docker buildx rm depscloud--dependency-extractor || echo \"depscloud--dependency-extractor does not exist\"; docker buildx create --append --name depscloud--dependency-extractor --use",
+    "dockerx": "docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t depscloud/dependency-extractor:latest ."
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:deps-cloud/des.git"
+    "url": "git@github.com:deps-cloud/dependency-extractor.git"
   },
   "devDependencies": {
     "@types/cheerio": "^0.22.10",
