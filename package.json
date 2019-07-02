@@ -1,6 +1,6 @@
 {
   "name": "@deps-cloud/dependency-extractor",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "scripts": {
     "build": "tsc",
     "lint": "tslint --fix src/**/*.ts",
