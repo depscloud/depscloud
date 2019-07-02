@@ -1,6 +1,6 @@
 {
   "name": "@deps-cloud/extractor",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "scripts": {
     "build": "tsc",
     "lint": "tslint --fix src/**/*.ts",
