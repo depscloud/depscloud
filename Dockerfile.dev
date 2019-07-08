@@ -4,14 +4,14 @@ RUN go get golang.org/x/lint/golint
 
 ENV GO111MODULE on
 
-WORKDIR /go/src/dis
+WORKDIR /go/src/indexer
 
 COPY . .
 
 RUN make deps && make test && make install
 
-RUN useradd -ms /bin/sh dis
-WORKDIR /home/dis
-USER dis
+RUN useradd -ms /bin/sh indexer
+WORKDIR /home/indexer
+USER indexer
 
-ENTRYPOINT [ "dis" ]
+ENTRYPOINT [ "indexer" ]

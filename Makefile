@@ -24,9 +24,9 @@ deploy:
 	gox -os="linux" -arch="amd64 386 arm arm64" -output="bin/{{.Dir}}_{{.OS}}_{{.Arch}}"
 
 docker:
-	docker build -t depscloud/dis:latest -f Dockerfile.dev .
+	docker build -t depscloud/indexer:latest -f Dockerfile.dev .
 
 dockerx:
-	docker buildx rm depscloud--dis || echo "depscloud--dis does not exist"
-	docker buildx create --name depscloud--dis --use
-	docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t depscloud/dis:latest .
+	docker buildx rm depscloud--indexer || echo "depscloud--indexer does not exist"
+	docker buildx create --name depscloud--indexer --use
+	docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t depscloud/indexer:latest .
