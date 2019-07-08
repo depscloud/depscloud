@@ -26,13 +26,13 @@ func panicIff(err error) {
 
 func main() {
 	port := 8080
-	rdsAddress := "rds:8090"
-	desAddress := "des:8090"
-	dtsAddress := "dts:8090"
+	discoveryAddress := "discovery:8090"
+	extractorAddress := "extractor:8090"
+	trackerAddress := "tracker:8090"
 
 	cmd := &cobra.Command{
 		Use:   "gateway",
-		Short: "",
+		Short: "Start up an HTTP proxy for the gRPC services",
 		Run: func(cmd *cobra.Command, args []string) {
 			address := fmt.Sprintf(":%d", port)
 
@@ -44,25 +44,25 @@ func main() {
 
 			ctx := context.Background()
 
-			err := v1alpha.RegisterSourceServiceHandlerFromEndpoint(ctx, mux, dtsAddress, opts)
+			err := v1alpha.RegisterSourceServiceHandlerFromEndpoint(ctx, mux, trackerAddress, opts)
 			panicIff(err)
 
-			err = v1alpha.RegisterModuleServiceHandlerFromEndpoint(ctx, mux, dtsAddress, opts)
+			err = v1alpha.RegisterModuleServiceHandlerFromEndpoint(ctx, mux, trackerAddress, opts)
 			panicIff(err)
 
-			err = v1alpha.RegisterDependencyServiceHandlerFromEndpoint(ctx, mux, dtsAddress, opts)
+			err = v1alpha.RegisterDependencyServiceHandlerFromEndpoint(ctx, mux, trackerAddress, opts)
 			panicIff(err)
 
-			err = v1alpha.RegisterTopologyServiceHandlerFromEndpoint(ctx, mux, dtsAddress, opts)
+			err = v1alpha.RegisterTopologyServiceHandlerFromEndpoint(ctx, mux, trackerAddress, opts)
 			panicIff(err)
 
-			err = dtsapi.RegisterDependencyTrackerHandlerFromEndpoint(ctx, mux, dtsAddress, opts)
+			err = dtsapi.RegisterDependencyTrackerHandlerFromEndpoint(ctx, mux, trackerAddress, opts)
 			panicIff(err)
 
-			err = desapi.RegisterDependencyExtractorHandlerFromEndpoint(ctx, mux, desAddress, opts)
+			err = desapi.RegisterDependencyExtractorHandlerFromEndpoint(ctx, mux, extractorAddress, opts)
 			panicIff(err)
 
-			err = rdsapi.RegisterRepositoryDiscoveryHandlerFromEndpoint(ctx, mux, rdsAddress, opts)
+			err = rdsapi.RegisterRepositoryDiscoveryHandlerFromEndpoint(ctx, mux, discoveryAddress, opts)
 			panicIff(err)
 
 			err = http.ListenAndServe(address, mux)
@@ -72,9 +72,9 @@ func main() {
 
 	flags := cmd.Flags()
 	flags.IntVar(&port, "port", port, "(optional) the port to run on")
-	flags.StringVar(&rdsAddress, "discovery-address", rdsAddress, "(optional) address to rds")
-	flags.StringVar(&desAddress, "extractor-address", desAddress, "(optional) address to des")
-	flags.StringVar(&dtsAddress, "tracker-address", dtsAddress, "(optional) address to dts")
+	flags.StringVar(&discoveryAddress, "discovery-address", discoveryAddress, "(optional) address to rds")
+	flags.StringVar(&extractorAddress, "extractor-address", extractorAddress, "(optional) address to des")
+	flags.StringVar(&trackerAddress, "tracker-address", trackerAddress, "(optional) address to dts")
 
 	err := cmd.Execute()
 	panicIff(err)
