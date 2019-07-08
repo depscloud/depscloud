@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"net/http"
 
-	desapi "github.com/deps-cloud/des/api"
-	dtsapi "github.com/deps-cloud/dts/api"
-	"github.com/deps-cloud/dts/api/v1alpha"
-	rdsapi "github.com/deps-cloud/rds/api"
+	rdsapi "github.com/deps-cloud/discovery/api"
+	desapi "github.com/deps-cloud/extractor/api"
+	dtsapi "github.com/deps-cloud/tracker/api"
+	"github.com/deps-cloud/tracker/api/v1alpha"
 
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 
@@ -72,9 +72,9 @@ func main() {
 
 	flags := cmd.Flags()
 	flags.IntVar(&port, "port", port, "(optional) the port to run on")
-	flags.StringVar(&rdsAddress, "rds-address", rdsAddress, "(optional) address to rds")
-	flags.StringVar(&desAddress, "des-address", desAddress, "(optional) address to des")
-	flags.StringVar(&dtsAddress, "dts-address", dtsAddress, "(optional) address to dts")
+	flags.StringVar(&rdsAddress, "discovery-address", rdsAddress, "(optional) address to rds")
+	flags.StringVar(&desAddress, "extractor-address", desAddress, "(optional) address to des")
+	flags.StringVar(&dtsAddress, "tracker-address", dtsAddress, "(optional) address to dts")
 
 	err := cmd.Execute()
 	panicIff(err)
