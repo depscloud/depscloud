@@ -76,9 +76,9 @@ func run(remote remotes.Remote, repositories chan string, done chan bool) error 
 func main() {
 	cron := false
 	workers := 5
-	rdsAddress := "rds:8090"
-	desAddress := "des:8090"
-	dtsAddress := "dts:8090"
+	discoveryAddress := "discovery:8090"
+	extractorAddress := "extractor:8090"
+	trackerAddress := "tracker:8090"
 
 	rdsConfigPath := ""
 
@@ -89,12 +89,12 @@ func main() {
 		Use:   "indexer",
 		Short: "dependency indexing service",
 		Run: func(cmd *cobra.Command, args []string) {
-			desClient := desapi.NewDependencyExtractorClient(dial(desAddress))
-			sourceService := v1alpha.NewSourceServiceClient(dial(dtsAddress))
+			desClient := desapi.NewDependencyExtractorClient(dial(extractorAddress))
+			sourceService := v1alpha.NewSourceServiceClient(dial(trackerAddress))
 
 			rdsConfig := &config.Configuration{
 				Accounts: []*config.Account{
-					{Rds: &config.Rds{Target: rdsAddress}},
+					{Rds: &config.Rds{Target: discoveryAddress}},
 				},
 			}
 
@@ -150,9 +150,9 @@ func main() {
 	flags.BoolVar(&cron, "cron", cron, "(optional) run the process as a cron job instead of a daemon")
 	flags.IntVar(&workers, "workers", workers, "(optional) number of workers to process repositories")
 	flags.StringVar(&rdsConfigPath, "rds-config", rdsConfigPath, "(optional) path to the rds config file")
-	flags.StringVar(&rdsAddress, "rds-address", rdsAddress, "(optional) address to rds")
-	flags.StringVar(&desAddress, "des-address", desAddress, "(optional) address to des")
-	flags.StringVar(&dtsAddress, "dts-address", dtsAddress, "(optional) address to dts")
+	flags.StringVar(&discoveryAddress, "discovery-address", discoveryAddress, "(optional) address to the discovery service")
+	flags.StringVar(&extractorAddress, "extractor-address", extractorAddress, "(optional) address to the extractor service")
+	flags.StringVar(&trackerAddress, "tracker-address", trackerAddress, "(optional) address to the tracker service")
 	flags.StringVar(&sshUser, "ssh-user", sshUser, "(optional) the ssh user, typically git")
 	flags.StringVar(&sshKeyPath, "ssh-keypath", sshKeyPath, "(optional) the path to the ssh key file")
 
