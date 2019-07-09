@@ -6,21 +6,11 @@ After parsing out the information, it returns a standard representation making i
 
 ## Support
 
-![GitHub](https://img.shields.io/github/license/deps-cloud/des.svg)
-[![Build Status](https://travis-ci.com/deps-cloud/des.svg?branch=master)](https://travis-ci.com/deps-cloud/des)
-[![](https://images.microbadger.com/badges/image/depscloud/des.svg)](https://microbadger.com/images/depscloud/des)
-[![](https://images.microbadger.com/badges/version/depscloud/des.svg)](https://microbadger.com/images/depscloud/des)
+![GitHub](https://img.shields.io/github/license/deps-cloud/extractor.svg)
+[![Build Status](https://travis-ci.com/deps-cloud/extractor.svg?branch=master)](https://travis-ci.com/deps-cloud/extractor)
+[![](https://images.microbadger.com/badges/image/depscloud/extractor.svg)](https://microbadger.com/images/depscloud/extractor)
+[![](https://images.microbadger.com/badges/version/depscloud/extractor.svg)](https://microbadger.com/images/depscloud/extractor)
 
 ## Getting Started
 
-A docker image is regularly built and uploaded to docker.io.
-
-```bash
-docker run --rm depscloud/des
-```
-
-If you make changes and want to test them out, you can run via a locally built docker image or using `npm start`.
-
-```bash
-docker build . -t depscloud/des
-```
+See [deps-cloud-project](https://github.com/deps-cloud/deps-cloud-project) for the Getting Started Guide.
