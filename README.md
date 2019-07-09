@@ -13,3 +13,4 @@ This system provides a storage backend so that dependencies can be stored, index
 
 ## Getting Started
 
+See [deps-cloud-project](https://github.com/deps-cloud/deps-cloud-project) for the Getting Started Guide.
