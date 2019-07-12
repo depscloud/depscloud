@@ -2,13 +2,12 @@ package graphstore
 
 import (
 	"context"
-	"database/sql"
-	"fmt"
-	"strings"
 	"time"
 
 	"github.com/deps-cloud/tracker/api"
 	"github.com/deps-cloud/tracker/api/v1alpha/store"
+
+	"github.com/jmoiron/sqlx"
 
 	"github.com/sirupsen/logrus"
 )
@@ -27,17 +26,17 @@ const createGraphDataTable = `CREATE TABLE IF NOT EXISTS dts_graphdata(
 // TODO: move away from this replace operation since it does a delete and insert
 const insertGraphData = `REPLACE INTO dts_graphdata 
 (graph_item_type, k1, k2, encoding, graph_item_data, last_modified, date_deleted)
-VALUES (?, ?, ?, ?, ?, ?, NULL);`
+VALUES (:graph_item_type, :k1, :k2, :encoding, :graph_item_data, :last_modified, NULL);`
 
 const deleteGraphData = `UPDATE dts_graphdata
-SET date_deleted = ?
-WHERE (graph_item_type = ? and k1 = ? and k2 = ?);`
+SET date_deleted = :date_deleted
+WHERE (graph_item_type = :graph_item_type and k1 = :k1 and k2 = :k2);`
 
 const listGraphData = `SELECT
 graph_item_type, k1, k2, encoding, graph_item_data
 FROM dts_graphdata
-WHERE graph_item_type = ? 
-LIMIT ? OFFSET ?;
+WHERE graph_item_type = :graph_item_type 
+LIMIT :limit OFFSET :offset;
 `
 
 const selectGraphDataUpstreamDependencies = `SELECT
@@ -45,8 +44,8 @@ g1.graph_item_type, g1.k1, g1.k2, g1.encoding, g1.graph_item_data,
 g2.graph_item_type, g2.k1, g2.k2, g2.encoding, g2.graph_item_data
 FROM dts_graphdata AS g1
 INNER JOIN dts_graphdata AS g2 ON g1.k1 = g2.k2
-WHERE g2.k1 = ? 
-AND g2.graph_item_type IN (%s) 
+WHERE g2.k1 = :key 
+AND g2.graph_item_type IN (:edge_types) 
 AND g2.k1 != g2.k2 
 AND g2.date_deleted IS NULL
 AND g1.k1 = g1.k2 
@@ -57,8 +56,8 @@ g1.graph_item_type, g1.k1, g1.k2, g1.encoding, g1.graph_item_data,
 g2.graph_item_type, g2.k1, g2.k2, g2.encoding, g2.graph_item_data
 FROM dts_graphdata AS g1
 INNER JOIN dts_graphdata AS g2 ON g1.k2 = g2.k1
-WHERE g2.k2 = ? 
-AND g2.graph_item_type IN (%s) 
+WHERE g2.k2 = :key 
+AND g2.graph_item_type IN (:edge_types) 
 AND g2.k1 != g2.k2 
 AND g2.date_deleted IS NULL
 AND g1.k1 = g1.k2 
@@ -66,7 +65,7 @@ AND g1.date_deleted IS NULL;`
 
 // NewSQLGraphStore constructs a new GraphStore with a sql driven backend. Current
 // queries support sqlite3 but should be able to work on mysql as well.
-func NewSQLGraphStore(rwdb, rodb *sql.DB) (store.GraphStoreServer, error) {
+func NewSQLGraphStore(rwdb, rodb *sqlx.DB) (store.GraphStoreServer, error) {
 	if rwdb != nil {
 		if _, err := rwdb.Exec(createGraphDataTable); err != nil {
 			return nil, err
@@ -80,8 +79,8 @@ func NewSQLGraphStore(rwdb, rodb *sql.DB) (store.GraphStoreServer, error) {
 }
 
 type graphStore struct {
-	rwdb *sql.DB
-	rodb *sql.DB
+	rwdb *sqlx.DB
+	rodb *sqlx.DB
 }
 
 var _ store.GraphStoreServer = &graphStore{}
@@ -98,15 +97,21 @@ func (gs *graphStore) Put(ctx context.Context, req *store.PutRequest) (*store.Pu
 	timestamp := time.Now()
 	errors := make([]error, 0)
 
-	tx, err := gs.rwdb.Begin()
+	tx, err := gs.rwdb.Beginx()
 	if err != nil {
 		return nil, err
 	}
 
 	for _, item := range req.GetItems() {
-		_, err := tx.Exec(insertGraphData,
-			item.GetGraphItemType(), Base64encode(item.GetK1()), Base64encode(item.GetK2()),
-			item.GetEncoding(), string(item.GetGraphItemData()), timestamp)
+		_, err := tx.NamedExec(insertGraphData, map[string]interface{}{
+			"graph_item_type": item.GetGraphItemType(),
+			"k1":              Base64encode(item.GetK1()),
+			"k2":              Base64encode(item.GetK2()),
+			"encoding":        item.GetEncoding(),
+			"graph_item_data": string(item.GetGraphItemData()),
+			"last_modified":   timestamp,
+		})
+
 		if err != nil {
 			errors = append(errors, err)
 		}
@@ -138,14 +143,18 @@ func (gs *graphStore) Delete(ctx context.Context, req *store.DeleteRequest) (*st
 	timestamp := time.Now()
 	errors := make([]error, 0)
 
-	tx, err := gs.rwdb.Begin()
+	tx, err := gs.rwdb.Beginx()
 	if err != nil {
 		return nil, err
 	}
 
 	for _, key := range req.GetItems() {
-		_, err := tx.Exec(deleteGraphData, timestamp, key.GetGraphItemType(),
-			Base64encode(key.GetK1()), Base64encode(key.GetK2()))
+		_, err := tx.NamedExec(deleteGraphData, map[string]interface{}{
+			"date_deleted":    timestamp,
+			"graph_item_type": key.GetGraphItemType(),
+			"k1":              Base64encode(key.GetK1()),
+			"k2":              Base64encode(key.GetK2()),
+		})
 		if err != nil {
 			errors = append(errors, err)
 		}
@@ -186,7 +195,11 @@ func (gs *graphStore) List(ctx context.Context, req *store.ListRequest) (*store.
 	limit := max(min(req.GetCount(), 100), 10)
 	offset := (page - 1) * limit
 
-	rows, err := gs.rodb.Query(listGraphData, graphItemType, limit, offset)
+	rows, err := gs.rodb.NamedQuery(listGraphData, map[string]interface{}{
+		"graph_item_type": graphItemType,
+		"limit":           limit,
+		"offset":          offset,
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -202,20 +215,20 @@ func (gs *graphStore) List(ctx context.Context, req *store.ListRequest) (*store.
 }
 
 func (gs *graphStore) FindUpstream(ctx context.Context, req *store.FindRequest) (*store.FindResponse, error) {
-	//strings.Join(make([]string, len(edgeTypes)))
-	edgeTypes := req.GetEdgeTypes()
-	arr := make([]string, 0, len(edgeTypes))
-	args := make([]interface{}, 0, len(edgeTypes)+1)
-	args = append(args, Base64encode(req.GetKey()))
-
-	for _, edgeType := range edgeTypes {
-		arr = append(arr, "?")
-		args = append(args, edgeType)
+	query, args, err := sqlx.Named(selectGraphDataUpstreamDependencies, map[string]interface{}{
+		"key":        Base64encode(req.GetKey()),
+		"edge_types": req.GetEdgeTypes(),
+	})
+	if err != nil {
+		return nil, err
 	}
 
-	statement := fmt.Sprintf(selectGraphDataUpstreamDependencies, strings.Join(arr, ", "))
+	query, args, err = sqlx.In(query, args...)
+	if err != nil {
+		return nil, err
+	}
 
-	rows, err := gs.rodb.Query(statement, args...)
+	rows, err := gs.rodb.Queryx(query, args...)
 	if err != nil {
 		return nil, err
 	}
@@ -231,20 +244,20 @@ func (gs *graphStore) FindUpstream(ctx context.Context, req *store.FindRequest) 
 }
 
 func (gs *graphStore) FindDownstream(ctx context.Context, req *store.FindRequest) (*store.FindResponse, error) {
-	//strings.Join(make([]string, len(edgeTypes)))
-	edgeTypes := req.GetEdgeTypes()
-	arr := make([]string, 0, len(edgeTypes))
-	args := make([]interface{}, 0, len(edgeTypes)+1)
-	args = append(args, Base64encode(req.GetKey()))
-
-	for _, edgeType := range edgeTypes {
-		arr = append(arr, "?")
-		args = append(args, edgeType)
+	query, args, err := sqlx.Named(selectGraphDataDownstreamDependencies, map[string]interface{}{
+		"key":        Base64encode(req.GetKey()),
+		"edge_types": req.GetEdgeTypes(),
+	})
+	if err != nil {
+		return nil, err
 	}
 
-	statement := fmt.Sprintf(selectGraphDataDownstreamDependencies, strings.Join(arr, ", "))
+	query, args, err = sqlx.In(query, args...)
+	if err != nil {
+		return nil, err
+	}
 
-	rows, err := gs.rodb.Query(statement, args...)
+	rows, err := gs.rodb.Queryx(query, args...)
 	if err != nil {
 		return nil, err
 	}
@@ -259,7 +272,7 @@ func (gs *graphStore) FindDownstream(ctx context.Context, req *store.FindRequest
 	}, nil
 }
 
-func readGraphItems(rows *sql.Rows) ([]*store.GraphItem, error) {
+func readGraphItems(rows *sqlx.Rows) ([]*store.GraphItem, error) {
 	defer rows.Close()
 
 	results := make([]*store.GraphItem, 0)
@@ -294,7 +307,7 @@ func readGraphItems(rows *sql.Rows) ([]*store.GraphItem, error) {
 	return results, nil
 }
 
-func readGraphItemPairs(rows *sql.Rows) ([]*store.GraphItemPair, error) {
+func readGraphItemPairs(rows *sqlx.Rows) ([]*store.GraphItemPair, error) {
 	defer rows.Close()
 
 	results := make([]*store.GraphItemPair, 0)

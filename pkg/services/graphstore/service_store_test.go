@@ -1,12 +1,13 @@
 package graphstore_test
 
 import (
-	"database/sql"
 	"testing"
 
 	"github.com/deps-cloud/tracker/api"
 	"github.com/deps-cloud/tracker/api/v1alpha/store"
 	"github.com/deps-cloud/tracker/pkg/services/graphstore"
+
+	"github.com/jmoiron/sqlx"
 
 	_ "github.com/mattn/go-sqlite3"
 
@@ -42,10 +43,10 @@ func TestNewSQLGraphStore_sqlite(t *testing.T) {
 		{GraphItemType: "edge", K1: k4, K2: k6, Encoding: 0, GraphItemData: generateData()},
 	}
 
-	rwdb, err := sql.Open("sqlite3", "file::memory:?cache=shared")
+	rwdb, err := sqlx.Open("sqlite3", "file::memory:?cache=shared")
 	require.Nil(t, err)
 
-	rodb, err := sql.Open("sqlite3", "file::memory:?cache=shared&mode=ro")
+	rodb, err := sqlx.Open("sqlite3", "file::memory:?cache=shared&mode=ro")
 	require.Nil(t, err)
 
 	graphStore, err := graphstore.NewSQLGraphStore(rwdb, rodb)
@@ -98,7 +99,7 @@ func TestNewSQLGraphStore_sqlite(t *testing.T) {
 }
 
 func TestReadOnly_sqlite(t *testing.T) {
-	rodb, err := sql.Open("sqlite3", "file::memory:?cache=shared&mode=ro")
+	rodb, err := sqlx.Open("sqlite3", "file::memory:?cache=shared&mode=ro")
 	require.Nil(t, err)
 
 	graphStore, err := graphstore.NewSQLGraphStore(nil, rodb)

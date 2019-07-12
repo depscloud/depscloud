@@ -1,9 +1,9 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
 	"net"
+	"os"
 
 	"github.com/deps-cloud/tracker/api"
 	"github.com/deps-cloud/tracker/api/v1alpha/store"
@@ -12,6 +12,8 @@ import (
 	"github.com/deps-cloud/tracker/pkg/services/graphstore"
 
 	_ "github.com/go-sql-driver/mysql"
+
+	"github.com/jmoiron/sqlx"
 
 	_ "github.com/mattn/go-sqlite3"
 
@@ -26,11 +28,12 @@ import (
 
 func panicIff(err error) {
 	if err != nil {
-		panic(err.Error())
+		logrus.Error(err.Error())
+		os.Exit(1)
 	}
 }
 
-func registerV1Alpha(rwdb, rodb *sql.DB, server *grpc.Server) {
+func registerV1Alpha(rwdb, rodb *sqlx.DB, server *grpc.Server) {
 	graphStore, err := graphstore.NewSQLGraphStore(rwdb, rodb)
 	panicIff(err)
 
@@ -58,13 +61,22 @@ func main() {
 		Use:   "tracker",
 		Short: "tracker runs the dependency tracking service.",
 		Run: func(cmd *cobra.Command, args []string) {
-			rwdb, err := sql.Open(storageDriver, storageAddress)
-			panicIff(err)
+			var rwdb *sqlx.DB
+			var err error
+
+			if len(storageAddress) > 0 {
+				rwdb, err = sqlx.Open(storageDriver, storageAddress)
+				panicIff(err)
+			}
 
 			rodb := rwdb
 			if len(storageReadOnlyAddress) > 0 {
-				rodb, err = sql.Open(storageDriver, storageReadOnlyAddress)
+				rodb, err = sqlx.Open(storageDriver, storageReadOnlyAddress)
 				panicIff(err)
+			}
+
+			if rodb == nil && rwdb == nil {
+				panicIff(fmt.Errorf("either --storage-address or --storage-readonly-address must be provided"))
 			}
 
 			server := grpc.NewServer()
