@@ -1,0 +1,38 @@
+{
+  "name": "testName",
+  "version": "1.2.3",
+  "description": "testDescription",
+  "main": [
+    "js/index.js",
+    "sass/styles.scss"
+  ],
+  "dependencies": {
+    "dependency": "1.0.0",
+    "@second/Depedency": "1.0.0"
+  },
+  "devDependencies": {
+    "devDependency": "1.0.0",
+    "@annotationDevDependency": "1.0.0",
+    "@annotationAndSlash/DevDependency": "1.0.0"
+  },
+  "bundledDependencies": [
+    "bundledDependency"
+  ],
+  "moduleType": [
+    "testModuleType"
+  ],
+  "keywords": [
+    "testKeyword"
+  ],
+  "authors": [
+    "Test Author <test@test.com>"
+  ],
+  "license": "testLicense",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

@@ -1,0 +1,121 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BowerJsonExtractor fullParse 1`] = `
+Object {
+  "dependencies": Array [
+    Object {
+      "module": "dependency",
+      "organization": "_",
+      "scopes": Array [
+        "",
+      ],
+      "versionConstraint": "1.0.0",
+    },
+    Object {
+      "module": "Depedency",
+      "organization": "second",
+      "scopes": Array [
+        "",
+      ],
+      "versionConstraint": "1.0.0",
+    },
+    Object {
+      "module": "devDependency",
+      "organization": "_",
+      "scopes": Array [
+        "dev",
+      ],
+      "versionConstraint": "1.0.0",
+    },
+    Object {
+      "module": "@annotationDevDependency",
+      "organization": "",
+      "scopes": Array [
+        "dev",
+      ],
+      "versionConstraint": "1.0.0",
+    },
+    Object {
+      "module": "DevDependency",
+      "organization": "annotationAndSlash",
+      "scopes": Array [
+        "dev",
+      ],
+      "versionConstraint": "1.0.0",
+    },
+    Object {
+      "module": "0",
+      "organization": "_",
+      "scopes": Array [
+        "bundled",
+      ],
+      "versionConstraint": "bundledDependency",
+    },
+  ],
+  "language": "node",
+  "module": "testName",
+  "organization": "_",
+  "system": "bower",
+  "version": "1.2.3",
+}
+`;
+
+exports[`BowerJsonExtractor fullParse 2`] = `
+"{
+  \\"language\\": \\"node\\",
+  \\"system\\": \\"bower\\",
+  \\"organization\\": \\"_\\",
+  \\"module\\": \\"testName\\",
+  \\"version\\": \\"1.2.3\\",
+  \\"dependencies\\": [
+    {
+      \\"organization\\": \\"_\\",
+      \\"module\\": \\"dependency\\",
+      \\"versionConstraint\\": \\"1.0.0\\",
+      \\"scopes\\": [
+        \\"\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"second\\",
+      \\"module\\": \\"Depedency\\",
+      \\"versionConstraint\\": \\"1.0.0\\",
+      \\"scopes\\": [
+        \\"\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"_\\",
+      \\"module\\": \\"devDependency\\",
+      \\"versionConstraint\\": \\"1.0.0\\",
+      \\"scopes\\": [
+        \\"dev\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"\\",
+      \\"module\\": \\"@annotationDevDependency\\",
+      \\"versionConstraint\\": \\"1.0.0\\",
+      \\"scopes\\": [
+        \\"dev\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"annotationAndSlash\\",
+      \\"module\\": \\"DevDependency\\",
+      \\"versionConstraint\\": \\"1.0.0\\",
+      \\"scopes\\": [
+        \\"dev\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"_\\",
+      \\"module\\": \\"0\\",
+      \\"versionConstraint\\": \\"bundledDependency\\",
+      \\"scopes\\": [
+        \\"bundled\\"
+      ]
+    }
+  ]
+}"
+`;

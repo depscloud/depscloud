@@ -9,6 +9,7 @@ import GopkgTomlExtractor from "./GopkgTomlExtractor";
 import IvyXmlExtractor from "./IvyXmlExtractor";
 import PackageJsonExtractor from "./PackageJsonExtractor";
 import PomXmlExtractor from "./PomXmlExtractor";
+import BowerJsonExtractor from "./BowerJsonExtractor";
 
 const ExtractorRegistry = new Registry<Extractor>("Extractor");
 
@@ -22,6 +23,7 @@ ExtractorRegistry.registerAll({
     IvyXmlExtractor: async (_) => new IvyXmlExtractor(),
     PackageJsonExtractor: async (_) => new PackageJsonExtractor(),
     PomXmlExtractor: async (_) => new PomXmlExtractor(),
+    BowerJsonExtractor: async (_) => new BowerJsonExtractor(),
 });
 
 export default ExtractorRegistry;
