@@ -4,6 +4,7 @@ go 1.12
 
 require (
 	github.com/deps-cloud/extractor v0.1.9
+	github.com/ghodss/yaml v1.0.0
 	github.com/go-sql-driver/mysql v1.4.1
 	github.com/gogo/protobuf v1.2.1
 	github.com/golang/protobuf v1.3.1

@@ -33,8 +33,8 @@ func panicIff(err error) {
 	}
 }
 
-func registerV1Alpha(rwdb, rodb *sqlx.DB, server *grpc.Server) {
-	graphStore, err := graphstore.NewSQLGraphStore(rwdb, rodb)
+func registerV1Alpha(rwdb, rodb *sqlx.DB, statements *graphstore.Statements, server *grpc.Server) {
+	graphStore, err := graphstore.NewSQLGraphStore(rwdb, rodb, statements)
 	panicIff(err)
 
 	graphStoreClient := store.NewInProcessGraphStoreClient(graphStore)
@@ -56,6 +56,7 @@ func main() {
 	storageDriver := "sqlite3"
 	storageAddress := "file::memory:?cache=shared"
 	storageReadOnlyAddress := ""
+	storageStatementsFile := ""
 
 	cmd := &cobra.Command{
 		Use:   "tracker",
@@ -79,9 +80,15 @@ func main() {
 				panicIff(fmt.Errorf("either --storage-address or --storage-readonly-address must be provided"))
 			}
 
+			statements := graphstore.DefaultStatements()
+			if len(storageStatementsFile) > 0 {
+				statements, err = graphstore.LoadStatementsFile(storageStatementsFile)
+				panicIff(err)
+			}
+
 			server := grpc.NewServer()
 			healthpb.RegisterHealthServer(server, health.NewServer())
-			registerV1Alpha(rwdb, rodb, server)
+			registerV1Alpha(rwdb, rodb, statements, server)
 
 			// setup server
 			address := fmt.Sprintf(":%d", port)
@@ -101,6 +108,7 @@ func main() {
 	flags.StringVar(&storageDriver, "storage-driver", storageDriver, "(optional) the driver used to configure the storage tier")
 	flags.StringVar(&storageAddress, "storage-address", storageAddress, "(optional) the address of the storage tier")
 	flags.StringVar(&storageReadOnlyAddress, "storage-readonly-address", storageReadOnlyAddress, "(optional) the readonly address of the storage tier")
+	flags.StringVar(&storageStatementsFile, "storage-statements-file", storageStatementsFile, "(optional) path to a yaml file containing the definition of each SQL statement")
 
 	err := cmd.Execute()
 	panicIff(err)

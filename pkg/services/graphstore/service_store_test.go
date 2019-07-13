@@ -49,7 +49,7 @@ func TestNewSQLGraphStore_sqlite(t *testing.T) {
 	rodb, err := sqlx.Open("sqlite3", "file::memory:?cache=shared&mode=ro")
 	require.Nil(t, err)
 
-	graphStore, err := graphstore.NewSQLGraphStore(rwdb, rodb)
+	graphStore, err := graphstore.NewSQLGraphStore(rwdb, rodb, graphstore.DefaultStatements())
 	require.Nil(t, err)
 
 	_, err = graphStore.Put(nil, &store.PutRequest{
@@ -102,7 +102,7 @@ func TestReadOnly_sqlite(t *testing.T) {
 	rodb, err := sqlx.Open("sqlite3", "file::memory:?cache=shared&mode=ro")
 	require.Nil(t, err)
 
-	graphStore, err := graphstore.NewSQLGraphStore(nil, rodb)
+	graphStore, err := graphstore.NewSQLGraphStore(nil, rodb, graphstore.DefaultStatements())
 	require.Nil(t, err)
 
 	{

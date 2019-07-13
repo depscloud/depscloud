@@ -12,75 +12,26 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-const createGraphDataTable = `CREATE TABLE IF NOT EXISTS dts_graphdata(
- 	graph_item_type VARCHAR(55),
-	k1 CHAR(64),
-	k2 CHAR(64),
-	encoding TINYINT,
-	graph_item_data TEXT,
-	last_modified DATETIME,
-	date_deleted DATETIME DEFAULT NULL,
-	PRIMARY KEY (graph_item_type, k1, k2)
-);`
-
-// TODO: move away from this replace operation since it does a delete and insert
-const insertGraphData = `REPLACE INTO dts_graphdata 
-(graph_item_type, k1, k2, encoding, graph_item_data, last_modified, date_deleted)
-VALUES (:graph_item_type, :k1, :k2, :encoding, :graph_item_data, :last_modified, NULL);`
-
-const deleteGraphData = `UPDATE dts_graphdata
-SET date_deleted = :date_deleted
-WHERE (graph_item_type = :graph_item_type and k1 = :k1 and k2 = :k2);`
-
-const listGraphData = `SELECT
-graph_item_type, k1, k2, encoding, graph_item_data
-FROM dts_graphdata
-WHERE graph_item_type = :graph_item_type 
-LIMIT :limit OFFSET :offset;
-`
-
-const selectGraphDataUpstreamDependencies = `SELECT
-g1.graph_item_type, g1.k1, g1.k2, g1.encoding, g1.graph_item_data,
-g2.graph_item_type, g2.k1, g2.k2, g2.encoding, g2.graph_item_data
-FROM dts_graphdata AS g1
-INNER JOIN dts_graphdata AS g2 ON g1.k1 = g2.k2
-WHERE g2.k1 = :key 
-AND g2.graph_item_type IN (:edge_types) 
-AND g2.k1 != g2.k2 
-AND g2.date_deleted IS NULL
-AND g1.k1 = g1.k2 
-AND g1.date_deleted IS NULL;`
-
-const selectGraphDataDownstreamDependencies = `SELECT
-g1.graph_item_type, g1.k1, g1.k2, g1.encoding, g1.graph_item_data,
-g2.graph_item_type, g2.k1, g2.k2, g2.encoding, g2.graph_item_data
-FROM dts_graphdata AS g1
-INNER JOIN dts_graphdata AS g2 ON g1.k2 = g2.k1
-WHERE g2.k2 = :key 
-AND g2.graph_item_type IN (:edge_types) 
-AND g2.k1 != g2.k2 
-AND g2.date_deleted IS NULL
-AND g1.k1 = g1.k2 
-AND g1.date_deleted IS NULL;`
-
 // NewSQLGraphStore constructs a new GraphStore with a sql driven backend. Current
 // queries support sqlite3 but should be able to work on mysql as well.
-func NewSQLGraphStore(rwdb, rodb *sqlx.DB) (store.GraphStoreServer, error) {
+func NewSQLGraphStore(rwdb, rodb *sqlx.DB, statements *Statements) (store.GraphStoreServer, error) {
 	if rwdb != nil {
-		if _, err := rwdb.Exec(createGraphDataTable); err != nil {
+		if _, err := rwdb.Exec(statements.CreateGraphDataTable); err != nil {
 			return nil, err
 		}
 	}
 
 	return &graphStore{
-		rwdb: rwdb,
-		rodb: rodb,
+		rwdb:       rwdb,
+		rodb:       rodb,
+		statements: statements,
 	}, nil
 }
 
 type graphStore struct {
-	rwdb *sqlx.DB
-	rodb *sqlx.DB
+	rwdb       *sqlx.DB
+	rodb       *sqlx.DB
+	statements *Statements
 }
 
 var _ store.GraphStoreServer = &graphStore{}
@@ -103,7 +54,7 @@ func (gs *graphStore) Put(ctx context.Context, req *store.PutRequest) (*store.Pu
 	}
 
 	for _, item := range req.GetItems() {
-		_, err := tx.NamedExec(insertGraphData, map[string]interface{}{
+		_, err := tx.NamedExec(gs.statements.InsertGraphData, map[string]interface{}{
 			"graph_item_type": item.GetGraphItemType(),
 			"k1":              Base64encode(item.GetK1()),
 			"k2":              Base64encode(item.GetK2()),
@@ -149,7 +100,7 @@ func (gs *graphStore) Delete(ctx context.Context, req *store.DeleteRequest) (*st
 	}
 
 	for _, key := range req.GetItems() {
-		_, err := tx.NamedExec(deleteGraphData, map[string]interface{}{
+		_, err := tx.NamedExec(gs.statements.DeleteGraphData, map[string]interface{}{
 			"date_deleted":    timestamp,
 			"graph_item_type": key.GetGraphItemType(),
 			"k1":              Base64encode(key.GetK1()),
@@ -195,7 +146,7 @@ func (gs *graphStore) List(ctx context.Context, req *store.ListRequest) (*store.
 	limit := max(min(req.GetCount(), 100), 10)
 	offset := (page - 1) * limit
 
-	rows, err := gs.rodb.NamedQuery(listGraphData, map[string]interface{}{
+	rows, err := gs.rodb.NamedQuery(gs.statements.ListGraphData, map[string]interface{}{
 		"graph_item_type": graphItemType,
 		"limit":           limit,
 		"offset":          offset,
@@ -215,7 +166,7 @@ func (gs *graphStore) List(ctx context.Context, req *store.ListRequest) (*store.
 }
 
 func (gs *graphStore) FindUpstream(ctx context.Context, req *store.FindRequest) (*store.FindResponse, error) {
-	query, args, err := sqlx.Named(selectGraphDataUpstreamDependencies, map[string]interface{}{
+	query, args, err := sqlx.Named(gs.statements.SelectGraphDataUpstreamDependencies, map[string]interface{}{
 		"key":        Base64encode(req.GetKey()),
 		"edge_types": req.GetEdgeTypes(),
 	})
@@ -244,7 +195,7 @@ func (gs *graphStore) FindUpstream(ctx context.Context, req *store.FindRequest) 
 }
 
 func (gs *graphStore) FindDownstream(ctx context.Context, req *store.FindRequest) (*store.FindResponse, error) {
-	query, args, err := sqlx.Named(selectGraphDataDownstreamDependencies, map[string]interface{}{
+	query, args, err := sqlx.Named(gs.statements.SelectGraphDataDownstreamDependencies, map[string]interface{}{
 		"key":        Base64encode(req.GetKey()),
 		"edge_types": req.GetEdgeTypes(),
 	})
