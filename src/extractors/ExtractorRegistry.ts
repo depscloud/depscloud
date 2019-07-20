@@ -1,4 +1,5 @@
 import Registry from "../common/Registry";
+import BowerJsonExtractor from "./BowerJsonExtractor";
 import BuildGradleExtractor from "./BuildGradleExtractor";
 import CargoTomlExtractor from "./CargoTomlExtractor";
 import ComposerJsonExtractor from "./ComposerJsonExtractor";
@@ -9,7 +10,7 @@ import GopkgTomlExtractor from "./GopkgTomlExtractor";
 import IvyXmlExtractor from "./IvyXmlExtractor";
 import PackageJsonExtractor from "./PackageJsonExtractor";
 import PomXmlExtractor from "./PomXmlExtractor";
-import BowerJsonExtractor from "./BowerJsonExtractor";
+import VendorConfExtractor from "./VendorConfExtractor";
 
 const ExtractorRegistry = new Registry<Extractor>("Extractor");
 
@@ -24,6 +25,7 @@ ExtractorRegistry.registerAll({
     PackageJsonExtractor: async (_) => new PackageJsonExtractor(),
     PomXmlExtractor: async (_) => new PomXmlExtractor(),
     BowerJsonExtractor: async (_) => new BowerJsonExtractor(),
+    VendorConfExtractor: async (_) => new VendorConfExtractor(),
 });
 
 export default ExtractorRegistry;
