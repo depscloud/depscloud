@@ -22,6 +22,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/health"
 	healthpb "google.golang.org/grpc/health/grpc_health_v1"
 )
@@ -57,6 +58,8 @@ func main() {
 	storageAddress := "file::memory:?cache=shared"
 	storageReadOnlyAddress := ""
 	storageStatementsFile := ""
+	tlsKey := ""
+	tlsCert := ""
 
 	cmd := &cobra.Command{
 		Use:   "tracker",
@@ -86,7 +89,17 @@ func main() {
 				panicIff(err)
 			}
 
-			server := grpc.NewServer()
+			options := make([]grpc.ServerOption, 0)
+			if len(tlsCert) > 0 && len(tlsKey) > 0 {
+				logrus.Info("[main] configuring tls")
+
+				creds, err := credentials.NewServerTLSFromFile(tlsCert, tlsKey)
+				panicIff(err)
+
+				options = append(options, grpc.Creds(creds))
+			}
+
+			server := grpc.NewServer(options...)
 			healthpb.RegisterHealthServer(server, health.NewServer())
 			registerV1Alpha(rwdb, rodb, statements, server)
 
@@ -109,6 +122,8 @@ func main() {
 	flags.StringVar(&storageAddress, "storage-address", storageAddress, "(optional) the address of the storage tier")
 	flags.StringVar(&storageReadOnlyAddress, "storage-readonly-address", storageReadOnlyAddress, "(optional) the readonly address of the storage tier")
 	flags.StringVar(&storageStatementsFile, "storage-statements-file", storageStatementsFile, "(optional) path to a yaml file containing the definition of each SQL statement")
+	flags.StringVar(&tlsKey, "tls-key", tlsKey, "(optional) path to the file containing the TLS private key")
+	flags.StringVar(&tlsCert, "tls-cert", tlsCert, "(optional) path to the file containing the TLS certificate")
 
 	err := cmd.Execute()
 	panicIff(err)
