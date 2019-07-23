@@ -16,25 +16,35 @@ import (
 	"github.com/spf13/cobra"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 
 	"gopkg.in/src-d/go-git.v4/plumbing/transport"
 	"gopkg.in/src-d/go-git.v4/plumbing/transport/ssh"
 )
 
-func panicIff(err error) {
+func exitIff(err error) {
 	if err != nil {
-		panic(err.Error())
+		logrus.Error(err.Error())
+		os.Exit(1)
 	}
 }
 
-func dial(target string) *grpc.ClientConn {
+func dial(target, certFile string) *grpc.ClientConn {
 	dialOptions := []grpc.DialOption{
 		grpc.WithBlock(),
-		grpc.WithInsecure(),
+	}
+
+	if len(certFile) > 0 {
+		transportCreds, err := credentials.NewClientTLSFromFile(certFile, "")
+		exitIff(err)
+
+		dialOptions = append(dialOptions, grpc.WithTransportCredentials(transportCreds))
+	} else {
+		dialOptions = append(dialOptions, grpc.WithInsecure())
 	}
 
 	cc, err := grpc.Dial(target, dialOptions...)
-	panicIff(err)
+	exitIff(err)
 
 	return cc
 }
@@ -78,7 +88,9 @@ func main() {
 	workers := 5
 	discoveryAddress := "discovery:8090"
 	extractorAddress := "extractor:8090"
+	extractorCert := ""
 	trackerAddress := "tracker:8090"
+	trackerCert := ""
 
 	rdsConfigPath := ""
 
@@ -89,8 +101,8 @@ func main() {
 		Use:   "indexer",
 		Short: "dependency indexing service",
 		Run: func(cmd *cobra.Command, args []string) {
-			desClient := desapi.NewDependencyExtractorClient(dial(extractorAddress))
-			sourceService := v1alpha.NewSourceServiceClient(dial(trackerAddress))
+			desClient := desapi.NewDependencyExtractorClient(dial(extractorAddress, extractorCert))
+			sourceService := v1alpha.NewSourceServiceClient(dial(trackerAddress, trackerCert))
 
 			rdsConfig := &config.Configuration{
 				Accounts: []*config.Account{
@@ -101,11 +113,11 @@ func main() {
 			if len(rdsConfigPath) > 0 {
 				var err error
 				rdsConfig, err = config.Load(rdsConfigPath)
-				panicIff(err)
+				exitIff(err)
 			}
 
 			remote, err := remotes.ParseConfig(rdsConfig)
-			panicIff(err)
+			exitIff(err)
 
 			var authMethod transport.AuthMethod
 
@@ -113,7 +125,7 @@ func main() {
 				logrus.Infof("[main] loading ssh key")
 				var err error
 				authMethod, err = ssh.NewPublicKeysFromFile(sshUser, sshKeyPath, "")
-				panicIff(err)
+				exitIff(err)
 			}
 
 			repositories := make(chan string, workers)
@@ -152,7 +164,9 @@ func main() {
 	flags.StringVar(&rdsConfigPath, "rds-config", rdsConfigPath, "(optional) path to the rds config file")
 	flags.StringVar(&discoveryAddress, "discovery-address", discoveryAddress, "(optional) address to the discovery service")
 	flags.StringVar(&extractorAddress, "extractor-address", extractorAddress, "(optional) address to the extractor service")
+	flags.StringVar(&extractorCert, "extractor-cert", extractorCert, "(optional) certificate used to enable TLS for the extractor")
 	flags.StringVar(&trackerAddress, "tracker-address", trackerAddress, "(optional) address to the tracker service")
+	flags.StringVar(&trackerCert, "tracker-cert", trackerCert, "(optional) certificate used to enable TLS for the tracker")
 	flags.StringVar(&sshUser, "ssh-user", sshUser, "(optional) the ssh user, typically git")
 	flags.StringVar(&sshKeyPath, "ssh-keypath", sshKeyPath, "(optional) the path to the ssh key file")
 
