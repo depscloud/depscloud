@@ -8,7 +8,6 @@ env:
 
 before_install:
   # gox simplifies building for multiple architectures
-  - go get golang.org/x/lint/golint
   - go get github.com/mitchellh/gox
 
 install:
