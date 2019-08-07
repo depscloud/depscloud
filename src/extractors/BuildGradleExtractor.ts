@@ -6,7 +6,7 @@ import ExtractorFile from "./ExtractorFile";
 import Languages from "./Languages";
 
 export default class BuildGradleExtractor implements Extractor {
-    public async extract(files: { [p: string]: ExtractorFile }): Promise<DependencyManagementFile> {
+    public async extract(_: string, files: { [p: string]: ExtractorFile }): Promise<DependencyManagementFile> {
         const promises = this.requires()
             .map((req) => files[req].raw())
             .map((raw) => parseText(raw));

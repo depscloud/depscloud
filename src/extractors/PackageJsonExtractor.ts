@@ -38,7 +38,7 @@ export default class PackageJsonExtractor implements Extractor {
         return [ "package.json" ];
     }
 
-    public async extract(files: { [p: string]: ExtractorFile }): Promise<DependencyManagementFile> {
+    public async extract(_: string, files: { [p: string]: ExtractorFile }): Promise<DependencyManagementFile> {
         const {
             name,
             version,

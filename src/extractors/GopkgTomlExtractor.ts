@@ -3,6 +3,7 @@ import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
 import parseImportPath from "./goutils/parseImportPath";
 import Languages from "./Languages";
+import inferImportPath from "./goutils/inferImportPath";
 
 interface Constraint {
     name: string;
@@ -49,7 +50,9 @@ export default class GopkgTomlExtractor implements Extractor {
         return [ "Gopkg.toml" ];
     }
 
-    public async extract(files: { [p: string]: ExtractorFile }): Promise<DependencyManagementFile> {
+    public async extract(url: string, files: { [p: string]: ExtractorFile }): Promise<DependencyManagementFile> {
+        const { organization, module } = parseImportPath(inferImportPath(url));
+
         const toml = files["Gopkg.toml"].toml();
 
         const dependencies: Dependency[] = [];
@@ -61,9 +64,9 @@ export default class GopkgTomlExtractor implements Extractor {
         return {
             language: Languages.GO,
             system: "gopkg",
-            organization: "",
-            module: "",
-            version: "",
+            organization,
+            module,
+            version: "latest",
             dependencies,
         };
     }

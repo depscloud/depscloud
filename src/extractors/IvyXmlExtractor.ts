@@ -9,7 +9,7 @@ export default class IvyXmlExtractor implements Extractor {
         return [ "ivy.xml" ];
     }
 
-    public async extract(files: { [p: string]: ExtractorFile }): Promise<DependencyManagementFile> {
+    public async extract(_: string, files: { [p: string]: ExtractorFile }): Promise<DependencyManagementFile> {
         const xml = files["ivy.xml"].xml();
 
         const infoNode: Cheerio = xml.find("ivy-module info");

@@ -38,7 +38,7 @@ export default class BowerJsonExtractor implements Extractor {
         return [ "bower.json" ];
     }
 
-    public async extract(files: { [p: string]: ExtractorFile }): Promise<DependencyManagementFile> {
+    public async extract(_: string, files: { [p: string]: ExtractorFile }): Promise<DependencyManagementFile> {
         const {
             name,
             version,

@@ -9,7 +9,7 @@ export default class PomXmlExtractor implements Extractor {
         return [ "pom.xml" ];
     }
 
-    public async extract(files: { [p: string]: ExtractorFile }): Promise<DependencyManagementFile> {
+    public async extract(_: string, files: { [p: string]: ExtractorFile }): Promise<DependencyManagementFile> {
         const xml = files["pom.xml"].xml();
 
         const parentGroupId = xml.find("project > parent > groupId").text();

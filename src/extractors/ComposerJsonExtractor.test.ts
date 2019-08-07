@@ -13,7 +13,7 @@ describe("ComposerJsonExtractor", () => {
 
         const parser = new ComposerJsonExtractor();
 
-        const actual = await parser.extract({ "composer.json": new ExtractorFile(content) });
+        const actual = await parser.extract("", { "composer.json": new ExtractorFile(content) });
 
         expect(actual).toMatchSnapshot();
         expect(JSON.stringify(actual, null, 2)).toMatchSnapshot();

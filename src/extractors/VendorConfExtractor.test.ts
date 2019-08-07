@@ -13,7 +13,7 @@ describe("VendorConfExtractor", () => {
 
         const parser = new VendorConfExtractor();
 
-        const actual = await parser.extract({ "vendor.conf": new ExtractorFile(content) });
+        const actual = await parser.extract("", { "vendor.conf": new ExtractorFile(content) });
 
         expect(actual).toMatchSnapshot();
         expect(JSON.stringify(actual, null, 2)).toMatchSnapshot();

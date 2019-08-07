@@ -597,10 +597,10 @@ Object {
     },
   ],
   "language": "go",
-  "module": "",
-  "organization": "",
+  "module": "deps-cloud/extractor",
+  "organization": "github.com",
   "system": "gopkg",
-  "version": "",
+  "version": "latest",
 }
 `;
 
@@ -608,9 +608,9 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
 "{
   \\"language\\": \\"go\\",
   \\"system\\": \\"gopkg\\",
-  \\"organization\\": \\"\\",
-  \\"module\\": \\"\\",
-  \\"version\\": \\"\\",
+  \\"organization\\": \\"github.com\\",
+  \\"module\\": \\"deps-cloud/extractor\\",
+  \\"version\\": \\"latest\\",
   \\"dependencies\\": [
     {
       \\"organization\\": \\"cloud.google.com\\",

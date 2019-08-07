@@ -74,6 +74,7 @@ export default class DependencyExtractorImpl implements AsyncDependencyExtractor
     }
 
     public async extractInternal(
+        url: string,
         separator: string,
         fileContents: { [key: string]: string },
     ): Promise<DependencyManagementFile[]> {
@@ -101,7 +102,7 @@ export default class DependencyExtractorImpl implements AsyncDependencyExtractor
                             const key = dir[req];
                             files[req] = new ExtractorFile(fileContents[key]);
                         });
-                        return extractor.extract(files);
+                        return extractor.extract(url, files);
                     });
 
                 managementFilePromises = managementFilePromises.concat(nextManagementFilePromises);
@@ -121,9 +122,9 @@ export default class DependencyExtractorImpl implements AsyncDependencyExtractor
     }
 
     public async extract(call: ServerUnaryCall<ExtractRequest>): Promise<ExtractResponse> {
-        const { separator, fileContents } = call.request;
+        const { url, separator, fileContents } = call.request;
 
-        const managementFiles = await this.extractInternal(separator, fileContents);
+        const managementFiles = await this.extractInternal(url, separator, fileContents);
 
         return {
             managementFiles,

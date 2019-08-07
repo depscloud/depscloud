@@ -9,7 +9,7 @@ export default class GodepsJsonExtractor implements Extractor {
         return [ "Godeps.json" ];
     }
 
-    public async extract(files: { [p: string]: ExtractorFile }): Promise<DependencyManagementFile> {
+    public async extract(_: string, files: { [p: string]: ExtractorFile }): Promise<DependencyManagementFile> {
         const {
             ImportPath,
             Deps,

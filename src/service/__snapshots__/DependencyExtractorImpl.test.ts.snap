@@ -979,10 +979,10 @@ Array [
       },
     ],
     "language": "go",
-    "module": "",
-    "organization": "",
+    "module": "deps-cloud/extractor",
+    "organization": "github.com",
     "system": "gopkg",
-    "version": "",
+    "version": "latest",
   },
   Object {
     "dependencies": Array [

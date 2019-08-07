@@ -13,7 +13,7 @@ describe("CargoTomlExtractor", () => {
 
         const parser = new CargoTomlExtractor();
 
-        const actual = await parser.extract({ "Cargo.toml": new ExtractorFile(content) });
+        const actual = await parser.extract("", { "Cargo.toml": new ExtractorFile(content) });
 
         expect(actual).toMatchSnapshot();
         expect(JSON.stringify(actual, null, 2)).toMatchSnapshot();

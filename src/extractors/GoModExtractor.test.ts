@@ -13,7 +13,7 @@ describe("GoModExtractor", () => {
 
         const parser = new GoModExtractor();
 
-        const actual = await parser.extract({ "go.mod": new ExtractorFile(content) });
+        const actual = await parser.extract("", { "go.mod": new ExtractorFile(content) });
 
         expect(actual).toMatchSnapshot();
         expect(JSON.stringify(actual, null, 2)).toMatchSnapshot();

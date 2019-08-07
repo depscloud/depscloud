@@ -13,7 +13,11 @@ describe("GopkgTomlExtractor", () => {
 
         const parser = new GopkgTomlExtractor();
 
-        const actual = await parser.extract({ "Gopkg.toml": new ExtractorFile(content) });
+        const actual = await parser.extract(
+            "git@github.com:deps-cloud/extractor.git", {
+                "Gopkg.toml": new ExtractorFile(content),
+            },
+        );
 
         expect(actual).toMatchSnapshot();
         expect(JSON.stringify(actual, null, 2)).toMatchSnapshot();

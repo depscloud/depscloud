@@ -20,7 +20,7 @@ describe("CargoTomlExtractor", () => {
 
         const parser = new BuildGradleExtractor();
 
-        const actual = await parser.extract({
+        const actual = await parser.extract("", {
             "build.gradle": new ExtractorFile(buildGradleContent),
             "settings.gradle": new ExtractorFile(settingsGradleContent),
         });

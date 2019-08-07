@@ -7,7 +7,7 @@ const organization = "__global__";
 const scopes = [ "direct" ];
 
 export default class CargoTomlExtractor implements Extractor {
-    public async extract(files: { [p: string]: ExtractorFile }): Promise<DependencyManagementFile> {
+    public async extract(_: string, files: { [p: string]: ExtractorFile }): Promise<DependencyManagementFile> {
         const toml = files["Cargo.toml"].toml();
 
         const dependencies: Dependency[] = Object.keys(toml.dependencies)

@@ -9,7 +9,7 @@ export default class GoModExtractor implements Extractor {
         return [ "go.mod" ];
     }
 
-    public async extract(files: { [p: string]: ExtractorFile }): Promise<DependencyManagementFile> {
+    public async extract(_: string, files: { [p: string]: ExtractorFile }): Promise<DependencyManagementFile> {
         const content = files["go.mod"].raw();
 
         const lines = content.split(/\n+/g);

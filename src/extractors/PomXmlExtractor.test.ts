@@ -13,7 +13,7 @@ describe("PomXmlExtractor", () => {
 
         const parser = new PomXmlExtractor();
 
-        const actual = await parser.extract({ "pom.xml": new ExtractorFile(content) });
+        const actual = await parser.extract("", { "pom.xml": new ExtractorFile(content) });
 
         expect(actual).toMatchSnapshot();
         expect(JSON.stringify(actual, null, 2)).toMatchSnapshot();

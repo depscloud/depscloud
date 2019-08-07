@@ -13,7 +13,7 @@ describe("BowerJsonExtractor", () => {
 
         const parser = new BowerJsonExtractor();
 
-        const actual = await parser.extract({ "bower.json": new ExtractorFile(content) });
+        const actual = await parser.extract("", { "bower.json": new ExtractorFile(content) });
 
         expect(actual).toMatchSnapshot();
         expect(JSON.stringify(actual, null, 2)).toMatchSnapshot();

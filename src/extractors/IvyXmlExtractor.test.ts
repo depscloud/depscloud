@@ -13,7 +13,7 @@ describe("IvyXmlExtractor", () => {
 
         const parser = new IvyXmlExtractor();
 
-        const actual = await parser.extract({ "ivy.xml": new ExtractorFile(content) });
+        const actual = await parser.extract("", { "ivy.xml": new ExtractorFile(content) });
 
         expect(actual).toMatchSnapshot();
         expect(JSON.stringify(actual, null, 2)).toMatchSnapshot();
