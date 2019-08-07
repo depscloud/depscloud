@@ -131,6 +131,7 @@ func (c *consumer) Consume(repository string) {
 
 	logrus.Infof("[%s] extracting dependencies", repository)
 	extractResponse, err := c.desClient.Extract(context.Background(), &desapi.ExtractRequest{
+		Url:		  repository,
 		Separator:    string(filepath.Separator),
 		FileContents: fileContents,
 	})
