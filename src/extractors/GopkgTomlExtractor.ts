@@ -1,9 +1,9 @@
 import {Dependency, DependencyManagementFile} from "../../api/deps";
 import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
+import inferImportPath from "./goutils/inferImportPath";
 import parseImportPath from "./goutils/parseImportPath";
 import Languages from "./Languages";
-import inferImportPath from "./goutils/inferImportPath";
 
 interface Constraint {
     name: string;

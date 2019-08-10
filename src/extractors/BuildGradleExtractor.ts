@@ -1,12 +1,18 @@
-import { parseText } from "gradle-to-js/lib/parser";
+import {parseText} from "gradle-to-js/lib/parser";
 
 import {Dependency, DependencyManagementFile} from "../../api/deps";
 import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
+import Globals from "./Globals";
 import Languages from "./Languages";
 
+// infer the module name of the last segment of the git url
+function inferModuleName(url: string): string {
+   return url.substring(url.lastIndexOf("/"), url.length - 4);
+}
+
 export default class BuildGradleExtractor implements Extractor {
-    public async extract(_: string, files: { [p: string]: ExtractorFile }): Promise<DependencyManagementFile> {
+    public async extract(url: string, files: { [p: string]: ExtractorFile }): Promise<DependencyManagementFile> {
         const promises = this.requires()
             .map((req) => files[req].raw())
             .map((raw) => parseText(raw));
@@ -18,7 +24,7 @@ export default class BuildGradleExtractor implements Extractor {
 
         const dependencies: { [key: string]: Dependency } = {};
 
-        let [ organization, module ] = [ "", "" ];
+        let [ organization, module ] = [ Globals.ORGANIZATION, inferModuleName(url) ];
 
         if (settingsGradle.rootProject) {
             if (settingsGradle.rootProject.name) {

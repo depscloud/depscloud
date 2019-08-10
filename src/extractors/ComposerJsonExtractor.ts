@@ -1,6 +1,7 @@
 import {Dependency, DependencyManagementFile} from "../../api/deps";
 import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
+import Globals from "./Globals";
 import Languages from "./Languages";
 
 interface ID {
@@ -10,6 +11,10 @@ interface ID {
 
 function parseName(name: string): ID {
     const pos = name.indexOf("/");
+    if (pos === -1) {
+        return { organization: Globals.ORGANIZATION, module: name };
+    }
+
     const organization = name.substr(0, pos);
     const module = name.substr(pos + 1);
     return { organization, module };

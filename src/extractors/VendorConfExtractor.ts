@@ -4,11 +4,6 @@ import ExtractorFile from "./ExtractorFile";
 import parseImportPath from "./goutils/parseImportPath";
 import Languages from "./Languages";
 
-interface ID {
-    organization: string;
-    module: string;
-}
-
 const fileName = "vendor.conf";
 const organizationString = "organization";
 const moduleString = "module";

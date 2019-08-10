@@ -1,6 +1,7 @@
 import {Dependency, DependencyManagementFile} from "../../api/deps";
 import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
+import Globals from "./Globals";
 import Languages from "./Languages";
 
 interface ID {
@@ -9,7 +10,7 @@ interface ID {
 }
 
 function parseName(module: string): ID {
-    let organization = "_";
+    let organization = Globals.ORGANIZATION;
     if (module.charAt(0) === "@") {
         const index = module.indexOf("/");
         organization = module.substr(1,  index - 1);

@@ -1,7 +1,7 @@
 import {readFile} from "fs";
 import {promisify} from "util";
-import ExtractorFile from "./ExtractorFile";
 import BowerJsonExtractor from "./BowerJsonExtractor";
+import ExtractorFile from "./ExtractorFile";
 
 const readFileAsync = promisify(readFile);
 

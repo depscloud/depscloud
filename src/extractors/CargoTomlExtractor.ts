@@ -1,9 +1,10 @@
 import {Dependency, DependencyManagementFile} from "../../api/deps";
 import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
+import Globals from "./Globals";
 import Languages from "./Languages";
 
-const organization = "__global__";
+const organization = Globals.ORGANIZATION;
 const scopes = [ "direct" ];
 
 export default class CargoTomlExtractor implements Extractor {

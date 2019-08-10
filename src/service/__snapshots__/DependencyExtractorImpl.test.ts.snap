@@ -119,7 +119,7 @@ Array [
     "dependencies": Array [
       Object {
         "module": "bytes",
-        "organization": "__global__",
+        "organization": "_",
         "scopes": Array [
           "direct",
         ],
@@ -127,7 +127,7 @@ Array [
       },
       Object {
         "module": "clap",
-        "organization": "__global__",
+        "organization": "_",
         "scopes": Array [
           "direct",
         ],
@@ -135,7 +135,7 @@ Array [
       },
       Object {
         "module": "futures",
-        "organization": "__global__",
+        "organization": "_",
         "scopes": Array [
           "direct",
         ],
@@ -143,7 +143,7 @@ Array [
       },
       Object {
         "module": "hyper",
-        "organization": "__global__",
+        "organization": "_",
         "scopes": Array [
           "direct",
         ],
@@ -151,7 +151,7 @@ Array [
       },
       Object {
         "module": "log",
-        "organization": "__global__",
+        "organization": "_",
         "scopes": Array [
           "direct",
         ],
@@ -159,7 +159,7 @@ Array [
       },
       Object {
         "module": "ordermap",
-        "organization": "__global__",
+        "organization": "_",
         "scopes": Array [
           "direct",
         ],
@@ -167,7 +167,7 @@ Array [
       },
       Object {
         "module": "pretty_env_logger",
-        "organization": "__global__",
+        "organization": "_",
         "scopes": Array [
           "direct",
         ],
@@ -175,7 +175,7 @@ Array [
       },
       Object {
         "module": "rand",
-        "organization": "__global__",
+        "organization": "_",
         "scopes": Array [
           "direct",
         ],
@@ -183,7 +183,7 @@ Array [
       },
       Object {
         "module": "rustls",
-        "organization": "__global__",
+        "organization": "_",
         "scopes": Array [
           "direct",
         ],
@@ -191,7 +191,7 @@ Array [
       },
       Object {
         "module": "serde",
-        "organization": "__global__",
+        "organization": "_",
         "scopes": Array [
           "direct",
         ],
@@ -199,7 +199,7 @@ Array [
       },
       Object {
         "module": "serde_derive",
-        "organization": "__global__",
+        "organization": "_",
         "scopes": Array [
           "direct",
         ],
@@ -207,7 +207,7 @@ Array [
       },
       Object {
         "module": "serde_json",
-        "organization": "__global__",
+        "organization": "_",
         "scopes": Array [
           "direct",
         ],
@@ -215,7 +215,7 @@ Array [
       },
       Object {
         "module": "serde_yaml",
-        "organization": "__global__",
+        "organization": "_",
         "scopes": Array [
           "direct",
         ],
@@ -223,7 +223,7 @@ Array [
       },
       Object {
         "module": "tacho",
-        "organization": "__global__",
+        "organization": "_",
         "scopes": Array [
           "direct",
         ],
@@ -231,7 +231,7 @@ Array [
       },
       Object {
         "module": "tokio-core",
-        "organization": "__global__",
+        "organization": "_",
         "scopes": Array [
           "direct",
         ],
@@ -239,7 +239,7 @@ Array [
       },
       Object {
         "module": "tokio-io",
-        "organization": "__global__",
+        "organization": "_",
         "scopes": Array [
           "direct",
         ],
@@ -247,7 +247,7 @@ Array [
       },
       Object {
         "module": "tokio-service",
-        "organization": "__global__",
+        "organization": "_",
         "scopes": Array [
           "direct",
         ],
@@ -255,7 +255,7 @@ Array [
       },
       Object {
         "module": "tokio-timer",
-        "organization": "__global__",
+        "organization": "_",
         "scopes": Array [
           "direct",
         ],
@@ -263,7 +263,7 @@ Array [
       },
       Object {
         "module": "url",
-        "organization": "__global__",
+        "organization": "_",
         "scopes": Array [
           "direct",
         ],
@@ -272,7 +272,7 @@ Array [
     ],
     "language": "rust",
     "module": "linkerd-tcp",
-    "organization": "__global__",
+    "organization": "_",
     "system": "cargo",
     "version": "0.1.1",
   },

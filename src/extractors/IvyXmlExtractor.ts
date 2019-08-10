@@ -2,6 +2,7 @@ import cheerio = require("cheerio");
 import {Dependency, DependencyManagementFile} from "../../api/deps";
 import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
+import Globals from "./Globals";
 import Languages from "./Languages";
 
 export default class IvyXmlExtractor implements Extractor {
@@ -34,7 +35,7 @@ export default class IvyXmlExtractor implements Extractor {
         return {
             language: Languages.JAVA,
             system: "ivy",
-            organization: infoNode.attr("organisation"),
+            organization: infoNode.attr("organisation") || Globals.ORGANIZATION,
             module: infoNode.attr("module"),
             version: infoNode.attr("revision") || null,
             dependencies,
