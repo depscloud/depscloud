@@ -17,6 +17,7 @@ test {
 
 mainClassName = 'com.indeed.operators.rabbitmq.RabbitMQOperator'
 
+group = "organization"
 version = "1.2"
 
 dependencies {

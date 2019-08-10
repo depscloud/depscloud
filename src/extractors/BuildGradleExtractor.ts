@@ -22,7 +22,7 @@ export default class BuildGradleExtractor implements Extractor {
 
         if (settingsGradle.rootProject) {
             if (settingsGradle.rootProject.name) {
-                [ organization, module ] = settingsGradle.rootProject.name.split(":");
+                module = settingsGradle.rootProject.name;
             }
 
             if (settingsGradle.rootProject.parent && settingsGradle.rootProject.parent) {
@@ -36,6 +36,10 @@ export default class BuildGradleExtractor implements Extractor {
                     scopes: [ "parent" ],
                 };
             }
+        }
+
+        if (buildGradle.group) {
+            organization = buildGradle.group;
         }
 
         (buildGradle.dependencies || []).forEach((dep) => {
