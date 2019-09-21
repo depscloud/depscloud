@@ -1,16 +1,16 @@
 syntax = "proto3";
 
-package cloud.deps.tracker.api.v1alpha;
+package cloud.deps.api.v1alpha.tracker;
 
-import "github.com/deps-cloud/extractor/api/deps.proto";
-import "github.com/deps-cloud/tracker/api/v1alpha/schema/schema.proto";
+import "github.com/deps-cloud/api/v1alpha/deps/deps.proto";
+import "github.com/deps-cloud/api/v1alpha/schema/schema.proto";
 import "github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis/google/api/annotations.proto";
 
 option go_package = "v1alpha";
 
 message SourceRequest {
-    cloud.deps.tracker.api.v1alpha.schema.Source source = 1;
-    repeated cloud.deps.extractor.api.DependencyManagementFile managementFiles = 2;
+    cloud.deps.api.v1alpha.schema.Source source = 1;
+    repeated cloud.deps.api.v1alpha.deps.DependencyManagementFile managementFiles = 2;
 }
 
 message ListRequest {
@@ -26,7 +26,7 @@ message ListSourceResponse {
     int32 page = 1;
     int32 count = 2;
 
-    repeated cloud.deps.tracker.api.v1alpha.schema.Source sources = 3;
+    repeated cloud.deps.api.v1alpha.schema.Source sources = 3;
 }
 
 service SourceService {
@@ -48,17 +48,17 @@ message ListModuleResponse {
     int32 page = 1;
     int32 count = 2;
 
-    repeated cloud.deps.tracker.api.v1alpha.schema.Module modules = 3;
+    repeated cloud.deps.api.v1alpha.schema.Module modules = 3;
 }
 
 message ManagedSource {
-    cloud.deps.tracker.api.v1alpha.schema.Source source = 1;
-    cloud.deps.tracker.api.v1alpha.schema.Manages manages = 2;
+    cloud.deps.api.v1alpha.schema.Source source = 1;
+    cloud.deps.api.v1alpha.schema.Manages manages = 2;
 }
 
 message ManagedModule {
-    cloud.deps.tracker.api.v1alpha.schema.Manages manages = 1;
-    cloud.deps.tracker.api.v1alpha.schema.Module module = 2;
+    cloud.deps.api.v1alpha.schema.Manages manages = 1;
+    cloud.deps.api.v1alpha.schema.Module module = 2;
 }
 
 service ModuleService {
@@ -68,13 +68,13 @@ service ModuleService {
         };
     };
 
-    rpc GetSource(cloud.deps.tracker.api.v1alpha.schema.Module) returns (stream ManagedSource) {
+    rpc GetSource(cloud.deps.api.v1alpha.schema.Module) returns (stream ManagedSource) {
         option (google.api.http) = {
             get: "/v1alpha/modules/source"
         };
     };
 
-    rpc GetManaged(cloud.deps.tracker.api.v1alpha.schema.Source) returns (stream ManagedModule) {
+    rpc GetManaged(cloud.deps.api.v1alpha.schema.Source) returns (stream ManagedModule) {
         option (google.api.http) = {
             get: "/v1alpha/modules/managed"
         };
@@ -89,8 +89,8 @@ message DependencyRequest {
 }
 
 message Dependency {
-    cloud.deps.tracker.api.v1alpha.schema.Depends depends = 1;
-    cloud.deps.tracker.api.v1alpha.schema.Module module = 2;
+    cloud.deps.api.v1alpha.schema.Depends depends = 1;
+    cloud.deps.api.v1alpha.schema.Module module = 2;
 }
 
 service DependencyService {

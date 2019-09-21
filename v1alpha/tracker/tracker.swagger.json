@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "service.proto",
+    "title": "tracker.proto",
     "version": "version not set"
   },
   "schemes": [
@@ -22,7 +22,7 @@
           "200": {
             "description": "A successful response.(streaming responses)",
             "schema": {
-              "$ref": "#/x-stream-definitions/apiv1alphaDependency"
+              "$ref": "#/x-stream-definitions/v1alphatrackerDependency"
             }
           }
         },
@@ -58,7 +58,7 @@
           "200": {
             "description": "A successful response.(streaming responses)",
             "schema": {
-              "$ref": "#/x-stream-definitions/apiv1alphaDependency"
+              "$ref": "#/x-stream-definitions/v1alphatrackerDependency"
             }
           }
         },
@@ -94,7 +94,7 @@
           "200": {
             "description": "A successful response.(streaming responses)",
             "schema": {
-              "$ref": "#/x-stream-definitions/v1alphaTopologyTier"
+              "$ref": "#/x-stream-definitions/trackerTopologyTier"
             }
           }
         },
@@ -130,7 +130,7 @@
           "200": {
             "description": "A successful response.(streaming responses)",
             "schema": {
-              "$ref": "#/x-stream-definitions/apiv1alphaDependency"
+              "$ref": "#/x-stream-definitions/v1alphatrackerDependency"
             }
           }
         },
@@ -166,7 +166,7 @@
           "200": {
             "description": "A successful response.(streaming responses)",
             "schema": {
-              "$ref": "#/x-stream-definitions/apiv1alphaDependency"
+              "$ref": "#/x-stream-definitions/v1alphatrackerDependency"
             }
           }
         },
@@ -202,7 +202,7 @@
           "200": {
             "description": "A successful response.(streaming responses)",
             "schema": {
-              "$ref": "#/x-stream-definitions/v1alphaTopologyTier"
+              "$ref": "#/x-stream-definitions/trackerTopologyTier"
             }
           }
         },
@@ -238,7 +238,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1alphaListModuleResponse"
+              "$ref": "#/definitions/trackerListModuleResponse"
             }
           }
         },
@@ -270,7 +270,7 @@
           "200": {
             "description": "A successful response.(streaming responses)",
             "schema": {
-              "$ref": "#/x-stream-definitions/v1alphaManagedModule"
+              "$ref": "#/x-stream-definitions/trackerManagedModule"
             }
           }
         },
@@ -294,7 +294,7 @@
           "200": {
             "description": "A successful response.(streaming responses)",
             "schema": {
-              "$ref": "#/x-stream-definitions/v1alphaManagedSource"
+              "$ref": "#/x-stream-definitions/trackerManagedSource"
             }
           }
         },
@@ -330,7 +330,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1alphaListSourceResponse"
+              "$ref": "#/definitions/trackerListSourceResponse"
             }
           }
         },
@@ -362,7 +362,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1alphaTrackResponse"
+              "$ref": "#/definitions/trackerTrackResponse"
             }
           }
         },
@@ -372,7 +372,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/v1alphaSourceRequest"
+              "$ref": "#/definitions/trackerSourceRequest"
             }
           }
         ],
@@ -383,7 +383,7 @@
     }
   },
   "definitions": {
-    "apiDependencyManagementFile": {
+    "depsDependencyManagementFile": {
       "type": "object",
       "properties": {
         "language": {
@@ -404,38 +404,7 @@
         "dependencies": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/extractorapiDependency"
-          }
-        }
-      }
-    },
-    "apiv1alphaDependency": {
-      "type": "object",
-      "properties": {
-        "depends": {
-          "$ref": "#/definitions/schemaDepends"
-        },
-        "module": {
-          "$ref": "#/definitions/schemaModule"
-        }
-      }
-    },
-    "extractorapiDependency": {
-      "type": "object",
-      "properties": {
-        "organization": {
-          "type": "string"
-        },
-        "module": {
-          "type": "string"
-        },
-        "versionConstraint": {
-          "type": "string"
-        },
-        "scopes": {
-          "type": "array",
-          "items": {
-            "type": "string"
+            "$ref": "#/definitions/v1alphadepsDependency"
           }
         }
       }
@@ -530,7 +499,7 @@
         }
       }
     },
-    "v1alphaListModuleResponse": {
+    "trackerListModuleResponse": {
       "type": "object",
       "properties": {
         "page": {
@@ -549,7 +518,7 @@
         }
       }
     },
-    "v1alphaListSourceResponse": {
+    "trackerListSourceResponse": {
       "type": "object",
       "properties": {
         "page": {
@@ -568,7 +537,7 @@
         }
       }
     },
-    "v1alphaManagedModule": {
+    "trackerManagedModule": {
       "type": "object",
       "properties": {
         "manages": {
@@ -579,7 +548,7 @@
         }
       }
     },
-    "v1alphaManagedSource": {
+    "trackerManagedSource": {
       "type": "object",
       "properties": {
         "source": {
@@ -590,7 +559,7 @@
         }
       }
     },
-    "v1alphaSourceRequest": {
+    "trackerSourceRequest": {
       "type": "object",
       "properties": {
         "source": {
@@ -599,23 +568,23 @@
         "managementFiles": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/apiDependencyManagementFile"
+            "$ref": "#/definitions/depsDependencyManagementFile"
           }
         }
       }
     },
-    "v1alphaTopologyTier": {
+    "trackerTopologyTier": {
       "type": "object",
       "properties": {
         "tier": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/apiv1alphaDependency"
+            "$ref": "#/definitions/v1alphatrackerDependency"
           }
         }
       }
     },
-    "v1alphaTrackResponse": {
+    "trackerTrackResponse": {
       "type": "object",
       "properties": {
         "tracking": {
@@ -623,56 +592,87 @@
           "format": "boolean"
         }
       }
+    },
+    "v1alphadepsDependency": {
+      "type": "object",
+      "properties": {
+        "organization": {
+          "type": "string"
+        },
+        "module": {
+          "type": "string"
+        },
+        "versionConstraint": {
+          "type": "string"
+        },
+        "scopes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "v1alphatrackerDependency": {
+      "type": "object",
+      "properties": {
+        "depends": {
+          "$ref": "#/definitions/schemaDepends"
+        },
+        "module": {
+          "$ref": "#/definitions/schemaModule"
+        }
+      }
     }
   },
   "x-stream-definitions": {
-    "apiv1alphaDependency": {
+    "trackerManagedModule": {
       "type": "object",
       "properties": {
         "result": {
-          "$ref": "#/definitions/apiv1alphaDependency"
+          "$ref": "#/definitions/trackerManagedModule"
         },
         "error": {
           "$ref": "#/definitions/runtimeStreamError"
         }
       },
-      "title": "Stream result of apiv1alphaDependency"
+      "title": "Stream result of trackerManagedModule"
     },
-    "v1alphaManagedModule": {
+    "trackerManagedSource": {
       "type": "object",
       "properties": {
         "result": {
-          "$ref": "#/definitions/v1alphaManagedModule"
+          "$ref": "#/definitions/trackerManagedSource"
         },
         "error": {
           "$ref": "#/definitions/runtimeStreamError"
         }
       },
-      "title": "Stream result of v1alphaManagedModule"
+      "title": "Stream result of trackerManagedSource"
     },
-    "v1alphaManagedSource": {
+    "trackerTopologyTier": {
       "type": "object",
       "properties": {
         "result": {
-          "$ref": "#/definitions/v1alphaManagedSource"
+          "$ref": "#/definitions/trackerTopologyTier"
         },
         "error": {
           "$ref": "#/definitions/runtimeStreamError"
         }
       },
-      "title": "Stream result of v1alphaManagedSource"
+      "title": "Stream result of trackerTopologyTier"
     },
-    "v1alphaTopologyTier": {
+    "v1alphatrackerDependency": {
       "type": "object",
       "properties": {
         "result": {
-          "$ref": "#/definitions/v1alphaTopologyTier"
+          "$ref": "#/definitions/v1alphatrackerDependency"
         },
         "error": {
           "$ref": "#/definitions/runtimeStreamError"
         }
       },
-      "title": "Stream result of v1alphaTopologyTier"
+      "title": "Stream result of v1alphatrackerDependency"
     }
   }
 }

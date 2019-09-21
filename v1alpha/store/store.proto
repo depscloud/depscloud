@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package cloud.deps.tracker.api.v1alpha.store;
+package cloud.deps.api.v1alpha.store;
 
 option go_package = "store";
 

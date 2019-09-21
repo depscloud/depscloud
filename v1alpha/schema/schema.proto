@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package cloud.deps.tracker.api.v1alpha.schema;
+package cloud.deps.api.v1alpha.schema;
 
 option go_package = "schema";
 
