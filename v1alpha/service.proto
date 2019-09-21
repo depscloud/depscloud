@@ -1,0 +1,138 @@
+syntax = "proto3";
+
+package cloud.deps.tracker.api.v1alpha;
+
+import "github.com/deps-cloud/extractor/api/deps.proto";
+import "github.com/deps-cloud/tracker/api/v1alpha/schema/schema.proto";
+import "github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis/google/api/annotations.proto";
+
+option go_package = "v1alpha";
+
+message SourceRequest {
+    cloud.deps.tracker.api.v1alpha.schema.Source source = 1;
+    repeated cloud.deps.extractor.api.DependencyManagementFile managementFiles = 2;
+}
+
+message ListRequest {
+    int32 page = 1;
+    int32 count = 2;
+}
+
+message TrackResponse {
+    bool tracking = 1;
+}
+
+message ListSourceResponse {
+    int32 page = 1;
+    int32 count = 2;
+
+    repeated cloud.deps.tracker.api.v1alpha.schema.Source sources = 3;
+}
+
+service SourceService {
+    rpc List(ListRequest) returns (ListSourceResponse) {
+        option (google.api.http) = {
+            get: "/v1alpha/sources"
+        };
+    };
+
+    rpc Track(SourceRequest) returns (TrackResponse) {
+        option (google.api.http) = {
+            post: "/v1alpha/sources/track"
+            body: "*"
+        };
+    };
+}
+
+message ListModuleResponse {
+    int32 page = 1;
+    int32 count = 2;
+
+    repeated cloud.deps.tracker.api.v1alpha.schema.Module modules = 3;
+}
+
+message ManagedSource {
+    cloud.deps.tracker.api.v1alpha.schema.Source source = 1;
+    cloud.deps.tracker.api.v1alpha.schema.Manages manages = 2;
+}
+
+message ManagedModule {
+    cloud.deps.tracker.api.v1alpha.schema.Manages manages = 1;
+    cloud.deps.tracker.api.v1alpha.schema.Module module = 2;
+}
+
+service ModuleService {
+    rpc List(ListRequest) returns (ListModuleResponse) {
+        option (google.api.http) = {
+            get: "/v1alpha/modules"
+        };
+    };
+
+    rpc GetSource(cloud.deps.tracker.api.v1alpha.schema.Module) returns (stream ManagedSource) {
+        option (google.api.http) = {
+            get: "/v1alpha/modules/source"
+        };
+    };
+
+    rpc GetManaged(cloud.deps.tracker.api.v1alpha.schema.Source) returns (stream ManagedModule) {
+        option (google.api.http) = {
+            get: "/v1alpha/modules/managed"
+        };
+    };
+}
+
+message DependencyRequest {
+    string language = 1;
+
+    string organization = 5;
+    string module = 6;
+}
+
+message Dependency {
+    cloud.deps.tracker.api.v1alpha.schema.Depends depends = 1;
+    cloud.deps.tracker.api.v1alpha.schema.Module module = 2;
+}
+
+service DependencyService {
+    rpc GetDependents(DependencyRequest) returns (stream Dependency) {
+        option (google.api.http) = {
+            get: "/v1alpha/graph/{language}/dependents"
+        };
+    };
+
+    rpc GetDependencies(DependencyRequest) returns (stream Dependency) {
+        option (google.api.http) = {
+            get: "/v1alpha/graph/{language}/dependencies"
+        };
+    };
+}
+
+message TopologyTier {
+    repeated Dependency tier = 1;
+}
+
+service TopologyService {
+    rpc GetDependentsTopology(DependencyRequest) returns (stream Dependency) {
+        option (google.api.http) = {
+            get: "/v1alpha/graph/{language}/dependents/topology"
+        };
+    };
+
+    rpc GetDependentsTopologyTiered(DependencyRequest) returns (stream TopologyTier) {
+        option (google.api.http) = {
+            get: "/v1alpha/graph/{language}/dependents/topology/tiered"
+        };
+    };
+
+    rpc GetDependenciesTopology(DependencyRequest) returns (stream Dependency) {
+        option (google.api.http) = {
+            get: "/v1alpha/graph/{language}/dependencies/topology"
+        };
+    };
+
+    rpc GetDependenciesTopologyTiered(DependencyRequest) returns (stream TopologyTier) {
+        option (google.api.http) = {
+            get: "/v1alpha/graph/{language}/dependencies/topology/tiered"
+        };
+    };
+}

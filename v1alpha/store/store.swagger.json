@@ -1,0 +1,90 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "store.proto",
+    "version": "version not set"
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {},
+  "definitions": {
+    "storeDeleteResponse": {
+      "type": "object"
+    },
+    "storeFindResponse": {
+      "type": "object",
+      "properties": {
+        "pairs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/storeGraphItemPair"
+          }
+        }
+      }
+    },
+    "storeGraphItem": {
+      "type": "object",
+      "properties": {
+        "graphItemType": {
+          "type": "string"
+        },
+        "k1": {
+          "type": "string",
+          "format": "byte"
+        },
+        "k2": {
+          "type": "string",
+          "format": "byte"
+        },
+        "encoding": {
+          "$ref": "#/definitions/storeGraphItemEncoding"
+        },
+        "graphItemData": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "storeGraphItemEncoding": {
+      "type": "string",
+      "enum": [
+        "RAW",
+        "JSON"
+      ],
+      "default": "RAW"
+    },
+    "storeGraphItemPair": {
+      "type": "object",
+      "properties": {
+        "edge": {
+          "$ref": "#/definitions/storeGraphItem"
+        },
+        "node": {
+          "$ref": "#/definitions/storeGraphItem"
+        }
+      }
+    },
+    "storeListResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/storeGraphItem"
+          }
+        }
+      }
+    },
+    "storePutResponse": {
+      "type": "object"
+    }
+  }
+}

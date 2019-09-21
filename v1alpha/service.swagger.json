@@ -1,0 +1,678 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "service.proto",
+    "version": "version not set"
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1alpha/graph/{language}/dependencies": {
+      "get": {
+        "operationId": "GetDependencies",
+        "responses": {
+          "200": {
+            "description": "A successful response.(streaming responses)",
+            "schema": {
+              "$ref": "#/x-stream-definitions/apiv1alphaDependency"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "language",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "organization",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "module",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "DependencyService"
+        ]
+      }
+    },
+    "/v1alpha/graph/{language}/dependencies/topology": {
+      "get": {
+        "operationId": "GetDependenciesTopology",
+        "responses": {
+          "200": {
+            "description": "A successful response.(streaming responses)",
+            "schema": {
+              "$ref": "#/x-stream-definitions/apiv1alphaDependency"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "language",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "organization",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "module",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "TopologyService"
+        ]
+      }
+    },
+    "/v1alpha/graph/{language}/dependencies/topology/tiered": {
+      "get": {
+        "operationId": "GetDependenciesTopologyTiered",
+        "responses": {
+          "200": {
+            "description": "A successful response.(streaming responses)",
+            "schema": {
+              "$ref": "#/x-stream-definitions/v1alphaTopologyTier"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "language",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "organization",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "module",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "TopologyService"
+        ]
+      }
+    },
+    "/v1alpha/graph/{language}/dependents": {
+      "get": {
+        "operationId": "GetDependents",
+        "responses": {
+          "200": {
+            "description": "A successful response.(streaming responses)",
+            "schema": {
+              "$ref": "#/x-stream-definitions/apiv1alphaDependency"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "language",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "organization",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "module",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "DependencyService"
+        ]
+      }
+    },
+    "/v1alpha/graph/{language}/dependents/topology": {
+      "get": {
+        "operationId": "GetDependentsTopology",
+        "responses": {
+          "200": {
+            "description": "A successful response.(streaming responses)",
+            "schema": {
+              "$ref": "#/x-stream-definitions/apiv1alphaDependency"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "language",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "organization",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "module",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "TopologyService"
+        ]
+      }
+    },
+    "/v1alpha/graph/{language}/dependents/topology/tiered": {
+      "get": {
+        "operationId": "GetDependentsTopologyTiered",
+        "responses": {
+          "200": {
+            "description": "A successful response.(streaming responses)",
+            "schema": {
+              "$ref": "#/x-stream-definitions/v1alphaTopologyTier"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "language",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "organization",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "module",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "TopologyService"
+        ]
+      }
+    },
+    "/v1alpha/modules": {
+      "get": {
+        "operationId": "List",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1alphaListModuleResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "ModuleService"
+        ]
+      }
+    },
+    "/v1alpha/modules/managed": {
+      "get": {
+        "operationId": "GetManaged",
+        "responses": {
+          "200": {
+            "description": "A successful response.(streaming responses)",
+            "schema": {
+              "$ref": "#/x-stream-definitions/v1alphaManagedModule"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ModuleService"
+        ]
+      }
+    },
+    "/v1alpha/modules/source": {
+      "get": {
+        "operationId": "GetSource",
+        "responses": {
+          "200": {
+            "description": "A successful response.(streaming responses)",
+            "schema": {
+              "$ref": "#/x-stream-definitions/v1alphaManagedSource"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "language",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "module",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ModuleService"
+        ]
+      }
+    },
+    "/v1alpha/sources": {
+      "get": {
+        "operationId": "List",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1alphaListSourceResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "SourceService"
+        ]
+      }
+    },
+    "/v1alpha/sources/track": {
+      "post": {
+        "operationId": "Track",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1alphaTrackResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1alphaSourceRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SourceService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "apiDependencyManagementFile": {
+      "type": "object",
+      "properties": {
+        "language": {
+          "type": "string"
+        },
+        "system": {
+          "type": "string"
+        },
+        "organization": {
+          "type": "string"
+        },
+        "module": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extractorapiDependency"
+          }
+        }
+      }
+    },
+    "apiv1alphaDependency": {
+      "type": "object",
+      "properties": {
+        "depends": {
+          "$ref": "#/definitions/schemaDepends"
+        },
+        "module": {
+          "$ref": "#/definitions/schemaModule"
+        }
+      }
+    },
+    "extractorapiDependency": {
+      "type": "object",
+      "properties": {
+        "organization": {
+          "type": "string"
+        },
+        "module": {
+          "type": "string"
+        },
+        "versionConstraint": {
+          "type": "string"
+        },
+        "scopes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "type_url": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "runtimeStreamError": {
+      "type": "object",
+      "properties": {
+        "grpc_code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "http_code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "http_status": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "schemaDepends": {
+      "type": "object",
+      "properties": {
+        "language": {
+          "type": "string"
+        },
+        "version_constraint": {
+          "type": "string"
+        },
+        "scopes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "schemaManages": {
+      "type": "object",
+      "properties": {
+        "language": {
+          "type": "string"
+        },
+        "system": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "schemaModule": {
+      "type": "object",
+      "properties": {
+        "language": {
+          "type": "string"
+        },
+        "organization": {
+          "type": "string"
+        },
+        "module": {
+          "type": "string"
+        }
+      }
+    },
+    "schemaSource": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "v1alphaListModuleResponse": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "modules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/schemaModule"
+          }
+        }
+      }
+    },
+    "v1alphaListSourceResponse": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/schemaSource"
+          }
+        }
+      }
+    },
+    "v1alphaManagedModule": {
+      "type": "object",
+      "properties": {
+        "manages": {
+          "$ref": "#/definitions/schemaManages"
+        },
+        "module": {
+          "$ref": "#/definitions/schemaModule"
+        }
+      }
+    },
+    "v1alphaManagedSource": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "$ref": "#/definitions/schemaSource"
+        },
+        "manages": {
+          "$ref": "#/definitions/schemaManages"
+        }
+      }
+    },
+    "v1alphaSourceRequest": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "$ref": "#/definitions/schemaSource"
+        },
+        "managementFiles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/apiDependencyManagementFile"
+          }
+        }
+      }
+    },
+    "v1alphaTopologyTier": {
+      "type": "object",
+      "properties": {
+        "tier": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/apiv1alphaDependency"
+          }
+        }
+      }
+    },
+    "v1alphaTrackResponse": {
+      "type": "object",
+      "properties": {
+        "tracking": {
+          "type": "boolean",
+          "format": "boolean"
+        }
+      }
+    }
+  },
+  "x-stream-definitions": {
+    "apiv1alphaDependency": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "$ref": "#/definitions/apiv1alphaDependency"
+        },
+        "error": {
+          "$ref": "#/definitions/runtimeStreamError"
+        }
+      },
+      "title": "Stream result of apiv1alphaDependency"
+    },
+    "v1alphaManagedModule": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "$ref": "#/definitions/v1alphaManagedModule"
+        },
+        "error": {
+          "$ref": "#/definitions/runtimeStreamError"
+        }
+      },
+      "title": "Stream result of v1alphaManagedModule"
+    },
+    "v1alphaManagedSource": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "$ref": "#/definitions/v1alphaManagedSource"
+        },
+        "error": {
+          "$ref": "#/definitions/runtimeStreamError"
+        }
+      },
+      "title": "Stream result of v1alphaManagedSource"
+    },
+    "v1alphaTopologyTier": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "$ref": "#/definitions/v1alphaTopologyTier"
+        },
+        "error": {
+          "$ref": "#/definitions/runtimeStreamError"
+        }
+      },
+      "title": "Stream result of v1alphaTopologyTier"
+    }
+  }
+}

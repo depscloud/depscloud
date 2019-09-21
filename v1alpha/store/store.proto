@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+package cloud.deps.tracker.api.v1alpha.store;
+
+option go_package = "store";
+
+enum GraphItemEncoding {
+    RAW = 0;
+    JSON = 1;
+}
+
+message GraphItem {
+    string graphItemType = 1;
+    bytes k1 = 2;
+    bytes k2 = 3;
+    GraphItemEncoding encoding = 4;
+    bytes graphItemData = 5;
+}
+
+message GraphItemPair {
+    GraphItem edge = 1;
+    GraphItem node = 2;
+}
+
+message PutRequest {
+    repeated GraphItem items = 1;
+}
+
+message PutResponse {}
+
+message DeleteRequest {
+    repeated GraphItem items = 1;
+}
+
+message DeleteResponse {}
+
+message ListRequest {
+    int32 page = 1;
+    int32 count = 2;
+    string type = 3;
+}
+
+message ListResponse {
+    repeated GraphItem items = 1;
+}
+
+message FindRequest {
+    bytes key = 1;
+    repeated string edgeTypes = 2;
+}
+
+message FindResponse {
+    repeated GraphItemPair pairs = 1;
+}
+
+service GraphStore {
+    rpc Put(PutRequest) returns (PutResponse);
+    rpc Delete(DeleteRequest) returns (DeleteResponse);
+
+    rpc List(ListRequest) returns (ListResponse);
+    rpc FindUpstream(FindRequest) returns (FindResponse);
+    rpc FindDownstream(FindRequest) returns (FindResponse);
+}
