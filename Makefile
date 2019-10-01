@@ -24,3 +24,4 @@ compile:
 
 clean:
 	rm -rf build-deps
+	rm -rf node_modules
