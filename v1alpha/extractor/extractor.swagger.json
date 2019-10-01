@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "extractor.proto",
+    "title": "v1alpha/extractor/extractor.proto",
     "version": "version not set"
   },
   "schemes": [

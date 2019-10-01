@@ -3,19 +3,15 @@
 readonly home=$(pwd)
 readonly protoc=${home}/build-deps/protoc/bin/protoc
 
-for protofile in $(find ${home} -name *.proto | grep -v build-deps); do
-    workdir=$(dirname ${protofile})
-    file=$(basename ${protofile})
+for file in $(find . -name *.proto | grep -v build-deps | grep -v node_modules | cut -c 3-); do
+    out=$(dirname ${file})
 
-    echo "generating ${protofile}"
-
-    cd "${workdir}"
     ${protoc} \
-        -I=. \
+        -I=${home} \
         -I=$GOPATH/src \
         -I=$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
-        --gogo_out=plugins=grpc:. \
-        --grpc-gateway_out=logtostderr=true:. \
-        --swagger_out=logtostderr=true:. \
+        --gogo_out=plugins=grpc:${home} \
+        --grpc-gateway_out=logtostderr=true:${home} \
+        --swagger_out=logtostderr=true:${home} \
         ${file}
 done

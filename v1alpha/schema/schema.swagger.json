@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "schema.proto",
+    "title": "v1alpha/schema/schema.proto",
     "version": "version not set"
   },
   "schemes": [

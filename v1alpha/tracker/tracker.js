@@ -11,7 +11,8 @@ const packageDefinition = protoLoader.loadSync(
         defaults: true,
         oneofs: true,
         includeDirs: [
-            __dirname
+            __dirname,
+            path.resolve(__dirname, '..', '..'),
         ]
     }
 );
