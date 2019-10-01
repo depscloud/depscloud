@@ -3,7 +3,7 @@ const protoLoader = require('@grpc/proto-loader');
 const grpc = require('grpc');
 
 const packageDefinition = protoLoader.loadSync(
-    path.join(__dirname, 'deps.proto'),
+    path.join(__dirname, 'schema.proto'),
     {
         keepCase: true,
         longs: String,
@@ -18,4 +18,4 @@ const packageDefinition = protoLoader.loadSync(
 
 const descriptor = grpc.loadPackageDefinition(packageDefinition);
 
-module.exports = descriptor.cloud.deps.api.v1alpha.deps;
+module.exports = descriptor.cloud.deps.api.v1alpha.schema;

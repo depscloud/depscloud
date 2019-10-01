@@ -1,0 +1,19 @@
+{
+  "name": "@deps-cloud/api",
+  "version": "0.0.1",
+  "description": "API to backing deps-cloud services",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deps-cloud/api.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/deps-cloud/api/issues"
+  },
+  "homepage": "https://github.com/deps-cloud/api#readme",
+  "dependencies": {
+    "@grpc/proto-loader": "^0.5.2",
+    "grpc": "^1.24.0"
+  }
+}

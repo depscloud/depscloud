@@ -18,4 +18,4 @@ const packageDefinition = protoLoader.loadSync(
 
 const descriptor = grpc.loadPackageDefinition(packageDefinition);
 
-module.exports = descriptor.cloud.deps.extractor.api;
+module.exports = descriptor.cloud.deps.api.v1alpha.extractor;
