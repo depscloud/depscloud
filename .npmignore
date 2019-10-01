@@ -1,0 +1,10 @@
+build-deps/
+node_modules/
+.gitignore
+*.go
+*.json
+compile.sh
+go.mod
+go.sum
+Makefile
+README.md
