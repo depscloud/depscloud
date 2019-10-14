@@ -1,4 +1,4 @@
-package main
+package api
 
 import (
 	"google.golang.org/grpc/codes"
@@ -17,5 +17,3 @@ var (
 	// ErrUnsupported occurs when calling a rw method on a read only service
 	ErrUnsupported = status.Error(codes.NotFound, "read only")
 )
-
-func main() {}
