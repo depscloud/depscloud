@@ -7,7 +7,7 @@ import "v1alpha/schema/schema.proto";
 
 import "github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis/google/api/annotations.proto";
 
-option go_package = "v1alpha";
+option go_package = "tracker";
 
 message SourceRequest {
     cloud.deps.api.v1alpha.schema.Source source = 1;

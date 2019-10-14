@@ -2,11 +2,11 @@
 // source: v1alpha/tracker/tracker.proto
 
 /*
-Package v1alpha is a reverse proxy.
+Package tracker is a reverse proxy.
 
 It translates gRPC into RESTful JSON APIs.
 */
-package v1alpha
+package tracker
 
 import (
 	"context"
