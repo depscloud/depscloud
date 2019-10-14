@@ -1,13 +1,15 @@
+import {DependencyExtractor} from "@deps-cloud/api/v1alpha/extractor/extractor";
+
 import {Server, ServerCredentials} from "grpc";
 import {configure, getLogger} from "log4js";
-import {DependencyExtractor} from "../api/extractor";
 import ExtractorRegistry from "./extractors/ExtractorRegistry";
 import AsyncDependencyExtractor from "./service/AsyncDependencyExtractor";
 import DependencyExtractorImpl from "./service/DependencyExtractorImpl";
 import unasyncify from "./service/unasyncify";
+
 import program = require("caporal");
-import health = require("grpc-health-check/health");
 import fs = require("fs");
+import health = require("grpc-health-check/health");
 
 const asyncFs = fs.promises;
 
