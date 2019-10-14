@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package cloud.deps.api.v1alpha.extractor;
 
-import "v1alpha/deps/deps.proto";
+import "github.com/deps-cloud/api/v1alpha/deps/deps.proto";
 
 import "github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis/google/api/annotations.proto";
 

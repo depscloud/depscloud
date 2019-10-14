@@ -12,8 +12,8 @@ import (
 	"context"
 	"io"
 	"net/http"
-	"v1alpha/schema"
 
+	"github.com/deps-cloud/api/v1alpha/schema"
 	"github.com/golang/protobuf/proto"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/utilities"
