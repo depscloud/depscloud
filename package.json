@@ -6,14 +6,23 @@
     "type": "git",
     "url": "git+https://github.com/deps-cloud/api.git"
   },
-  "author": "",
+  "author": "mjpitz",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/deps-cloud/api/issues"
   },
   "homepage": "https://github.com/deps-cloud/api#readme",
+  "devDependencies": {
+    "@types/jest": "^24.0.18",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.1.0",
+    "typescript": "^3.6.4"
+  },
   "dependencies": {
     "@grpc/proto-loader": "^0.5.2",
     "grpc": "^1.24.0"
+  },
+  "scripts": {
+    "test": "jest --coverage"
   }
 }

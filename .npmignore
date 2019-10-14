@@ -1,4 +1,5 @@
 build-deps/
+coverage/
 node_modules/
 .gitignore
 *.go
