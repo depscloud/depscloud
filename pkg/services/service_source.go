@@ -3,10 +3,10 @@ package services
 import (
 	"context"
 
-	"github.com/deps-cloud/tracker/api"
-	"github.com/deps-cloud/tracker/api/v1alpha"
-	"github.com/deps-cloud/tracker/api/v1alpha/schema"
-	"github.com/deps-cloud/tracker/api/v1alpha/store"
+	"github.com/deps-cloud/api"
+	"github.com/deps-cloud/api/v1alpha/schema"
+	"github.com/deps-cloud/api/v1alpha/store"
+	"github.com/deps-cloud/api/v1alpha/tracker"
 	"github.com/deps-cloud/tracker/pkg/types"
 
 	"github.com/sirupsen/logrus"
@@ -16,16 +16,16 @@ import (
 
 // RegisterSourceService registers the sourceService implementation with the server
 func RegisterSourceService(server *grpc.Server, gs store.GraphStoreClient) {
-	v1alpha.RegisterSourceServiceServer(server, &sourceService{gs: gs})
+	tracker.RegisterSourceServiceServer(server, &sourceService{gs: gs})
 }
 
 type sourceService struct {
 	gs store.GraphStoreClient
 }
 
-var _ v1alpha.SourceServiceServer = &sourceService{}
+var _ tracker.SourceServiceServer = &sourceService{}
 
-func (s *sourceService) List(ctx context.Context, req *v1alpha.ListRequest) (*v1alpha.ListSourceResponse, error) {
+func (s *sourceService) List(ctx context.Context, req *tracker.ListRequest) (*tracker.ListSourceResponse, error) {
 	resp, err := s.gs.List(ctx, &store.ListRequest{
 		Page:  req.GetPage(),
 		Count: req.GetCount(),
@@ -43,14 +43,14 @@ func (s *sourceService) List(ctx context.Context, req *v1alpha.ListRequest) (*v1
 		sources = append(sources, source.(*schema.Source))
 	}
 
-	return &v1alpha.ListSourceResponse{
+	return &tracker.ListSourceResponse{
 		Page:    req.GetPage(),
 		Count:   req.GetCount(),
 		Sources: sources,
 	}, nil
 }
 
-func (s *sourceService) Track(ctx context.Context, req *v1alpha.SourceRequest) (*v1alpha.TrackResponse, error) {
+func (s *sourceService) Track(ctx context.Context, req *tracker.SourceRequest) (*tracker.TrackResponse, error) {
 	currentSet, err := s.getCurrent(ctx, req.GetSource())
 	if err != nil {
 		logrus.Errorf("[service.source] %s", err.Error())
@@ -88,7 +88,7 @@ func (s *sourceService) Track(ctx context.Context, req *v1alpha.SourceRequest) (
 		return nil, api.ErrPartialInsertion
 	}
 
-	return &v1alpha.TrackResponse{Tracking: true}, nil
+	return &tracker.TrackResponse{Tracking: true}, nil
 }
 
 func (s *sourceService) getCurrent(ctx context.Context, source *schema.Source) (map[string]*store.GraphItem, error) {
@@ -135,7 +135,7 @@ func (s *sourceService) getCurrent(ctx context.Context, source *schema.Source) (
 	return idx, nil
 }
 
-func (s *sourceService) getProposed(ctx context.Context, request *v1alpha.SourceRequest) (map[string]*store.GraphItem, error) {
+func (s *sourceService) getProposed(ctx context.Context, request *tracker.SourceRequest) (map[string]*store.GraphItem, error) {
 	idx := make(map[string]*store.GraphItem)
 
 	source, err := Encode(request.GetSource())

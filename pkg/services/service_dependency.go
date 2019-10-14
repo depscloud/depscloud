@@ -3,10 +3,10 @@ package services
 import (
 	"context"
 
-	"github.com/deps-cloud/tracker/api"
-	"github.com/deps-cloud/tracker/api/v1alpha"
-	"github.com/deps-cloud/tracker/api/v1alpha/schema"
-	"github.com/deps-cloud/tracker/api/v1alpha/store"
+	"github.com/deps-cloud/api"
+	"github.com/deps-cloud/api/v1alpha/schema"
+	"github.com/deps-cloud/api/v1alpha/store"
+	"github.com/deps-cloud/api/v1alpha/tracker"
 	"github.com/deps-cloud/tracker/pkg/types"
 
 	"github.com/sirupsen/logrus"
@@ -16,16 +16,16 @@ import (
 
 // RegisterDependencyService registers the dependencyService implementation with the server
 func RegisterDependencyService(server *grpc.Server, gs store.GraphStoreClient) {
-	v1alpha.RegisterDependencyServiceServer(server, &dependencyService{gs: gs})
+	tracker.RegisterDependencyServiceServer(server, &dependencyService{gs: gs})
 }
 
 type dependencyService struct {
 	gs store.GraphStoreClient
 }
 
-var _ v1alpha.DependencyServiceServer = &dependencyService{}
+var _ tracker.DependencyServiceServer = &dependencyService{}
 
-func keyForDependencyRequest(req *v1alpha.DependencyRequest) []byte {
+func keyForDependencyRequest(req *tracker.DependencyRequest) []byte {
 	return keyForModule(&schema.Module{
 		Language:     req.GetLanguage(),
 		Organization: req.GetOrganization(),
@@ -33,7 +33,7 @@ func keyForDependencyRequest(req *v1alpha.DependencyRequest) []byte {
 	})
 }
 
-func (d *dependencyService) GetDependents(req *v1alpha.DependencyRequest, resp v1alpha.DependencyService_GetDependentsServer) error {
+func (d *dependencyService) GetDependents(req *tracker.DependencyRequest, resp tracker.DependencyService_GetDependentsServer) error {
 	key := keyForDependencyRequest(req)
 
 	response, err := d.gs.FindDownstream(context.Background(), &store.FindRequest{
@@ -49,7 +49,7 @@ func (d *dependencyService) GetDependents(req *v1alpha.DependencyRequest, resp v
 		a, _ := Decode(pair.Node)
 		b, _ := Decode(pair.Edge)
 
-		dependency := &v1alpha.Dependency{
+		dependency := &tracker.Dependency{
 			Module:  a.(*schema.Module),
 			Depends: b.(*schema.Depends),
 		}
@@ -62,7 +62,7 @@ func (d *dependencyService) GetDependents(req *v1alpha.DependencyRequest, resp v
 	return nil
 }
 
-func (d *dependencyService) GetDependencies(req *v1alpha.DependencyRequest, resp v1alpha.DependencyService_GetDependenciesServer) error {
+func (d *dependencyService) GetDependencies(req *tracker.DependencyRequest, resp tracker.DependencyService_GetDependenciesServer) error {
 	key := keyForDependencyRequest(req)
 
 	response, err := d.gs.FindUpstream(context.Background(), &store.FindRequest{
@@ -78,7 +78,7 @@ func (d *dependencyService) GetDependencies(req *v1alpha.DependencyRequest, resp
 		a, _ := Decode(pair.Node)
 		b, _ := Decode(pair.Edge)
 
-		dependency := &v1alpha.Dependency{
+		dependency := &tracker.Dependency{
 			Module:  a.(*schema.Module),
 			Depends: b.(*schema.Depends),
 		}
