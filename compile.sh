@@ -15,3 +15,5 @@ for file in $(find . -name *.proto | grep -v build-deps | grep -v node_modules |
         --swagger_out=logtostderr=true:${home} \
         ${file}
 done
+
+go-bindata -pkg api -o assets.go $(find . -iname *.swagger.json)
