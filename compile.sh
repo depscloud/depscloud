@@ -16,4 +16,4 @@ for file in $(find . -name *.proto | grep -v build-deps | grep -v node_modules |
         ${file}
 done
 
-go-bindata -pkg api -o static.go $(find . -iname *.swagger.json)
+go-bindata -fs -pkg api -o swagger/swagger.go $(find . -iname *.swagger.json)
