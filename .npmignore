@@ -1,11 +1,13 @@
 build-deps/
 coverage/
+docker/
 node_modules/
-.gitignore
 *.go
 *.json
-compile.sh
+.gitignore
+Dockerfile
 go.mod
 go.sum
+jest.config.js
 Makefile
 README.md
