@@ -1,6 +1,8 @@
+import {DependencyManagementFile} from "@deps-cloud/api/v1alpha/deps/deps";
+import {
+    ExtractRequest, ExtractResponse, MatchRequest, MatchResponse,
+} from "@deps-cloud/api/v1alpha/extractor/extractor";
 import {ServerUnaryCall} from "grpc";
-import {DependencyManagementFile} from "../../api/deps";
-import {ExtractRequest, ExtractResponse, MatchRequest, MatchResponse} from "../../api/extractor";
 import Extractor from "../extractors/Extractor";
 import ExtractorFile from "../extractors/ExtractorFile";
 import AsyncDependencyExtractor from "./AsyncDependencyExtractor";

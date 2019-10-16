@@ -1,5 +1,5 @@
+import {IDependencyExtractor} from "@deps-cloud/api/v1alpha/extractor/extractor";
 import {getLogger} from "log4js";
-import {IDependencyExtractor} from "../../api/extractor";
 import AsyncDependencyExtractor from "./AsyncDependencyExtractor";
 
 const logger = getLogger();

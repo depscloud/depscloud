@@ -1,4 +1,4 @@
-import {Dependency, DependencyManagementFile} from "../../api/deps";
+import {Dependency, DependencyManagementFile} from "@deps-cloud/api/v1alpha/deps/deps";
 import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
 import inferImportPath from "./goutils/inferImportPath";
