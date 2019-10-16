@@ -51,8 +51,6 @@ func prefixedHandle(prefix string, mux http.Handler) http.HandlerFunc {
 	}
 }
 
-func
-
 func main() {
 	port := 8080
 	extractorAddress := "extractor:8090"
