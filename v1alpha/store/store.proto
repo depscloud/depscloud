@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package cloud.deps.api.v1alpha.store;
 
-option go_package = "store";
+option go_package = "github.com/deps-cloud/api/v1alpha/store";
 
 enum GraphItemEncoding {
     RAW = 0;
