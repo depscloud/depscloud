@@ -12,6 +12,6 @@ for file in $(find . -name *.proto | grep -v build-deps | grep -v node_modules |
         -I=$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
         --gogo_out=plugins=grpc:$GOPATH/src \
         --grpc-gateway_out=logtostderr=true:$GOPATH/src \
-        --swagger_out=logtostderr=true:$GOPATH/src \
+        --swagger_out=logtostderr=true:${home} \
         ${file}
 done
