@@ -5,9 +5,7 @@ import (
 	"net"
 	"os"
 
-	"github.com/deps-cloud/tracker/api"
-	"github.com/deps-cloud/tracker/api/v1alpha/store"
-	"github.com/deps-cloud/tracker/pkg/service"
+	"github.com/deps-cloud/api/v1alpha/store"
 	"github.com/deps-cloud/tracker/pkg/services"
 	"github.com/deps-cloud/tracker/pkg/services/graphstore"
 
@@ -39,10 +37,6 @@ func registerV1Alpha(rwdb, rodb *sqlx.DB, statements *graphstore.Statements, ser
 	panicIff(err)
 
 	graphStoreClient := store.NewInProcessGraphStoreClient(graphStore)
-
-	// poc
-	dts, _ := service.NewDependencyTrackingService(graphStoreClient)
-	api.RegisterDependencyTrackerServer(server, dts)
 
 	// v1alpha
 	services.RegisterDependencyService(server, graphStoreClient)

@@ -3,10 +3,10 @@ package services
 import (
 	"context"
 
-	"github.com/deps-cloud/tracker/api"
-	"github.com/deps-cloud/tracker/api/v1alpha"
-	"github.com/deps-cloud/tracker/api/v1alpha/schema"
-	"github.com/deps-cloud/tracker/api/v1alpha/store"
+	"github.com/deps-cloud/api"
+	"github.com/deps-cloud/api/v1alpha/schema"
+	"github.com/deps-cloud/api/v1alpha/store"
+	"github.com/deps-cloud/api/v1alpha/tracker"
 	"github.com/deps-cloud/tracker/pkg/types"
 
 	"github.com/sirupsen/logrus"
@@ -16,16 +16,16 @@ import (
 
 // RegisterModuleService registers the moduleService implementation with the server
 func RegisterModuleService(server *grpc.Server, gs store.GraphStoreClient) {
-	v1alpha.RegisterModuleServiceServer(server, &moduleService{gs: gs})
+	tracker.RegisterModuleServiceServer(server, &moduleService{gs: gs})
 }
 
 type moduleService struct {
 	gs store.GraphStoreClient
 }
 
-var _ v1alpha.ModuleServiceServer = &moduleService{}
+var _ tracker.ModuleServiceServer = &moduleService{}
 
-func (s *moduleService) List(ctx context.Context, req *v1alpha.ListRequest) (*v1alpha.ListModuleResponse, error) {
+func (s *moduleService) List(ctx context.Context, req *tracker.ListRequest) (*tracker.ListModuleResponse, error) {
 	resp, err := s.gs.List(ctx, &store.ListRequest{
 		Page:  req.GetPage(),
 		Count: req.GetCount(),
@@ -43,14 +43,14 @@ func (s *moduleService) List(ctx context.Context, req *v1alpha.ListRequest) (*v1
 		modules = append(modules, module.(*schema.Module))
 	}
 
-	return &v1alpha.ListModuleResponse{
+	return &tracker.ListModuleResponse{
 		Page:    req.GetPage(),
 		Count:   req.GetCount(),
 		Modules: modules,
 	}, nil
 }
 
-func (s *moduleService) GetSource(req *schema.Module, resp v1alpha.ModuleService_GetSourceServer) error {
+func (s *moduleService) GetSource(req *schema.Module, resp tracker.ModuleService_GetSourceServer) error {
 	key := keyForModule(req)
 
 	response, err := s.gs.FindDownstream(context.Background(), &store.FindRequest{
@@ -66,7 +66,7 @@ func (s *moduleService) GetSource(req *schema.Module, resp v1alpha.ModuleService
 		a, _ := Decode(pair.Node)
 		b, _ := Decode(pair.Edge)
 
-		managedSource := &v1alpha.ManagedSource{
+		managedSource := &tracker.ManagedSource{
 			Source:  a.(*schema.Source),
 			Manages: b.(*schema.Manages),
 		}
@@ -79,7 +79,7 @@ func (s *moduleService) GetSource(req *schema.Module, resp v1alpha.ModuleService
 	return nil
 }
 
-func (s *moduleService) GetManaged(req *schema.Source, resp v1alpha.ModuleService_GetManagedServer) error {
+func (s *moduleService) GetManaged(req *schema.Source, resp tracker.ModuleService_GetManagedServer) error {
 	key := keyForSource(req)
 
 	response, err := s.gs.FindUpstream(context.Background(), &store.FindRequest{
@@ -95,7 +95,7 @@ func (s *moduleService) GetManaged(req *schema.Source, resp v1alpha.ModuleServic
 		a, _ := Decode(pair.Node)
 		b, _ := Decode(pair.Edge)
 
-		managedModule := &v1alpha.ManagedModule{
+		managedModule := &tracker.ManagedModule{
 			Module:  a.(*schema.Module),
 			Manages: b.(*schema.Manages),
 		}

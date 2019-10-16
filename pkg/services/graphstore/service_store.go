@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/deps-cloud/tracker/api"
-	"github.com/deps-cloud/tracker/api/v1alpha/store"
+	"github.com/deps-cloud/api"
+	"github.com/deps-cloud/api/v1alpha/store"
 
 	"github.com/jmoiron/sqlx"
 
