@@ -6,9 +6,9 @@ import (
 	"os"
 	"path/filepath"
 
-	desapi "github.com/deps-cloud/extractor/api"
-	"github.com/deps-cloud/tracker/api/v1alpha"
-	"github.com/deps-cloud/tracker/api/v1alpha/schema"
+	"github.com/deps-cloud/api/v1alpha/extractor"
+	"github.com/deps-cloud/api/v1alpha/schema"
+	"github.com/deps-cloud/api/v1alpha/tracker"
 
 	"github.com/sirupsen/logrus"
 
@@ -27,8 +27,8 @@ type RepositoryConsumer interface {
 // NewConsumer creates a consumer process that is agnostic to the ingress channel.
 func NewConsumer(
 	authMethod transport.AuthMethod,
-	desClient desapi.DependencyExtractorClient,
-	sourceService v1alpha.SourceServiceClient,
+	desClient extractor.DependencyExtractorClient,
+	sourceService tracker.SourceServiceClient,
 ) RepositoryConsumer {
 	return &consumer{
 		authMethod:    authMethod,
@@ -39,8 +39,8 @@ func NewConsumer(
 
 type consumer struct {
 	authMethod    transport.AuthMethod
-	desClient     desapi.DependencyExtractorClient
-	sourceService v1alpha.SourceServiceClient
+	desClient     extractor.DependencyExtractorClient
+	sourceService tracker.SourceServiceClient
 }
 
 var _ RepositoryConsumer = &consumer{}
@@ -107,7 +107,7 @@ func (c *consumer) Consume(repository string) {
 	}
 
 	logrus.Infof("[%s] matching dependency files", repository)
-	matchedResponse, err := c.desClient.Match(context.Background(), &desapi.MatchRequest{
+	matchedResponse, err := c.desClient.Match(context.Background(), &extractor.MatchRequest{
 		Separator: string(filepath.Separator),
 		Paths:     paths,
 	})
@@ -130,8 +130,8 @@ func (c *consumer) Consume(repository string) {
 	}
 
 	logrus.Infof("[%s] extracting dependencies", repository)
-	extractResponse, err := c.desClient.Extract(context.Background(), &desapi.ExtractRequest{
-		Url:		  repository,
+	extractResponse, err := c.desClient.Extract(context.Background(), &extractor.ExtractRequest{
+		Url:          repository,
 		Separator:    string(filepath.Separator),
 		FileContents: fileContents,
 	})
@@ -142,7 +142,7 @@ func (c *consumer) Consume(repository string) {
 	}
 
 	logrus.Infof("[%s] storing dependencies", repository)
-	_, err = c.sourceService.Track(context.Background(), &v1alpha.SourceRequest{
+	_, err = c.sourceService.Track(context.Background(), &tracker.SourceRequest{
 		Source: &schema.Source{
 			Url: repository,
 		},

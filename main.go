@@ -5,11 +5,11 @@ import (
 	"sync"
 	"time"
 
+	"github.com/deps-cloud/api/v1alpha/extractor"
+	"github.com/deps-cloud/api/v1alpha/tracker"
 	"github.com/deps-cloud/discovery/pkg/config"
 	"github.com/deps-cloud/discovery/pkg/remotes"
-	desapi "github.com/deps-cloud/extractor/api"
 	"github.com/deps-cloud/indexer/internal/consumer"
-	"github.com/deps-cloud/tracker/api/v1alpha"
 
 	"github.com/sirupsen/logrus"
 
@@ -86,7 +86,6 @@ func run(remote remotes.Remote, repositories chan string, done chan bool) error 
 func main() {
 	cron := false
 	workers := 5
-	discoveryAddress := "discovery:8090"
 	extractorAddress := "extractor:8090"
 	extractorCert := ""
 	trackerAddress := "tracker:8090"
@@ -101,14 +100,10 @@ func main() {
 		Use:   "indexer",
 		Short: "dependency indexing service",
 		Run: func(cmd *cobra.Command, args []string) {
-			desClient := desapi.NewDependencyExtractorClient(dial(extractorAddress, extractorCert))
-			sourceService := v1alpha.NewSourceServiceClient(dial(trackerAddress, trackerCert))
+			desClient := extractor.NewDependencyExtractorClient(dial(extractorAddress, extractorCert))
+			sourceService := tracker.NewSourceServiceClient(dial(trackerAddress, trackerCert))
 
-			rdsConfig := &config.Configuration{
-				Accounts: []*config.Account{
-					{Rds: &config.Rds{Target: discoveryAddress}},
-				},
-			}
+			var rdsConfig *config.Configuration
 
 			if len(rdsConfigPath) > 0 {
 				var err error
@@ -162,7 +157,6 @@ func main() {
 	flags.BoolVar(&cron, "cron", cron, "(optional) run the process as a cron job instead of a daemon")
 	flags.IntVar(&workers, "workers", workers, "(optional) number of workers to process repositories")
 	flags.StringVar(&rdsConfigPath, "rds-config", rdsConfigPath, "(optional) path to the rds config file")
-	flags.StringVar(&discoveryAddress, "discovery-address", discoveryAddress, "(optional) address to the discovery service")
 	flags.StringVar(&extractorAddress, "extractor-address", extractorAddress, "(optional) address to the extractor service")
 	flags.StringVar(&extractorCert, "extractor-cert", extractorCert, "(optional) certificate used to enable TLS for the extractor")
 	flags.StringVar(&trackerAddress, "tracker-address", trackerAddress, "(optional) address to the tracker service")
