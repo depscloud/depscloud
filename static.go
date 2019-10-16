@@ -96,7 +96,7 @@ func v1alphaTrackerTrackerSwaggerJson() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "v1alpha/tracker/tracker.swagger.json", size: 15563, mode: os.FileMode(420), modTime: time.Unix(1571187169, 0)}
+	info := bindataFileInfo{name: "v1alpha/tracker/tracker.swagger.json", size: 15563, mode: os.FileMode(420), modTime: time.Unix(1571190199, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -116,7 +116,7 @@ func v1alphaExtractorExtractorSwaggerJson() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "v1alpha/extractor/extractor.swagger.json", size: 3578, mode: os.FileMode(420), modTime: time.Unix(1571187169, 0)}
+	info := bindataFileInfo{name: "v1alpha/extractor/extractor.swagger.json", size: 3578, mode: os.FileMode(420), modTime: time.Unix(1571190199, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -136,7 +136,7 @@ func v1alphaSchemaSchemaSwaggerJson() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "v1alpha/schema/schema.swagger.json", size: 285, mode: os.FileMode(420), modTime: time.Unix(1571187169, 0)}
+	info := bindataFileInfo{name: "v1alpha/schema/schema.swagger.json", size: 285, mode: os.FileMode(420), modTime: time.Unix(1571190199, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -156,7 +156,7 @@ func v1alphaDepsDepsSwaggerJson() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "v1alpha/deps/deps.swagger.json", size: 281, mode: os.FileMode(420), modTime: time.Unix(1571187169, 0)}
+	info := bindataFileInfo{name: "v1alpha/deps/deps.swagger.json", size: 281, mode: os.FileMode(420), modTime: time.Unix(1571190199, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -176,7 +176,7 @@ func v1alphaStoreStoreSwaggerJson() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "v1alpha/store/store.swagger.json", size: 1741, mode: os.FileMode(420), modTime: time.Unix(1571187169, 0)}
+	info := bindataFileInfo{name: "v1alpha/store/store.swagger.json", size: 1741, mode: os.FileMode(420), modTime: time.Unix(1571190199, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
