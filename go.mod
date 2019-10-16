@@ -3,10 +3,19 @@ module github.com/deps-cloud/gateway
 go 1.12
 
 require (
-	github.com/deps-cloud/api v0.0.7
-	github.com/grpc-ecosystem/grpc-gateway v1.11.2
+	github.com/deps-cloud/api v0.0.8
+	github.com/gogo/protobuf v1.3.1 // indirect
+	github.com/grpc-ecosystem/grpc-gateway v1.11.3
+	github.com/konsorten/go-windows-terminal-sequences v1.0.2 // indirect
+	github.com/rs/cors v1.7.0
 	github.com/sirupsen/logrus v1.4.2
 	github.com/spf13/cobra v0.0.5
-	golang.org/x/net v0.0.0-20190628185345-da137c7871d7
-	google.golang.org/grpc v1.23.1
+	github.com/spf13/pflag v1.0.5 // indirect
+	github.com/stretchr/testify v1.4.0 // indirect
+	golang.org/x/net v0.0.0-20191014212845-da9a3fd4c582
+	golang.org/x/sys v0.0.0-20191010194322-b09406accb47 // indirect
+	google.golang.org/genproto v0.0.0-20191009194640-548a555dbc03 // indirect
+	google.golang.org/grpc v1.24.0
+	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect
+	gopkg.in/yaml.v2 v2.2.4 // indirect
 )
