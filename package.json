@@ -1,6 +1,6 @@
 {
   "name": "@deps-cloud/api",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "API to backing deps-cloud services",
   "repository": {
     "type": "git",
