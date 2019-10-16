@@ -5,10 +5,8 @@ import (
 	"net/http"
 	"os"
 
-	rdsapi "github.com/deps-cloud/discovery/api"
-	desapi "github.com/deps-cloud/extractor/api"
-	dtsapi "github.com/deps-cloud/tracker/api"
-	"github.com/deps-cloud/tracker/api/v1alpha"
+	"github.com/deps-cloud/api/v1alpha/extractor"
+	"github.com/deps-cloud/api/v1alpha/tracker"
 
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 
@@ -44,7 +42,6 @@ func dialOptions(cert string) []grpc.DialOption {
 
 func main() {
 	port := 8080
-	discoveryAddress := "discovery:8090"
 	extractorAddress := "extractor:8090"
 	extractorCert := ""
 	trackerAddress := "tracker:8090"
@@ -65,27 +62,19 @@ func main() {
 			trackerOpts := dialOptions(trackerCert)
 			extractorOpts := dialOptions(extractorCert)
 
-			err := v1alpha.RegisterSourceServiceHandlerFromEndpoint(ctx, mux, trackerAddress, trackerOpts)
+			err := tracker.RegisterSourceServiceHandlerFromEndpoint(ctx, mux, trackerAddress, trackerOpts)
 			exitIff(err)
 
-			err = v1alpha.RegisterModuleServiceHandlerFromEndpoint(ctx, mux, trackerAddress, trackerOpts)
+			err = tracker.RegisterModuleServiceHandlerFromEndpoint(ctx, mux, trackerAddress, trackerOpts)
 			exitIff(err)
 
-			err = v1alpha.RegisterDependencyServiceHandlerFromEndpoint(ctx, mux, trackerAddress, trackerOpts)
+			err = tracker.RegisterDependencyServiceHandlerFromEndpoint(ctx, mux, trackerAddress, trackerOpts)
 			exitIff(err)
 
-			err = v1alpha.RegisterTopologyServiceHandlerFromEndpoint(ctx, mux, trackerAddress, trackerOpts)
+			err = tracker.RegisterTopologyServiceHandlerFromEndpoint(ctx, mux, trackerAddress, trackerOpts)
 			exitIff(err)
 
-			err = dtsapi.RegisterDependencyTrackerHandlerFromEndpoint(ctx, mux, trackerAddress, trackerOpts)
-			exitIff(err)
-
-			err = desapi.RegisterDependencyExtractorHandlerFromEndpoint(ctx, mux, extractorAddress, extractorOpts)
-			exitIff(err)
-
-			err = rdsapi.RegisterRepositoryDiscoveryHandlerFromEndpoint(ctx, mux, discoveryAddress, []grpc.DialOption{
-				grpc.WithInsecure(),
-			})
+			err = extractor.RegisterDependencyExtractorHandlerFromEndpoint(ctx, mux, extractorAddress, extractorOpts)
 			exitIff(err)
 
 			if len(tlsCert) > 0 && len(tlsKey) > 0 {
@@ -101,7 +90,6 @@ func main() {
 
 	flags := cmd.Flags()
 	flags.IntVar(&port, "port", port, "(optional) the port to run on")
-	flags.StringVar(&discoveryAddress, "discovery-address", discoveryAddress, "(optional) address to rds")
 	flags.StringVar(&extractorAddress, "extractor-address", extractorAddress, "(optional) address to des")
 	flags.StringVar(&extractorCert, "extractor-cert", extractorCert, "(optional) certificate used to enable TLS for the extractor")
 	flags.StringVar(&trackerAddress, "tracker-address", trackerAddress, "(optional) address to dts")
