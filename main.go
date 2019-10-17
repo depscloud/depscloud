@@ -1,8 +1,11 @@
 package main
 
 import (
+	"crypto/tls"
+	"crypto/x509"
 	"fmt"
 	"github.com/deps-cloud/api/swagger"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"strings"
@@ -31,11 +34,25 @@ func exitIff(err error) {
 	}
 }
 
-func dialOptions(cert string) []grpc.DialOption {
+func dialOptions(certFile, keyFile, caFile string) []grpc.DialOption {
 	opts := make([]grpc.DialOption, 0)
-	if len(cert) > 0 {
-		transportCreds, err := credentials.NewClientTLSFromFile(cert, "")
+	if len(certFile) > 0 {
+		certificate, err := tls.LoadX509KeyPair(certFile, keyFile)
 		exitIff(err)
+
+		certPool := x509.NewCertPool()
+		bs, err := ioutil.ReadFile(caFile)
+		exitIff(err)
+
+		ok := certPool.AppendCertsFromPEM(bs)
+		if !ok {
+			exitIff(fmt.Errorf("failed to append certs"))
+		}
+
+		transportCreds := credentials.NewTLS(&tls.Config{
+			Certificates: []tls.Certificate{certificate},
+			RootCAs: certPool,
+		})
 
 		opts = append(opts, grpc.WithTransportCredentials(transportCreds))
 	} else {
@@ -53,10 +70,17 @@ func prefixedHandle(prefix string, mux http.Handler) http.HandlerFunc {
 
 func main() {
 	port := 8080
+
 	extractorAddress := "extractor:8090"
 	extractorCert := ""
+	extractorKey := ""
+	extractorCA := ""
+
 	trackerAddress := "tracker:8090"
 	trackerCert := ""
+	trackerKey := ""
+	trackerCA := ""
+
 	tlsCert := ""
 	tlsKey := ""
 
@@ -71,8 +95,8 @@ func main() {
 
 			ctx := context.Background()
 
-			trackerOpts := dialOptions(trackerCert)
-			extractorOpts := dialOptions(extractorCert)
+			trackerOpts := dialOptions(trackerCert, trackerKey, trackerCA)
+			extractorOpts := dialOptions(extractorCert, extractorKey, extractorCA)
 
 			err := tracker.RegisterSourceServiceHandlerFromEndpoint(ctx, gatewayMux, trackerAddress, trackerOpts)
 			exitIff(err)
@@ -109,10 +133,17 @@ func main() {
 
 	flags := cmd.Flags()
 	flags.IntVar(&port, "port", port, "(optional) the port to run on")
-	flags.StringVar(&extractorAddress, "extractor-address", extractorAddress, "(optional) address to des")
+
+	flags.StringVar(&extractorAddress, "extractor-address", extractorAddress, "(optional) address to the extractor service")
 	flags.StringVar(&extractorCert, "extractor-cert", extractorCert, "(optional) certificate used to enable TLS for the extractor")
-	flags.StringVar(&trackerAddress, "tracker-address", trackerAddress, "(optional) address to dts")
+	flags.StringVar(&extractorKey, "extractor-key", extractorKey, "(optional) key used to enable TLS for the extractor")
+	flags.StringVar(&extractorCA, "extractor-ca", extractorCA, "(optional) ca used to enable TLS for the extractor")
+
+	flags.StringVar(&trackerAddress, "tracker-address", trackerAddress, "(optional) address to the tracker service")
 	flags.StringVar(&trackerCert, "tracker-cert", trackerCert, "(optional) certificate used to enable TLS for the tracker")
+	flags.StringVar(&trackerKey, "tracker-key", trackerKey, "(optional) key used to enable TLS for the tracker")
+	flags.StringVar(&trackerCA, "tracker-ca", trackerCA, "(optional) ca used to enable TLS for the tracker")
+
 	flags.StringVar(&tlsKey, "tls-key", tlsKey, "(optional) path to the file containing the TLS private key")
 	flags.StringVar(&tlsCert, "tls-cert", tlsCert, "(optional) path to the file containing the TLS certificate")
 
