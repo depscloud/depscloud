@@ -83,6 +83,7 @@ func main() {
 
 	tlsCert := ""
 	tlsKey := ""
+	tlsCA := ""
 
 	cmd := &cobra.Command{
 		Use:   "gateway",
@@ -120,9 +121,28 @@ func main() {
 
 			apiMux := cors.Default().Handler(httpMux)
 
-			if len(tlsCert) > 0 && len(tlsKey) > 0 {
+			if len(tlsCert) > 0 && len(tlsKey) > 0 && len(tlsCA) > 0 {
+				certificate, err := tls.LoadX509KeyPair(tlsCert, tlsKey)
+				exitIff(err)
+
+				certPool := x509.NewCertPool()
+				bs, err := ioutil.ReadFile(tlsCA)
+				exitIff(err)
+
+				ok := certPool.AppendCertsFromPEM(bs)
+				if !ok {
+					exitIff(fmt.Errorf("failed to append certs"))
+				}
+
+				listener, err := tls.Listen("tcp", address, &tls.Config{
+					Certificates: []tls.Certificate{certificate},
+					ClientAuth:   tls.RequireAndVerifyClientCert,
+					ClientCAs:    certPool,
+				})
+				exitIff(err)
+
 				logrus.Infof("[main] starting TLS server on %s", address)
-				err = http.ListenAndServeTLS(address, tlsCert, tlsKey, apiMux)
+				err = http.Serve(listener, apiMux)
 			} else {
 				logrus.Infof("[main] starting plaintext server on %s", address)
 				err = http.ListenAndServe(address, apiMux)
@@ -146,6 +166,7 @@ func main() {
 
 	flags.StringVar(&tlsKey, "tls-key", tlsKey, "(optional) path to the file containing the TLS private key")
 	flags.StringVar(&tlsCert, "tls-cert", tlsCert, "(optional) path to the file containing the TLS certificate")
+	flags.StringVar(&tlsCA, "tls-ca", tlsCA, "(optional) path to the file containing the TLS certificate authority")
 
 	err := cmd.Execute()
 	exitIff(err)
