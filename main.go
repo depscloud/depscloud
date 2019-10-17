@@ -1,7 +1,10 @@
 package main
 
 import (
+	"crypto/tls"
+	"crypto/x509"
 	"fmt"
+	"io/ioutil"
 	"net"
 	"os"
 
@@ -54,6 +57,7 @@ func main() {
 	storageStatementsFile := ""
 	tlsKey := ""
 	tlsCert := ""
+	tlsCA := ""
 
 	cmd := &cobra.Command{
 		Use:   "tracker",
@@ -84,13 +88,28 @@ func main() {
 			}
 
 			options := make([]grpc.ServerOption, 0)
-			if len(tlsCert) > 0 && len(tlsKey) > 0 {
+			if len(tlsCert) > 0 && len(tlsKey) > 0 && len(tlsCA) > 0 {
 				logrus.Info("[main] configuring tls")
 
-				creds, err := credentials.NewServerTLSFromFile(tlsCert, tlsKey)
+				certificate, err := tls.LoadX509KeyPair(tlsCert, tlsKey)
 				panicIff(err)
 
-				options = append(options, grpc.Creds(creds))
+				certPool := x509.NewCertPool()
+				bs, err := ioutil.ReadFile(tlsCA)
+				panicIff(err)
+
+				ok := certPool.AppendCertsFromPEM(bs)
+				if !ok {
+					panicIff(fmt.Errorf("failed to append certs"))
+				}
+
+				transportCreds := credentials.NewTLS(&tls.Config{
+					ClientAuth:   tls.RequireAndVerifyClientCert,
+					Certificates: []tls.Certificate{certificate},
+					ClientCAs:    certPool,
+				})
+
+				options = append(options, grpc.Creds(transportCreds))
 			}
 
 			server := grpc.NewServer(options...)
@@ -118,6 +137,7 @@ func main() {
 	flags.StringVar(&storageStatementsFile, "storage-statements-file", storageStatementsFile, "(optional) path to a yaml file containing the definition of each SQL statement")
 	flags.StringVar(&tlsKey, "tls-key", tlsKey, "(optional) path to the file containing the TLS private key")
 	flags.StringVar(&tlsCert, "tls-cert", tlsCert, "(optional) path to the file containing the TLS certificate")
+	flags.StringVar(&tlsCA, "tls-ca", tlsCA, "(optional) path to the file containing the TLS certificate authority")
 
 	err := cmd.Execute()
 	panicIff(err)
