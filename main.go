@@ -4,16 +4,18 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
-	"github.com/deps-cloud/api/swagger"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"strings"
 
+	"github.com/deps-cloud/api/swagger"
 	"github.com/deps-cloud/api/v1alpha/extractor"
 	"github.com/deps-cloud/api/v1alpha/tracker"
 
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+
+	"github.com/rs/cors"
 
 	"github.com/sirupsen/logrus"
 
@@ -23,8 +25,6 @@ import (
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
-
-	"github.com/rs/cors"
 )
 
 func exitIff(err error) {
@@ -51,7 +51,7 @@ func dialOptions(certFile, keyFile, caFile string) []grpc.DialOption {
 
 		transportCreds := credentials.NewTLS(&tls.Config{
 			Certificates: []tls.Certificate{certificate},
-			RootCAs: certPool,
+			RootCAs:      certPool,
 		})
 
 		opts = append(opts, grpc.WithTransportCredentials(transportCreds))
