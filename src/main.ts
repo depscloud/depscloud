@@ -19,6 +19,7 @@ program.name("extractor")
     .option("--port <port>", "The port to bind to.", program.INT)
     .option("--tls-key <key>", "The path to the private key used for TLS", program.STRING)
     .option("--tls-cert <cert>", "The path to the certificate used for TLS", program.STRING)
+    .option("--tls-ca <ca>", "The path to the certificate authority used for TLS", program.STRING)
     .action(async (args: any, options: any) => {
         configure({
             appenders: {
@@ -49,15 +50,16 @@ program.name("extractor")
         server.addService(health.service, healthcheck);
 
         let credentials = ServerCredentials.createInsecure();
-        if (options.tlsKey && options.tlsCert) {
+        if (options.tlsKey && options.tlsCert && options.tlsCa) {
             logger.info("[main] configuring tls");
 
-            const [ key, cert ] = await Promise.all([
+            const [ key, cert, ca ] = await Promise.all([
                 asyncFs.readFile(options.tlsKey),
                 asyncFs.readFile(options.tlsCert),
+                asyncFs.readFile(options.tlsCa),
             ]);
 
-            credentials = ServerCredentials.createSsl(null, [ {
+            credentials = ServerCredentials.createSsl(ca, [ {
                 private_key: key,
                 cert_chain: cert,
             } ], true);
