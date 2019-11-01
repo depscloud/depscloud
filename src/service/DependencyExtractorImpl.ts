@@ -118,7 +118,9 @@ export default class DependencyExtractorImpl implements AsyncDependencyExtractor
         }
 
         let managementFiles = await Promise.all(managementFilePromises);
-        managementFiles = managementFiles.filter((f) => !!f);
+        managementFiles = managementFiles
+            .filter((f) => !!f)         // ensure no nulls returned
+            .filter((f) => !!f.module); // ensure a module is returned
 
         return managementFiles;
     }
