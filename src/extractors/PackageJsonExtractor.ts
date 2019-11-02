@@ -50,7 +50,7 @@ export default class PackageJsonExtractor implements Extractor {
             optionalDependencies,
         } = files["package.json"].json();
 
-        const { organization, module } = parseName(name);
+        const { organization, module } = parseName((name || ""));
 
         let allDependencies = extract((dependencies || {}), "");
         allDependencies = allDependencies.concat(extract((devDependencies || {}), "dev"));
