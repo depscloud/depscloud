@@ -1,0 +1,11 @@
+--2019-11-15 21:30:55--  https://raw.githubusercontent.com/fluxcd/helm-operator/master/DCO
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 151.101.48.133
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|151.101.48.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 1422 (1.4K) [text/plain]
+Saving to: ‘DCO.7’
+
+     0K .                                                     100%  151M=0s
+
+2019-11-15 21:30:55 (151 MB/s) - ‘DCO.7’ saved [1422/1422]
+
