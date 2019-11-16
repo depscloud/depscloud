@@ -1,15 +1,19 @@
 package main
 
 import (
+	"crypto/tls"
+	"crypto/x509"
+	"fmt"
+	"io/ioutil"
 	"os"
 	"sync"
 	"time"
 
+	"github.com/deps-cloud/api/v1alpha/extractor"
+	"github.com/deps-cloud/api/v1alpha/tracker"
 	"github.com/deps-cloud/discovery/pkg/config"
 	"github.com/deps-cloud/discovery/pkg/remotes"
-	desapi "github.com/deps-cloud/extractor/api"
 	"github.com/deps-cloud/indexer/internal/consumer"
-	"github.com/deps-cloud/tracker/api/v1alpha"
 
 	"github.com/sirupsen/logrus"
 
@@ -29,14 +33,28 @@ func exitIff(err error) {
 	}
 }
 
-func dial(target, certFile string) *grpc.ClientConn {
+func dial(target, certFile, keyFile, caFile string) *grpc.ClientConn {
 	dialOptions := []grpc.DialOption{
 		grpc.WithBlock(),
 	}
 
 	if len(certFile) > 0 {
-		transportCreds, err := credentials.NewClientTLSFromFile(certFile, "")
+		certificate, err := tls.LoadX509KeyPair(certFile, keyFile)
 		exitIff(err)
+
+		certPool := x509.NewCertPool()
+		bs, err := ioutil.ReadFile(caFile)
+		exitIff(err)
+
+		ok := certPool.AppendCertsFromPEM(bs)
+		if !ok {
+			exitIff(fmt.Errorf("failed to append certs"))
+		}
+
+		transportCreds := credentials.NewTLS(&tls.Config{
+			Certificates: []tls.Certificate{certificate},
+			RootCAs:      certPool,
+		})
 
 		dialOptions = append(dialOptions, grpc.WithTransportCredentials(transportCreds))
 	} else {
@@ -86,13 +104,17 @@ func run(remote remotes.Remote, repositories chan string, done chan bool) error 
 func main() {
 	cron := false
 	workers := 5
-	discoveryAddress := "discovery:8090"
+	rdsConfigPath := ""
+
 	extractorAddress := "extractor:8090"
 	extractorCert := ""
+	extractorKey := ""
+	extractorCA := ""
+
 	trackerAddress := "tracker:8090"
 	trackerCert := ""
-
-	rdsConfigPath := ""
+	trackerKey := ""
+	trackerCA := ""
 
 	sshUser := "git"
 	sshKeyPath := ""
@@ -101,14 +123,10 @@ func main() {
 		Use:   "indexer",
 		Short: "dependency indexing service",
 		Run: func(cmd *cobra.Command, args []string) {
-			desClient := desapi.NewDependencyExtractorClient(dial(extractorAddress, extractorCert))
-			sourceService := v1alpha.NewSourceServiceClient(dial(trackerAddress, trackerCert))
+			desClient := extractor.NewDependencyExtractorClient(dial(extractorAddress, extractorCert, extractorKey, extractorCA))
+			sourceService := tracker.NewSourceServiceClient(dial(trackerAddress, trackerCert, trackerKey, trackerCA))
 
-			rdsConfig := &config.Configuration{
-				Accounts: []*config.Account{
-					{Rds: &config.Rds{Target: discoveryAddress}},
-				},
-			}
+			var rdsConfig *config.Configuration
 
 			if len(rdsConfigPath) > 0 {
 				var err error
@@ -162,11 +180,17 @@ func main() {
 	flags.BoolVar(&cron, "cron", cron, "(optional) run the process as a cron job instead of a daemon")
 	flags.IntVar(&workers, "workers", workers, "(optional) number of workers to process repositories")
 	flags.StringVar(&rdsConfigPath, "rds-config", rdsConfigPath, "(optional) path to the rds config file")
-	flags.StringVar(&discoveryAddress, "discovery-address", discoveryAddress, "(optional) address to the discovery service")
+
 	flags.StringVar(&extractorAddress, "extractor-address", extractorAddress, "(optional) address to the extractor service")
 	flags.StringVar(&extractorCert, "extractor-cert", extractorCert, "(optional) certificate used to enable TLS for the extractor")
+	flags.StringVar(&extractorKey, "extractor-key", extractorKey, "(optional) key used to enable TLS for the extractor")
+	flags.StringVar(&extractorCA, "extractor-ca", extractorCA, "(optional) ca used to enable TLS for the extractor")
+
 	flags.StringVar(&trackerAddress, "tracker-address", trackerAddress, "(optional) address to the tracker service")
 	flags.StringVar(&trackerCert, "tracker-cert", trackerCert, "(optional) certificate used to enable TLS for the tracker")
+	flags.StringVar(&trackerKey, "tracker-key", trackerKey, "(optional) key used to enable TLS for the tracker")
+	flags.StringVar(&trackerCA, "tracker-ca", trackerCA, "(optional) ca used to enable TLS for the tracker")
+
 	flags.StringVar(&sshUser, "ssh-user", sshUser, "(optional) the ssh user, typically git")
 	flags.StringVar(&sshKeyPath, "ssh-keypath", sshKeyPath, "(optional) the path to the ssh key file")
 
