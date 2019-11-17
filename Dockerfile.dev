@@ -1,5 +1,7 @@
 FROM golang:1.12
 
+ARG HEALTH_PROBE_VERSION=0.3.1
+
 RUN go get golang.org/x/lint/golint
 
 ENV GO111MODULE on
@@ -9,6 +11,8 @@ WORKDIR /go/src/tracker
 COPY . .
 
 RUN make deps && make test && make install
+
+RUN ./download-health-probe.sh ${HEALTH_PROBE_VERSION}
 
 RUN useradd -ms /bin/sh tracker
 WORKDIR /home/tracker
