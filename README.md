@@ -82,4 +82,4 @@ docker run --rm -it \
 You can quickly invoke this command using the `make compile-docker` target.
 
 **NOTE:** Changes to `*.js` and `*.d.ts` are done manually.
-Currently evaluating coge generation options.
+Currently evaluating code generation options.

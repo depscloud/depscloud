@@ -17,12 +17,12 @@
   "paths": {
     "/v1alpha/graph/{language}/dependencies": {
       "get": {
-        "operationId": "GetDependencies",
+        "operationId": "ListDependencies",
         "responses": {
           "200": {
-            "description": "A successful response.(streaming responses)",
+            "description": "A successful response.",
             "schema": {
-              "$ref": "#/x-stream-definitions/v1alphatrackerDependency"
+              "$ref": "#/definitions/trackerListDependenciesResponse"
             }
           }
         },
@@ -53,12 +53,12 @@
     },
     "/v1alpha/graph/{language}/dependencies/topology": {
       "get": {
-        "operationId": "GetDependenciesTopology",
+        "operationId": "ListDependenciesTopology",
         "responses": {
           "200": {
-            "description": "A successful response.(streaming responses)",
+            "description": "A successful response.",
             "schema": {
-              "$ref": "#/x-stream-definitions/v1alphatrackerDependency"
+              "$ref": "#/definitions/trackerListDependenciesResponse"
             }
           }
         },
@@ -89,12 +89,12 @@
     },
     "/v1alpha/graph/{language}/dependencies/topology/tiered": {
       "get": {
-        "operationId": "GetDependenciesTopologyTiered",
+        "operationId": "ListDependenciesTopologyTiered",
         "responses": {
           "200": {
-            "description": "A successful response.(streaming responses)",
+            "description": "A successful response.",
             "schema": {
-              "$ref": "#/x-stream-definitions/trackerTopologyTier"
+              "$ref": "#/definitions/trackerListDependenciesTieredResponse"
             }
           }
         },
@@ -125,12 +125,12 @@
     },
     "/v1alpha/graph/{language}/dependents": {
       "get": {
-        "operationId": "GetDependents",
+        "operationId": "ListDependents",
         "responses": {
           "200": {
-            "description": "A successful response.(streaming responses)",
+            "description": "A successful response.",
             "schema": {
-              "$ref": "#/x-stream-definitions/v1alphatrackerDependency"
+              "$ref": "#/definitions/trackerListDependentsResponse"
             }
           }
         },
@@ -161,12 +161,12 @@
     },
     "/v1alpha/graph/{language}/dependents/topology": {
       "get": {
-        "operationId": "GetDependentsTopology",
+        "operationId": "ListDependentsTopology",
         "responses": {
           "200": {
-            "description": "A successful response.(streaming responses)",
+            "description": "A successful response.",
             "schema": {
-              "$ref": "#/x-stream-definitions/v1alphatrackerDependency"
+              "$ref": "#/definitions/trackerListDependentsResponse"
             }
           }
         },
@@ -197,12 +197,12 @@
     },
     "/v1alpha/graph/{language}/dependents/topology/tiered": {
       "get": {
-        "operationId": "GetDependentsTopologyTiered",
+        "operationId": "ListDependentsTopologyTiered",
         "responses": {
           "200": {
-            "description": "A successful response.(streaming responses)",
+            "description": "A successful response.",
             "schema": {
-              "$ref": "#/x-stream-definitions/trackerTopologyTier"
+              "$ref": "#/definitions/trackerListDependentsTieredResponse"
             }
           }
         },
@@ -265,12 +265,12 @@
     },
     "/v1alpha/modules/managed": {
       "get": {
-        "operationId": "GetManaged",
+        "operationId": "ListManaged",
         "responses": {
           "200": {
-            "description": "A successful response.(streaming responses)",
+            "description": "A successful response.",
             "schema": {
-              "$ref": "#/x-stream-definitions/trackerManagedModule"
+              "$ref": "#/definitions/trackerListManagedResponse"
             }
           }
         },
@@ -289,12 +289,12 @@
     },
     "/v1alpha/modules/source": {
       "get": {
-        "operationId": "GetSource",
+        "operationId": "ListSources",
         "responses": {
           "200": {
-            "description": "A successful response.(streaming responses)",
+            "description": "A successful response.",
             "schema": {
-              "$ref": "#/x-stream-definitions/trackerManagedSource"
+              "$ref": "#/definitions/trackerListSourcesResponse"
             }
           }
         },
@@ -409,43 +409,6 @@
         }
       }
     },
-    "protobufAny": {
-      "type": "object",
-      "properties": {
-        "type_url": {
-          "type": "string"
-        },
-        "value": {
-          "type": "string",
-          "format": "byte"
-        }
-      }
-    },
-    "runtimeStreamError": {
-      "type": "object",
-      "properties": {
-        "grpc_code": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "http_code": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "message": {
-          "type": "string"
-        },
-        "http_status": {
-          "type": "string"
-        },
-        "details": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/protobufAny"
-          }
-        }
-      }
-    },
     "schemaDepends": {
       "type": "object",
       "properties": {
@@ -499,6 +462,61 @@
         }
       }
     },
+    "trackerListDependenciesResponse": {
+      "type": "object",
+      "properties": {
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1alphatrackerDependency"
+          }
+        }
+      }
+    },
+    "trackerListDependenciesTieredResponse": {
+      "type": "object",
+      "properties": {
+        "tiers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/trackerTopologyTier"
+          }
+        }
+      }
+    },
+    "trackerListDependentsResponse": {
+      "type": "object",
+      "properties": {
+        "dependents": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1alphatrackerDependency"
+          }
+        }
+      }
+    },
+    "trackerListDependentsTieredResponse": {
+      "type": "object",
+      "properties": {
+        "tiers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/trackerTopologyTier"
+          }
+        }
+      }
+    },
+    "trackerListManagedResponse": {
+      "type": "object",
+      "properties": {
+        "modules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/trackerManagedModule"
+          }
+        }
+      }
+    },
     "trackerListModuleResponse": {
       "type": "object",
       "properties": {
@@ -533,6 +551,17 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/schemaSource"
+          }
+        }
+      }
+    },
+    "trackerListSourcesResponse": {
+      "type": "object",
+      "properties": {
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/trackerManagedSource"
           }
         }
       }
@@ -623,56 +652,6 @@
           "$ref": "#/definitions/schemaModule"
         }
       }
-    }
-  },
-  "x-stream-definitions": {
-    "trackerManagedModule": {
-      "type": "object",
-      "properties": {
-        "result": {
-          "$ref": "#/definitions/trackerManagedModule"
-        },
-        "error": {
-          "$ref": "#/definitions/runtimeStreamError"
-        }
-      },
-      "title": "Stream result of trackerManagedModule"
-    },
-    "trackerManagedSource": {
-      "type": "object",
-      "properties": {
-        "result": {
-          "$ref": "#/definitions/trackerManagedSource"
-        },
-        "error": {
-          "$ref": "#/definitions/runtimeStreamError"
-        }
-      },
-      "title": "Stream result of trackerManagedSource"
-    },
-    "trackerTopologyTier": {
-      "type": "object",
-      "properties": {
-        "result": {
-          "$ref": "#/definitions/trackerTopologyTier"
-        },
-        "error": {
-          "$ref": "#/definitions/runtimeStreamError"
-        }
-      },
-      "title": "Stream result of trackerTopologyTier"
-    },
-    "v1alphatrackerDependency": {
-      "type": "object",
-      "properties": {
-        "result": {
-          "$ref": "#/definitions/v1alphatrackerDependency"
-        },
-        "error": {
-          "$ref": "#/definitions/runtimeStreamError"
-        }
-      },
-      "title": "Stream result of v1alphatrackerDependency"
     }
   }
 }

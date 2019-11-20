@@ -1,15 +1,6 @@
-import {ChannelCredentials, Client, ServerUnaryCall, Server, ServiceDefinition, ServerWritableStream, ClientReadableStream} from "grpc";
+import {ChannelCredentials, Client, ServerUnaryCall, ServiceDefinition} from "grpc";
 import {DependencyManagementFile} from "../deps/deps";
 import {Source,Depends,Module,Manages} from "../schema/schema";
-
-// Server side streams don't have response types so we type it
-
-export interface TypedWriteable<T> {
-    write(response: T, callback?: (error: Error) => void): void;
-    end(): void;
-}
-
-export type ServerStreamCall<ReqType, RespType> = ServerWritableStream<ReqType>|TypedWriteable<RespType>;
 
 // begin proto
 
@@ -64,10 +55,18 @@ export interface ManagedModule {
     module: Module;
 }
 
+export interface ListSourcesResponse {
+    sources: ManagedSource[];
+}
+
+export interface ListManagedResponse {
+    modules: ManagedModule[];
+}
+
 export interface IModuleService {
     list(call: ServerUnaryCall<ListRequest>, callback: (error: Error, response: ListModuleResponse) => void): void;
-    getSource(call: ServerStreamCall<Module, ManagedSource>): void;
-    getManaged(call: ServerStreamCall<Source, ManagedModule>): void;
+    listSource(call: ServerUnaryCall<Module>, callback: (error: Error, response: ListSourcesResponse) => void): void;
+    listManaged(call: ServerUnaryCall<Source>, callback: (error: Error, response: ListManagedResponse) => void): void;
 }
 
 export class ModuleService extends Client {
@@ -76,8 +75,8 @@ export class ModuleService extends Client {
     constructor(address: string, credentials: ChannelCredentials, options?: object);
 
     public list(request: ListRequest, callback: (error: Error, response: ListModuleResponse) => void): void;
-    public getSource(request: Module): ClientReadableStream<ManagedSource>;
-    public getManaged(request: Source): ClientReadableStream<ManagedModule>;
+    public listSource(request: Module, callback: (error: Error, response: ListSourcesResponse) => void): void;
+    public listManaged(request: Source, callback: (error: Error, response: ListManagedResponse) => void): void;
 }
 
 export interface DependencyRequest {
@@ -92,9 +91,17 @@ export interface Dependency {
     module: Module;
 }
 
+export interface ListDependentsResponse {
+    dependents: Dependency[];
+}
+
+export interface ListDependenciesResponse {
+    dependencies: Dependency[];
+}
+
 export interface IDependencyService {
-    getDependents(call: ServerStreamCall<DependencyRequest, Dependency>): void;
-    getDependencies(call: ServerStreamCall<DependencyRequest, Dependency>): void;
+    listDependents(call: ServerUnaryCall<DependencyRequest>, callback: (error: Error, response: ListDependentsResponse) => void): void;
+    listDependencies(call: ServerUnaryCall<DependencyRequest>, callback: (error: Error, response: ListDependenciesResponse) => void): void;
 }
 
 export class DependencyService extends Client {
@@ -102,19 +109,27 @@ export class DependencyService extends Client {
 
     constructor(address: string, credentials: ChannelCredentials, options?: object);
 
-    public getDependents(request: DependencyRequest): ClientReadableStream<Dependency>;
-    public getDependencies(request: DependencyRequest): ClientReadableStream<Dependency>;
+    public listDependents(request: DependencyRequest, callback: (error: Error, response: ListDependentsResponse) => void): void;
+    public listDependencies(request: DependencyRequest, callback: (error: Error, response: ListDependenciesResponse) => void): void;
 }
 
 export interface TopologyTier {
     tier: Array<Dependency>;
 }
 
+export interface ListDependentsTieredResponse {
+    dependents: TopologyTier[];
+}
+
+export interface ListDependenciesTieredResponse {
+    dependencies: TopologyTier[];
+}
+
 export interface ITopologyService {
-    getDependentsTopology(call: ServerStreamCall<DependencyRequest, Dependency>): void;
-    getDependentsTopologyTiered(call: ServerStreamCall<DependencyRequest, TopologyTier>): void;
-    getDependenciesTopology(call: ServerStreamCall<DependencyRequest, Dependency>): void;
-    getDependenciesTopologyTiered(call: ServerStreamCall<DependencyRequest, TopologyTier>): void;
+    listDependentsTopology(call: ServerUnaryCall<DependencyRequest>, callback: (error: Error, response: ListDependentsResponse) => void): void;
+    listDependentsTopologyTiered(call: ServerUnaryCall<DependencyRequest>, callback: (error: Error, response: ListDependentsTieredResponse) => void): void;
+    listDependenciesTopology(call: ServerUnaryCall<DependencyRequest>, callback: (error: Error, response: ListDependenciesResponse) => void): void;
+    listDependenciesTopologyTiered(call: ServerUnaryCall<DependencyRequest>, callback: (error: Error, response: ListDependenciesTieredResponse) => void): void;
 }
 
 export class TopologyService extends Client {
@@ -122,8 +137,8 @@ export class TopologyService extends Client {
 
     constructor(address: string, credentials: ChannelCredentials, options?: object);
 
-    public getDependentsTopology(request: DependencyRequest): ClientReadableStream<Dependency>;
-    public getDependentsTopologyTiered(request: DependencyRequest): ClientReadableStream<TopologyTier>;
-    public getDependenciesTopology(request: DependencyRequest): ClientReadableStream<Dependency>;
-    public getDependenciesTopologyTiered(request: DependencyRequest): ClientReadableStream<TopologyTier>;
+    public listDependentsTopology(request: DependencyRequest, callback: (error: Error, response: ListDependentsResponse) => void): void;
+    public listDependentsTopologyTiered(request: DependencyRequest, callback: (error: Error, response: ListDependentsTieredResponse) => void): void;
+    public listDependenciesTopology(request: DependencyRequest, callback: (error: Error, response: ListDependenciesResponse) => void): void;
+    public listDependenciesTopologyTiered(request: DependencyRequest, callback: (error: Error, response: ListDependenciesTieredResponse) => void): void;
 }
