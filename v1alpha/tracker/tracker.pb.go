@@ -357,6 +357,82 @@ func (m *ManagedModule) GetModule() *schema.Module {
 	return nil
 }
 
+type ListSourcesResponse struct {
+	Sources              []*ManagedSource `protobuf:"bytes,1,rep,name=sources,proto3" json:"sources,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
+	XXX_unrecognized     []byte           `json:"-"`
+	XXX_sizecache        int32            `json:"-"`
+}
+
+func (m *ListSourcesResponse) Reset()         { *m = ListSourcesResponse{} }
+func (m *ListSourcesResponse) String() string { return proto.CompactTextString(m) }
+func (*ListSourcesResponse) ProtoMessage()    {}
+func (*ListSourcesResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_3b64d82f5e279343, []int{7}
+}
+func (m *ListSourcesResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ListSourcesResponse.Unmarshal(m, b)
+}
+func (m *ListSourcesResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ListSourcesResponse.Marshal(b, m, deterministic)
+}
+func (m *ListSourcesResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListSourcesResponse.Merge(m, src)
+}
+func (m *ListSourcesResponse) XXX_Size() int {
+	return xxx_messageInfo_ListSourcesResponse.Size(m)
+}
+func (m *ListSourcesResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_ListSourcesResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ListSourcesResponse proto.InternalMessageInfo
+
+func (m *ListSourcesResponse) GetSources() []*ManagedSource {
+	if m != nil {
+		return m.Sources
+	}
+	return nil
+}
+
+type ListManagedResponse struct {
+	Modules              []*ManagedModule `protobuf:"bytes,1,rep,name=modules,proto3" json:"modules,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
+	XXX_unrecognized     []byte           `json:"-"`
+	XXX_sizecache        int32            `json:"-"`
+}
+
+func (m *ListManagedResponse) Reset()         { *m = ListManagedResponse{} }
+func (m *ListManagedResponse) String() string { return proto.CompactTextString(m) }
+func (*ListManagedResponse) ProtoMessage()    {}
+func (*ListManagedResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_3b64d82f5e279343, []int{8}
+}
+func (m *ListManagedResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ListManagedResponse.Unmarshal(m, b)
+}
+func (m *ListManagedResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ListManagedResponse.Marshal(b, m, deterministic)
+}
+func (m *ListManagedResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListManagedResponse.Merge(m, src)
+}
+func (m *ListManagedResponse) XXX_Size() int {
+	return xxx_messageInfo_ListManagedResponse.Size(m)
+}
+func (m *ListManagedResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_ListManagedResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ListManagedResponse proto.InternalMessageInfo
+
+func (m *ListManagedResponse) GetModules() []*ManagedModule {
+	if m != nil {
+		return m.Modules
+	}
+	return nil
+}
+
 type DependencyRequest struct {
 	Language             string   `protobuf:"bytes,1,opt,name=language,proto3" json:"language,omitempty"`
 	Organization         string   `protobuf:"bytes,5,opt,name=organization,proto3" json:"organization,omitempty"`
@@ -370,7 +446,7 @@ func (m *DependencyRequest) Reset()         { *m = DependencyRequest{} }
 func (m *DependencyRequest) String() string { return proto.CompactTextString(m) }
 func (*DependencyRequest) ProtoMessage()    {}
 func (*DependencyRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_3b64d82f5e279343, []int{7}
+	return fileDescriptor_3b64d82f5e279343, []int{9}
 }
 func (m *DependencyRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DependencyRequest.Unmarshal(m, b)
@@ -423,7 +499,7 @@ func (m *Dependency) Reset()         { *m = Dependency{} }
 func (m *Dependency) String() string { return proto.CompactTextString(m) }
 func (*Dependency) ProtoMessage()    {}
 func (*Dependency) Descriptor() ([]byte, []int) {
-	return fileDescriptor_3b64d82f5e279343, []int{8}
+	return fileDescriptor_3b64d82f5e279343, []int{10}
 }
 func (m *Dependency) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Dependency.Unmarshal(m, b)
@@ -457,6 +533,82 @@ func (m *Dependency) GetModule() *schema.Module {
 	return nil
 }
 
+type ListDependentsResponse struct {
+	Dependents           []*Dependency `protobuf:"bytes,1,rep,name=dependents,proto3" json:"dependents,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}      `json:"-"`
+	XXX_unrecognized     []byte        `json:"-"`
+	XXX_sizecache        int32         `json:"-"`
+}
+
+func (m *ListDependentsResponse) Reset()         { *m = ListDependentsResponse{} }
+func (m *ListDependentsResponse) String() string { return proto.CompactTextString(m) }
+func (*ListDependentsResponse) ProtoMessage()    {}
+func (*ListDependentsResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_3b64d82f5e279343, []int{11}
+}
+func (m *ListDependentsResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ListDependentsResponse.Unmarshal(m, b)
+}
+func (m *ListDependentsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ListDependentsResponse.Marshal(b, m, deterministic)
+}
+func (m *ListDependentsResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListDependentsResponse.Merge(m, src)
+}
+func (m *ListDependentsResponse) XXX_Size() int {
+	return xxx_messageInfo_ListDependentsResponse.Size(m)
+}
+func (m *ListDependentsResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_ListDependentsResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ListDependentsResponse proto.InternalMessageInfo
+
+func (m *ListDependentsResponse) GetDependents() []*Dependency {
+	if m != nil {
+		return m.Dependents
+	}
+	return nil
+}
+
+type ListDependenciesResponse struct {
+	Dependencies         []*Dependency `protobuf:"bytes,1,rep,name=dependencies,proto3" json:"dependencies,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}      `json:"-"`
+	XXX_unrecognized     []byte        `json:"-"`
+	XXX_sizecache        int32         `json:"-"`
+}
+
+func (m *ListDependenciesResponse) Reset()         { *m = ListDependenciesResponse{} }
+func (m *ListDependenciesResponse) String() string { return proto.CompactTextString(m) }
+func (*ListDependenciesResponse) ProtoMessage()    {}
+func (*ListDependenciesResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_3b64d82f5e279343, []int{12}
+}
+func (m *ListDependenciesResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ListDependenciesResponse.Unmarshal(m, b)
+}
+func (m *ListDependenciesResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ListDependenciesResponse.Marshal(b, m, deterministic)
+}
+func (m *ListDependenciesResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListDependenciesResponse.Merge(m, src)
+}
+func (m *ListDependenciesResponse) XXX_Size() int {
+	return xxx_messageInfo_ListDependenciesResponse.Size(m)
+}
+func (m *ListDependenciesResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_ListDependenciesResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ListDependenciesResponse proto.InternalMessageInfo
+
+func (m *ListDependenciesResponse) GetDependencies() []*Dependency {
+	if m != nil {
+		return m.Dependencies
+	}
+	return nil
+}
+
 type TopologyTier struct {
 	Tier                 []*Dependency `protobuf:"bytes,1,rep,name=tier,proto3" json:"tier,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}      `json:"-"`
@@ -468,7 +620,7 @@ func (m *TopologyTier) Reset()         { *m = TopologyTier{} }
 func (m *TopologyTier) String() string { return proto.CompactTextString(m) }
 func (*TopologyTier) ProtoMessage()    {}
 func (*TopologyTier) Descriptor() ([]byte, []int) {
-	return fileDescriptor_3b64d82f5e279343, []int{9}
+	return fileDescriptor_3b64d82f5e279343, []int{13}
 }
 func (m *TopologyTier) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_TopologyTier.Unmarshal(m, b)
@@ -495,6 +647,82 @@ func (m *TopologyTier) GetTier() []*Dependency {
 	return nil
 }
 
+type ListDependentsTieredResponse struct {
+	Tiers                []*TopologyTier `protobuf:"bytes,1,rep,name=tiers,proto3" json:"tiers,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
+	XXX_unrecognized     []byte          `json:"-"`
+	XXX_sizecache        int32           `json:"-"`
+}
+
+func (m *ListDependentsTieredResponse) Reset()         { *m = ListDependentsTieredResponse{} }
+func (m *ListDependentsTieredResponse) String() string { return proto.CompactTextString(m) }
+func (*ListDependentsTieredResponse) ProtoMessage()    {}
+func (*ListDependentsTieredResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_3b64d82f5e279343, []int{14}
+}
+func (m *ListDependentsTieredResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ListDependentsTieredResponse.Unmarshal(m, b)
+}
+func (m *ListDependentsTieredResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ListDependentsTieredResponse.Marshal(b, m, deterministic)
+}
+func (m *ListDependentsTieredResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListDependentsTieredResponse.Merge(m, src)
+}
+func (m *ListDependentsTieredResponse) XXX_Size() int {
+	return xxx_messageInfo_ListDependentsTieredResponse.Size(m)
+}
+func (m *ListDependentsTieredResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_ListDependentsTieredResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ListDependentsTieredResponse proto.InternalMessageInfo
+
+func (m *ListDependentsTieredResponse) GetTiers() []*TopologyTier {
+	if m != nil {
+		return m.Tiers
+	}
+	return nil
+}
+
+type ListDependenciesTieredResponse struct {
+	Tiers                []*TopologyTier `protobuf:"bytes,1,rep,name=tiers,proto3" json:"tiers,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
+	XXX_unrecognized     []byte          `json:"-"`
+	XXX_sizecache        int32           `json:"-"`
+}
+
+func (m *ListDependenciesTieredResponse) Reset()         { *m = ListDependenciesTieredResponse{} }
+func (m *ListDependenciesTieredResponse) String() string { return proto.CompactTextString(m) }
+func (*ListDependenciesTieredResponse) ProtoMessage()    {}
+func (*ListDependenciesTieredResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_3b64d82f5e279343, []int{15}
+}
+func (m *ListDependenciesTieredResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ListDependenciesTieredResponse.Unmarshal(m, b)
+}
+func (m *ListDependenciesTieredResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ListDependenciesTieredResponse.Marshal(b, m, deterministic)
+}
+func (m *ListDependenciesTieredResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListDependenciesTieredResponse.Merge(m, src)
+}
+func (m *ListDependenciesTieredResponse) XXX_Size() int {
+	return xxx_messageInfo_ListDependenciesTieredResponse.Size(m)
+}
+func (m *ListDependenciesTieredResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_ListDependenciesTieredResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ListDependenciesTieredResponse proto.InternalMessageInfo
+
+func (m *ListDependenciesTieredResponse) GetTiers() []*TopologyTier {
+	if m != nil {
+		return m.Tiers
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterType((*SourceRequest)(nil), "cloud.deps.api.v1alpha.tracker.SourceRequest")
 	proto.RegisterType((*ListRequest)(nil), "cloud.deps.api.v1alpha.tracker.ListRequest")
@@ -503,70 +731,83 @@ func init() {
 	proto.RegisterType((*ListModuleResponse)(nil), "cloud.deps.api.v1alpha.tracker.ListModuleResponse")
 	proto.RegisterType((*ManagedSource)(nil), "cloud.deps.api.v1alpha.tracker.ManagedSource")
 	proto.RegisterType((*ManagedModule)(nil), "cloud.deps.api.v1alpha.tracker.ManagedModule")
+	proto.RegisterType((*ListSourcesResponse)(nil), "cloud.deps.api.v1alpha.tracker.ListSourcesResponse")
+	proto.RegisterType((*ListManagedResponse)(nil), "cloud.deps.api.v1alpha.tracker.ListManagedResponse")
 	proto.RegisterType((*DependencyRequest)(nil), "cloud.deps.api.v1alpha.tracker.DependencyRequest")
 	proto.RegisterType((*Dependency)(nil), "cloud.deps.api.v1alpha.tracker.Dependency")
+	proto.RegisterType((*ListDependentsResponse)(nil), "cloud.deps.api.v1alpha.tracker.ListDependentsResponse")
+	proto.RegisterType((*ListDependenciesResponse)(nil), "cloud.deps.api.v1alpha.tracker.ListDependenciesResponse")
 	proto.RegisterType((*TopologyTier)(nil), "cloud.deps.api.v1alpha.tracker.TopologyTier")
+	proto.RegisterType((*ListDependentsTieredResponse)(nil), "cloud.deps.api.v1alpha.tracker.ListDependentsTieredResponse")
+	proto.RegisterType((*ListDependenciesTieredResponse)(nil), "cloud.deps.api.v1alpha.tracker.ListDependenciesTieredResponse")
 }
 
 func init() { proto.RegisterFile("v1alpha/tracker/tracker.proto", fileDescriptor_3b64d82f5e279343) }
 
 var fileDescriptor_3b64d82f5e279343 = []byte{
-	// 872 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xbc, 0x97, 0x4f, 0x6f, 0xe3, 0x44,
-	0x18, 0xc6, 0x35, 0x69, 0xd3, 0xed, 0xbe, 0xd9, 0xa8, 0xf0, 0x0a, 0xb6, 0x26, 0xd5, 0x42, 0xb1,
-	0xa0, 0x2a, 0xdb, 0x8d, 0x9d, 0x1a, 0x76, 0x17, 0x21, 0x58, 0x10, 0x42, 0xf4, 0x42, 0x39, 0xb8,
-	0x3d, 0xf5, 0x52, 0x4d, 0xed, 0x91, 0x63, 0x35, 0xf1, 0x18, 0x7b, 0x52, 0x14, 0x10, 0x42, 0x20,
-	0x84, 0xb8, 0x20, 0x21, 0x71, 0xef, 0x01, 0x3e, 0x40, 0x0f, 0xdc, 0x39, 0xf0, 0x15, 0x38, 0x71,
-	0xe7, 0x7b, 0x80, 0x3c, 0x7f, 0x52, 0x3b, 0xb4, 0xc4, 0x69, 0xd5, 0x5e, 0x9a, 0x8c, 0x67, 0x9e,
-	0x79, 0x7f, 0xf3, 0xcc, 0xcc, 0xd3, 0x18, 0x1e, 0x9c, 0x6c, 0xd3, 0x41, 0xda, 0xa7, 0xae, 0xc8,
-	0x68, 0x70, 0xcc, 0x32, 0xf3, 0xe9, 0xa4, 0x19, 0x17, 0x1c, 0x5f, 0x0e, 0x06, 0x7c, 0x14, 0x3a,
-	0x21, 0x4b, 0x73, 0x87, 0xa6, 0xb1, 0xa3, 0x47, 0x3b, 0x7a, 0x54, 0x67, 0xd5, 0xc8, 0x8b, 0x11,
-	0xf2, 0x8f, 0x12, 0x76, 0xd6, 0x4c, 0x47, 0x1e, 0xf4, 0xd9, 0xd0, 0x7c, 0xe8, 0xce, 0x83, 0x28,
-	0x16, 0xfd, 0xd1, 0x91, 0x13, 0xf0, 0xa1, 0x1b, 0x65, 0x69, 0xd0, 0x65, 0x01, 0xcf, 0xc7, 0xb9,
-	0x60, 0xba, 0x19, 0x51, 0xc1, 0x3e, 0xa7, 0x63, 0x57, 0xf4, 0xe3, 0x2c, 0x3c, 0x4c, 0x69, 0x26,
-	0xc6, 0x6e, 0xc4, 0x79, 0x34, 0x60, 0x34, 0x8d, 0x73, 0xfd, 0xd5, 0xa5, 0x69, 0xec, 0xd2, 0x24,
-	0xe1, 0x82, 0x8a, 0x98, 0x27, 0xba, 0xb0, 0x7d, 0x46, 0xa0, 0xbd, 0xc7, 0x47, 0x59, 0xc0, 0x7c,
-	0xf6, 0xd9, 0x88, 0xe5, 0x02, 0xdf, 0x83, 0xa5, 0x5c, 0x3e, 0xb0, 0xc8, 0x3a, 0xd9, 0x6c, 0x79,
-	0xaf, 0x3b, 0x97, 0x2c, 0x4a, 0x33, 0x6a, 0xb5, 0x16, 0xe1, 0x21, 0xac, 0x0c, 0x69, 0x42, 0x23,
-	0x36, 0x64, 0x89, 0xf8, 0x38, 0x1e, 0xb0, 0xdc, 0x6a, 0xac, 0x2f, 0x6c, 0xb6, 0xbc, 0xc7, 0x97,
-	0xcd, 0x23, 0x1f, 0x7c, 0xc4, 0x52, 0x96, 0x84, 0x2c, 0x09, 0xc6, 0xbb, 0x15, 0xb5, 0x3f, 0x3d,
-	0x9b, 0xfd, 0x14, 0x5a, 0x9f, 0xc4, 0xb9, 0x30, 0xb8, 0x08, 0x8b, 0x29, 0x8d, 0x14, 0x6c, 0xd3,
-	0x97, 0xdf, 0xf1, 0x05, 0x68, 0x06, 0x7c, 0x94, 0x08, 0xab, 0x21, 0x1f, 0xaa, 0x86, 0xbd, 0x05,
-	0xed, 0xfd, 0x62, 0x1f, 0x7c, 0x96, 0xa7, 0x3c, 0xc9, 0x19, 0x76, 0x60, 0x59, 0x6e, 0x4c, 0x9c,
-	0x44, 0x52, 0xbe, 0xec, 0x4f, 0xda, 0xf6, 0xd7, 0x80, 0x45, 0x15, 0x63, 0x8d, 0x56, 0xd4, 0x2e,
-	0x86, 0xef, 0xc3, 0x1d, 0x65, 0x48, 0x6e, 0x2d, 0xc8, 0xe5, 0xd7, 0xb4, 0xd1, 0xa8, 0x0c, 0xc0,
-	0x2e, 0x0f, 0x47, 0x83, 0x2b, 0x02, 0x0c, 0xa5, 0xb6, 0x2e, 0x80, 0xae, 0x64, 0x54, 0xf6, 0x4f,
-	0x04, 0xda, 0x6a, 0x2f, 0x42, 0xc5, 0x76, 0xdd, 0x93, 0xf1, 0x01, 0xdc, 0x51, 0x7b, 0x99, 0x4b,
-	0xd2, 0x96, 0xb7, 0x31, 0x8b, 0x48, 0x8d, 0xf6, 0x8d, 0xac, 0x8c, 0xa4, 0x68, 0xcb, 0x73, 0x92,
-	0x2b, 0xcd, 0x59, 0x2c, 0x4a, 0xad, 0x58, 0x43, 0xd5, 0xb4, 0x49, 0x8b, 0xec, 0x63, 0x78, 0xfe,
-	0xfc, 0xe8, 0x9a, 0x33, 0xd9, 0x81, 0xe5, 0x01, 0x4d, 0xa2, 0x91, 0xd9, 0xa9, 0xbb, 0xfe, 0xa4,
-	0x8d, 0x36, 0xdc, 0xe3, 0x59, 0x44, 0x93, 0xf8, 0x0b, 0x79, 0x0f, 0xad, 0xa6, 0xec, 0xaf, 0x3c,
-	0xc3, 0xfb, 0x13, 0xa6, 0x25, 0xd9, 0x6b, 0x8a, 0xfd, 0x48, 0x00, 0xce, 0xab, 0x15, 0x8b, 0x0f,
-	0x65, 0xab, 0xee, 0xe2, 0x95, 0x36, 0xf7, 0x8d, 0xec, 0xba, 0x8b, 0xff, 0x14, 0xee, 0xed, 0xf3,
-	0x94, 0x0f, 0x78, 0x34, 0xde, 0x8f, 0x59, 0x86, 0xcf, 0x60, 0x51, 0xc4, 0x2c, 0xb3, 0x88, 0x3c,
-	0x70, 0x0f, 0x9d, 0xff, 0x4f, 0xc3, 0xd2, 0x9d, 0xf7, 0xa5, 0xce, 0x3b, 0x6d, 0x98, 0x30, 0xda,
-	0x63, 0xd9, 0x49, 0x1c, 0x30, 0xfc, 0x86, 0xc0, 0x62, 0x71, 0x0d, 0x70, 0x6b, 0xd6, 0x64, 0xa5,
-	0x4c, 0xe8, 0x78, 0x75, 0x06, 0x57, 0xaf, 0xb6, 0x6d, 0x7d, 0xfb, 0xe7, 0xdf, 0x3f, 0x37, 0x10,
-	0x9f, 0x73, 0x27, 0x51, 0xac, 0x6e, 0x22, 0xfe, 0x40, 0xa0, 0x29, 0x83, 0x03, 0xbb, 0xb3, 0xe6,
-	0xad, 0x24, 0x69, 0x67, 0xe6, 0xf0, 0x4a, 0x1c, 0xd9, 0xaf, 0x4a, 0x82, 0x35, 0xfb, 0xfe, 0x34,
-	0x81, 0xfa, 0x27, 0xf3, 0x0e, 0x79, 0xe8, 0xfd, 0xba, 0x00, 0x6d, 0xb5, 0x07, 0xb7, 0x60, 0x50,
-	0x35, 0x7a, 0x2e, 0x30, 0x48, 0x27, 0x05, 0x7e, 0x47, 0xe0, 0xee, 0x0e, 0xd3, 0x86, 0x62, 0xbd,
-	0x33, 0x34, 0xdb, 0x9c, 0x4a, 0xf6, 0xd8, 0xaf, 0xc8, 0xea, 0x2f, 0xe1, 0xea, 0x74, 0x75, 0x6d,
-	0x52, 0x8f, 0xe0, 0xf7, 0x04, 0x60, 0x87, 0x09, 0xad, 0xc3, 0x7a, 0xe9, 0x54, 0x9b, 0x43, 0x61,
-	0xdb, 0xeb, 0x92, 0xa3, 0x83, 0xd6, 0x7f, 0x38, 0x54, 0xa0, 0x84, 0x3d, 0xe2, 0xfd, 0xd5, 0x28,
-	0x87, 0x82, 0xd9, 0xa9, 0x53, 0x02, 0xed, 0x1d, 0x26, 0x4c, 0x87, 0xc8, 0x71, 0x7b, 0x8e, 0x0b,
-	0xa2, 0x37, 0x6e, 0x8e, 0x3b, 0x65, 0x3f, 0x92, 0xa8, 0x1b, 0xf8, 0xda, 0x04, 0x35, 0xca, 0x68,
-	0xda, 0x77, 0xbf, 0x34, 0x59, 0xf4, 0x95, 0x1b, 0x4e, 0x60, 0x7a, 0x04, 0x7f, 0x21, 0xb0, 0x52,
-	0x02, 0x0c, 0x62, 0x76, 0xe3, 0x88, 0x8e, 0x44, 0xdc, 0xc4, 0x8d, 0xd9, 0x88, 0x05, 0x4e, 0x8f,
-	0x78, 0xff, 0x34, 0x61, 0xc5, 0x64, 0x8e, 0x71, 0xf6, 0x8c, 0xc0, 0x8b, 0x15, 0x67, 0xcd, 0x80,
-	0x9b, 0xc6, 0x7f, 0x2c, 0xf1, 0x5d, 0xec, 0xd6, 0x71, 0xd8, 0x15, 0x9a, 0xaa, 0x47, 0xf0, 0x77,
-	0x02, 0x6b, 0x17, 0x12, 0x17, 0x31, 0xca, 0xc2, 0xab, 0x70, 0x3f, 0x9a, 0x19, 0x36, 0xa5, 0x12,
-	0xf6, 0xbb, 0x92, 0xfc, 0x09, 0xbe, 0x35, 0x17, 0xb9, 0x2b, 0x24, 0x5e, 0x8f, 0xe0, 0x6f, 0x04,
-	0x56, 0xa7, 0xce, 0xca, 0x6d, 0x99, 0xfe, 0x54, 0xa2, 0x6f, 0xa3, 0x5b, 0xef, 0xcc, 0x94, 0x6d,
-	0xff, 0x83, 0xc0, 0x83, 0x4b, 0xa8, 0x6f, 0xcb, 0xf8, 0x67, 0x92, 0xfe, 0x6d, 0x7c, 0x32, 0x27,
-	0xfd, 0xc4, 0xfa, 0x0f, 0xb7, 0x0e, 0xde, 0x28, 0xbd, 0x0f, 0x14, 0x55, 0xbb, 0x12, 0x40, 0xfe,
-	0xc0, 0x9f, 0x7a, 0x3d, 0x39, 0x5a, 0x92, 0xbf, 0xf2, 0xdf, 0xfc, 0x37, 0x00, 0x00, 0xff, 0xff,
-	0x92, 0xae, 0x9b, 0xee, 0xb8, 0x0c, 0x00, 0x00,
+	// 979 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xbc, 0x57, 0x4f, 0x6f, 0xdc, 0x44,
+	0x14, 0xd7, 0x6c, 0xb2, 0x69, 0x78, 0x49, 0x68, 0x19, 0x50, 0x6a, 0x5c, 0x28, 0x61, 0x04, 0x51,
+	0x68, 0x1a, 0x5b, 0x71, 0x69, 0x5a, 0xa1, 0x12, 0x50, 0x85, 0x40, 0x42, 0xb4, 0x07, 0x37, 0xa7,
+	0x1e, 0xa8, 0x26, 0xf6, 0xc8, 0x6b, 0xba, 0xeb, 0x31, 0xf6, 0x6c, 0xd1, 0x82, 0x10, 0x82, 0x13,
+	0x02, 0x21, 0x21, 0x71, 0xe7, 0xce, 0x85, 0x1e, 0x91, 0x38, 0xf1, 0x05, 0x38, 0xf5, 0x2b, 0xf0,
+	0x05, 0xf8, 0x06, 0xc8, 0xf3, 0xc7, 0xff, 0xb6, 0x65, 0xbd, 0xbb, 0x55, 0x2f, 0x59, 0x7b, 0x66,
+	0xde, 0x7b, 0xbf, 0xf7, 0xfb, 0xcd, 0x7b, 0x2f, 0x86, 0x57, 0x1f, 0x1c, 0xd2, 0x61, 0x3a, 0xa0,
+	0xae, 0xc8, 0x68, 0x70, 0x9f, 0x65, 0xe6, 0xd7, 0x49, 0x33, 0x2e, 0x38, 0xbe, 0x18, 0x0c, 0xf9,
+	0x38, 0x74, 0x42, 0x96, 0xe6, 0x0e, 0x4d, 0x63, 0x47, 0x9f, 0x76, 0xf4, 0x29, 0xfb, 0xbc, 0x31,
+	0x2f, 0x4e, 0xc8, 0x3f, 0xca, 0xd0, 0xbe, 0x60, 0x36, 0xf2, 0x60, 0xc0, 0x46, 0xe6, 0x47, 0x6f,
+	0xde, 0x8d, 0x62, 0x31, 0x18, 0x9f, 0x3a, 0x01, 0x1f, 0xb9, 0x51, 0x96, 0x06, 0x07, 0x2c, 0xe0,
+	0xf9, 0x24, 0x17, 0x4c, 0xbf, 0x46, 0x54, 0xb0, 0x2f, 0xe8, 0xc4, 0x15, 0x83, 0x38, 0x0b, 0xef,
+	0xa5, 0x34, 0x13, 0x13, 0x37, 0xe2, 0x3c, 0x1a, 0x32, 0x9a, 0xc6, 0xb9, 0x7e, 0x74, 0x69, 0x1a,
+	0xbb, 0x34, 0x49, 0xb8, 0xa0, 0x22, 0xe6, 0x89, 0x0e, 0x4c, 0x1e, 0x22, 0xd8, 0xba, 0xc3, 0xc7,
+	0x59, 0xc0, 0x7c, 0xf6, 0xf9, 0x98, 0xe5, 0x02, 0xbf, 0x0b, 0x6b, 0xb9, 0x5c, 0xb0, 0xd0, 0x0e,
+	0xda, 0xdb, 0xf0, 0xde, 0x74, 0x9e, 0x90, 0x94, 0xc6, 0xa8, 0xad, 0xb5, 0x11, 0xbe, 0x07, 0x67,
+	0x47, 0x34, 0xa1, 0x11, 0x1b, 0xb1, 0x44, 0x7c, 0x18, 0x0f, 0x59, 0x6e, 0xf5, 0x76, 0x56, 0xf6,
+	0x36, 0xbc, 0xab, 0x4f, 0xf2, 0x23, 0x17, 0x3e, 0x60, 0x29, 0x4b, 0x42, 0x96, 0x04, 0x93, 0x5b,
+	0x0d, 0x6b, 0xbf, 0xed, 0x8d, 0x5c, 0x83, 0x8d, 0x4f, 0xe2, 0x5c, 0x18, 0xb8, 0x18, 0x56, 0x53,
+	0x1a, 0x29, 0xb0, 0x7d, 0x5f, 0x3e, 0xe3, 0x97, 0xa0, 0x1f, 0xf0, 0x71, 0x22, 0xac, 0x9e, 0x5c,
+	0x54, 0x2f, 0x64, 0x1f, 0xb6, 0x4e, 0x0a, 0x1d, 0x7c, 0x96, 0xa7, 0x3c, 0xc9, 0x19, 0xb6, 0x61,
+	0x5d, 0x0a, 0x13, 0x27, 0x91, 0x34, 0x5f, 0xf7, 0xcb, 0x77, 0xf2, 0x0d, 0xe0, 0x22, 0x8a, 0xa1,
+	0x46, 0x5b, 0x74, 0x0e, 0x86, 0xdf, 0x83, 0x33, 0x8a, 0x90, 0xdc, 0x5a, 0x91, 0xe9, 0x77, 0xa4,
+	0xd1, 0x58, 0x19, 0x00, 0xb7, 0x78, 0x38, 0x1e, 0x2e, 0x08, 0x60, 0x24, 0x6d, 0xbb, 0x02, 0xd0,
+	0x91, 0x8c, 0x15, 0xf9, 0x19, 0xc1, 0x96, 0xd2, 0x22, 0x54, 0xd8, 0x96, 0xbd, 0x19, 0xef, 0xc3,
+	0x19, 0xa5, 0x65, 0x2e, 0x91, 0x6e, 0x78, 0xbb, 0xb3, 0x10, 0xa9, 0xd3, 0xbe, 0x31, 0xab, 0x43,
+	0x52, 0x68, 0xeb, 0x3e, 0xd1, 0x42, 0x3e, 0x8b, 0xa4, 0x54, 0xc6, 0x1a, 0x54, 0x47, 0x9a, 0xb4,
+	0x11, 0xf9, 0x14, 0x5e, 0xac, 0xee, 0x49, 0x5e, 0xea, 0xf4, 0x51, 0x25, 0x3f, 0x92, 0xec, 0x1f,
+	0x38, 0xff, 0xdf, 0x1a, 0x9c, 0x06, 0xd5, 0xd5, 0x35, 0xd0, 0xfe, 0xf5, 0x6e, 0xdd, 0xbf, 0x51,
+	0x77, 0x3e, 0xff, 0x6d, 0x95, 0xef, 0xc3, 0x0b, 0x55, 0xe9, 0x99, 0x9a, 0xb2, 0x61, 0x7d, 0x48,
+	0x93, 0x68, 0x6c, 0x6e, 0xda, 0x73, 0x7e, 0xf9, 0x8e, 0x09, 0x6c, 0xf2, 0x2c, 0xa2, 0x49, 0xfc,
+	0xa5, 0xec, 0x23, 0x56, 0x5f, 0xee, 0x37, 0xd6, 0xf0, 0x76, 0xc9, 0xe9, 0x9a, 0xdc, 0x35, 0x64,
+	0xfd, 0x84, 0x00, 0xaa, 0x68, 0x85, 0x78, 0xa1, 0x7c, 0xeb, 0x2a, 0x9e, 0xb2, 0xcd, 0x7d, 0x63,
+	0xb6, 0xac, 0x78, 0x21, 0x6c, 0x17, 0xe4, 0x1a, 0x48, 0xa2, 0xd2, 0xef, 0x63, 0x80, 0xb0, 0x5c,
+	0xd5, 0x14, 0x5f, 0x9a, 0x45, 0x71, 0x8d, 0xc8, 0x9a, 0x35, 0xf9, 0x0c, 0xac, 0x7a, 0x94, 0x20,
+	0xae, 0xdd, 0x93, 0xdb, 0xb0, 0x19, 0xd6, 0xd6, 0x17, 0x88, 0xd4, 0xb0, 0x27, 0xb7, 0x61, 0xf3,
+	0x84, 0xa7, 0x7c, 0xc8, 0xa3, 0xc9, 0x49, 0xcc, 0x32, 0x7c, 0x0c, 0xab, 0x22, 0x66, 0xd9, 0x02,
+	0x7e, 0xa5, 0x1d, 0x39, 0x85, 0x57, 0x9a, 0x0c, 0x15, 0x5e, 0x6b, 0xf7, 0xf0, 0x26, 0xf4, 0x8b,
+	0x73, 0x06, 0xf8, 0xe5, 0x59, 0x01, 0xea, 0xe0, 0x7c, 0x65, 0x4a, 0x42, 0xb8, 0xd8, 0xe6, 0xe7,
+	0xe9, 0x47, 0xf1, 0x7e, 0xed, 0x99, 0x41, 0x77, 0x87, 0x65, 0x0f, 0xe2, 0x80, 0xe1, 0x6f, 0x11,
+	0xac, 0x16, 0x81, 0xf1, 0xfe, 0x2c, 0x7f, 0xb5, 0x79, 0x63, 0x7b, 0x5d, 0x0e, 0x37, 0xc7, 0x06,
+	0xb1, 0xbe, 0x7b, 0xf4, 0xcf, 0x2f, 0x3d, 0x8c, 0xcf, 0xb9, 0xe5, 0x98, 0x57, 0xe5, 0x8d, 0xbf,
+	0x47, 0xd0, 0x97, 0x43, 0x09, 0xcf, 0x2c, 0xe0, 0xc6, 0x94, 0xb6, 0x67, 0x1e, 0x6f, 0x8c, 0x3a,
+	0xf2, 0xba, 0x44, 0x70, 0x81, 0x6c, 0xb7, 0x11, 0xa8, 0x7f, 0x60, 0xde, 0x41, 0x97, 0xbc, 0xdf,
+	0x57, 0x60, 0x4b, 0xd5, 0xc7, 0x33, 0x20, 0xa8, 0x39, 0xd6, 0x1e, 0x43, 0x90, 0xee, 0x4f, 0xf8,
+	0x07, 0xa4, 0xc6, 0xbd, 0x6e, 0xb0, 0xb8, 0x5b, 0x85, 0xdb, 0x57, 0xba, 0xab, 0x54, 0x16, 0x23,
+	0x79, 0x4d, 0xa2, 0x78, 0x19, 0x9f, 0x6f, 0xa3, 0xd0, 0x64, 0xe1, 0x1f, 0x35, 0x18, 0xdd, 0x4b,
+	0x71, 0xb7, 0x01, 0xd8, 0x0d, 0x4c, 0xab, 0xc3, 0x93, 0x1d, 0x09, 0xc6, 0xc6, 0xd6, 0x14, 0x18,
+	0x35, 0xb9, 0x42, 0xef, 0xdf, 0x5e, 0xbd, 0x77, 0x1b, 0xd1, 0x7e, 0x43, 0xf0, 0x7c, 0xb3, 0x64,
+	0xf1, 0xe1, 0x1c, 0x65, 0xaf, 0x45, 0x3c, 0xea, 0x02, 0x79, 0xba, 0x6f, 0x92, 0xcb, 0x12, 0xf5,
+	0x2e, 0x7e, 0xa3, 0x44, 0x1d, 0x65, 0x34, 0x1d, 0xb8, 0x5f, 0x99, 0xf9, 0xf1, 0xb5, 0x5b, 0x75,
+	0x46, 0xfc, 0x10, 0xc1, 0xb9, 0x76, 0xe9, 0x2f, 0x82, 0xf6, 0xfa, 0x3c, 0x68, 0xeb, 0xfd, 0x97,
+	0x38, 0x12, 0xef, 0x1e, 0xde, 0x9d, 0x8d, 0xb7, 0xb0, 0xf3, 0xfe, 0x58, 0x83, 0xb3, 0xa6, 0xbb,
+	0x18, 0xc6, 0xff, 0x44, 0xed, 0x31, 0x62, 0x4e, 0x3c, 0x4b, 0xe6, 0xaf, 0xca, 0x4c, 0x5c, 0x7c,
+	0xd0, 0x85, 0x79, 0x57, 0x18, 0x84, 0x7f, 0xa3, 0xa9, 0x0e, 0x5f, 0x6b, 0x9e, 0x2c, 0x5c, 0x24,
+	0x85, 0x1b, 0xf3, 0xa5, 0xd0, 0x6c, 0xf6, 0xe4, 0x86, 0x4c, 0xe4, 0x08, 0xbf, 0x3d, 0x57, 0x22,
+	0xae, 0x50, 0x70, 0xff, 0x42, 0xd3, 0xd3, 0x76, 0x19, 0x39, 0x16, 0xbf, 0x5a, 0xd7, 0x64, 0x1e,
+	0x87, 0xd8, 0xed, 0x76, 0xb5, 0x2a, 0x49, 0x1e, 0xa1, 0xc7, 0x0c, 0xc4, 0xa5, 0x45, 0x39, 0x9e,
+	0x37, 0x91, 0x96, 0x2c, 0xc7, 0x32, 0x9d, 0xeb, 0xf8, 0x68, 0xce, 0x74, 0xb4, 0x30, 0x37, 0xf7,
+	0xef, 0xbe, 0x55, 0xfb, 0x8c, 0x2d, 0x50, 0x1c, 0x48, 0x40, 0xf2, 0xbb, 0xb4, 0xf5, 0x55, 0x7d,
+	0xba, 0x26, 0x3f, 0x4e, 0xaf, 0xfc, 0x17, 0x00, 0x00, 0xff, 0xff, 0xb3, 0x0a, 0x3b, 0xae, 0x6f,
+	0x0f, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -690,8 +931,8 @@ var _SourceService_serviceDesc = grpc.ServiceDesc{
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type ModuleServiceClient interface {
 	List(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListModuleResponse, error)
-	GetSource(ctx context.Context, in *schema.Module, opts ...grpc.CallOption) (ModuleService_GetSourceClient, error)
-	GetManaged(ctx context.Context, in *schema.Source, opts ...grpc.CallOption) (ModuleService_GetManagedClient, error)
+	ListSources(ctx context.Context, in *schema.Module, opts ...grpc.CallOption) (*ListSourcesResponse, error)
+	ListManaged(ctx context.Context, in *schema.Source, opts ...grpc.CallOption) (*ListManagedResponse, error)
 }
 
 type moduleServiceClient struct {
@@ -711,75 +952,29 @@ func (c *moduleServiceClient) List(ctx context.Context, in *ListRequest, opts ..
 	return out, nil
 }
 
-func (c *moduleServiceClient) GetSource(ctx context.Context, in *schema.Module, opts ...grpc.CallOption) (ModuleService_GetSourceClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_ModuleService_serviceDesc.Streams[0], "/cloud.deps.api.v1alpha.tracker.ModuleService/GetSource", opts...)
+func (c *moduleServiceClient) ListSources(ctx context.Context, in *schema.Module, opts ...grpc.CallOption) (*ListSourcesResponse, error) {
+	out := new(ListSourcesResponse)
+	err := c.cc.Invoke(ctx, "/cloud.deps.api.v1alpha.tracker.ModuleService/ListSources", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &moduleServiceGetSourceClient{stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
+	return out, nil
 }
 
-type ModuleService_GetSourceClient interface {
-	Recv() (*ManagedSource, error)
-	grpc.ClientStream
-}
-
-type moduleServiceGetSourceClient struct {
-	grpc.ClientStream
-}
-
-func (x *moduleServiceGetSourceClient) Recv() (*ManagedSource, error) {
-	m := new(ManagedSource)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
-func (c *moduleServiceClient) GetManaged(ctx context.Context, in *schema.Source, opts ...grpc.CallOption) (ModuleService_GetManagedClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_ModuleService_serviceDesc.Streams[1], "/cloud.deps.api.v1alpha.tracker.ModuleService/GetManaged", opts...)
+func (c *moduleServiceClient) ListManaged(ctx context.Context, in *schema.Source, opts ...grpc.CallOption) (*ListManagedResponse, error) {
+	out := new(ListManagedResponse)
+	err := c.cc.Invoke(ctx, "/cloud.deps.api.v1alpha.tracker.ModuleService/ListManaged", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &moduleServiceGetManagedClient{stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
-}
-
-type ModuleService_GetManagedClient interface {
-	Recv() (*ManagedModule, error)
-	grpc.ClientStream
-}
-
-type moduleServiceGetManagedClient struct {
-	grpc.ClientStream
-}
-
-func (x *moduleServiceGetManagedClient) Recv() (*ManagedModule, error) {
-	m := new(ManagedModule)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
+	return out, nil
 }
 
 // ModuleServiceServer is the server API for ModuleService service.
 type ModuleServiceServer interface {
 	List(context.Context, *ListRequest) (*ListModuleResponse, error)
-	GetSource(*schema.Module, ModuleService_GetSourceServer) error
-	GetManaged(*schema.Source, ModuleService_GetManagedServer) error
+	ListSources(context.Context, *schema.Module) (*ListSourcesResponse, error)
+	ListManaged(context.Context, *schema.Source) (*ListManagedResponse, error)
 }
 
 // UnimplementedModuleServiceServer can be embedded to have forward compatible implementations.
@@ -789,11 +984,11 @@ type UnimplementedModuleServiceServer struct {
 func (*UnimplementedModuleServiceServer) List(ctx context.Context, req *ListRequest) (*ListModuleResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
 }
-func (*UnimplementedModuleServiceServer) GetSource(req *schema.Module, srv ModuleService_GetSourceServer) error {
-	return status.Errorf(codes.Unimplemented, "method GetSource not implemented")
+func (*UnimplementedModuleServiceServer) ListSources(ctx context.Context, req *schema.Module) (*ListSourcesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListSources not implemented")
 }
-func (*UnimplementedModuleServiceServer) GetManaged(req *schema.Source, srv ModuleService_GetManagedServer) error {
-	return status.Errorf(codes.Unimplemented, "method GetManaged not implemented")
+func (*UnimplementedModuleServiceServer) ListManaged(ctx context.Context, req *schema.Source) (*ListManagedResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListManaged not implemented")
 }
 
 func RegisterModuleServiceServer(s *grpc.Server, srv ModuleServiceServer) {
@@ -818,46 +1013,40 @@ func _ModuleService_List_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ModuleService_GetSource_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(schema.Module)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
+func _ModuleService_ListSources_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(schema.Module)
+	if err := dec(in); err != nil {
+		return nil, err
 	}
-	return srv.(ModuleServiceServer).GetSource(m, &moduleServiceGetSourceServer{stream})
-}
-
-type ModuleService_GetSourceServer interface {
-	Send(*ManagedSource) error
-	grpc.ServerStream
-}
-
-type moduleServiceGetSourceServer struct {
-	grpc.ServerStream
-}
-
-func (x *moduleServiceGetSourceServer) Send(m *ManagedSource) error {
-	return x.ServerStream.SendMsg(m)
-}
-
-func _ModuleService_GetManaged_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(schema.Source)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
+	if interceptor == nil {
+		return srv.(ModuleServiceServer).ListSources(ctx, in)
 	}
-	return srv.(ModuleServiceServer).GetManaged(m, &moduleServiceGetManagedServer{stream})
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cloud.deps.api.v1alpha.tracker.ModuleService/ListSources",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ModuleServiceServer).ListSources(ctx, req.(*schema.Module))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
-type ModuleService_GetManagedServer interface {
-	Send(*ManagedModule) error
-	grpc.ServerStream
-}
-
-type moduleServiceGetManagedServer struct {
-	grpc.ServerStream
-}
-
-func (x *moduleServiceGetManagedServer) Send(m *ManagedModule) error {
-	return x.ServerStream.SendMsg(m)
+func _ModuleService_ListManaged_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(schema.Source)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ModuleServiceServer).ListManaged(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cloud.deps.api.v1alpha.tracker.ModuleService/ListManaged",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ModuleServiceServer).ListManaged(ctx, req.(*schema.Source))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 var _ModuleService_serviceDesc = grpc.ServiceDesc{
@@ -868,19 +1057,16 @@ var _ModuleService_serviceDesc = grpc.ServiceDesc{
 			MethodName: "List",
 			Handler:    _ModuleService_List_Handler,
 		},
-	},
-	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "GetSource",
-			Handler:       _ModuleService_GetSource_Handler,
-			ServerStreams: true,
+			MethodName: "ListSources",
+			Handler:    _ModuleService_ListSources_Handler,
 		},
 		{
-			StreamName:    "GetManaged",
-			Handler:       _ModuleService_GetManaged_Handler,
-			ServerStreams: true,
+			MethodName: "ListManaged",
+			Handler:    _ModuleService_ListManaged_Handler,
 		},
 	},
+	Streams:  []grpc.StreamDesc{},
 	Metadata: "v1alpha/tracker/tracker.proto",
 }
 
@@ -888,8 +1074,8 @@ var _ModuleService_serviceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type DependencyServiceClient interface {
-	GetDependents(ctx context.Context, in *DependencyRequest, opts ...grpc.CallOption) (DependencyService_GetDependentsClient, error)
-	GetDependencies(ctx context.Context, in *DependencyRequest, opts ...grpc.CallOption) (DependencyService_GetDependenciesClient, error)
+	ListDependents(ctx context.Context, in *DependencyRequest, opts ...grpc.CallOption) (*ListDependentsResponse, error)
+	ListDependencies(ctx context.Context, in *DependencyRequest, opts ...grpc.CallOption) (*ListDependenciesResponse, error)
 }
 
 type dependencyServiceClient struct {
@@ -900,149 +1086,95 @@ func NewDependencyServiceClient(cc *grpc.ClientConn) DependencyServiceClient {
 	return &dependencyServiceClient{cc}
 }
 
-func (c *dependencyServiceClient) GetDependents(ctx context.Context, in *DependencyRequest, opts ...grpc.CallOption) (DependencyService_GetDependentsClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_DependencyService_serviceDesc.Streams[0], "/cloud.deps.api.v1alpha.tracker.DependencyService/GetDependents", opts...)
+func (c *dependencyServiceClient) ListDependents(ctx context.Context, in *DependencyRequest, opts ...grpc.CallOption) (*ListDependentsResponse, error) {
+	out := new(ListDependentsResponse)
+	err := c.cc.Invoke(ctx, "/cloud.deps.api.v1alpha.tracker.DependencyService/ListDependents", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &dependencyServiceGetDependentsClient{stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
+	return out, nil
 }
 
-type DependencyService_GetDependentsClient interface {
-	Recv() (*Dependency, error)
-	grpc.ClientStream
-}
-
-type dependencyServiceGetDependentsClient struct {
-	grpc.ClientStream
-}
-
-func (x *dependencyServiceGetDependentsClient) Recv() (*Dependency, error) {
-	m := new(Dependency)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
-func (c *dependencyServiceClient) GetDependencies(ctx context.Context, in *DependencyRequest, opts ...grpc.CallOption) (DependencyService_GetDependenciesClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_DependencyService_serviceDesc.Streams[1], "/cloud.deps.api.v1alpha.tracker.DependencyService/GetDependencies", opts...)
+func (c *dependencyServiceClient) ListDependencies(ctx context.Context, in *DependencyRequest, opts ...grpc.CallOption) (*ListDependenciesResponse, error) {
+	out := new(ListDependenciesResponse)
+	err := c.cc.Invoke(ctx, "/cloud.deps.api.v1alpha.tracker.DependencyService/ListDependencies", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &dependencyServiceGetDependenciesClient{stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
-}
-
-type DependencyService_GetDependenciesClient interface {
-	Recv() (*Dependency, error)
-	grpc.ClientStream
-}
-
-type dependencyServiceGetDependenciesClient struct {
-	grpc.ClientStream
-}
-
-func (x *dependencyServiceGetDependenciesClient) Recv() (*Dependency, error) {
-	m := new(Dependency)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
+	return out, nil
 }
 
 // DependencyServiceServer is the server API for DependencyService service.
 type DependencyServiceServer interface {
-	GetDependents(*DependencyRequest, DependencyService_GetDependentsServer) error
-	GetDependencies(*DependencyRequest, DependencyService_GetDependenciesServer) error
+	ListDependents(context.Context, *DependencyRequest) (*ListDependentsResponse, error)
+	ListDependencies(context.Context, *DependencyRequest) (*ListDependenciesResponse, error)
 }
 
 // UnimplementedDependencyServiceServer can be embedded to have forward compatible implementations.
 type UnimplementedDependencyServiceServer struct {
 }
 
-func (*UnimplementedDependencyServiceServer) GetDependents(req *DependencyRequest, srv DependencyService_GetDependentsServer) error {
-	return status.Errorf(codes.Unimplemented, "method GetDependents not implemented")
+func (*UnimplementedDependencyServiceServer) ListDependents(ctx context.Context, req *DependencyRequest) (*ListDependentsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListDependents not implemented")
 }
-func (*UnimplementedDependencyServiceServer) GetDependencies(req *DependencyRequest, srv DependencyService_GetDependenciesServer) error {
-	return status.Errorf(codes.Unimplemented, "method GetDependencies not implemented")
+func (*UnimplementedDependencyServiceServer) ListDependencies(ctx context.Context, req *DependencyRequest) (*ListDependenciesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListDependencies not implemented")
 }
 
 func RegisterDependencyServiceServer(s *grpc.Server, srv DependencyServiceServer) {
 	s.RegisterService(&_DependencyService_serviceDesc, srv)
 }
 
-func _DependencyService_GetDependents_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(DependencyRequest)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
+func _DependencyService_ListDependents_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DependencyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
 	}
-	return srv.(DependencyServiceServer).GetDependents(m, &dependencyServiceGetDependentsServer{stream})
-}
-
-type DependencyService_GetDependentsServer interface {
-	Send(*Dependency) error
-	grpc.ServerStream
-}
-
-type dependencyServiceGetDependentsServer struct {
-	grpc.ServerStream
-}
-
-func (x *dependencyServiceGetDependentsServer) Send(m *Dependency) error {
-	return x.ServerStream.SendMsg(m)
-}
-
-func _DependencyService_GetDependencies_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(DependencyRequest)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
+	if interceptor == nil {
+		return srv.(DependencyServiceServer).ListDependents(ctx, in)
 	}
-	return srv.(DependencyServiceServer).GetDependencies(m, &dependencyServiceGetDependenciesServer{stream})
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cloud.deps.api.v1alpha.tracker.DependencyService/ListDependents",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DependencyServiceServer).ListDependents(ctx, req.(*DependencyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
-type DependencyService_GetDependenciesServer interface {
-	Send(*Dependency) error
-	grpc.ServerStream
-}
-
-type dependencyServiceGetDependenciesServer struct {
-	grpc.ServerStream
-}
-
-func (x *dependencyServiceGetDependenciesServer) Send(m *Dependency) error {
-	return x.ServerStream.SendMsg(m)
+func _DependencyService_ListDependencies_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DependencyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DependencyServiceServer).ListDependencies(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cloud.deps.api.v1alpha.tracker.DependencyService/ListDependencies",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DependencyServiceServer).ListDependencies(ctx, req.(*DependencyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 var _DependencyService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "cloud.deps.api.v1alpha.tracker.DependencyService",
 	HandlerType: (*DependencyServiceServer)(nil),
-	Methods:     []grpc.MethodDesc{},
-	Streams: []grpc.StreamDesc{
+	Methods: []grpc.MethodDesc{
 		{
-			StreamName:    "GetDependents",
-			Handler:       _DependencyService_GetDependents_Handler,
-			ServerStreams: true,
+			MethodName: "ListDependents",
+			Handler:    _DependencyService_ListDependents_Handler,
 		},
 		{
-			StreamName:    "GetDependencies",
-			Handler:       _DependencyService_GetDependencies_Handler,
-			ServerStreams: true,
+			MethodName: "ListDependencies",
+			Handler:    _DependencyService_ListDependencies_Handler,
 		},
 	},
+	Streams:  []grpc.StreamDesc{},
 	Metadata: "v1alpha/tracker/tracker.proto",
 }
 
@@ -1050,10 +1182,10 @@ var _DependencyService_serviceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type TopologyServiceClient interface {
-	GetDependentsTopology(ctx context.Context, in *DependencyRequest, opts ...grpc.CallOption) (TopologyService_GetDependentsTopologyClient, error)
-	GetDependentsTopologyTiered(ctx context.Context, in *DependencyRequest, opts ...grpc.CallOption) (TopologyService_GetDependentsTopologyTieredClient, error)
-	GetDependenciesTopology(ctx context.Context, in *DependencyRequest, opts ...grpc.CallOption) (TopologyService_GetDependenciesTopologyClient, error)
-	GetDependenciesTopologyTiered(ctx context.Context, in *DependencyRequest, opts ...grpc.CallOption) (TopologyService_GetDependenciesTopologyTieredClient, error)
+	ListDependentsTopology(ctx context.Context, in *DependencyRequest, opts ...grpc.CallOption) (*ListDependentsResponse, error)
+	ListDependentsTopologyTiered(ctx context.Context, in *DependencyRequest, opts ...grpc.CallOption) (*ListDependentsTieredResponse, error)
+	ListDependenciesTopology(ctx context.Context, in *DependencyRequest, opts ...grpc.CallOption) (*ListDependenciesResponse, error)
+	ListDependenciesTopologyTiered(ctx context.Context, in *DependencyRequest, opts ...grpc.CallOption) (*ListDependenciesTieredResponse, error)
 }
 
 type topologyServiceClient struct {
@@ -1064,272 +1196,164 @@ func NewTopologyServiceClient(cc *grpc.ClientConn) TopologyServiceClient {
 	return &topologyServiceClient{cc}
 }
 
-func (c *topologyServiceClient) GetDependentsTopology(ctx context.Context, in *DependencyRequest, opts ...grpc.CallOption) (TopologyService_GetDependentsTopologyClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_TopologyService_serviceDesc.Streams[0], "/cloud.deps.api.v1alpha.tracker.TopologyService/GetDependentsTopology", opts...)
+func (c *topologyServiceClient) ListDependentsTopology(ctx context.Context, in *DependencyRequest, opts ...grpc.CallOption) (*ListDependentsResponse, error) {
+	out := new(ListDependentsResponse)
+	err := c.cc.Invoke(ctx, "/cloud.deps.api.v1alpha.tracker.TopologyService/ListDependentsTopology", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &topologyServiceGetDependentsTopologyClient{stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
+	return out, nil
 }
 
-type TopologyService_GetDependentsTopologyClient interface {
-	Recv() (*Dependency, error)
-	grpc.ClientStream
-}
-
-type topologyServiceGetDependentsTopologyClient struct {
-	grpc.ClientStream
-}
-
-func (x *topologyServiceGetDependentsTopologyClient) Recv() (*Dependency, error) {
-	m := new(Dependency)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
-func (c *topologyServiceClient) GetDependentsTopologyTiered(ctx context.Context, in *DependencyRequest, opts ...grpc.CallOption) (TopologyService_GetDependentsTopologyTieredClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_TopologyService_serviceDesc.Streams[1], "/cloud.deps.api.v1alpha.tracker.TopologyService/GetDependentsTopologyTiered", opts...)
+func (c *topologyServiceClient) ListDependentsTopologyTiered(ctx context.Context, in *DependencyRequest, opts ...grpc.CallOption) (*ListDependentsTieredResponse, error) {
+	out := new(ListDependentsTieredResponse)
+	err := c.cc.Invoke(ctx, "/cloud.deps.api.v1alpha.tracker.TopologyService/ListDependentsTopologyTiered", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &topologyServiceGetDependentsTopologyTieredClient{stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
+	return out, nil
 }
 
-type TopologyService_GetDependentsTopologyTieredClient interface {
-	Recv() (*TopologyTier, error)
-	grpc.ClientStream
-}
-
-type topologyServiceGetDependentsTopologyTieredClient struct {
-	grpc.ClientStream
-}
-
-func (x *topologyServiceGetDependentsTopologyTieredClient) Recv() (*TopologyTier, error) {
-	m := new(TopologyTier)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
-func (c *topologyServiceClient) GetDependenciesTopology(ctx context.Context, in *DependencyRequest, opts ...grpc.CallOption) (TopologyService_GetDependenciesTopologyClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_TopologyService_serviceDesc.Streams[2], "/cloud.deps.api.v1alpha.tracker.TopologyService/GetDependenciesTopology", opts...)
+func (c *topologyServiceClient) ListDependenciesTopology(ctx context.Context, in *DependencyRequest, opts ...grpc.CallOption) (*ListDependenciesResponse, error) {
+	out := new(ListDependenciesResponse)
+	err := c.cc.Invoke(ctx, "/cloud.deps.api.v1alpha.tracker.TopologyService/ListDependenciesTopology", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &topologyServiceGetDependenciesTopologyClient{stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
+	return out, nil
 }
 
-type TopologyService_GetDependenciesTopologyClient interface {
-	Recv() (*Dependency, error)
-	grpc.ClientStream
-}
-
-type topologyServiceGetDependenciesTopologyClient struct {
-	grpc.ClientStream
-}
-
-func (x *topologyServiceGetDependenciesTopologyClient) Recv() (*Dependency, error) {
-	m := new(Dependency)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
-func (c *topologyServiceClient) GetDependenciesTopologyTiered(ctx context.Context, in *DependencyRequest, opts ...grpc.CallOption) (TopologyService_GetDependenciesTopologyTieredClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_TopologyService_serviceDesc.Streams[3], "/cloud.deps.api.v1alpha.tracker.TopologyService/GetDependenciesTopologyTiered", opts...)
+func (c *topologyServiceClient) ListDependenciesTopologyTiered(ctx context.Context, in *DependencyRequest, opts ...grpc.CallOption) (*ListDependenciesTieredResponse, error) {
+	out := new(ListDependenciesTieredResponse)
+	err := c.cc.Invoke(ctx, "/cloud.deps.api.v1alpha.tracker.TopologyService/ListDependenciesTopologyTiered", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &topologyServiceGetDependenciesTopologyTieredClient{stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
-}
-
-type TopologyService_GetDependenciesTopologyTieredClient interface {
-	Recv() (*TopologyTier, error)
-	grpc.ClientStream
-}
-
-type topologyServiceGetDependenciesTopologyTieredClient struct {
-	grpc.ClientStream
-}
-
-func (x *topologyServiceGetDependenciesTopologyTieredClient) Recv() (*TopologyTier, error) {
-	m := new(TopologyTier)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
+	return out, nil
 }
 
 // TopologyServiceServer is the server API for TopologyService service.
 type TopologyServiceServer interface {
-	GetDependentsTopology(*DependencyRequest, TopologyService_GetDependentsTopologyServer) error
-	GetDependentsTopologyTiered(*DependencyRequest, TopologyService_GetDependentsTopologyTieredServer) error
-	GetDependenciesTopology(*DependencyRequest, TopologyService_GetDependenciesTopologyServer) error
-	GetDependenciesTopologyTiered(*DependencyRequest, TopologyService_GetDependenciesTopologyTieredServer) error
+	ListDependentsTopology(context.Context, *DependencyRequest) (*ListDependentsResponse, error)
+	ListDependentsTopologyTiered(context.Context, *DependencyRequest) (*ListDependentsTieredResponse, error)
+	ListDependenciesTopology(context.Context, *DependencyRequest) (*ListDependenciesResponse, error)
+	ListDependenciesTopologyTiered(context.Context, *DependencyRequest) (*ListDependenciesTieredResponse, error)
 }
 
 // UnimplementedTopologyServiceServer can be embedded to have forward compatible implementations.
 type UnimplementedTopologyServiceServer struct {
 }
 
-func (*UnimplementedTopologyServiceServer) GetDependentsTopology(req *DependencyRequest, srv TopologyService_GetDependentsTopologyServer) error {
-	return status.Errorf(codes.Unimplemented, "method GetDependentsTopology not implemented")
+func (*UnimplementedTopologyServiceServer) ListDependentsTopology(ctx context.Context, req *DependencyRequest) (*ListDependentsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListDependentsTopology not implemented")
 }
-func (*UnimplementedTopologyServiceServer) GetDependentsTopologyTiered(req *DependencyRequest, srv TopologyService_GetDependentsTopologyTieredServer) error {
-	return status.Errorf(codes.Unimplemented, "method GetDependentsTopologyTiered not implemented")
+func (*UnimplementedTopologyServiceServer) ListDependentsTopologyTiered(ctx context.Context, req *DependencyRequest) (*ListDependentsTieredResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListDependentsTopologyTiered not implemented")
 }
-func (*UnimplementedTopologyServiceServer) GetDependenciesTopology(req *DependencyRequest, srv TopologyService_GetDependenciesTopologyServer) error {
-	return status.Errorf(codes.Unimplemented, "method GetDependenciesTopology not implemented")
+func (*UnimplementedTopologyServiceServer) ListDependenciesTopology(ctx context.Context, req *DependencyRequest) (*ListDependenciesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListDependenciesTopology not implemented")
 }
-func (*UnimplementedTopologyServiceServer) GetDependenciesTopologyTiered(req *DependencyRequest, srv TopologyService_GetDependenciesTopologyTieredServer) error {
-	return status.Errorf(codes.Unimplemented, "method GetDependenciesTopologyTiered not implemented")
+func (*UnimplementedTopologyServiceServer) ListDependenciesTopologyTiered(ctx context.Context, req *DependencyRequest) (*ListDependenciesTieredResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListDependenciesTopologyTiered not implemented")
 }
 
 func RegisterTopologyServiceServer(s *grpc.Server, srv TopologyServiceServer) {
 	s.RegisterService(&_TopologyService_serviceDesc, srv)
 }
 
-func _TopologyService_GetDependentsTopology_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(DependencyRequest)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
+func _TopologyService_ListDependentsTopology_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DependencyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
 	}
-	return srv.(TopologyServiceServer).GetDependentsTopology(m, &topologyServiceGetDependentsTopologyServer{stream})
-}
-
-type TopologyService_GetDependentsTopologyServer interface {
-	Send(*Dependency) error
-	grpc.ServerStream
-}
-
-type topologyServiceGetDependentsTopologyServer struct {
-	grpc.ServerStream
-}
-
-func (x *topologyServiceGetDependentsTopologyServer) Send(m *Dependency) error {
-	return x.ServerStream.SendMsg(m)
-}
-
-func _TopologyService_GetDependentsTopologyTiered_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(DependencyRequest)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
+	if interceptor == nil {
+		return srv.(TopologyServiceServer).ListDependentsTopology(ctx, in)
 	}
-	return srv.(TopologyServiceServer).GetDependentsTopologyTiered(m, &topologyServiceGetDependentsTopologyTieredServer{stream})
-}
-
-type TopologyService_GetDependentsTopologyTieredServer interface {
-	Send(*TopologyTier) error
-	grpc.ServerStream
-}
-
-type topologyServiceGetDependentsTopologyTieredServer struct {
-	grpc.ServerStream
-}
-
-func (x *topologyServiceGetDependentsTopologyTieredServer) Send(m *TopologyTier) error {
-	return x.ServerStream.SendMsg(m)
-}
-
-func _TopologyService_GetDependenciesTopology_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(DependencyRequest)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cloud.deps.api.v1alpha.tracker.TopologyService/ListDependentsTopology",
 	}
-	return srv.(TopologyServiceServer).GetDependenciesTopology(m, &topologyServiceGetDependenciesTopologyServer{stream})
-}
-
-type TopologyService_GetDependenciesTopologyServer interface {
-	Send(*Dependency) error
-	grpc.ServerStream
-}
-
-type topologyServiceGetDependenciesTopologyServer struct {
-	grpc.ServerStream
-}
-
-func (x *topologyServiceGetDependenciesTopologyServer) Send(m *Dependency) error {
-	return x.ServerStream.SendMsg(m)
-}
-
-func _TopologyService_GetDependenciesTopologyTiered_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(DependencyRequest)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TopologyServiceServer).ListDependentsTopology(ctx, req.(*DependencyRequest))
 	}
-	return srv.(TopologyServiceServer).GetDependenciesTopologyTiered(m, &topologyServiceGetDependenciesTopologyTieredServer{stream})
+	return interceptor(ctx, in, info, handler)
 }
 
-type TopologyService_GetDependenciesTopologyTieredServer interface {
-	Send(*TopologyTier) error
-	grpc.ServerStream
+func _TopologyService_ListDependentsTopologyTiered_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DependencyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TopologyServiceServer).ListDependentsTopologyTiered(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cloud.deps.api.v1alpha.tracker.TopologyService/ListDependentsTopologyTiered",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TopologyServiceServer).ListDependentsTopologyTiered(ctx, req.(*DependencyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
-type topologyServiceGetDependenciesTopologyTieredServer struct {
-	grpc.ServerStream
+func _TopologyService_ListDependenciesTopology_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DependencyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TopologyServiceServer).ListDependenciesTopology(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cloud.deps.api.v1alpha.tracker.TopologyService/ListDependenciesTopology",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TopologyServiceServer).ListDependenciesTopology(ctx, req.(*DependencyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
-func (x *topologyServiceGetDependenciesTopologyTieredServer) Send(m *TopologyTier) error {
-	return x.ServerStream.SendMsg(m)
+func _TopologyService_ListDependenciesTopologyTiered_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DependencyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TopologyServiceServer).ListDependenciesTopologyTiered(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cloud.deps.api.v1alpha.tracker.TopologyService/ListDependenciesTopologyTiered",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TopologyServiceServer).ListDependenciesTopologyTiered(ctx, req.(*DependencyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 var _TopologyService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "cloud.deps.api.v1alpha.tracker.TopologyService",
 	HandlerType: (*TopologyServiceServer)(nil),
-	Methods:     []grpc.MethodDesc{},
-	Streams: []grpc.StreamDesc{
+	Methods: []grpc.MethodDesc{
 		{
-			StreamName:    "GetDependentsTopology",
-			Handler:       _TopologyService_GetDependentsTopology_Handler,
-			ServerStreams: true,
+			MethodName: "ListDependentsTopology",
+			Handler:    _TopologyService_ListDependentsTopology_Handler,
 		},
 		{
-			StreamName:    "GetDependentsTopologyTiered",
-			Handler:       _TopologyService_GetDependentsTopologyTiered_Handler,
-			ServerStreams: true,
+			MethodName: "ListDependentsTopologyTiered",
+			Handler:    _TopologyService_ListDependentsTopologyTiered_Handler,
 		},
 		{
-			StreamName:    "GetDependenciesTopology",
-			Handler:       _TopologyService_GetDependenciesTopology_Handler,
-			ServerStreams: true,
+			MethodName: "ListDependenciesTopology",
+			Handler:    _TopologyService_ListDependenciesTopology_Handler,
 		},
 		{
-			StreamName:    "GetDependenciesTopologyTiered",
-			Handler:       _TopologyService_GetDependenciesTopologyTiered_Handler,
-			ServerStreams: true,
+			MethodName: "ListDependenciesTopologyTiered",
+			Handler:    _TopologyService_ListDependenciesTopologyTiered_Handler,
 		},
 	},
+	Streams:  []grpc.StreamDesc{},
 	Metadata: "v1alpha/tracker/tracker.proto",
 }

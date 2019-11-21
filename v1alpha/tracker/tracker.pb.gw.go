@@ -133,66 +133,76 @@ func local_request_ModuleService_List_0(ctx context.Context, marshaler runtime.M
 }
 
 var (
-	filter_ModuleService_GetSource_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+	filter_ModuleService_ListSources_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 )
 
-func request_ModuleService_GetSource_0(ctx context.Context, marshaler runtime.Marshaler, client ModuleServiceClient, req *http.Request, pathParams map[string]string) (ModuleService_GetSourceClient, runtime.ServerMetadata, error) {
+func request_ModuleService_ListSources_0(ctx context.Context, marshaler runtime.Marshaler, client ModuleServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq schema.Module
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ModuleService_GetSource_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ModuleService_ListSources_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	stream, err := client.GetSource(ctx, &protoReq)
-	if err != nil {
-		return nil, metadata, err
+	msg, err := client.ListSources(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_ModuleService_ListSources_0(ctx context.Context, marshaler runtime.Marshaler, server ModuleServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq schema.Module
+	var metadata runtime.ServerMetadata
+
+	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_ModuleService_ListSources_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	header, err := stream.Header()
-	if err != nil {
-		return nil, metadata, err
-	}
-	metadata.HeaderMD = header
-	return stream, metadata, nil
+
+	msg, err := server.ListSources(ctx, &protoReq)
+	return msg, metadata, err
 
 }
 
 var (
-	filter_ModuleService_GetManaged_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+	filter_ModuleService_ListManaged_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 )
 
-func request_ModuleService_GetManaged_0(ctx context.Context, marshaler runtime.Marshaler, client ModuleServiceClient, req *http.Request, pathParams map[string]string) (ModuleService_GetManagedClient, runtime.ServerMetadata, error) {
+func request_ModuleService_ListManaged_0(ctx context.Context, marshaler runtime.Marshaler, client ModuleServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq schema.Source
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ModuleService_GetManaged_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ModuleService_ListManaged_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	stream, err := client.GetManaged(ctx, &protoReq)
-	if err != nil {
-		return nil, metadata, err
+	msg, err := client.ListManaged(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_ModuleService_ListManaged_0(ctx context.Context, marshaler runtime.Marshaler, server ModuleServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq schema.Source
+	var metadata runtime.ServerMetadata
+
+	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_ModuleService_ListManaged_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	header, err := stream.Header()
-	if err != nil {
-		return nil, metadata, err
-	}
-	metadata.HeaderMD = header
-	return stream, metadata, nil
+
+	msg, err := server.ListManaged(ctx, &protoReq)
+	return msg, metadata, err
 
 }
 
 var (
-	filter_DependencyService_GetDependents_0 = &utilities.DoubleArray{Encoding: map[string]int{"language": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+	filter_DependencyService_ListDependents_0 = &utilities.DoubleArray{Encoding: map[string]int{"language": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_DependencyService_GetDependents_0(ctx context.Context, marshaler runtime.Marshaler, client DependencyServiceClient, req *http.Request, pathParams map[string]string) (DependencyService_GetDependentsClient, runtime.ServerMetadata, error) {
+func request_DependencyService_ListDependents_0(ctx context.Context, marshaler runtime.Marshaler, client DependencyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq DependencyRequest
 	var metadata runtime.ServerMetadata
 
@@ -217,28 +227,51 @@ func request_DependencyService_GetDependents_0(ctx context.Context, marshaler ru
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_DependencyService_GetDependents_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_DependencyService_ListDependents_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	stream, err := client.GetDependents(ctx, &protoReq)
-	if err != nil {
-		return nil, metadata, err
+	msg, err := client.ListDependents(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_DependencyService_ListDependents_0(ctx context.Context, marshaler runtime.Marshaler, server DependencyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DependencyRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["language"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "language")
 	}
-	header, err := stream.Header()
+
+	protoReq.Language, err = runtime.String(val)
+
 	if err != nil {
-		return nil, metadata, err
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "language", err)
 	}
-	metadata.HeaderMD = header
-	return stream, metadata, nil
+
+	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_DependencyService_ListDependents_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.ListDependents(ctx, &protoReq)
+	return msg, metadata, err
 
 }
 
 var (
-	filter_DependencyService_GetDependencies_0 = &utilities.DoubleArray{Encoding: map[string]int{"language": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+	filter_DependencyService_ListDependencies_0 = &utilities.DoubleArray{Encoding: map[string]int{"language": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_DependencyService_GetDependencies_0(ctx context.Context, marshaler runtime.Marshaler, client DependencyServiceClient, req *http.Request, pathParams map[string]string) (DependencyService_GetDependenciesClient, runtime.ServerMetadata, error) {
+func request_DependencyService_ListDependencies_0(ctx context.Context, marshaler runtime.Marshaler, client DependencyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq DependencyRequest
 	var metadata runtime.ServerMetadata
 
@@ -263,28 +296,51 @@ func request_DependencyService_GetDependencies_0(ctx context.Context, marshaler 
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_DependencyService_GetDependencies_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_DependencyService_ListDependencies_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	stream, err := client.GetDependencies(ctx, &protoReq)
-	if err != nil {
-		return nil, metadata, err
+	msg, err := client.ListDependencies(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_DependencyService_ListDependencies_0(ctx context.Context, marshaler runtime.Marshaler, server DependencyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DependencyRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["language"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "language")
 	}
-	header, err := stream.Header()
+
+	protoReq.Language, err = runtime.String(val)
+
 	if err != nil {
-		return nil, metadata, err
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "language", err)
 	}
-	metadata.HeaderMD = header
-	return stream, metadata, nil
+
+	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_DependencyService_ListDependencies_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.ListDependencies(ctx, &protoReq)
+	return msg, metadata, err
 
 }
 
 var (
-	filter_TopologyService_GetDependentsTopology_0 = &utilities.DoubleArray{Encoding: map[string]int{"language": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+	filter_TopologyService_ListDependentsTopology_0 = &utilities.DoubleArray{Encoding: map[string]int{"language": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_TopologyService_GetDependentsTopology_0(ctx context.Context, marshaler runtime.Marshaler, client TopologyServiceClient, req *http.Request, pathParams map[string]string) (TopologyService_GetDependentsTopologyClient, runtime.ServerMetadata, error) {
+func request_TopologyService_ListDependentsTopology_0(ctx context.Context, marshaler runtime.Marshaler, client TopologyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq DependencyRequest
 	var metadata runtime.ServerMetadata
 
@@ -309,28 +365,51 @@ func request_TopologyService_GetDependentsTopology_0(ctx context.Context, marsha
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_TopologyService_GetDependentsTopology_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_TopologyService_ListDependentsTopology_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	stream, err := client.GetDependentsTopology(ctx, &protoReq)
-	if err != nil {
-		return nil, metadata, err
+	msg, err := client.ListDependentsTopology(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_TopologyService_ListDependentsTopology_0(ctx context.Context, marshaler runtime.Marshaler, server TopologyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DependencyRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["language"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "language")
 	}
-	header, err := stream.Header()
+
+	protoReq.Language, err = runtime.String(val)
+
 	if err != nil {
-		return nil, metadata, err
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "language", err)
 	}
-	metadata.HeaderMD = header
-	return stream, metadata, nil
+
+	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_TopologyService_ListDependentsTopology_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.ListDependentsTopology(ctx, &protoReq)
+	return msg, metadata, err
 
 }
 
 var (
-	filter_TopologyService_GetDependentsTopologyTiered_0 = &utilities.DoubleArray{Encoding: map[string]int{"language": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+	filter_TopologyService_ListDependentsTopologyTiered_0 = &utilities.DoubleArray{Encoding: map[string]int{"language": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_TopologyService_GetDependentsTopologyTiered_0(ctx context.Context, marshaler runtime.Marshaler, client TopologyServiceClient, req *http.Request, pathParams map[string]string) (TopologyService_GetDependentsTopologyTieredClient, runtime.ServerMetadata, error) {
+func request_TopologyService_ListDependentsTopologyTiered_0(ctx context.Context, marshaler runtime.Marshaler, client TopologyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq DependencyRequest
 	var metadata runtime.ServerMetadata
 
@@ -355,28 +434,51 @@ func request_TopologyService_GetDependentsTopologyTiered_0(ctx context.Context, 
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_TopologyService_GetDependentsTopologyTiered_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_TopologyService_ListDependentsTopologyTiered_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	stream, err := client.GetDependentsTopologyTiered(ctx, &protoReq)
-	if err != nil {
-		return nil, metadata, err
+	msg, err := client.ListDependentsTopologyTiered(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_TopologyService_ListDependentsTopologyTiered_0(ctx context.Context, marshaler runtime.Marshaler, server TopologyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DependencyRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["language"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "language")
 	}
-	header, err := stream.Header()
+
+	protoReq.Language, err = runtime.String(val)
+
 	if err != nil {
-		return nil, metadata, err
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "language", err)
 	}
-	metadata.HeaderMD = header
-	return stream, metadata, nil
+
+	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_TopologyService_ListDependentsTopologyTiered_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.ListDependentsTopologyTiered(ctx, &protoReq)
+	return msg, metadata, err
 
 }
 
 var (
-	filter_TopologyService_GetDependenciesTopology_0 = &utilities.DoubleArray{Encoding: map[string]int{"language": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+	filter_TopologyService_ListDependenciesTopology_0 = &utilities.DoubleArray{Encoding: map[string]int{"language": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_TopologyService_GetDependenciesTopology_0(ctx context.Context, marshaler runtime.Marshaler, client TopologyServiceClient, req *http.Request, pathParams map[string]string) (TopologyService_GetDependenciesTopologyClient, runtime.ServerMetadata, error) {
+func request_TopologyService_ListDependenciesTopology_0(ctx context.Context, marshaler runtime.Marshaler, client TopologyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq DependencyRequest
 	var metadata runtime.ServerMetadata
 
@@ -401,28 +503,51 @@ func request_TopologyService_GetDependenciesTopology_0(ctx context.Context, mars
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_TopologyService_GetDependenciesTopology_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_TopologyService_ListDependenciesTopology_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	stream, err := client.GetDependenciesTopology(ctx, &protoReq)
-	if err != nil {
-		return nil, metadata, err
+	msg, err := client.ListDependenciesTopology(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_TopologyService_ListDependenciesTopology_0(ctx context.Context, marshaler runtime.Marshaler, server TopologyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DependencyRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["language"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "language")
 	}
-	header, err := stream.Header()
+
+	protoReq.Language, err = runtime.String(val)
+
 	if err != nil {
-		return nil, metadata, err
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "language", err)
 	}
-	metadata.HeaderMD = header
-	return stream, metadata, nil
+
+	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_TopologyService_ListDependenciesTopology_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.ListDependenciesTopology(ctx, &protoReq)
+	return msg, metadata, err
 
 }
 
 var (
-	filter_TopologyService_GetDependenciesTopologyTiered_0 = &utilities.DoubleArray{Encoding: map[string]int{"language": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+	filter_TopologyService_ListDependenciesTopologyTiered_0 = &utilities.DoubleArray{Encoding: map[string]int{"language": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_TopologyService_GetDependenciesTopologyTiered_0(ctx context.Context, marshaler runtime.Marshaler, client TopologyServiceClient, req *http.Request, pathParams map[string]string) (TopologyService_GetDependenciesTopologyTieredClient, runtime.ServerMetadata, error) {
+func request_TopologyService_ListDependenciesTopologyTiered_0(ctx context.Context, marshaler runtime.Marshaler, client TopologyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq DependencyRequest
 	var metadata runtime.ServerMetadata
 
@@ -447,20 +572,43 @@ func request_TopologyService_GetDependenciesTopologyTiered_0(ctx context.Context
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_TopologyService_GetDependenciesTopologyTiered_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_TopologyService_ListDependenciesTopologyTiered_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	stream, err := client.GetDependenciesTopologyTiered(ctx, &protoReq)
-	if err != nil {
-		return nil, metadata, err
+	msg, err := client.ListDependenciesTopologyTiered(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_TopologyService_ListDependenciesTopologyTiered_0(ctx context.Context, marshaler runtime.Marshaler, server TopologyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DependencyRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["language"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "language")
 	}
-	header, err := stream.Header()
+
+	protoReq.Language, err = runtime.String(val)
+
 	if err != nil {
-		return nil, metadata, err
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "language", err)
 	}
-	metadata.HeaderMD = header
-	return stream, metadata, nil
+
+	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_TopologyService_ListDependenciesTopologyTiered_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.ListDependenciesTopologyTiered(ctx, &protoReq)
+	return msg, metadata, err
 
 }
 
@@ -537,18 +685,44 @@ func RegisterModuleServiceHandlerServer(ctx context.Context, mux *runtime.ServeM
 
 	})
 
-	mux.Handle("GET", pattern_ModuleService_GetSource_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
-		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-		return
+	mux.Handle("GET", pattern_ModuleService_ListSources_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_ModuleService_ListSources_0(rctx, inboundMarshaler, server, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ModuleService_ListSources_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
 	})
 
-	mux.Handle("GET", pattern_ModuleService_GetManaged_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
-		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-		return
+	mux.Handle("GET", pattern_ModuleService_ListManaged_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_ModuleService_ListManaged_0(rctx, inboundMarshaler, server, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ModuleService_ListManaged_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
 	})
 
 	return nil
@@ -559,18 +733,44 @@ func RegisterModuleServiceHandlerServer(ctx context.Context, mux *runtime.ServeM
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
 func RegisterDependencyServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server DependencyServiceServer) error {
 
-	mux.Handle("GET", pattern_DependencyService_GetDependents_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
-		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-		return
+	mux.Handle("GET", pattern_DependencyService_ListDependents_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_DependencyService_ListDependents_0(rctx, inboundMarshaler, server, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_DependencyService_ListDependents_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
 	})
 
-	mux.Handle("GET", pattern_DependencyService_GetDependencies_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
-		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-		return
+	mux.Handle("GET", pattern_DependencyService_ListDependencies_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_DependencyService_ListDependencies_0(rctx, inboundMarshaler, server, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_DependencyService_ListDependencies_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
 	})
 
 	return nil
@@ -581,32 +781,84 @@ func RegisterDependencyServiceHandlerServer(ctx context.Context, mux *runtime.Se
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
 func RegisterTopologyServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server TopologyServiceServer) error {
 
-	mux.Handle("GET", pattern_TopologyService_GetDependentsTopology_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
-		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-		return
+	mux.Handle("GET", pattern_TopologyService_ListDependentsTopology_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_TopologyService_ListDependentsTopology_0(rctx, inboundMarshaler, server, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_TopologyService_ListDependentsTopology_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
 	})
 
-	mux.Handle("GET", pattern_TopologyService_GetDependentsTopologyTiered_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
-		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-		return
+	mux.Handle("GET", pattern_TopologyService_ListDependentsTopologyTiered_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_TopologyService_ListDependentsTopologyTiered_0(rctx, inboundMarshaler, server, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_TopologyService_ListDependentsTopologyTiered_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
 	})
 
-	mux.Handle("GET", pattern_TopologyService_GetDependenciesTopology_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
-		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-		return
+	mux.Handle("GET", pattern_TopologyService_ListDependenciesTopology_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_TopologyService_ListDependenciesTopology_0(rctx, inboundMarshaler, server, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_TopologyService_ListDependenciesTopology_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
 	})
 
-	mux.Handle("GET", pattern_TopologyService_GetDependenciesTopologyTiered_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
-		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-		return
+	mux.Handle("GET", pattern_TopologyService_ListDependenciesTopologyTiered_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_TopologyService_ListDependenciesTopologyTiered_0(rctx, inboundMarshaler, server, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_TopologyService_ListDependenciesTopologyTiered_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
 	})
 
 	return nil
@@ -763,7 +1015,7 @@ func RegisterModuleServiceHandlerClient(ctx context.Context, mux *runtime.ServeM
 
 	})
 
-	mux.Handle("GET", pattern_ModuleService_GetSource_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_ModuleService_ListSources_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -772,18 +1024,18 @@ func RegisterModuleServiceHandlerClient(ctx context.Context, mux *runtime.ServeM
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_ModuleService_GetSource_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_ModuleService_ListSources_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_ModuleService_GetSource_0(ctx, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
+		forward_ModuleService_ListSources_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_ModuleService_GetManaged_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_ModuleService_ListManaged_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -792,14 +1044,14 @@ func RegisterModuleServiceHandlerClient(ctx context.Context, mux *runtime.ServeM
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_ModuleService_GetManaged_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_ModuleService_ListManaged_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_ModuleService_GetManaged_0(ctx, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
+		forward_ModuleService_ListManaged_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -809,17 +1061,17 @@ func RegisterModuleServiceHandlerClient(ctx context.Context, mux *runtime.ServeM
 var (
 	pattern_ModuleService_List_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1alpha", "modules"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ModuleService_GetSource_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1alpha", "modules", "source"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ModuleService_ListSources_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1alpha", "modules", "source"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ModuleService_GetManaged_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1alpha", "modules", "managed"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ModuleService_ListManaged_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1alpha", "modules", "managed"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (
 	forward_ModuleService_List_0 = runtime.ForwardResponseMessage
 
-	forward_ModuleService_GetSource_0 = runtime.ForwardResponseStream
+	forward_ModuleService_ListSources_0 = runtime.ForwardResponseMessage
 
-	forward_ModuleService_GetManaged_0 = runtime.ForwardResponseStream
+	forward_ModuleService_ListManaged_0 = runtime.ForwardResponseMessage
 )
 
 // RegisterDependencyServiceHandlerFromEndpoint is same as RegisterDependencyServiceHandler but
@@ -860,7 +1112,7 @@ func RegisterDependencyServiceHandler(ctx context.Context, mux *runtime.ServeMux
 // "DependencyServiceClient" to call the correct interceptors.
 func RegisterDependencyServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client DependencyServiceClient) error {
 
-	mux.Handle("GET", pattern_DependencyService_GetDependents_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_DependencyService_ListDependents_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -869,18 +1121,18 @@ func RegisterDependencyServiceHandlerClient(ctx context.Context, mux *runtime.Se
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_DependencyService_GetDependents_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_DependencyService_ListDependents_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_DependencyService_GetDependents_0(ctx, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
+		forward_DependencyService_ListDependents_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_DependencyService_GetDependencies_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_DependencyService_ListDependencies_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -889,14 +1141,14 @@ func RegisterDependencyServiceHandlerClient(ctx context.Context, mux *runtime.Se
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_DependencyService_GetDependencies_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_DependencyService_ListDependencies_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_DependencyService_GetDependencies_0(ctx, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
+		forward_DependencyService_ListDependencies_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -904,15 +1156,15 @@ func RegisterDependencyServiceHandlerClient(ctx context.Context, mux *runtime.Se
 }
 
 var (
-	pattern_DependencyService_GetDependents_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1alpha", "graph", "language", "dependents"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_DependencyService_ListDependents_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1alpha", "graph", "language", "dependents"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_DependencyService_GetDependencies_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1alpha", "graph", "language", "dependencies"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_DependencyService_ListDependencies_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1alpha", "graph", "language", "dependencies"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (
-	forward_DependencyService_GetDependents_0 = runtime.ForwardResponseStream
+	forward_DependencyService_ListDependents_0 = runtime.ForwardResponseMessage
 
-	forward_DependencyService_GetDependencies_0 = runtime.ForwardResponseStream
+	forward_DependencyService_ListDependencies_0 = runtime.ForwardResponseMessage
 )
 
 // RegisterTopologyServiceHandlerFromEndpoint is same as RegisterTopologyServiceHandler but
@@ -953,7 +1205,7 @@ func RegisterTopologyServiceHandler(ctx context.Context, mux *runtime.ServeMux, 
 // "TopologyServiceClient" to call the correct interceptors.
 func RegisterTopologyServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client TopologyServiceClient) error {
 
-	mux.Handle("GET", pattern_TopologyService_GetDependentsTopology_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_TopologyService_ListDependentsTopology_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -962,18 +1214,18 @@ func RegisterTopologyServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_TopologyService_GetDependentsTopology_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_TopologyService_ListDependentsTopology_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_TopologyService_GetDependentsTopology_0(ctx, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
+		forward_TopologyService_ListDependentsTopology_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_TopologyService_GetDependentsTopologyTiered_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_TopologyService_ListDependentsTopologyTiered_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -982,18 +1234,18 @@ func RegisterTopologyServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_TopologyService_GetDependentsTopologyTiered_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_TopologyService_ListDependentsTopologyTiered_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_TopologyService_GetDependentsTopologyTiered_0(ctx, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
+		forward_TopologyService_ListDependentsTopologyTiered_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_TopologyService_GetDependenciesTopology_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_TopologyService_ListDependenciesTopology_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -1002,18 +1254,18 @@ func RegisterTopologyServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_TopologyService_GetDependenciesTopology_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_TopologyService_ListDependenciesTopology_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_TopologyService_GetDependenciesTopology_0(ctx, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
+		forward_TopologyService_ListDependenciesTopology_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_TopologyService_GetDependenciesTopologyTiered_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_TopologyService_ListDependenciesTopologyTiered_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -1022,14 +1274,14 @@ func RegisterTopologyServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_TopologyService_GetDependenciesTopologyTiered_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_TopologyService_ListDependenciesTopologyTiered_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_TopologyService_GetDependenciesTopologyTiered_0(ctx, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
+		forward_TopologyService_ListDependenciesTopologyTiered_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -1037,21 +1289,21 @@ func RegisterTopologyServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 }
 
 var (
-	pattern_TopologyService_GetDependentsTopology_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3, 2, 4}, []string{"v1alpha", "graph", "language", "dependents", "topology"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_TopologyService_ListDependentsTopology_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3, 2, 4}, []string{"v1alpha", "graph", "language", "dependents", "topology"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_TopologyService_GetDependentsTopologyTiered_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3, 2, 4, 2, 5}, []string{"v1alpha", "graph", "language", "dependents", "topology", "tiered"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_TopologyService_ListDependentsTopologyTiered_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3, 2, 4, 2, 5}, []string{"v1alpha", "graph", "language", "dependents", "topology", "tiered"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_TopologyService_GetDependenciesTopology_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3, 2, 4}, []string{"v1alpha", "graph", "language", "dependencies", "topology"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_TopologyService_ListDependenciesTopology_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3, 2, 4}, []string{"v1alpha", "graph", "language", "dependencies", "topology"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_TopologyService_GetDependenciesTopologyTiered_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3, 2, 4, 2, 5}, []string{"v1alpha", "graph", "language", "dependencies", "topology", "tiered"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_TopologyService_ListDependenciesTopologyTiered_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3, 2, 4, 2, 5}, []string{"v1alpha", "graph", "language", "dependencies", "topology", "tiered"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (
-	forward_TopologyService_GetDependentsTopology_0 = runtime.ForwardResponseStream
+	forward_TopologyService_ListDependentsTopology_0 = runtime.ForwardResponseMessage
 
-	forward_TopologyService_GetDependentsTopologyTiered_0 = runtime.ForwardResponseStream
+	forward_TopologyService_ListDependentsTopologyTiered_0 = runtime.ForwardResponseMessage
 
-	forward_TopologyService_GetDependenciesTopology_0 = runtime.ForwardResponseStream
+	forward_TopologyService_ListDependenciesTopology_0 = runtime.ForwardResponseMessage
 
-	forward_TopologyService_GetDependenciesTopologyTiered_0 = runtime.ForwardResponseStream
+	forward_TopologyService_ListDependenciesTopologyTiered_0 = runtime.ForwardResponseMessage
 )

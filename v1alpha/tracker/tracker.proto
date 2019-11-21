@@ -62,6 +62,14 @@ message ManagedModule {
     cloud.deps.api.v1alpha.schema.Module module = 2;
 }
 
+message ListSourcesResponse {
+    repeated ManagedSource sources = 1;
+}
+
+message ListManagedResponse {
+    repeated ManagedModule modules = 1;
+}
+
 service ModuleService {
     rpc List(ListRequest) returns (ListModuleResponse) {
         option (google.api.http) = {
@@ -69,17 +77,17 @@ service ModuleService {
         };
     };
 
-    rpc GetSource(cloud.deps.api.v1alpha.schema.Module) returns (stream ManagedSource) {
+    rpc ListSources(cloud.deps.api.v1alpha.schema.Module) returns (ListSourcesResponse) {
         option (google.api.http) = {
             get: "/v1alpha/modules/source"
         };
-    };
+    }
 
-    rpc GetManaged(cloud.deps.api.v1alpha.schema.Source) returns (stream ManagedModule) {
+    rpc ListManaged(cloud.deps.api.v1alpha.schema.Source) returns (ListManagedResponse) {
         option (google.api.http) = {
             get: "/v1alpha/modules/managed"
         };
-    };
+    }
 }
 
 message DependencyRequest {
@@ -94,14 +102,22 @@ message Dependency {
     cloud.deps.api.v1alpha.schema.Module module = 2;
 }
 
+message ListDependentsResponse {
+    repeated Dependency dependents = 1;
+}
+
+message ListDependenciesResponse {
+    repeated Dependency dependencies = 1;
+}
+
 service DependencyService {
-    rpc GetDependents(DependencyRequest) returns (stream Dependency) {
+    rpc ListDependents(DependencyRequest) returns (ListDependentsResponse) {
         option (google.api.http) = {
             get: "/v1alpha/graph/{language}/dependents"
         };
     };
 
-    rpc GetDependencies(DependencyRequest) returns (stream Dependency) {
+    rpc ListDependencies(DependencyRequest) returns (ListDependenciesResponse) {
         option (google.api.http) = {
             get: "/v1alpha/graph/{language}/dependencies"
         };
@@ -112,26 +128,34 @@ message TopologyTier {
     repeated Dependency tier = 1;
 }
 
+message ListDependentsTieredResponse {
+    repeated TopologyTier tiers = 1;
+}
+
+message ListDependenciesTieredResponse {
+    repeated TopologyTier tiers = 1;
+}
+
 service TopologyService {
-    rpc GetDependentsTopology(DependencyRequest) returns (stream Dependency) {
+    rpc ListDependentsTopology(DependencyRequest) returns (ListDependentsResponse) {
         option (google.api.http) = {
             get: "/v1alpha/graph/{language}/dependents/topology"
         };
     };
 
-    rpc GetDependentsTopologyTiered(DependencyRequest) returns (stream TopologyTier) {
+    rpc ListDependentsTopologyTiered(DependencyRequest) returns (ListDependentsTieredResponse) {
         option (google.api.http) = {
             get: "/v1alpha/graph/{language}/dependents/topology/tiered"
         };
     };
 
-    rpc GetDependenciesTopology(DependencyRequest) returns (stream Dependency) {
+    rpc ListDependenciesTopology(DependencyRequest) returns (ListDependenciesResponse) {
         option (google.api.http) = {
             get: "/v1alpha/graph/{language}/dependencies/topology"
         };
     };
 
-    rpc GetDependenciesTopologyTiered(DependencyRequest) returns (stream TopologyTier) {
+    rpc ListDependenciesTopologyTiered(DependencyRequest) returns (ListDependenciesTieredResponse) {
         option (google.api.http) = {
             get: "/v1alpha/graph/{language}/dependencies/topology/tiered"
         };
