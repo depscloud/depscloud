@@ -50,60 +50,58 @@ func (s *moduleService) List(ctx context.Context, req *tracker.ListRequest) (*tr
 	}, nil
 }
 
-func (s *moduleService) GetSource(req *schema.Module, resp tracker.ModuleService_GetSourceServer) error {
+func (s *moduleService) ListSources(ctx context.Context, req *schema.Module) (*tracker.ListSourcesResponse, error) {
 	key := keyForModule(req)
 
-	response, err := s.gs.FindDownstream(context.Background(), &store.FindRequest{
+	response, err := s.gs.FindDownstream(ctx, &store.FindRequest{
 		Key:       key,
 		EdgeTypes: []string{types.ManagesType},
 	})
 
 	if err != nil {
-		return api.ErrModuleNotFound
+		return nil, api.ErrModuleNotFound
 	}
 
-	for _, pair := range response.GetPairs() {
+	sources := make([]*tracker.ManagedSource, len(response.GetPairs()))
+	for i, pair := range response.GetPairs() {
 		a, _ := Decode(pair.Node)
 		b, _ := Decode(pair.Edge)
 
-		managedSource := &tracker.ManagedSource{
+		sources[i] = &tracker.ManagedSource{
 			Source:  a.(*schema.Source),
 			Manages: b.(*schema.Manages),
 		}
-
-		if err := resp.Send(managedSource); err != nil {
-			logrus.Errorf("[service.dependency] failed to send response: %v", err)
-		}
 	}
 
-	return nil
+	return &tracker.ListSourcesResponse{
+		Sources: sources,
+	}, nil
 }
 
-func (s *moduleService) GetManaged(req *schema.Source, resp tracker.ModuleService_GetManagedServer) error {
+func (s *moduleService) ListManaged(ctx context.Context, req *schema.Source) (*tracker.ListManagedResponse, error) {
 	key := keyForSource(req)
 
-	response, err := s.gs.FindUpstream(context.Background(), &store.FindRequest{
+	response, err := s.gs.FindUpstream(ctx, &store.FindRequest{
 		Key:       key,
 		EdgeTypes: []string{types.ManagesType},
 	})
 
 	if err != nil {
-		return api.ErrModuleNotFound
+		return nil, api.ErrModuleNotFound
 	}
 
-	for _, pair := range response.GetPairs() {
+	modules := make([]*tracker.ManagedModule, len(response.GetPairs()))
+	for i, pair := range response.GetPairs() {
 		a, _ := Decode(pair.Node)
 		b, _ := Decode(pair.Edge)
 
-		managedModule := &tracker.ManagedModule{
+		modules[i] = &tracker.ManagedModule{
 			Module:  a.(*schema.Module),
 			Manages: b.(*schema.Manages),
 		}
-
-		if err := resp.Send(managedModule); err != nil {
-			logrus.Errorf("[service.dependency] failed to send response: %v", err)
-		}
 	}
 
-	return nil
+	return &tracker.ListManagedResponse{
+		Modules: modules,
+	}, nil
 }

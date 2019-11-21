@@ -9,8 +9,6 @@ import (
 	"github.com/deps-cloud/api/v1alpha/tracker"
 	"github.com/deps-cloud/tracker/pkg/types"
 
-	"github.com/sirupsen/logrus"
-
 	"google.golang.org/grpc"
 )
 
@@ -33,60 +31,58 @@ func keyForDependencyRequest(req *tracker.DependencyRequest) []byte {
 	})
 }
 
-func (d *dependencyService) GetDependents(req *tracker.DependencyRequest, resp tracker.DependencyService_GetDependentsServer) error {
+func (d *dependencyService) ListDependents(ctx context.Context, req *tracker.DependencyRequest) (*tracker.ListDependentsResponse, error) {
 	key := keyForDependencyRequest(req)
 
-	response, err := d.gs.FindDownstream(context.Background(), &store.FindRequest{
+	response, err := d.gs.FindDownstream(ctx, &store.FindRequest{
 		Key:       key,
 		EdgeTypes: []string{types.DependsType},
 	})
 
 	if err != nil {
-		return api.ErrModuleNotFound
+		return nil, api.ErrModuleNotFound
 	}
 
-	for _, pair := range response.GetPairs() {
+	dependents := make([]*tracker.Dependency, len(response.GetPairs()))
+	for i, pair := range response.GetPairs() {
 		a, _ := Decode(pair.Node)
 		b, _ := Decode(pair.Edge)
 
-		dependency := &tracker.Dependency{
+		dependents[i] = &tracker.Dependency{
 			Module:  a.(*schema.Module),
 			Depends: b.(*schema.Depends),
 		}
-
-		if err := resp.Send(dependency); err != nil {
-			logrus.Errorf("[service.dependency] failed to send response: %v", err)
-		}
 	}
 
-	return nil
+	return &tracker.ListDependentsResponse{
+		Dependents: dependents,
+	}, nil
 }
 
-func (d *dependencyService) GetDependencies(req *tracker.DependencyRequest, resp tracker.DependencyService_GetDependenciesServer) error {
+func (d *dependencyService) ListDependencies(ctx context.Context, req *tracker.DependencyRequest) (*tracker.ListDependenciesResponse, error) {
 	key := keyForDependencyRequest(req)
 
-	response, err := d.gs.FindUpstream(context.Background(), &store.FindRequest{
+	response, err := d.gs.FindUpstream(ctx, &store.FindRequest{
 		Key:       key,
 		EdgeTypes: []string{types.DependsType},
 	})
 
 	if err != nil {
-		return api.ErrModuleNotFound
+		return nil, api.ErrModuleNotFound
 	}
 
-	for _, pair := range response.GetPairs() {
+	dependencies := make([]*tracker.Dependency, len(response.GetPairs()))
+	for i, pair := range response.GetPairs() {
 		a, _ := Decode(pair.Node)
 		b, _ := Decode(pair.Edge)
 
-		dependency := &tracker.Dependency{
+		dependencies[i] = &tracker.Dependency{
 			Module:  a.(*schema.Module),
 			Depends: b.(*schema.Depends),
 		}
-
-		if err := resp.Send(dependency); err != nil {
-			logrus.Errorf("[service.dependency] failed to send response: %v", err)
-		}
 	}
 
-	return nil
+	return &tracker.ListDependenciesResponse{
+		Dependencies: dependencies,
+	}, nil
 }

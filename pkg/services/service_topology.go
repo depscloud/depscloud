@@ -1,6 +1,8 @@
 package services
 
 import (
+	"context"
+
 	"github.com/deps-cloud/api"
 	"github.com/deps-cloud/api/v1alpha/store"
 	"github.com/deps-cloud/api/v1alpha/tracker"
@@ -19,18 +21,18 @@ type topologyService struct {
 
 var _ tracker.TopologyServiceServer = &topologyService{}
 
-func (t *topologyService) GetDependentsTopology(req *tracker.DependencyRequest, resp tracker.TopologyService_GetDependentsTopologyServer) error {
-	return api.ErrUnimplemented
+func (t *topologyService) ListDependentsTopology(ctx context.Context, req *tracker.DependencyRequest) (*tracker.ListDependentsResponse, error) {
+	return nil, api.ErrUnimplemented
 }
 
-func (t *topologyService) GetDependentsTopologyTiered(req *tracker.DependencyRequest, resp tracker.TopologyService_GetDependentsTopologyTieredServer) error {
-	return api.ErrUnimplemented
+func (t *topologyService) ListDependentsTopologyTiered(ctx context.Context, req *tracker.DependencyRequest) (*tracker.ListDependentsTieredResponse, error) {
+	return nil, api.ErrUnimplemented
 }
 
-func (t *topologyService) GetDependenciesTopology(req *tracker.DependencyRequest, resp tracker.TopologyService_GetDependenciesTopologyServer) error {
-	return api.ErrUnimplemented
+func (t *topologyService) ListDependenciesTopology(ctx context.Context, req *tracker.DependencyRequest) (*tracker.ListDependenciesResponse, error) {
+	return nil, api.ErrUnimplemented
 }
 
-func (t *topologyService) GetDependenciesTopologyTiered(req *tracker.DependencyRequest, resp tracker.TopologyService_GetDependenciesTopologyTieredServer) error {
-	return api.ErrUnimplemented
+func (t *topologyService) ListDependenciesTopologyTiered(ctx context.Context, req *tracker.DependencyRequest) (*tracker.ListDependenciesTieredResponse, error) {
+	return nil, api.ErrUnimplemented
 }
