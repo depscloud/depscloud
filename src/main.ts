@@ -10,6 +10,7 @@ import unasyncify from "./service/unasyncify";
 import program = require("caporal");
 import fs = require("fs");
 import health = require("grpc-health-check/health");
+import healthv1 = require("grpc-health-check/v1/health_pb");
 
 const asyncFs = fs.promises;
 
@@ -41,9 +42,11 @@ program.name("extractor")
         const port = options.port || 8090;
         const impl: AsyncDependencyExtractor = new DependencyExtractorImpl(extractors);
 
-        const healthcheck = new health.Implementation({});
+        const healthcheck = new health.Implementation({
+            "": healthv1.HealthCheckResponse.ServingStatus.SERVING,
+        });
         // toggle the service health as such
-        // healthcheck.setStatus("", "NOT_SERVING");
+        // healthcheck.setStatus("", healthv1.HealthCheckResponse.ServingStatus.NOT_SERVING);
 
         const server = new Server();
         server.addService(DependencyExtractor.service, unasyncify(impl));
