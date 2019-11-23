@@ -49,7 +49,6 @@ func registerV1Alpha(rwdb, rodb *sqlx.DB, statements *graphstore.Statements, ser
 }
 
 func main() {
-	configPath := "${HOME}/.dts/config.yaml"
 	port := 8090
 	storageDriver := "sqlite3"
 	storageAddress := "file::memory:?cache=shared"
@@ -129,7 +128,6 @@ func main() {
 	}
 
 	flags := cmd.Flags()
-	flags.StringVar(&configPath, "config", configPath, "(optional) the path to the config file")
 	flags.IntVar(&port, "port", port, "(optional) the port to run on")
 	flags.StringVar(&storageDriver, "storage-driver", storageDriver, "(optional) the driver used to configure the storage tier")
 	flags.StringVar(&storageAddress, "storage-address", storageAddress, "(optional) the address of the storage tier")
