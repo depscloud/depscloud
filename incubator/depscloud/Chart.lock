@@ -1,0 +1,15 @@
+dependencies:
+- name: extractor
+  repository: file://../extractor
+  version: 0.1.0
+- name: gateway
+  repository: file://../gateway
+  version: 0.1.0
+- name: indexer
+  repository: file://../indexer
+  version: 0.1.0
+- name: tracker
+  repository: file://../tracker
+  version: 0.1.0
+digest: sha256:d898f0f075769fa545a7016f54fc0089c474c6444b98d7ee9a765c4ddd21287c
+generated: "2019-11-23T00:42:31.178779-06:00"

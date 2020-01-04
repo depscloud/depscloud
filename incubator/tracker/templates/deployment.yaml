@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "tracker.fullname" . }}
+  labels:
+    {{- include "tracker.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "tracker.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "tracker.selectorLabels" . | nindent 8 }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "tracker.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      volumes:
+        {{- if .Values.storage.statements }}
+        - name: storage-statements
+          configMap:
+            name: {{ include "tracker.fullname" . }}
+        {{- end }}
+        {{- if .Values.tls.secretName }}
+        - name: server-certs
+          secret:
+            secretName: {{ .Values.tls.secretName }}
+        {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            {{- if .Values.storage.statements }}
+            - mountPath: /etc/tracker/storage/
+              name: storage-statements
+            {{- end }}
+            {{- if .Values.tls.secretName }}
+            - mountPath: /etc/ssl/server/
+              name: server-certs
+            {{- end }}
+          args:
+            - --port=8090
+            - --storage-address={{ .Values.storage.address }}
+            - --storage-driver={{ .Values.storage.driver }}
+            {{- if .Values.storage.readOnlyAddress }}
+            - --storage-readonly-address={{ .Values.storage.readOnlyAddress }}
+            {{- end }}
+            {{- if .Values.storage.statements }}
+            - --storage-statements-file=/etc/tracker/storage/statements.yaml
+            {{- end }}
+            {{- if .Values.tls.secretName }}
+            - --tls-ca=/etc/ssl/server/ca.crt
+            - --tls-cert=/etc/ssl/server/tls.crt
+            - --tls-key=/etc/ssl/server/tls.key
+            {{- end }}
+          ports:
+            - name: grpc
+              containerPort: 8090
+              protocol: TCP
+          livenessProbe:
+            exec:
+              command: ["grpc_health_probe", "-addr=:8090"]
+            initialDelaySeconds: 5
+          readinessProbe:
+            exec:
+              command: ["grpc_health_probe", "-addr=:8090"]
+            initialDelaySeconds: 5
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
