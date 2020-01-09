@@ -1,5 +1,12 @@
 {{/* vim: set filetype=mustache: */}}
 {{/*
+Allow users to upgrade container versions as needed.
+*/}}
+{{- define "extractor.version" -}}
+{{- default .Chart.AppVersion .Values.image.tag -}}
+{{- end }}
+
+{{/*
 Expand the name of the chart.
 */}}
 {{- define "extractor.name" -}}
@@ -37,9 +44,7 @@ Common labels
 {{- define "extractor.labels" -}}
 helm.sh/chart: {{ include "extractor.chart" . }}
 {{ include "extractor.selectorLabels" . }}
-{{- if .Chart.AppVersion }}
-app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
-{{- end }}
+app.kubernetes.io/version: {{ include "extractor.version" . | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 app.kubernetes.io/part-of: deps-cloud
 app.kubernetes.io/component: extractor

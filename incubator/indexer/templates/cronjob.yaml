@@ -36,7 +36,7 @@ spec:
             - name: {{ .Chart.Name }}
               securityContext:
                 {{- toYaml .Values.securityContext | nindent 16 }}
-              image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
+              image: "{{ .Values.image.repository }}:{{ include "indexer.version" . }}"
               imagePullPolicy: {{ .Values.image.pullPolicy }}
               volumeMounts:
                 {{- if .Values.extractor.secretName }}

@@ -1,5 +1,12 @@
 {{/* vim: set filetype=mustache: */}}
 {{/*
+Allow users to upgrade container versions as needed.
+*/}}
+{{- define "indexer.version" -}}
+{{- default .Chart.AppVersion .Values.image.tag -}}
+{{- end }}
+
+{{/*
 Expand the name of the chart.
 */}}
 {{- define "indexer.name" -}}
@@ -37,9 +44,7 @@ Common labels
 {{- define "indexer.labels" -}}
 helm.sh/chart: {{ include "indexer.chart" . }}
 {{ include "indexer.selectorLabels" . }}
-{{- if .Chart.AppVersion }}
-app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
-{{- end }}
+app.kubernetes.io/version: {{ include "indexer.version" . | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 app.kubernetes.io/part-of: deps-cloud
 app.kubernetes.io/component: indexer
