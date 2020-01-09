@@ -1,9 +1,7 @@
 language: minimal
-if: branch = master
 
 before_install:
   - curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
-  - helm init --client-only
 
 script:
   - bash generate.sh
