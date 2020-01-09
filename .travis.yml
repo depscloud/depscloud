@@ -1,6 +1,20 @@
+language: minimal
+if: branch = master
+
+before_install:
+  - curl -L https://git.io/get_helm.sh | bash
+  - helm init --client-only
+
 script:
-  - git pull && git fetch --all && git branch -a
-  - git remote set-url origin https://${GITHUB_USER}:${GITHUB_RELEASE_TOKEN}@github.com/deps-cloud/charts.git
-  - bash scripts/package.sh
-  - bash scripts/upload.sh
-  - bash scripts/index.sh
+  - bash generate.sh
+
+deploy:
+  provider: pages
+  github_token: $GITHUB_RELEASE_TOKEN
+  local_dir: dist
+  target_branch: gh-pages
+  verbose: true
+  skip_cleanup: true
+  keep_history: true
+  on:
+    branch: master
