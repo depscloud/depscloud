@@ -68,16 +68,16 @@ func dial(target, certFile, keyFile, caFile string) *grpc.ClientConn {
 }
 
 // NewWorker encapsulates logic for pulling information off a channel and invoking the consumer
-func NewWorker(in chan string, done chan bool, rc consumer.RepositoryConsumer) {
-	for str := range in {
-		rc.Consume(str)
+func NewWorker(repositories chan *remotes.Repository, done chan bool, rc consumer.RepositoryConsumer) {
+	for repository := range repositories {
+		rc.Consume(repository)
 		done <- true
 	}
 }
 
 // run is an internal method that represents a single pass over the set of repositories returned from the discovery service.
-func run(remote remotes.Remote, repositories chan string, done chan bool) error {
-	repos, err := remote.ListRepositories()
+func run(remote remotes.Remote, repositories chan *remotes.Repository, done chan bool) error {
+	resp, err := remote.FetchRepositories(&remotes.FetchRepositoriesRequest{})
 	if err != nil {
 		return err
 	}
@@ -91,9 +91,9 @@ func run(remote remotes.Remote, repositories chan string, done chan bool) error 
 			<-done
 		}
 		wg.Done()
-	}(len(repos), wg)
+	}(len(resp.Repositories), wg)
 
-	for _, repository := range repos {
+	for _, repository := range resp.Repositories {
 		repositories <- repository
 	}
 
@@ -146,7 +146,7 @@ func main() {
 				exitIff(err)
 			}
 
-			repositories := make(chan string, workers)
+			repositories := make(chan *remotes.Repository, workers)
 			done := make(chan bool, workers)
 
 			rc := consumer.NewConsumer(authMethod, desClient, sourceService)
