@@ -8,5 +8,5 @@ curl -sSL -o helm.tar.gz https://get.helm.sh/helm-v3.0.2-${os}-amd64.tar.gz
 tar zxf helm.tar.gz
 
 for chart in $(ls -1 incubator/); do
-  ./${os}-amd64/helm package incubator/${chart} -d incubator
+  ./${os}-amd64/helm package incubator/${chart} -d incubator-dist
 done
