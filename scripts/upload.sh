@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
-git add .
-git stash
 git checkout gh-pages
-git stash pop
+mv incubator-dist/* incubator/
+git add .
 git commit -m "upload latest charts"
 git push
