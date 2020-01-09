@@ -10,14 +10,14 @@ For a quick introduction to Charts, see the [Chart Guide](https://helm.sh/docs/t
 ## How do I install these charts?
 
 ```
-$ helm repo add depscloud-stable <TBD>
+$ helm repo add depscloud-stable https://deps-cloud.github.io/charts/stable
 "depscloud-stable" has been added to your repositories
 ```
 
 ## How do I enable the incubator repository?
 
 ```
-$ helm repo add depscloud-incubator <TBD>
+$ helm repo add depscloud-incubator https://deps-cloud.github.io/charts/incubator
 "depscloud-incubator" has been added to your repositories
 ```
 
