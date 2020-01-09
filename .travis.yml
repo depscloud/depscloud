@@ -1,5 +1,5 @@
 script:
-  - git pull && git fetch --all
+  - git pull && git fetch --all && git branch -a
   - git remote set-url origin https://${GITHUB_USER}:${GITHUB_RELEASE_TOKEN}@github.com/deps-cloud/charts.git
   - bash scripts/package.sh
   - bash scripts/upload.sh
