@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e -o pipefail
+
 git checkout gh-pages
 mv incubator-dist/* incubator/
 git add .

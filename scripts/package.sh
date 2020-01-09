@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e -o pipefail
+
 readonly os=$(uname | tr '[:upper:]' '[:lower:]')
 
 trap "rm -rf helm.tar.gz ${os}-amd64" EXIT
