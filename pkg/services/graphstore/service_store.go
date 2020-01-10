@@ -52,6 +52,7 @@ func (gs *graphStore) Put(ctx context.Context, req *store.PutRequest) (*store.Pu
 	if err != nil {
 		return nil, err
 	}
+	defer tx.Rollback()
 
 	for _, item := range req.GetItems() {
 		_, err := tx.NamedExec(gs.statements.InsertGraphData, map[string]interface{}{
@@ -98,6 +99,7 @@ func (gs *graphStore) Delete(ctx context.Context, req *store.DeleteRequest) (*st
 	if err != nil {
 		return nil, err
 	}
+	defer tx.Rollback()
 
 	for _, key := range req.GetItems() {
 		_, err := tx.NamedExec(gs.statements.DeleteGraphData, map[string]interface{}{
