@@ -17,7 +17,7 @@ This chart bootstraps a Tracker deployment on a [Kubernetes](http://kubernetes.i
 To install the chart with the release name `my-release`:
 
 ```bash
-$ helm install my-release depscloud-stable/tracker
+$ helm install my-release depscloud-incubator/tracker
 ```
 
 The command deploys Tracker on the Kubernetes cluster in the default configuration.

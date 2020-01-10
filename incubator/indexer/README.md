@@ -17,7 +17,7 @@ This chart bootstraps an Indexer cron on a [Kubernetes](http://kubernetes.io) cl
 To install the chart with the release name `my-release`:
 
 ```bash
-$ helm install my-release depscloud-stable/indexer
+$ helm install my-release depscloud-incubator/indexer
 ```
 
 The command deploys Indexer on the Kubernetes cluster in the default configuration.

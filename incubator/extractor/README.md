@@ -17,7 +17,7 @@ This chart bootstraps a Extractor deployment on a [Kubernetes](http://kubernetes
 To install the chart with the release name `my-release`:
 
 ```bash
-$ helm install my-release depscloud-stable/tracker
+$ helm install my-release depscloud-incubator/tracker
 ```
 
 The command deploys Extractor on the Kubernetes cluster in the default configuration.
