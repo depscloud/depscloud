@@ -23,17 +23,17 @@ appVersion: 1.16.0
 dependencies:
   - name: extractor
     repository: file://../extractor
-    version: 0.1.0
+    version: 0.1.1
     condition: deploy.extractor
   - name: gateway
     repository: file://../gateway
-    version: 0.1.0
+    version: 0.1.1
     condition: deploy.gateway
   - name: indexer
     repository: file://../indexer
-    version: 0.1.0
+    version: 0.1.1
     condition: deploy.indexer
   - name: tracker
     repository: file://../tracker
-    version: 0.1.0
+    version: 0.1.2
     condition: deploy.tracker

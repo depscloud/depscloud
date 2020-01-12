@@ -5,7 +5,11 @@ metadata:
   labels:
     {{- include "gateway.labels" . | nindent 4 }}
 spec:
+  {{- if eq "Headless" .Values.service.type }}
+  clusterIP: None
+  {{- else }}
   type: {{ .Values.service.type }}
+  {{- end }}
   ports:
     - port: {{ .Values.service.port }}
       targetPort: http

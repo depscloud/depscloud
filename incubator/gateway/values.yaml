@@ -53,11 +53,11 @@ tolerations: []
 affinity: {}
 
 extractor:
-  address: "{{ .Release.Name }}-extractor:80"
+  address: "{{ .Release.Name }}-extractor:8090"
   secretName: ""
 
 tracker:
-  address: "{{ .Release.Name }}-tracker:80"
+  address: "{{ .Release.Name }}-tracker:8090"
   secretName: ""
 
 tls:

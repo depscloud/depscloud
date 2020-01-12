@@ -52,8 +52,8 @@ The following table lists the configurable parameters of the Extractor chart and
 | `serviceAccount.name`                       | The name of the service account                     | `""`                          |
 | `podSecurityContext`                        | Provide any pod security context attributes         | `{}`                          |
 | `securityContext`                           | Provide any security context attributes             | `{}`                          |
-| `service.type`                              | The type of service used to address the tracker     | `ClusterIP`                   |
-| `service.port`                              | The port that should be exposed through the service | `80`                          |
+| `service.type`                              | The type of service used to address the tracker     | `Headless`                    |
+| `service.port`                              | The port that should be exposed through the service | `8090`                        |
 | `resources`                                 | Any resource constraints to place on the container  | `{}`                          |
 | `nodeSelector`                              | Target the deployment to a certain class of nodes   | `{}`                          |
 | `tolerations`                               | Identify any taints the process can tolerate        | `[]`                          |

@@ -31,8 +31,8 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
-  type: ClusterIP
-  port: 80
+  type: Headless
+  port: 8090
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

@@ -57,9 +57,9 @@ The following table lists the configurable parameters of the Indexer chart and t
 | `nodeSelector`                              | Target the deployment to a certain class of nodes   | `{}`                          |
 | `tolerations`                               | Identify any taints the process can tolerate        | `[]`                          |
 | `affinity`                                  | Set up an an affinity based on attributes           | `{}`                          |
-| `extractor.address`                         | The address of the extractor process                | `"{{ .Release.Name }}-extractor:80"` |
+| `extractor.address`                         | The address of the extractor process                | `"{{ .Release.Name }}-extractor:8090"` |
 | `extractor.secretName`                      | The name of the secret containing certificates to the extractor | `""`              |
-| `tracker.address`                           | The address of the tracker process                  | `"{{ .Release.Name }}-tracker:80"` |
+| `tracker.address`                           | The address of the tracker process                  | `"{{ .Release.Name }}-tracker:8090"` |
 | `tracker.secretName`                        | The name of the secret containing certificates to the tracker | `""`                |
 | `workers`                                   | The number of worker threads cloning and indexing repositories | `5`                |
 | `config`                                    | YAML containing the configuration for the various accounts | `{}` |
