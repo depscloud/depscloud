@@ -14,9 +14,7 @@ for chart in $(find . -iname Chart.yaml | xargs dirname | cut -c 3-); do
     helm package ${chart} -d ${destination}
 done
 
-repos=(incubator)
-
-for repo in $repos; do
+for repo in "incubator" "stable"; do
     echo "Indexing ${repo}"
     repo_url="${base_url}/${repo}"
 

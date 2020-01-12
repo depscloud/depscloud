@@ -1,0 +1,5 @@
+deploy:
+  extractor: true
+  gateway: true
+  indexer: true
+  tracker: true

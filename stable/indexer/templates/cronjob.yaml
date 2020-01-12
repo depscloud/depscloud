@@ -1,0 +1,83 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ include "indexer.fullname" . }}
+  labels:
+    {{- include "indexer.labels" . | nindent 4 }}
+spec:
+  schedule: {{ .Values.schedule | quote }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+        {{- with .Values.imagePullSecrets }}
+          imagePullSecrets:
+            {{- toYaml . | nindent 12 }}
+        {{- end }}
+          serviceAccountName: {{ include "indexer.serviceAccountName" . }}
+          securityContext:
+            {{- toYaml .Values.podSecurityContext | nindent 12 }}
+          volumes:
+            {{- if .Values.extractor.secretName }}
+            - name: extractor-client-certs
+              secret:
+                secretName: {{ .Values.extractor.secretName }}
+            {{- end }}
+            {{- if .Values.tracker.secretName }}
+            - name: tracker-client-certs
+              secret:
+                secretName: {{ .Values.tracker.secretName }}
+            {{- end }}
+            - name: rds-config
+              secret:
+                secretName: {{ include "indexer.fullname" . }}
+          containers:
+            - name: {{ .Chart.Name }}
+              securityContext:
+                {{- toYaml .Values.securityContext | nindent 16 }}
+              image: "{{ .Values.image.repository }}:{{ include "indexer.version" . }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              volumeMounts:
+                {{- if .Values.extractor.secretName }}
+                - mountPath: /etc/ssl/client/extractor/
+                  name: extractor-client-certs
+                {{- end }}
+                {{- if .Values.tracker.secretName }}
+                - mountPath: /etc/ssl/client/tracker/
+                  name: tracker-client-certs
+                {{- end }}
+                - mountPath: /etc/rds
+                  name: rds-config
+              args:
+                - --cron
+                - --extractor-address={{ tpl .Values.extractor.address $ }}
+                {{- if .Values.extractor.secretName }}
+                - --extractor-ca=/etc/ssl/client/tracker/ca.crt
+                - --extractor-cert=/etc/ssl/client/tracker/tls.crt
+                - --extractor-key=/etc/ssl/client/tracker/tls.key
+                {{- end }}
+                - --rds-config=/etc/rds/config.yaml
+                - --ssh-keypath=
+                - --ssh-user=
+                - --tracker-address={{ tpl .Values.tracker.address $ }}
+                {{- if .Values.tracker.secretName }}
+                - --tracker-ca=/etc/ssl/client/tracker/ca.crt
+                - --tracker-cert=/etc/ssl/client/tracker/tls.crt
+                - --tracker-key=/etc/ssl/client/tracker/tls.key
+                {{- end }}
+                - --workers={{ .Values.workers }}
+              resources:
+                {{- toYaml .Values.resources | nindent 16 }}
+          {{- with .Values.nodeSelector }}
+          nodeSelector:
+            {{- toYaml . | nindent 8 }}
+          {{- end }}
+        {{- with .Values.affinity }}
+          affinity:
+            {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- with .Values.tolerations }}
+          tolerations:
+            {{- toYaml . | nindent 8 }}
+        {{- end }}

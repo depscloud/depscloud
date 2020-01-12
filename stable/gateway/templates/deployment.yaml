@@ -1,0 +1,103 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "gateway.fullname" . }}
+  labels:
+    {{- include "gateway.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "gateway.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "gateway.selectorLabels" . | nindent 8 }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "gateway.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      volumes:
+        {{- if .Values.extractor.secretName }}
+        - name: extractor-client-certs
+          secret:
+            secretName: {{ .Values.extractor.secretName }}
+        {{- end }}
+        {{- if .Values.tracker.secretName }}
+        - name: tracker-client-certs
+          secret:
+            secretName: {{ .Values.tracker.secretName }}
+        {{- end }}
+        {{- if .Values.tls.secretName }}
+        - name: server-certs
+          secret:
+            secretName: {{ .Values.tls.secretName }}
+        {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ include "gateway.version" . }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            {{- if .Values.extractor.secretName }}
+            - mountPath: /etc/ssl/client/extractor/
+              name: extractor-client-certs
+            {{- end }}
+            {{- if .Values.tracker.secretName }}
+            - mountPath: /etc/ssl/client/tracker/
+              name: tracker-client-certs
+            {{- end }}
+            {{- if .Values.tls.secretName }}
+            - mountPath: /etc/ssl/server/
+              name: server-certs
+            {{- end }}
+          args:
+            - --extractor-address={{ tpl .Values.extractor.address $ }}
+            {{- if .Values.extractor.secretName }}
+            - --extractor-ca=/etc/ssl/client/tracker/ca.crt
+            - --extractor-cert=/etc/ssl/client/tracker/tls.crt
+            - --extractor-key=/etc/ssl/client/tracker/tls.key
+            {{- end }}
+            - --port=8080
+            {{- if .Values.tls.secretName }}
+            - --tls-ca=/etc/ssl/server/ca.crt
+            - --tls-cert=/etc/ssl/server/tls.crt
+            - --tls-key=/etc/ssl/server/tls.key
+            {{- end }}
+            - --tracker-address={{ tpl .Values.tracker.address $ }}
+            {{- if .Values.tracker.secretName }}
+            - --tracker-ca=/etc/ssl/client/tracker/ca.crt
+            - --tracker-cert=/etc/ssl/client/tracker/tls.crt
+            - --tracker-key=/etc/ssl/client/tracker/tls.key
+            {{- end }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /v1alpha/sources # todo: replace with healthz
+              port: 8080
+          readinessProbe:
+            httpGet:
+              path: /v1alpha/sources # todo: replace with healthz
+              port: 8080
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
