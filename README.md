@@ -23,5 +23,5 @@ $ helm repo add depscloud-incubator https://deps-cloud.github.io/charts/incubato
 
 ## Resources
 
-* [Charts Source](https://github.com/deps-cloud/charts)
+* [Chart Sources](https://github.com/deps-cloud/charts)
 * [deps.cloud](https://deps.cloud)
