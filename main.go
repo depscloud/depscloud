@@ -33,9 +33,17 @@ func exitIff(err error) {
 	}
 }
 
-func dial(target, certFile, keyFile, caFile string) *grpc.ClientConn {
+// https://github.com/grpc/grpc/blob/master/doc/service_config.md
+const serviceConfigTemplate = `{
+	"loadBalancingPolicy": "%s"
+}`
+
+func dial(target, certFile, keyFile, caFile, lbPolicy string) *grpc.ClientConn {
+	serviceConfig := fmt.Sprintf(serviceConfigTemplate, lbPolicy)
+
 	dialOptions := []grpc.DialOption{
 		grpc.WithBlock(),
+		grpc.WithDefaultServiceConfig(serviceConfig),
 	}
 
 	if len(certFile) > 0 {
@@ -110,11 +118,13 @@ func main() {
 	extractorCert := ""
 	extractorKey := ""
 	extractorCA := ""
+	extractorLBPolicy := "round_robin"
 
 	trackerAddress := "tracker:8090"
 	trackerCert := ""
 	trackerKey := ""
 	trackerCA := ""
+	trackerLBPolicy := "round_robin"
 
 	sshUser := "git"
 	sshKeyPath := ""
@@ -123,8 +133,8 @@ func main() {
 		Use:   "indexer",
 		Short: "dependency indexing service",
 		Run: func(cmd *cobra.Command, args []string) {
-			desClient := extractor.NewDependencyExtractorClient(dial(extractorAddress, extractorCert, extractorKey, extractorCA))
-			sourceService := tracker.NewSourceServiceClient(dial(trackerAddress, trackerCert, trackerKey, trackerCA))
+			desClient := extractor.NewDependencyExtractorClient(dial(extractorAddress, extractorCert, extractorKey, extractorCA, extractorLBPolicy))
+			sourceService := tracker.NewSourceServiceClient(dial(trackerAddress, trackerCert, trackerKey, trackerCA, trackerLBPolicy))
 
 			var rdsConfig *config.Configuration
 
@@ -185,11 +195,13 @@ func main() {
 	flags.StringVar(&extractorCert, "extractor-cert", extractorCert, "(optional) certificate used to enable TLS for the extractor")
 	flags.StringVar(&extractorKey, "extractor-key", extractorKey, "(optional) key used to enable TLS for the extractor")
 	flags.StringVar(&extractorCA, "extractor-ca", extractorCA, "(optional) ca used to enable TLS for the extractor")
+	flags.StringVar(&extractorLBPolicy, "extractor-lb", extractorLBPolicy, "(optional) the load balancer policy to use for the extractor")
 
 	flags.StringVar(&trackerAddress, "tracker-address", trackerAddress, "(optional) address to the tracker service")
 	flags.StringVar(&trackerCert, "tracker-cert", trackerCert, "(optional) certificate used to enable TLS for the tracker")
 	flags.StringVar(&trackerKey, "tracker-key", trackerKey, "(optional) key used to enable TLS for the tracker")
 	flags.StringVar(&trackerCA, "tracker-ca", trackerCA, "(optional) ca used to enable TLS for the tracker")
+	flags.StringVar(&trackerLBPolicy, "tracker-lb", trackerLBPolicy, "(optional) the load balancer policy to use for the tracker")
 
 	flags.StringVar(&sshUser, "ssh-user", sshUser, "(optional) the ssh user, typically git")
 	flags.StringVar(&sshKeyPath, "ssh-keypath", sshKeyPath, "(optional) the path to the ssh key file")
