@@ -3,7 +3,7 @@ FROM depscloud/download:latest AS BUILDER
 ARG VERSION=0.0.1
 ARG HEALTH_PROBE_VERSION=0.3.1
 
-RUN install-grpc-probe ${VERSION}
+RUN install-grpc-probe ${HEALTH_PROBE_VERSION}
 RUN install-depscloud-binary tracker ${VERSION}
 
 FROM depscloud/base:latest
