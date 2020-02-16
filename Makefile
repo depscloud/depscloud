@@ -4,18 +4,16 @@ build-deps:
 	GO111MODULE=off go get -u golang.org/x/lint/golint
 	GO111MODULE=off go get -u oss.indeed.com/go/go-groups
 
-deps:
-	go get -v ./...
-
 fmt:
 	go-groups -w .
 	gofmt -s -w .
 
-lint:
-	golint -set_exit_status ./...
+deps:
+	go mod download
 
 test:
 	go vet ./...
+	golint -set_exit_status ./...
 	go test -v ./...
 
 install:
