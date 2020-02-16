@@ -34,8 +34,21 @@ func exitIff(err error) {
 	}
 }
 
-func dialOptions(certFile, keyFile, caFile string) []grpc.DialOption {
-	opts := make([]grpc.DialOption, 0)
+// https://github.com/grpc/grpc/blob/master/doc/service_config.md
+const serviceConfigTemplate = `{
+	"loadBalancingPolicy": "%s",
+	"healthCheckConfig": {
+		"serviceName": ""
+	}
+}`
+
+func dialOptions(certFile, keyFile, caFile, lbPolicy string) []grpc.DialOption {
+	serviceConfig := fmt.Sprintf(serviceConfigTemplate, lbPolicy)
+
+	opts := []grpc.DialOption{
+		grpc.WithDefaultServiceConfig(serviceConfig),
+	}
+
 	if len(certFile) > 0 {
 		certificate, err := tls.LoadX509KeyPair(certFile, keyFile)
 		exitIff(err)
@@ -75,11 +88,13 @@ func main() {
 	extractorCert := ""
 	extractorKey := ""
 	extractorCA := ""
+	extractorLBPolicy := "round_robin"
 
 	trackerAddress := "tracker:8090"
 	trackerCert := ""
 	trackerKey := ""
 	trackerCA := ""
+	trackerLBPolicy := "round_robin"
 
 	tlsCert := ""
 	tlsKey := ""
@@ -96,8 +111,8 @@ func main() {
 
 			ctx := context.Background()
 
-			trackerOpts := dialOptions(trackerCert, trackerKey, trackerCA)
-			extractorOpts := dialOptions(extractorCert, extractorKey, extractorCA)
+			trackerOpts := dialOptions(trackerCert, trackerKey, trackerCA, trackerLBPolicy)
+			extractorOpts := dialOptions(extractorCert, extractorKey, extractorCA, extractorLBPolicy)
 
 			err := tracker.RegisterSourceServiceHandlerFromEndpoint(ctx, gatewayMux, trackerAddress, trackerOpts)
 			exitIff(err)
@@ -158,11 +173,13 @@ func main() {
 	flags.StringVar(&extractorCert, "extractor-cert", extractorCert, "(optional) certificate used to enable TLS for the extractor")
 	flags.StringVar(&extractorKey, "extractor-key", extractorKey, "(optional) key used to enable TLS for the extractor")
 	flags.StringVar(&extractorCA, "extractor-ca", extractorCA, "(optional) ca used to enable TLS for the extractor")
+	flags.StringVar(&extractorLBPolicy, "extractor-lb", extractorLBPolicy, "(optional) the load balancer policy to use for the extractor")
 
 	flags.StringVar(&trackerAddress, "tracker-address", trackerAddress, "(optional) address to the tracker service")
 	flags.StringVar(&trackerCert, "tracker-cert", trackerCert, "(optional) certificate used to enable TLS for the tracker")
 	flags.StringVar(&trackerKey, "tracker-key", trackerKey, "(optional) key used to enable TLS for the tracker")
 	flags.StringVar(&trackerCA, "tracker-ca", trackerCA, "(optional) ca used to enable TLS for the tracker")
+	flags.StringVar(&trackerLBPolicy, "tracker-lb", trackerLBPolicy, "(optional) the load balancer policy to use for the tracker")
 
 	flags.StringVar(&tlsKey, "tls-key", tlsKey, "(optional) path to the file containing the TLS private key")
 	flags.StringVar(&tlsCert, "tls-cert", tlsCert, "(optional) path to the file containing the TLS certificate")
