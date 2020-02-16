@@ -1,4 +1,4 @@
-FROM depscloud/download:latest
+FROM depscloud/download:latest AS BUILDER
 
 ARG VERSION=0.0.1
 ARG HEALTH_PROBE_VERSION=0.3.1
