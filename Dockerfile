@@ -1,11 +1,13 @@
-FROM depscloud/base:latest
+FROM depscloud/download:latest AS BUILDER
 
 ARG VERSION=0.0.2
 
 RUN install-depscloud-binary indexer ${VERSION}
 
-RUN useradd -ms /bin/sh indexer
-WORKDIR /home/indexer
-USER indexer
+FROM depscloud/base:latest
 
-ENTRYPOINT [ "indexer" ]
+COPY --from=BUILDER /usr/bin/indexer /usr/bin/indexer
+
+USER deps-cloud
+
+ENTRYPOINT [ "/usr/bin/indexer" ]
