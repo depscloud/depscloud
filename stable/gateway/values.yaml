@@ -53,11 +53,11 @@ tolerations: []
 affinity: {}
 
 extractor:
-  address: "extractor:8090"
+  address: "dns:///extractor:8090"
   secretName: ""
 
 tracker:
-  address: "tracker:8090"
+  address: "dns:///tracker:8090"
   secretName: ""
 
 tls:
