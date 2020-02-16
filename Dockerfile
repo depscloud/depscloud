@@ -1,11 +1,13 @@
-FROM depscloud/base:latest
+FROM depscloud/download:latest AS BUILDER
 
 ARG VERSION=0.0.1
 
 RUN install-depscloud-binary gateway ${VERSION}
 
-RUN useradd -ms /bin/sh gateway
-WORKDIR /home/gateway
-USER gateway
+FROM depscloud/base:latest
 
-ENTRYPOINT [ "gateway" ]
+COPY --from=BUILDER /usr/bin/gateway /usr/bin/gateway
+
+USER deps-cloud
+
+ENTRYPOINT [ "/usr/bin/gateway" ]
