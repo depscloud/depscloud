@@ -36,7 +36,10 @@ func exitIff(err error) {
 
 // https://github.com/grpc/grpc/blob/master/doc/service_config.md
 const serviceConfigTemplate = `{
-	"loadBalancingPolicy": "%s"
+	"loadBalancingPolicy": "%s",
+	"healthCheckConfig": {
+		"serviceName": ""
+	}
 }`
 
 func dialOptions(certFile, keyFile, caFile, lbPolicy string) []grpc.DialOption {
