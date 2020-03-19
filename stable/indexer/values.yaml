@@ -58,6 +58,12 @@ tracker:
 
 workers: 5
 
+externalConfig:
+  configMapRef:
+    name: ""
+  secretRef:
+    name: ""
+
 config:
   accounts:
     - github:
