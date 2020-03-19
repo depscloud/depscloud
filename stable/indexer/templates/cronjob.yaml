@@ -29,9 +29,19 @@ spec:
               secret:
                 secretName: {{ .Values.tracker.secretName }}
             {{- end }}
+            {{- if .Values.externalConfig.secretRef.name }}
+            - name: rds-config
+              secret:
+                secretName:  {{ .Values.externalConfig.secretRef.name }}
+            {{- else if .Values.externalConfig.configMapRef.name }}
+            - name: rds-config
+              configMap:
+                name:  {{ .Values.externalConfig.configMapRef.name }}
+            {{- else }}
             - name: rds-config
               secret:
                 secretName: {{ include "indexer.fullname" . }}
+            {{- end }}
           containers:
             - name: {{ .Chart.Name }}
               securityContext:
