@@ -55,6 +55,12 @@ affinity: {}
 tls:
   secretName: ""
 
+externalStorage:
+  secretRef:
+    name: ""
+  configMapRef:
+    name: ""
+
 storage:
   address: file::memory:?cache=shared
   driver: sqlite3

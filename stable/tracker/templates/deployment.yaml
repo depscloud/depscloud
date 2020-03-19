@@ -38,6 +38,17 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ include "tracker.version" . }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          envFrom:
+            {{- if .Values.externalStorage.secretRef.name }}
+            - secretRef:
+                name: {{ .Values.externalStorage.secretRef.name }}
+            {{- else if .Values.externalStorage.configMapRef.name }}
+            - configMapRef:
+                name: {{ .Values.externalStorage.configMapRef.name }}
+            {{- else }}
+            - secretRef:
+                name: {{ include "tracker.fullname" . }}
+            {{- end }}
           volumeMounts:
             {{- if .Values.storage.statements }}
             - mountPath: /etc/tracker/storage/
@@ -49,11 +60,9 @@ spec:
             {{- end }}
           args:
             - --port=8090
-            - --storage-address={{ .Values.storage.address }}
-            - --storage-driver={{ .Values.storage.driver }}
-            {{- if .Values.storage.readOnlyAddress }}
-            - --storage-readonly-address={{ .Values.storage.readOnlyAddress }}
-            {{- end }}
+            - --storage-driver=$(STORAGE_DRIVER)
+            - --storage-address=$(STORAGE_ADDRESS)
+            - --storage-readonly-address=$(STORAGE_READ_ONLY_ADDRESS)
             {{- if .Values.storage.statements }}
             - --storage-statements-file=/etc/tracker/storage/statements.yaml
             {{- end }}
