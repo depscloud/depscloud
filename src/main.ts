@@ -17,6 +17,7 @@ const asyncFs = fs.promises;
 const logger = getLogger();
 
 program.name("extractor")
+    .option("--bind-address <bindAddress>", "The ip address to bind to.", program.STRING)
     .option("--port <port>", "The port to bind to.", program.INT)
     .option("--tls-key <key>", "The path to the private key used for TLS", program.STRING)
     .option("--tls-cert <cert>", "The path to the certificate used for TLS", program.STRING)
@@ -39,7 +40,6 @@ program.name("extractor")
 
         const extractors = await Promise.all(extractorReqs);
 
-        const port = options.port || 8090;
         const impl: AsyncDependencyExtractor = new DependencyExtractorImpl(extractors);
 
         const healthcheck = new health.Implementation({
@@ -68,8 +68,11 @@ program.name("extractor")
             } ], true);
         }
 
-        server.bind(`0.0.0.0:${port}`, credentials);
-        logger.info(`[main] starting gRPC on :${port}`);
+        const bindAddress = options.bindAddress || "0.0.0.0";
+        const port = options.port || 8090;
+
+        server.bind(`${bindAddress}:${port}`, credentials);
+        logger.info(`[main] starting gRPC on ${bindAddress}:${port}`);
         server.start();
     })
     .parse(process.argv);
