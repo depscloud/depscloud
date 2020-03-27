@@ -26,11 +26,11 @@
   },
   "dependencies": {
     "@deps-cloud/api": "0.0.7",
+    "@grpc/grpc-js": "^0.7.3",
     "@grpc/proto-loader": "^0.4.0",
     "caporal": "latest",
     "cheerio": "^1.0.0-rc.2",
     "gradle-to-js": "^2.0.0",
-    "grpc": "^1.24.2",
     "grpc-health-check": "^1.6.6",
     "js-yaml": "^3.13.1",
     "log4js": "^4.5.1",

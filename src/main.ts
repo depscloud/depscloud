@@ -1,6 +1,6 @@
 import {DependencyExtractor} from "@deps-cloud/api/v1alpha/extractor/extractor";
 
-import {Server, ServerCredentials} from "grpc";
+import {Server, ServerCredentials} from "@grpc/grpc-js";
 import {configure, getLogger} from "log4js";
 import ExtractorRegistry from "./extractors/ExtractorRegistry";
 import AsyncDependencyExtractor from "./service/AsyncDependencyExtractor";
@@ -71,8 +71,14 @@ program.name("extractor")
         const bindAddress = options.bindAddress || "0.0.0.0";
         const port = options.port || 8090;
 
-        server.bind(`${bindAddress}:${port}`, credentials);
-        logger.info(`[main] starting gRPC on ${bindAddress}:${port}`);
-        server.start();
+        server.bindAsync(`${bindAddress}:${port}`, credentials, (err) => {
+            if (err != null) {
+                logger.error(err);
+                return;
+            }
+
+            logger.info(`[main] starting gRPC on ${bindAddress}:${port}`);
+            server.start();
+        });
     })
     .parse(process.argv);

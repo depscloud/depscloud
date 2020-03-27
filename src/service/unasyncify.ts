@@ -1,4 +1,4 @@
-import {IDependencyExtractor} from "@deps-cloud/api/v1alpha/extractor/extractor";
+import {UntypedServiceImplementation} from "@grpc/grpc-js";
 import {getLogger} from "log4js";
 import AsyncDependencyExtractor from "./AsyncDependencyExtractor";
 
@@ -11,7 +11,7 @@ function toString(error: Error): string {
     return `${error.name}: ${error.message}`;
 }
 
-export default function unasyncify(instance: AsyncDependencyExtractor): IDependencyExtractor {
+export default function unasyncify(instance: AsyncDependencyExtractor): UntypedServiceImplementation {
     return {
         match(request, callback) {
             logger.trace(`[service] match request: ${JSON.stringify(request)}`);
