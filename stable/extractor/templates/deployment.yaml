@@ -38,13 +38,7 @@ spec:
             - mountPath: /etc/ssl/server/
               name: server-certs
             {{- end }}
-          env:
-            - name: POD_IP
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.podIP
           args:
-            - --bind-address=$(POD_IP)
             - --port=8090
             {{- if .Values.tls.secretName }}
             - --tls-ca=/etc/ssl/server/ca.crt
@@ -57,17 +51,11 @@ spec:
               protocol: TCP
           livenessProbe:
             exec:
-              command:
-                - bash
-                - -c
-                - grpc_health_probe -addr=$POD_IP:8090
+              command: ["grpc_health_probe", "-addr=:8090"]
             initialDelaySeconds: 5
           readinessProbe:
             exec:
-              command:
-                - bash
-                - -c
-                - grpc_health_probe -addr=$POD_IP:8090
+              command: ["grpc_health_probe", "-addr=:8090"]
             initialDelaySeconds: 5
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
