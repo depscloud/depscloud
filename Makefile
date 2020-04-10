@@ -5,3 +5,6 @@ build-deps:
 fmt:
 	go-groups -w .
 	gofmt -s -w .
+
+install:
+	go install ./cmds/depscloud-cli/
