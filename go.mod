@@ -7,6 +7,5 @@ require (
 	github.com/gogo/protobuf v1.3.0
 	github.com/sirupsen/logrus v1.2.0
 	github.com/spf13/cobra v0.0.7
-	github.com/urfave/cli v1.22.4
 	google.golang.org/grpc v1.23.1
 )
