@@ -19,12 +19,12 @@ Usage:
 ```javascript
 const grpc = require('grpc');
 
-const { DependencyExtractor } = require('@deps-cloud/api/v1alpha/extractor/extractor');
+const { DependencyExtractor } = require('@deps-cloud/api/v1alpha/extractor');
 const {
     SourceService,
     ModuleService,
     DependencyService,
-} = require('@deps-cloud/api/v1alpha/tracker/tracker');
+} = require('@deps-cloud/api/v1alpha/tracker');
 
 const credentials = grpc.credentials.createInsecure();
 
