@@ -21,6 +21,7 @@ RUN curl -sSL -o protoc.zip https://github.com/protocolbuffers/protobuf/releases
 	rm -rf protoc.zip
 
 COPY docker/compile.sh /usr/bin/compile.sh
+COPY docker/protoc-gen-protoloader.sh /usr/bin/protoc-gen-protoloader.sh
 
 ENV GOPATH=/go
 ENV PATH="${PATH}:/usr/local/go/bin:/usr/local/node/bin:/usr/local/protoc/bin:/go/bin"
