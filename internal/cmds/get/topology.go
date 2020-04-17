@@ -81,7 +81,7 @@ func topology(root *schema.Module, fetch fetcher) ([][]*schema.Module, error) {
 	}
 
 	modules := []string{key(root)}
-	result := make([][]*schema.Module, 0)
+	result := [][]*schema.Module{{ root }}
 
 	for length := len(modules); length > 0; length = len(modules) {
 		next := make([]string, 0)
