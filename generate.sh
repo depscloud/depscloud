@@ -11,6 +11,8 @@ for chart in $(find . -iname Chart.yaml | xargs dirname | cut -c 3-); do
     echo "Packaging ${chart}"
     destination=dist/$(dirname ${chart})
     mkdir -p ${destination}
+
+    helm dependency update ${chart}
     helm package ${chart} -d ${destination}
 done
 

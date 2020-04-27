@@ -1,5 +1,11 @@
-deploy:
-  extractor: true
-  gateway: true
-  indexer: true
-  tracker: true
+extractor:
+  enabled: true
+
+gateway:
+  enabled: true
+
+indexer:
+  enabled: true
+
+tracker:
+  enabled: true

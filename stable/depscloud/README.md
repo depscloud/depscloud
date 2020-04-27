@@ -39,13 +39,13 @@ The command removes all the Kubernetes components associated with the chart and 
 
 The following table lists the configurable parameters of the Extractor chart and their default values.
 
-| Parameter          | Description                                         | Default                       |
-|--------------------|-----------------------------------------------------|-------------------------------|
-| `deploy.extractor` | Whether the `extractor` process should be deployed  | `true`                        |
-| `deploy.gateway`   | Whether the `gateway` process should be deployed    | `true`                        |
-| `deploy.indexer`   | Whether the `indexer` process should be deployed    | `true`                        |
-| `deploy.tracker`   | Whether the `tracker` process should be deployed    | `true`                        |
-| `extractor.*`      | Set configuration for the `extractor` chart         | See the `extractor` chart     |
-| `gateway.*`        | Set configuration for the `gateway` chart           | See the `gateway` chart       |
-| `indexer.*`        | Set configuration for the `indexer` chart           | See the `indexer` chart       |
-| `tracker.*`        | Set configuration for the `tracker` chart           | See the `tracker` chart       |
+| Parameter           | Description                                         | Default                       |
+|---------------------|-----------------------------------------------------|-------------------------------|
+| `extractor.enabled` | Whether the `extractor` process should be deployed  | `true`                        |
+| `extractor.*`       | Set configuration for the `extractor` chart         | See the `extractor` chart     |
+| `gateway.enabled`   | Whether the `gateway` process should be deployed    | `true`                        |
+| `gateway.*`         | Set configuration for the `gateway` chart           | See the `gateway` chart       |
+| `indexer.enabled`   | Whether the `indexer` process should be deployed    | `true`                        |
+| `indexer.*`         | Set configuration for the `indexer` chart           | See the `indexer` chart       |
+| `tracker.enabled`   | Whether the `tracker` process should be deployed    | `true`                        |
+| `tracker.*`         | Set configuration for the `tracker` chart           | See the `tracker` chart       |
