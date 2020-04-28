@@ -25,5 +25,9 @@ done
 
 cp README.md dist/README.md
 
+# generate depscloud simple k8s deployment
 mkdir -p dist/deploy/
-helm template depscloud ./stable/depscloud/ --namespace depscloud-system > dist/deploy/depscloud-system.yaml
+helm template depscloud ./stable/depscloud/ \
+  --set indexer.externalConfig.secretRef.name="depscloud-indexer" \
+  --set tracker.externalStorage.secretRef.name="depscloud-tracker" \
+  --namespace depscloud-system > dist/deploy/depscloud-system.yaml

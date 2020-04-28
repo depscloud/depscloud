@@ -2,7 +2,7 @@
 
 The canonical source for Helm charts is the [Helm Hub](https://hub.helm.sh/), an aggregator for distributed chart repos.
 
-This GitHub project is the source for Helm `depscloud-stable` and `depscloud-incubator` [Helm chart repositories](https://v3.helm.sh/docs/topics/chart_repository/).
+This GitHub project is the source for the `depscloud-stable` [Helm chart repository](https://v3.helm.sh/docs/topics/chart_repository/).
 
 For more information about installing and using Helm, see the [Helm Docs](https://helm.sh/docs/).
 For a quick introduction to Charts, see the [Chart Guide](https://helm.sh/docs/topics/charts/).
@@ -12,13 +12,6 @@ For a quick introduction to Charts, see the [Chart Guide](https://helm.sh/docs/t
 ```
 $ helm repo add depscloud-stable https://deps-cloud.github.io/charts/stable
 "depscloud-stable" has been added to your repositories
-```
-
-## How do I enable the incubator repository?
-
-```
-$ helm repo add depscloud-incubator https://deps-cloud.github.io/charts/incubator
-"depscloud-incubator" has been added to your repositories
 ```
 
 ## Resources
