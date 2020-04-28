@@ -24,3 +24,6 @@ for repo in "incubator" "stable"; do
 done
 
 cp README.md dist/README.md
+
+mkdir -p dist/deploy/
+helm template depscloud ./stable/depscloud/ --namespace depscloud-system > dist/deploy/depscloud-system.yaml

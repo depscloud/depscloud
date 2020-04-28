@@ -46,7 +46,7 @@ helm.sh/chart: {{ include "indexer.chart" . }}
 {{ include "indexer.selectorLabels" . }}
 app.kubernetes.io/version: {{ include "indexer.version" . | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
-app.kubernetes.io/part-of: deps-cloud
+app.kubernetes.io/part-of: deps.cloud
 app.kubernetes.io/component: indexer
 {{- end -}}
 

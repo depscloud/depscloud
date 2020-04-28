@@ -46,7 +46,7 @@ helm.sh/chart: {{ include "tracker.chart" . }}
 {{ include "tracker.selectorLabels" . }}
 app.kubernetes.io/version: {{ include "tracker.version" . | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
-app.kubernetes.io/part-of: deps-cloud
+app.kubernetes.io/part-of: deps.cloud
 app.kubernetes.io/component: tracker
 {{- end -}}
 

@@ -46,7 +46,7 @@ helm.sh/chart: {{ include "gateway.chart" . }}
 {{ include "gateway.selectorLabels" . }}
 app.kubernetes.io/version: {{ include "gateway.version" . | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
-app.kubernetes.io/part-of: deps-cloud
+app.kubernetes.io/part-of: deps.cloud
 app.kubernetes.io/component: gateway
 {{- end -}}
 
