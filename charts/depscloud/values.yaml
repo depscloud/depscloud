@@ -6,14 +6,14 @@ gateway:
   extractor:
     address: dns:///depscloud-extractor:8090
   tracker:
-    address: dns:///depscloud-extractor:8090
+    address: dns:///depscloud-tracker:8090
 
 indexer:
   enabled: true
   extractor:
     address: dns:///depscloud-extractor:8090
   tracker:
-    address: dns:///depscloud-extractor:8090
+    address: dns:///depscloud-tracker:8090
 
 tracker:
   enabled: true

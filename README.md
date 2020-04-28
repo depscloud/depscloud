@@ -2,7 +2,57 @@
 
 ## Kubernetes Manifests
 
-TBD
+First up, let's create the common resources.
+The MySQL deployment is optional, so feel free to leave that out.
+You will need to configure some credentials later on.
+
+```
+$ kubectl create ns depscloud-system
+$ kubectl apply -f https://deps-cloud.github.io/deploy/k8s/mysql.yaml
+$ kubectl apply -f https://deps-cloud.github.io/deploy/k8s/depscloud-system.yaml
+```
+
+By default, the depscloud-system doesn't know anything about the MySQL being deployed.
+This allows deployments to bring their own existing data store or leverage hosted solutions in the cloud.
+To connect deps.cloud to the MySQL deployed above, simply supply the following configuration.
+
+```bash
+$ cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: Secret
+metadata:
+  namespace: depscloud-system
+  name: depscloud-tracker
+stringData:
+  STORAGE_DRIVER: mysql
+  STORAGE_ADDRESS: user:password@tcp(mysql:3306)/depscloud
+  STORAGE_READ_ONLY_ADDRESS: user:password@tcp(mysql-slave:3306)/depscloud
+EOF
+```
+
+Be sure to change the username, password, target, and name appropriately.
+Once this configuration is provided, the tracker pods should start up without an issue.
+
+Once the tracker is configured and running, we can configure the indexer.
+The indexer needs a config.yaml file to bootstrap the indexer with the repos it's intended to crawl.
+The configuration below demonstrates how the indexer can be configured to index the deps-cloud projects.
+
+```bash
+$ cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: Secret
+metadata:
+  namespace: depscloud-system
+  name: depscloud-indexer
+stringData:
+  config.yaml: |
+    accounts:
+    - github:
+        strategy: HTTP
+        organizations:
+        - deps-cloud
+EOF
+```
 
 ## Helm Charts
 
