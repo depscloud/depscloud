@@ -4,12 +4,12 @@ before_install:
   - curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
 
 script:
-  - bash generate.sh
+  - bash scripts/generate.sh
 
 deploy:
   provider: pages
   github_token: $GITHUB_RELEASE_TOKEN
-  local_dir: dist
+  local_dir: public
   target_branch: gh-pages
   verbose: true
   skip_cleanup: true
