@@ -9,11 +9,14 @@ readonly in=charts
 readonly out=public
 
 rm -rf "${out}"
-#git clone -q --depth 1 -b gh-pages "${repo_url}" "${out}"
+git clone -q --depth 1 -b gh-pages "${repo_url}" "${out}"
 
-readonly docker_path="${out}/docker/"
-readonly k8s_path="${out}/k8s/"
+readonly docker_path="${out}/docker"
+readonly k8s_path="${out}/k8s"
 readonly charts_path="${out}/charts"
+
+rm -rf "${docker_path}"
+rm -rf "${k8s_path}"
 
 mkdir -p "${docker_path}"
 mkdir -p "${k8s_path}"
