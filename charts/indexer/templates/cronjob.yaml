@@ -1,7 +1,6 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  namespace: {{ .Release.Namespace }}
   name: {{ include "indexer.fullname" . }}
   labels:
     {{- include "indexer.labels" . | nindent 4 }}

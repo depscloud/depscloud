@@ -49,21 +49,13 @@ helm template mysql bitnami/mysql \
   --set db.password=password \
   --set db.name=depscloud \
   --set volumePermissions.enabled=true \
-  --namespace depscloud-system > "${tmp}/mysql.yaml"
-
-cat <<EOF > "${tmp}/kustomization.yaml"
-namespace: depscloud-system
-resources:
-- mysql.yaml
-EOF
-
-kubectl kustomize "${tmp}" > "${k8s_path}/mysql.yaml"
+  > "${k8s_path}/mysql.yaml"
 
 echo "Packaging Manifests stable/depscloud"
 helm template depscloud ${in}/depscloud/ \
   --set indexer.externalConfig.secretRef.name="depscloud-indexer" \
   --set tracker.externalStorage.secretRef.name="depscloud-tracker" \
-  --namespace depscloud-system > "${k8s_path}/depscloud-system.yaml"
+  > "${k8s_path}/depscloud-system.yaml"
 
 ## copy in README
 

@@ -8,8 +8,8 @@ You will need to configure some credentials later on.
 
 ```
 $ kubectl create ns depscloud-system
-$ kubectl apply -f https://deps-cloud.github.io/deploy/k8s/mysql.yaml
-$ kubectl apply -f https://deps-cloud.github.io/deploy/k8s/depscloud-system.yaml
+$ kubectl apply -n depscloud-system -f https://deps-cloud.github.io/deploy/k8s/mysql.yaml
+$ kubectl apply -n depscloud-system -f https://deps-cloud.github.io/deploy/k8s/depscloud-system.yaml
 ```
 
 By default, the depscloud-system doesn't know anything about the MySQL being deployed.

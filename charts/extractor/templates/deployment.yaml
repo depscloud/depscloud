@@ -1,7 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: {{ .Release.Namespace }}
   name: {{ include "extractor.fullname" . }}
   labels:
     {{- include "extractor.labels" . | nindent 4 }}
