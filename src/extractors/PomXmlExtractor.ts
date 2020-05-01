@@ -32,10 +32,10 @@ export default class PomXmlExtractor implements Extractor {
 
         const matched: Cheerio = xml.find("project > dependencies > dependency");
         matched.map((i, match: CheerioElement) => {
-            const organization = cheerio(match).find("groupId").text();
-            const module = cheerio(match).find("artifactId").text();
-            const versionConstraint = cheerio(match).find("version").text();
-            const scope = cheerio(match).find("scope").text();
+            const organization = cheerio(match).find("> groupId").text();
+            const module = cheerio(match).find("> artifactId").text();
+            const versionConstraint = cheerio(match).find("> version").text();
+            const scope = cheerio(match).find("> scope").text();
 
             const scopes = [scope || "compile"];
 
