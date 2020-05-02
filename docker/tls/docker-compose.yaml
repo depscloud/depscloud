@@ -15,7 +15,7 @@ services:
 
   tracker:
     restart: always
-    image: depscloud/tracker:latest
+    image: depscloud/tracker:${TRACKER_VERSION:-latest}
     hostname: tracker
     depends_on:
       - mysql
@@ -30,7 +30,7 @@ services:
 
   extractor:
     restart: always
-    image: depscloud/extractor:latest
+    image: depscloud/extractor:${EXTRACTOR_VERSION:-latest}
     hostname: extractor
     volumes:
       - ./certs:/etc/depscloud/certs
@@ -41,7 +41,7 @@ services:
     
   indexer:
     restart: on-failure
-    image: depscloud/indexer:latest
+    image: depscloud/indexer:${INDEXER_VERSION:-latest}
     hostname: indexer
     depends_on:
       - extractor
@@ -62,7 +62,7 @@ services:
 
   gateway:
     restart: always
-    image: depscloud/gateway:latest
+    image: depscloud/gateway:${GATEWAY_VERSION:-latest}
     hostname: gateway
     depends_on:
       - extractor
