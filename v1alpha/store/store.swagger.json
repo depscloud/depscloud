@@ -12,6 +12,39 @@
   ],
   "paths": {},
   "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "type_url": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "runtimeError": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
     "storeDeleteResponse": {
       "type": "object"
     },
@@ -44,6 +77,10 @@
           "$ref": "#/definitions/storeGraphItemEncoding"
         },
         "graphItemData": {
+          "type": "string",
+          "format": "byte"
+        },
+        "k3": {
           "type": "string",
           "format": "byte"
         }

@@ -15,6 +15,7 @@ message GraphItem {
     bytes k2 = 3;
     GraphItemEncoding encoding = 4;
     bytes graphItemData = 5;
+    bytes k3 = 6;
 }
 
 message GraphItemPair {

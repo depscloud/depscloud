@@ -13,12 +13,18 @@
   "paths": {
     "/v1alpha/graph/{language}/dependencies": {
       "get": {
-        "operationId": "ListDependencies",
+        "operationId": "DependencyService_ListDependencies",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/trackerListDependenciesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -49,12 +55,18 @@
     },
     "/v1alpha/graph/{language}/dependencies/topology": {
       "get": {
-        "operationId": "ListDependenciesTopology",
+        "operationId": "TopologyService_ListDependenciesTopology",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/trackerListDependenciesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -85,12 +97,18 @@
     },
     "/v1alpha/graph/{language}/dependencies/topology/tiered": {
       "get": {
-        "operationId": "ListDependenciesTopologyTiered",
+        "operationId": "TopologyService_ListDependenciesTopologyTiered",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/trackerListDependenciesTieredResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -121,12 +139,18 @@
     },
     "/v1alpha/graph/{language}/dependents": {
       "get": {
-        "operationId": "ListDependents",
+        "operationId": "DependencyService_ListDependents",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/trackerListDependentsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -157,12 +181,18 @@
     },
     "/v1alpha/graph/{language}/dependents/topology": {
       "get": {
-        "operationId": "ListDependentsTopology",
+        "operationId": "TopologyService_ListDependentsTopology",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/trackerListDependentsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -193,12 +223,18 @@
     },
     "/v1alpha/graph/{language}/dependents/topology/tiered": {
       "get": {
-        "operationId": "ListDependentsTopologyTiered",
+        "operationId": "TopologyService_ListDependentsTopologyTiered",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/trackerListDependentsTieredResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -229,12 +265,18 @@
     },
     "/v1alpha/modules": {
       "get": {
-        "operationId": "List",
+        "operationId": "ModuleService_List",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/trackerListModuleResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -261,12 +303,18 @@
     },
     "/v1alpha/modules/managed": {
       "get": {
-        "operationId": "ListManaged",
+        "operationId": "ModuleService_ListManaged",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/trackerListManagedResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -285,12 +333,18 @@
     },
     "/v1alpha/modules/source": {
       "get": {
-        "operationId": "ListSources",
+        "operationId": "ModuleService_ListSources",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/trackerListSourcesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -321,12 +375,18 @@
     },
     "/v1alpha/sources": {
       "get": {
-        "operationId": "List",
+        "operationId": "SourceService_List",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/trackerListSourceResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -353,12 +413,18 @@
     },
     "/v1alpha/sources/track": {
       "post": {
-        "operationId": "Track",
+        "operationId": "SourceService_Track",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/trackerTrackResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -401,6 +467,39 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/v1alphadepsDependency"
+          }
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "type_url": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "runtimeError": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
           }
         }
       }
