@@ -13,9 +13,9 @@ message GraphItem {
     string graphItemType = 1;
     bytes k1 = 2;
     bytes k2 = 3;
-    GraphItemEncoding encoding = 4;
-    bytes graphItemData = 5;
-    bytes k3 = 6;
+    bytes k3 = 4;
+    GraphItemEncoding encoding = 6;
+    bytes graphItemData = 7;
 }
 
 message GraphItemPair {

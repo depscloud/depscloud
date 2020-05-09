@@ -73,14 +73,14 @@
           "type": "string",
           "format": "byte"
         },
+        "k3": {
+          "type": "string",
+          "format": "byte"
+        },
         "encoding": {
           "$ref": "#/definitions/storeGraphItemEncoding"
         },
         "graphItemData": {
-          "type": "string",
-          "format": "byte"
-        },
-        "k3": {
           "type": "string",
           "format": "byte"
         }
