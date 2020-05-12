@@ -2,7 +2,7 @@ import {DependencyManagementFile} from "@deps-cloud/api/v1alpha/deps/deps";
 import {
     ExtractRequest, ExtractResponse, MatchRequest, MatchResponse,
 } from "@deps-cloud/api/v1alpha/extractor/extractor";
-import {ServerUnaryCall} from "grpc";
+import {ServerUnaryCall} from "@grpc/grpc-js";
 import Extractor from "../extractors/Extractor";
 import ExtractorFile from "../extractors/ExtractorFile";
 import AsyncDependencyExtractor from "./AsyncDependencyExtractor";
@@ -67,7 +67,7 @@ export default class DependencyExtractorImpl implements AsyncDependencyExtractor
         return matchedPaths;
     }
 
-    public async match(call: ServerUnaryCall<MatchRequest>): Promise<MatchResponse> {
+    public async match(call: ServerUnaryCall<MatchRequest, MatchResponse>): Promise<MatchResponse> {
         const { separator, paths } = call.request;
 
         return {
@@ -125,7 +125,7 @@ export default class DependencyExtractorImpl implements AsyncDependencyExtractor
         return managementFiles;
     }
 
-    public async extract(call: ServerUnaryCall<ExtractRequest>): Promise<ExtractResponse> {
+    public async extract(call: ServerUnaryCall<ExtractRequest, ExtractResponse>): Promise<ExtractResponse> {
         const { url, separator, fileContents } = call.request;
 
         const managementFiles = await this.extractInternal(url, separator, fileContents);
