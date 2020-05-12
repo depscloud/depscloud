@@ -15,17 +15,17 @@ import VendorConfExtractor from "./VendorConfExtractor";
 const ExtractorRegistry = new Registry<Extractor>("Extractor");
 
 ExtractorRegistry.registerAll({
-    BuildGradleExtractor: async (_) => new BuildGradleExtractor(),
-    CargoTomlExtractor: async (_) => new CargoTomlExtractor(),
-    ComposerJsonExtractor: async (_) => new ComposerJsonExtractor(),
-    GodepsJsonExtractor: async (_) => new GodepsJsonExtractor(),
-    GoModExtractor: async (_) => new GoModExtractor(),
-    GopkgTomlExtractor: async (_) => new GopkgTomlExtractor(),
-    IvyXmlExtractor: async (_) => new IvyXmlExtractor(),
-    PackageJsonExtractor: async (_) => new PackageJsonExtractor(),
-    PomXmlExtractor: async (_) => new PomXmlExtractor(),
-    BowerJsonExtractor: async (_) => new BowerJsonExtractor(),
-    VendorConfExtractor: async (_) => new VendorConfExtractor(),
+    "build.gradle": async (_) => new BuildGradleExtractor(),
+    "Cargo.toml": async (_) => new CargoTomlExtractor(),
+    "composer.json": async (_) => new ComposerJsonExtractor(),
+    "Godeps.json": async (_) => new GodepsJsonExtractor(),
+    "go.mod": async (_) => new GoModExtractor(),
+    "Gopkg.toml": async (_) => new GopkgTomlExtractor(),
+    "ivy.xml": async (_) => new IvyXmlExtractor(),
+    "package.json": async (_) => new PackageJsonExtractor(),
+    "pom.xml": async (_) => new PomXmlExtractor(),
+    "bower.json": async (_) => new BowerJsonExtractor(),
+    "vendor.conf": async (_) => new VendorConfExtractor(),
 });
 
 export default ExtractorRegistry;

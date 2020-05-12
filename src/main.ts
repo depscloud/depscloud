@@ -22,6 +22,7 @@ program.name("extractor")
     .option("--tls-key <key>", "The path to the private key used for TLS", program.STRING)
     .option("--tls-cert <cert>", "The path to the certificate used for TLS", program.STRING)
     .option("--tls-ca <ca>", "The path to the certificate authority used for TLS", program.STRING)
+    .option("--disable-manifests <manifest>", "The manifests to disable support for", program.ARRAY)
     .action(async (args: any, options: any) => {
         configure({
             appenders: {
@@ -35,7 +36,14 @@ program.name("extractor")
             },
         });
 
+        const disabledManifests = (options.disableManifests || [])
+            .reduce((agg, item) => {
+                agg[item] = true;
+                return agg;
+            }, {});
+
         const extractorReqs = ExtractorRegistry.known()
+            .filter((e) => !disabledManifests[e])
             .map((extractor) => ExtractorRegistry.resolve(extractor, null));
 
         const extractors = await Promise.all(extractorReqs);
