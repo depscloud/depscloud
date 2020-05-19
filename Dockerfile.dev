@@ -8,11 +8,15 @@ ENV GO111MODULE on
 
 WORKDIR /go/src/tracker
 
+COPY go.mod .
+COPY go.sum .
+COPY Makefile .
+
+RUN make deps
+
 COPY . .
 
-RUN make deps && make test && make install
-
-RUN ./download-health-probe.sh ${HEALTH_PROBE_VERSION}
+RUN make test && make install
 
 RUN useradd -ms /bin/sh tracker
 WORKDIR /home/tracker
