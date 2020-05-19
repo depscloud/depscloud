@@ -14,6 +14,7 @@ func Encode(msg interface{}) (*store.GraphItem, error) {
 	var graphItemType string
 	var k1 []byte
 	var k2 []byte
+	var k3 []byte
 
 	switch msg.(type) {
 	case *schema.Source:
@@ -43,6 +44,7 @@ func Encode(msg interface{}) (*store.GraphItem, error) {
 		GraphItemType: graphItemType,
 		K1:            k1,
 		K2:            k2,
+		K3:            k3,
 		Encoding:      store.GraphItemEncoding_JSON,
 		GraphItemData: graphItemData,
 	}, nil

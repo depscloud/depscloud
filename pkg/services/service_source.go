@@ -1,6 +1,7 @@
 package services
 
 import (
+	"bytes"
 	"context"
 
 	"github.com/deps-cloud/api"
@@ -112,6 +113,7 @@ func (s *sourceService) getCurrent(ctx context.Context, source *schema.Source) (
 		return nil, err
 	}
 
+	sourceKey := item.GetK1()
 	for _, managed := range manages.GetPairs() {
 		idx[readableKey(managed.GetNode())] = managed.GetNode()
 		idx[readableKey(managed.GetEdge())] = managed.GetEdge()
@@ -127,8 +129,12 @@ func (s *sourceService) getCurrent(ctx context.Context, source *schema.Source) (
 		}
 
 		for _, depended := range depends.GetPairs() {
-			idx[readableKey(depended.GetNode())] = depended.GetNode()
-			idx[readableKey(depended.GetEdge())] = depended.GetEdge()
+			// Return only the depends edges that are produced by modules of this source URL
+			dependsEdgeK3 := depended.GetEdge().GetK3()
+			if len(dependsEdgeK3) == 0 || bytes.Equal(dependsEdgeK3, sourceKey) {
+				idx[readableKey(depended.GetNode())] = depended.GetNode()
+				idx[readableKey(depended.GetEdge())] = depended.GetEdge()
+			}
 		}
 	}
 
@@ -152,6 +158,7 @@ func (s *sourceService) getProposed(ctx context.Context, request *tracker.Source
 			Organization: managementFile.GetOrganization(),
 			Module:       managementFile.GetModule(),
 		})
+
 		if err != nil {
 			logrus.Errorf("[service.source] %s", err.Error())
 			return nil, err
@@ -196,6 +203,7 @@ func (s *sourceService) getProposed(ctx context.Context, request *tracker.Source
 
 			depends.K1 = managedModule.GetK1()
 			depends.K2 = dependedModule.GetK1()
+			depends.K3 = source.GetK1()
 
 			idx[readableKey(dependedModule)] = dependedModule
 			idx[readableKey(depends)] = depends

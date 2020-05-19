@@ -59,6 +59,7 @@ func (gs *graphStore) Put(ctx context.Context, req *store.PutRequest) (*store.Pu
 			"graph_item_type": item.GetGraphItemType(),
 			"k1":              Base64encode(item.GetK1()),
 			"k2":              Base64encode(item.GetK2()),
+			"k3":              Base64encode(item.GetK3()),
 			"encoding":        item.GetEncoding(),
 			"graph_item_data": string(item.GetGraphItemData()),
 			"last_modified":   timestamp,
@@ -275,11 +276,12 @@ func readGraphItemPairs(rows *sqlx.Rows) ([]*store.GraphItemPair, error) {
 			edgeType string
 			edgeK1   string
 			edgeK2   string
+			edgeK3   string
 			edgeEnc  store.GraphItemEncoding
 			edgeData string
 		)
 
-		if err := rows.Scan(&nodeType, &nodeK1, &nodeK2, &nodeEnc, &nodeData, &edgeType, &edgeK1, &edgeK2, &edgeEnc, &edgeData); err != nil {
+		if err := rows.Scan(&nodeType, &nodeK1, &nodeK2, &nodeEnc, &nodeData, &edgeType, &edgeK1, &edgeK2, &edgeK3, &edgeEnc, &edgeData); err != nil {
 			return nil, err
 		}
 
@@ -287,12 +289,14 @@ func readGraphItemPairs(rows *sqlx.Rows) ([]*store.GraphItemPair, error) {
 		nodeK2Bytes, _ := Base64decode(nodeK2)
 		edgeK1Bytes, _ := Base64decode(edgeK1)
 		edgeK2Bytes, _ := Base64decode(edgeK2)
+		edgeK3Bytes, _ := Base64decode(edgeK3)
 
 		pair := &store.GraphItemPair{
 			Edge: &store.GraphItem{
 				GraphItemType: edgeType,
 				K1:            edgeK1Bytes,
 				K2:            edgeK2Bytes,
+				K3:            edgeK3Bytes,
 				Encoding:      edgeEnc,
 				GraphItemData: []byte(edgeData),
 			},

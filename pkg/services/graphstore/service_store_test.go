@@ -39,8 +39,9 @@ func TestNewSQLGraphStore_sqlite(t *testing.T) {
 		{GraphItemType: "edge", K1: k1, K2: k2, Encoding: 0, GraphItemData: generateData()},
 		{GraphItemType: "edge", K1: k2, K2: k3, Encoding: 0, GraphItemData: generateData()},
 		{GraphItemType: "edge", K1: k2, K2: k4, Encoding: 0, GraphItemData: generateData()},
-		{GraphItemType: "edge", K1: k3, K2: k5, Encoding: 0, GraphItemData: generateData()},
 		{GraphItemType: "edge", K1: k4, K2: k6, Encoding: 0, GraphItemData: generateData()},
+		{GraphItemType: "edge", K1: k3, K2: k5, K3: k1, Encoding: 0, GraphItemData: generateData()},
+		{GraphItemType: "edge", K1: k3, K2: k5, K3: k2, Encoding: 0, GraphItemData: generateData()},
 	}
 
 	rwdb, err := sqlx.Open("sqlite3", "file::memory:?cache=shared")
@@ -63,7 +64,7 @@ func TestNewSQLGraphStore_sqlite(t *testing.T) {
 		Type:  "edge",
 	})
 	require.Nil(t, err)
-	require.Len(t, response.Items, 5)
+	require.Len(t, response.Items, 6)
 
 	downstream, err := graphStore.FindDownstream(nil, &store.FindRequest{
 		Key:       k2,
@@ -91,6 +92,21 @@ func TestNewSQLGraphStore_sqlite(t *testing.T) {
 	require.Equal(t, upstream.Pairs[1].Node.K1, k4)
 	require.Equal(t, upstream.Pairs[1].Edge.K1, k2)
 	require.Equal(t, upstream.Pairs[1].Edge.K2, k4)
+
+	// Tests for multiple edges between nodes
+	upstreamNodeK3, err := graphStore.FindUpstream(nil, &store.FindRequest{
+		Key:       k3,
+		EdgeTypes: []string{"edge"},
+	})
+	require.Nil(t, err)
+
+	require.Len(t, upstreamNodeK3.Pairs, 2)
+	require.Equal(t, upstreamNodeK3.Pairs[0].GetEdge().GetK1(), k3)
+	require.Equal(t, upstreamNodeK3.Pairs[0].GetEdge().GetK2(), k5)
+	require.Equal(t, upstreamNodeK3.Pairs[0].GetEdge().GetK3(), k1)
+	require.Equal(t, upstreamNodeK3.Pairs[1].GetEdge().GetK1(), k3)
+	require.Equal(t, upstreamNodeK3.Pairs[1].GetEdge().GetK2(), k5)
+	require.Equal(t, upstreamNodeK3.Pairs[1].GetEdge().GetK3(), k2)
 
 	_, err = graphStore.Delete(nil, &store.DeleteRequest{
 		Items: data,

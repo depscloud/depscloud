@@ -30,5 +30,6 @@ func readableKey(item *store.GraphItem) string {
 		item.GetGraphItemType(),
 		graphstore.Base64encode(item.GetK1()),
 		graphstore.Base64encode(item.GetK2()),
+		graphstore.Base64encode(item.GetK3()),
 	}, "---")
 }

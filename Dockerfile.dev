@@ -15,7 +15,6 @@ COPY Makefile .
 RUN make deps
 
 COPY . .
-
 RUN make test && make install
 
 RUN useradd -ms /bin/sh tracker

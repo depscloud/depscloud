@@ -24,17 +24,18 @@ createGraphDataTable: |
       graph_item_type VARCHAR(55),
       k1 CHAR(64),
       k2 CHAR(64),
+      k3 CHAR(64),
       encoding TINYINT,
       graph_item_data TEXT,
       last_modified DATETIME,
       date_deleted DATETIME DEFAULT NULL,
-      PRIMARY KEY (graph_item_type, k1, k2)
+      PRIMARY KEY (graph_item_type, k1, k2, k3)
   );
 
 insertGraphData: |
   REPLACE INTO dts_graphdata 
-  (graph_item_type, k1, k2, encoding, graph_item_data, last_modified, date_deleted)
-  VALUES (:graph_item_type, :k1, :k2, :encoding, :graph_item_data, :last_modified, NULL);
+  (graph_item_type, k1, k2, k3, encoding, graph_item_data, last_modified, date_deleted)
+  VALUES (:graph_item_type, :k1, :k2, :k3, :encoding, :graph_item_data, :last_modified, NULL);
 
 deleteGraphData: |
   UPDATE dts_graphdata
@@ -49,7 +50,7 @@ listGraphData: |
 
 selectGraphDataUpstreamDependencies: |
   SELECT g1.graph_item_type, g1.k1, g1.k2, g1.encoding, g1.graph_item_data,
-          g2.graph_item_type, g2.k1, g2.k2, g2.encoding, g2.graph_item_data
+          g2.graph_item_type, g2.k1, g2.k2, g2.k3, g2.encoding, g2.graph_item_data
   FROM dts_graphdata AS g1
   INNER JOIN dts_graphdata AS g2 ON g1.k1 = g2.k2
   WHERE g2.k1 = :key 
@@ -61,7 +62,7 @@ selectGraphDataUpstreamDependencies: |
 
 selectGraphDataDownstreamDependencies: |
   SELECT g1.graph_item_type, g1.k1, g1.k2, g1.encoding, g1.graph_item_data,
-          g2.graph_item_type, g2.k1, g2.k2, g2.encoding, g2.graph_item_data
+          g2.graph_item_type, g2.k1, g2.k2, g2.k3, g2.encoding, g2.graph_item_data
   FROM dts_graphdata AS g1
   INNER JOIN dts_graphdata AS g2 ON g1.k2 = g2.k1
   WHERE g2.k2 = :key 
