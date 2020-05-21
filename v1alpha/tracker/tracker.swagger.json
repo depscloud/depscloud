@@ -324,6 +324,18 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "ref",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "kind",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -518,6 +530,9 @@
           "items": {
             "type": "string"
           }
+        },
+        "ref": {
+          "type": "string"
         }
       }
     },
@@ -553,6 +568,12 @@
       "type": "object",
       "properties": {
         "url": {
+          "type": "string"
+        },
+        "ref": {
+          "type": "string"
+        },
+        "kind": {
           "type": "string"
         }
       }
