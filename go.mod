@@ -3,7 +3,7 @@ module github.com/deps-cloud/gateway
 go 1.12
 
 require (
-	github.com/deps-cloud/api v0.1.0
+	github.com/deps-cloud/api v0.1.3
 	github.com/gogo/protobuf v1.3.1 // indirect
 	github.com/grpc-ecosystem/grpc-gateway v1.12.1
 	github.com/konsorten/go-windows-terminal-sequences v1.0.2 // indirect
