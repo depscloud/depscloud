@@ -22,8 +22,7 @@ script:
 deploy:
   provider: releases
   skip_cleanup: true
-  api_key:
-    secure: "${GITHUB_OAUTH_TOKEN_SECURE}"
+  api_key: "${GITHUB_OAUTH_TOKEN_SECURE}"
   file_glob: true
   file: bin/*
   on:
