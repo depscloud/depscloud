@@ -103,7 +103,7 @@ func (c *consumer) Consume(repository *remotes.Repository) {
 	}
 
 	logrus.Infof("[%s] cloning repository", repourl)
-	_, err = git.Clone(storage, fs, options)
+	repo, err := git.Clone(storage, fs, options)
 
 	if err != nil {
 		logrus.Errorf("failed to clone: %v", err)
@@ -174,10 +174,17 @@ func (c *consumer) Consume(repository *remotes.Repository) {
 		return
 	}
 
+	ref := ""
+	if head, err := repo.Head(); err == nil {
+		ref = head.Name().String()
+	}
+
 	logrus.Infof("[%s] storing dependencies", repourl)
 	_, err = c.sourceService.Track(context.Background(), &tracker.SourceRequest{
 		Source: &schema.Source{
 			Url: repourl,
+			Kind: "repository",
+			Ref: ref,
 		},
 		ManagementFiles: extractResponse.GetManagementFiles(),
 	})
