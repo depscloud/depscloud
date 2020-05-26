@@ -7,13 +7,12 @@ import (
 	"io/ioutil"
 	"os"
 	"sync"
-	"time"
 
 	"github.com/deps-cloud/api/v1alpha/extractor"
 	"github.com/deps-cloud/api/v1alpha/tracker"
-	"github.com/deps-cloud/discovery/pkg/config"
-	"github.com/deps-cloud/discovery/pkg/remotes"
+	"github.com/deps-cloud/indexer/internal/config"
 	"github.com/deps-cloud/indexer/internal/consumer"
+	"github.com/deps-cloud/indexer/internal/remotes"
 
 	"github.com/sirupsen/logrus"
 
@@ -86,7 +85,6 @@ func NewWorker(repositories chan *remotes.Repository, done chan bool, rc consume
 	}
 }
 
-// run is an internal method that represents a single pass over the set of repositories returned from the discovery service.
 func run(remote remotes.Remote, repositories chan *remotes.Repository, done chan bool) error {
 	resp, err := remote.FetchRepositories(&remotes.FetchRepositoriesRequest{})
 	if err != nil {
@@ -113,9 +111,8 @@ func run(remote remotes.Remote, repositories chan *remotes.Repository, done chan
 }
 
 func main() {
-	cron := false
 	workers := 5
-	rdsConfigPath := ""
+	configPath := ""
 
 	extractorAddress := "extractor:8090"
 	extractorCert := ""
@@ -141,9 +138,9 @@ func main() {
 
 			var rdsConfig *config.Configuration
 
-			if len(rdsConfigPath) > 0 {
+			if len(configPath) > 0 {
 				var err error
-				rdsConfig, err = config.Load(rdsConfigPath)
+				rdsConfig, err = config.Load(configPath)
 				exitIff(err)
 			}
 
@@ -167,32 +164,18 @@ func main() {
 				go NewWorker(repositories, done, rc)
 			}
 
-			if cron {
-				logrus.Infof("[main] running as cron")
-				if err := run(remote, repositories, done); err != nil {
-					logrus.Errorf("[main] encountered an error trying to list repositories from rds: %v", err)
-					os.Exit(1)
-				}
-			} else {
-				logrus.Infof("[main] running as daemon")
-				for {
-					sleep := time.Hour
-
-					if err := run(remote, repositories, done); err != nil {
-						logrus.Errorf("[main] encountered an error trying to list repositories from rds: %v", err)
-						sleep = 30 * time.Second
-					}
-
-					time.Sleep(sleep)
-				}
+			logrus.Infof("[main] running indexer cron")
+			if err := run(remote, repositories, done); err != nil {
+				logrus.Errorf("[main] encountered an error trying to list repositories from rds: %v", err)
+				os.Exit(1)
 			}
 		},
 	}
 
 	flags := cmd.Flags()
-	flags.BoolVar(&cron, "cron", cron, "(optional) run the process as a cron job instead of a daemon")
 	flags.IntVar(&workers, "workers", workers, "(optional) number of workers to process repositories")
-	flags.StringVar(&rdsConfigPath, "rds-config", rdsConfigPath, "(optional) path to the rds config file")
+	flags.StringVar(&configPath, "config", configPath, "(optional) path to the config file")
+	flags.StringVar(&configPath, "rds-config", configPath, "(deprecated) path to the rds config file")
 
 	flags.StringVar(&extractorAddress, "extractor-address", extractorAddress, "(optional) address to the extractor service")
 	flags.StringVar(&extractorCert, "extractor-cert", extractorCert, "(optional) certificate used to enable TLS for the extractor")

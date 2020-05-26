@@ -1,0 +1,108 @@
+syntax = "proto3";
+
+package cloud.deps.indexer.config;
+
+option go_package="config";
+
+enum CloneStrategy {
+    SSH = 0;
+    HTTP = 1;
+}
+
+message Clone {
+    CloneStrategy strategy = 1;
+    Basic basic = 2;
+    PublicKey public_key = 3;
+}
+
+message PublicKey {
+    string user = 1;
+    string private_key_path = 2;
+    string private_key = 3;
+    string password = 4;
+}
+
+message Basic {
+    string username = 1;
+    string password = 2;
+}
+
+message OAuthToken {
+    string token = 1;
+    string application_id = 2;
+}
+
+message OAuth2Token {
+    string token = 1;
+    string token_type = 2;
+    string refresh_token = 3;
+    string expiry = 4;
+}
+
+message Github {
+    string base_url = 1;
+    string upload_url = 2;
+    repeated string users = 3;
+    repeated string organizations = 4;
+    CloneStrategy strategy = 5 [deprecated = true];
+    Clone clone = 6;
+
+    OAuth2Token oauth2 = 10;
+}
+
+message Gitlab {
+    string base_url = 1;
+
+    repeated string users = 3;
+    repeated string groups = 4;
+    CloneStrategy strategy = 5 [deprecated = true];
+    Clone clone = 6;
+
+    OAuthToken private = 10;
+    OAuthToken oauth = 11;
+}
+
+message Bitbucket {
+    repeated string users = 3;
+    repeated string teams = 4;
+    CloneStrategy strategy = 5 [deprecated = true];
+    Clone clone = 6;
+
+    Basic basic = 10;
+    OAuthToken oauth = 11;
+}
+
+message Generic {
+    string base_url = 1;
+    string path = 2;
+    string per_page_parameter = 3;
+    string page_parameter = 4;
+    int32 page_size = 5;
+    string selector = 6;
+    Clone clone = 7;
+
+    Basic basic = 10;
+}
+
+message Static {
+    repeated string repository_urls = 1;
+
+    Clone clone = 2;
+}
+
+message Rds {
+    string target = 1;
+}
+
+message Account {
+    Github github = 1;
+    Gitlab gitlab = 2;
+    Bitbucket bitbucket = 3;
+    Generic generic = 4;
+    Static static = 5;
+    Rds rds = 6;
+}
+
+message Configuration {
+    repeated Account accounts = 1;
+}

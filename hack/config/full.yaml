@@ -1,0 +1,115 @@
+accounts:
+- generic:
+    baseUrl: "base_url"
+    path: "path"
+    pageParameter: "page_parameter"
+    perPageParameter: "per_page_parameter"
+    pageSize: 20
+    selector: "selector"
+    clone:
+      strategy: "HTTP"
+      basic:
+        username: "username"
+        password: "password"
+- generic:
+    baseUrl: "base_url"
+    path: "path"
+    pageParameter: "page_parameter"
+    perPageParameter: "per_page_parameter"
+    pageSize: 20
+    selector: "selector"
+    clone:
+      strategy: "HTTP"
+      basic:
+        username: "username"
+        password: "password"
+    basic:
+      username: "username"
+      password: "password"
+- gitlab:
+    baseUrl: "base_url"
+    strategy: "HTTP"
+    clone:
+      strategy: "HTTP"
+      basic:
+        username: "username"
+        password: "password"
+    private:
+      token: "token"
+- gitlab:
+    baseUrl: "base_url"
+    strategy: "HTTP"
+    clone:
+      strategy: "HTTP"
+      basic:
+        username: "username"
+        password: "password"
+    oauth:
+      token: "token"
+- github:
+    baseUrl: "base_url"
+    uploadUrl: "upload_url"
+    organizations:
+    - org1
+    users:
+    - user1
+    strategy: "HTTP"
+    clone:
+      strategy: "HTTP"
+      basic:
+        username: "username"
+        password: "password"
+- github:
+    baseUrl: "base_url"
+    uploadUrl: "upload_url"
+    organizations:
+    - org1
+    users:
+    - user1
+    strategy: "HTTP"
+    clone:
+      strategy: "HTTP"
+      basic:
+        username: "username"
+        password: "password"
+    oauth2:
+      token: "token"
+      tokenType: "token_type"
+      refreshToken: "refresh_token"
+      expiry: "expiry"
+- bitbucket:
+    teams:
+    - team1
+    users:
+    - user1
+    strategy: "HTTP"
+    clone:
+      strategy: "HTTP"
+      basic:
+        username: "username"
+        password: "password"
+    basic:
+      username: "username"
+      password: "password"
+- bitbucket:
+    teams:
+    - team1
+    users:
+    - user1
+    strategy: "HTTP"
+    clone:
+      strategy: "HTTP"
+      basic:
+        username: "username"
+        password: "password"
+    oauth:
+      token: "token"
+      applicationId: "application_id"
+- static:
+    repositoryUrls:
+    - "repository_urls"
+    clone:
+      strategy: "HTTP"
+      basic:
+        username: "username"
+        password: "password"

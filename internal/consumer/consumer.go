@@ -9,7 +9,7 @@ import (
 	"github.com/deps-cloud/api/v1alpha/extractor"
 	"github.com/deps-cloud/api/v1alpha/schema"
 	"github.com/deps-cloud/api/v1alpha/tracker"
-	"github.com/deps-cloud/discovery/pkg/remotes"
+	"github.com/deps-cloud/indexer/internal/remotes"
 
 	"github.com/sirupsen/logrus"
 
@@ -72,15 +72,10 @@ func (c *consumer) Consume(repository *remotes.Repository) {
 
 	if repository.Clone != nil {
 		if basic := repository.Clone.GetBasic(); basic != nil {
-			auth := &http.BasicAuth{
+			options.Auth = &http.BasicAuth{
 				Username: basic.GetUsername(),
+				Password: basic.GetPassword(),
 			}
-
-			if password := basic.GetPassword(); password != nil {
-				auth.Password = password.Value
-			}
-
-			options.Auth = auth
 		} else if publicKey := repository.Clone.GetPublicKey(); publicKey != nil {
 			user := publicKey.GetUser()
 			if user == "" {
@@ -90,10 +85,10 @@ func (c *consumer) Consume(repository *remotes.Repository) {
 			password := publicKey.GetPassword()
 
 			var keys *ssh.PublicKeys
-			if privateKeyPath := publicKey.GetPrivateKeyPath(); privateKeyPath != nil {
-				keys, err = ssh.NewPublicKeysFromFile(user, privateKeyPath.Value, password)
-			} else if privateKey := publicKey.GetPrivateKey(); privateKey != nil {
-				keys, err = ssh.NewPublicKeys(user, []byte(privateKey.GetValue()), password)
+			if privateKeyPath := publicKey.GetPrivateKeyPath(); privateKeyPath != "" {
+				keys, err = ssh.NewPublicKeysFromFile(user, privateKeyPath, password)
+			} else if privateKey := publicKey.GetPrivateKey(); privateKey != "" {
+				keys, err = ssh.NewPublicKeys(user, []byte(privateKey), password)
 			}
 
 			if keys == nil || err != nil {

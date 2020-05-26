@@ -1,0 +1,157 @@
+accounts {
+    generic {
+        base_url: "base_url"
+        path: "path"
+        page_parameter: "page_parameter"
+        per_page_parameter: "per_page_parameter"
+        page_size: 20
+        selector: "selector"
+        clone {
+            strategy: HTTP
+            basic {
+                username: "username"
+                password: "password"
+            }
+        }
+    }
+}
+accounts {
+    generic {
+        base_url: "base_url"
+        path: "path"
+        page_parameter: "page_parameter"
+        per_page_parameter: "per_page_parameter"
+        page_size: 20
+        selector: "selector"
+        clone {
+            strategy: HTTP
+            basic {
+                username: "username"
+                password: "password"
+            }
+        }
+        basic {
+            username: "username"
+            password: "password"
+        }
+    }
+}
+accounts {
+    gitlab {
+        base_url: "base_url"
+        strategy: HTTP
+        clone {
+            strategy: HTTP
+            basic {
+                username: "username"
+                password: "password"
+            }
+        }
+        private {
+            token: "token"
+        }
+    }
+}
+accounts {
+    gitlab {
+        base_url: "base_url"
+        strategy: HTTP
+        clone {
+            strategy: HTTP
+            basic {
+                username: "username"
+                password: "password"
+            }
+        }
+        oauth {
+            token: "token"
+        }
+    }
+}
+accounts {
+    github {
+        base_url: "base_url"
+        upload_url: "upload_url"
+        organizations: "org1"
+        users: "user1"
+        strategy: HTTP
+        clone {
+            strategy: HTTP
+            basic {
+                username: "username"
+                password: "password"
+            }
+        }
+    }
+}
+accounts {
+    github {
+        base_url: "base_url"
+        upload_url: "upload_url"
+        organizations: "org1"
+        users: "user1"
+        strategy: HTTP
+        clone {
+            strategy: HTTP
+            basic {
+                username: "username"
+                password: "password"
+            }
+        }
+        oauth2 {
+            token: "token"
+            token_type: "token_type"
+            refresh_token: "refresh_token"
+            expiry: "expiry"
+        }
+    }
+}
+accounts {
+    bitbucket {
+        teams: "team1"
+        users: "user1"
+        strategy: HTTP
+        clone {
+            strategy: HTTP
+            basic {
+                username: "username"
+                password: "password"
+            }
+        }
+        basic {
+            username: "username"
+            password: "password"
+        }
+    }
+}
+accounts {
+    bitbucket {
+        teams: "team1"
+        users: "user1"
+        strategy: HTTP
+        clone {
+            strategy: HTTP
+            basic {
+                username: "username"
+                password: "password"
+            }
+        }
+        oauth {
+            token: "token"
+            application_id: "application_id"
+        }
+    }
+}
+accounts {
+    static {
+        repository_urls: "repository_urls"
+        clone {
+            strategy: HTTP
+            basic {
+                username: "username"
+                password: "password"
+            }
+        }
+    }
+}
+
