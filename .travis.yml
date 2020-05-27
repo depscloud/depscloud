@@ -11,3 +11,14 @@ script:
   - npm run lint
   - npm run test
   - npm run build
+  - npm run package
+
+deploy:
+  provider: releases
+  skip_cleanup: true
+  api_key: "${GITHUB_OAUTH_TOKEN_SECURE}"
+  file_glob: true
+  file: extractor.tar.gz
+  on:
+    repo: deps-cloud/extractor
+    tags: true
