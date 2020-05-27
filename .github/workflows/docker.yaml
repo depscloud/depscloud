@@ -28,9 +28,9 @@ jobs:
         run: |
           docker buildx build \
             --platform linux/amd64,linux/arm64,linux/arm/v7 \
-            --build-arg VERSION=${GITHUB_REF##*/} \
+            --build-arg VERSION=${GITHUB_REF##*/v} \
             --tag depscloud/indexer:latest \
-            --tag depscloud/indexer:${GITHUB_REF##*/} \
+            --tag depscloud/indexer:${GITHUB_REF##*/v} \
             -f Dockerfile \
             . \
             --push
