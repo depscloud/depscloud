@@ -54,3 +54,6 @@ affinity: {}
 
 tls:
   secretName: ""
+
+disabledManifests: []
+  # Allow manifests to be turned off.

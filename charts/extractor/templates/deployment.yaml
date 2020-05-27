@@ -45,6 +45,9 @@ spec:
             - --tls-cert=/etc/ssl/server/tls.crt
             - --tls-key=/etc/ssl/server/tls.key
             {{- end }}
+            {{- range $disabledManifest := .Values.disabledManifests }}
+            - --disabled-manifests={{ $disabledManifest }}
+            {{- end }}
           ports:
             - name: grpc
               containerPort: 8090
