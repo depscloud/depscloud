@@ -38,8 +38,7 @@ services:
     volumes:
       - ./config.yaml:/etc/indexer/config.yaml
     command:
-      - --cron
-      - --rds-config=/etc/indexer/config.yaml
+      - --config=/etc/indexer/config.yaml
       - --workers=1
 
   gateway:
