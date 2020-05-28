@@ -1,0 +1,30 @@
+name: master
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: golang:1.14-alpine3.11
+    steps:
+      - name: Prepare
+        run: apk -U upgrade && apk add build-base git ca-certificates
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build
+        run: make build-deps deps test deploy
+
+      - name: Upload Release Assets
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: bin/*
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true
