@@ -11,4 +11,7 @@ FROM depscloud/base:latest
 COPY --from=BUILDER /usr/bin/grpc_health_probe /usr/bin/grpc_health_probe
 COPY --from=BUILDER /usr/bin/tracker /usr/bin/tracker
 
+WORKDIR /home/depscloud
+USER 13490:13490
+
 ENTRYPOINT [ "tracker" ]
