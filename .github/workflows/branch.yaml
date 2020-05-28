@@ -1,0 +1,21 @@
+name: master
+
+on:
+  push:
+    branches:
+      - "*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: golang:1.14-alpine3.11
+    steps:
+      - name: Prepare
+        run: apk -U upgrade && apk add build-base git ca-certificates
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build
+        run: make build-deps deps test deploy
