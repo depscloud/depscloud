@@ -1,15 +1,15 @@
 dependencies:
 - name: extractor
   repository: file://../extractor
-  version: 0.1.5
+  version: 0.1.6
 - name: gateway
   repository: file://../gateway
-  version: 0.1.5
+  version: 0.1.6
 - name: indexer
   repository: file://../indexer
-  version: 0.1.6
+  version: 0.1.7
 - name: tracker
   repository: file://../tracker
-  version: 0.1.6
-digest: sha256:c4b13d1af95ce04636d08d1c09d2082fa6b9a8e0ff26c52f43b373243618fda5
-generated: "2020-05-26T21:10:00.458788-05:00"
+  version: 0.1.7
+digest: sha256:2bf10711d16764c23fdeb1d5d203d12de0056be8a450a983c130379b2bcebdb4
+generated: "2020-05-28T11:32:09.429175-05:00"

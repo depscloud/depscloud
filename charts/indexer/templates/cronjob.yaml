@@ -65,14 +65,13 @@ spec:
                   name: tmp
                   readOnly: false
               args:
-                - --cron
                 - --extractor-address={{ tpl .Values.extractor.address $ }}
                 {{- if .Values.extractor.secretName }}
                 - --extractor-ca=/etc/ssl/client/tracker/ca.crt
                 - --extractor-cert=/etc/ssl/client/tracker/tls.crt
                 - --extractor-key=/etc/ssl/client/tracker/tls.key
                 {{- end }}
-                - --rds-config=/etc/rds/config.yaml
+                - --config=/etc/rds/config.yaml
                 - --ssh-keypath=
                 - --ssh-user=
                 - --tracker-address={{ tpl .Values.tracker.address $ }}
