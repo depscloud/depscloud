@@ -8,6 +8,7 @@ FROM depscloud/base:latest
 
 COPY --from=BUILDER /usr/bin/indexer /usr/bin/indexer
 
-USER deps-cloud
+WORKDIR /home/depscloud
+USER 13490:13490
 
 ENTRYPOINT [ "/usr/bin/indexer" ]
