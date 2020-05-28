@@ -47,19 +47,19 @@ jobs:
         with:
           version: latest
 
-        - name: Login to GitHub Docker Registry
-          run: echo "${REGISTRY_PASSWORD}" | docker login -u "${REGISTRY_USERNAME}" --password-stdin
-          env:
-            REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
-            REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+      - name: Login to GitHub Docker Registry
+        run: echo "${REGISTRY_PASSWORD}" | docker login -u "${REGISTRY_USERNAME}" --password-stdin
+        env:
+          REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+          REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
 
-        - name: Build Container Image
-          run: |
-            docker buildx build \
-              --platform linux/amd64,linux/arm64,linux/arm/v7 \
-              --build-arg VERSION=${GITHUB_REF##*/v} \
-              --tag depscloud/extractor:latest \
-              --tag depscloud/extractor:${GITHUB_REF##*/v} \
-              -f Dockerfile \
-              . \
-              --push
+      - name: Build Container Image
+        run: |
+          docker buildx build \
+            --platform linux/amd64,linux/arm64,linux/arm/v7 \
+            --build-arg VERSION=${GITHUB_REF##*/v} \
+            --tag depscloud/extractor:latest \
+            --tag depscloud/extractor:${GITHUB_REF##*/v} \
+            -f Dockerfile \
+            . \
+            --push
