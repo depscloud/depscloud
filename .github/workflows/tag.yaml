@@ -6,7 +6,7 @@ on:
       - '*'
 
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
     container:
       image: golang:1.14-alpine3.11
@@ -28,3 +28,33 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
           file_glob: true
+  docker:
+    runs-on: ubuntu-latest
+    needs:
+      - release
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: crazy-max/ghaction-docker-buildx@v1
+        with:
+          version: latest
+
+      - name: Login to GitHub Docker Registry
+        run: echo "${REGISTRY_PASSWORD}" | docker login -u "${REGISTRY_USERNAME}" --password-stdin
+        env:
+          REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+          REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: Build Container Image
+        run: |
+          docker buildx build \
+            --platform linux/amd64,linux/arm64,linux/arm/v7 \
+            --build-arg VERSION=${GITHUB_REF##*/v} \
+            --tag depscloud/indexer:latest \
+            --tag depscloud/indexer:${GITHUB_REF##*/v} \
+            -f Dockerfile \
+            . \
+            --push
