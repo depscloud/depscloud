@@ -6,11 +6,8 @@ This system provides a storage backend so that dependencies can be stored, index
 ## Support
 
 ![GitHub](https://img.shields.io/github/license/deps-cloud/tracker.svg)
-[![Build Status](https://travis-ci.com/deps-cloud/tracker.svg?branch=master)](https://travis-ci.com/deps-cloud/tracker)
-[![Go Report Card](https://goreportcard.com/badge/github.com/deps-cloud/tracker)](https://goreportcard.com/report/github.com/deps-cloud/tracker)
-[![](https://images.microbadger.com/badges/image/depscloud/tracker.svg)](https://microbadger.com/images/depscloud/tracker)
-[![](https://images.microbadger.com/badges/version/depscloud/tracker.svg)](https://microbadger.com/images/depscloud/tracker)
+![branch](https://github.com/deps-cloud/tracker/workflows/branch/badge.svg?branch=master)
 
 ## Getting Started
 
-See [deps-cloud-project](https://github.com/deps-cloud/deps-cloud-project) for the Getting Started Guide.
+For more information on how to get started, see the [documentation](https://deps.cloud/docs/).
