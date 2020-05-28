@@ -9,9 +9,4 @@ WORKDIR /app
 RUN npm run clean && npm install && npm run build
 RUN npm run lint && npm run test
 
-COPY download-health-probe.sh /usr/bin/download-health-probe
-
-RUN download-health-probe ${HEALTH_PROBE_VERSION} && \
-    rm -rf /usr/bin/download-health-probe
-
 ENTRYPOINT [ "npm", "start", "--" ]

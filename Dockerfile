@@ -1,19 +1,30 @@
-FROM node:10
+FROM depscloud/download:latest AS BUILDER
 
-ARG VERSION=0.1.2
 ARG HEALTH_PROBE_VERSION=0.3.1
 
-RUN curl -L -o extractor.zip https://github.com/deps-cloud/extractor/archive/v${VERSION}.zip && \
-    unzip extractor.zip && \
-    mv extractor-${VERSION} /app
+RUN install-grpc-probe ${HEALTH_PROBE_VERSION}
 
-COPY download-health-probe.sh /usr/bin/download-health-probe
+FROM node:12-alpine3.11 AS INSTALLER
 
-RUN download-health-probe ${HEALTH_PROBE_VERSION} && \
-    rm -rf /usr/bin/download-health-probe
+ARG VERSION=0.2.10
 
-WORKDIR /app
+WORKDIR /home/deps-cloud
 
-RUN npm install && npm run build
+RUN apk -U upgrade && apk add build-base git ca-certificates python2 python3
+
+ADD https://github.com/deps-cloud/extractor/releases/download/v${VERSION}/extractor.tar.gz extractor.tar.gz
+RUN tar -zxvf extractor.tar.gz && rm extractor.tar.gz
+
+RUN npm install --production
+
+FROM node:12-alpine3.11
+
+RUN apk -U upgrade && apk add ca-certificates
+
+COPY --from=BUILDER /usr/bin/grpc_health_probe /usr/bin/grpc_health_probe
+COPY --from=INSTALLER /home/deps-cloud /home/deps-cloud
+
+WORKDIR /home/depscloud
+USER 13490:13490
 
 ENTRYPOINT [ "npm", "start", "--" ]
