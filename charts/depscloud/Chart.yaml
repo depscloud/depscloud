@@ -23,7 +23,7 @@ appVersion: latest
 dependencies:
   - name: extractor
     repository: file://../extractor
-    version: 0.1.6
+    version: 0.1.7
     condition: extractor.enabled
   - name: gateway
     repository: file://../gateway

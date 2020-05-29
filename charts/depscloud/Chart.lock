@@ -1,7 +1,7 @@
 dependencies:
 - name: extractor
   repository: file://../extractor
-  version: 0.1.6
+  version: 0.1.7
 - name: gateway
   repository: file://../gateway
   version: 0.1.6
@@ -11,5 +11,5 @@ dependencies:
 - name: tracker
   repository: file://../tracker
   version: 0.1.7
-digest: sha256:2bf10711d16764c23fdeb1d5d203d12de0056be8a450a983c130379b2bcebdb4
-generated: "2020-05-28T11:32:09.429175-05:00"
+digest: sha256:40842f97c6c312b5c52d4431233b1b90b105cc0f6c6377d4ed61d563177830de
+generated: "2020-05-29T11:00:17.726619-05:00"

@@ -46,7 +46,7 @@ spec:
             - --tls-key=/etc/ssl/server/tls.key
             {{- end }}
             {{- range $disabledManifest := .Values.disabledManifests }}
-            - --disabled-manifests={{ $disabledManifest }}
+            - --disable-manifests={{ $disabledManifest }}
             {{- end }}
           ports:
             - name: grpc
