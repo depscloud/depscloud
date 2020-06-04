@@ -7,12 +7,12 @@ The MySQL deployment is optional, so feel free to leave that out.
 You will need to configure some credentials later on.
 
 ```
-$ kubectl create ns depscloud-system
-$ kubectl apply -n depscloud-system -f https://deps-cloud.github.io/deploy/k8s/mysql.yaml
-$ kubectl apply -n depscloud-system -f https://deps-cloud.github.io/deploy/k8s/depscloud-system.yaml
+$ kubectl create ns depscloud
+$ kubectl apply -n depscloud -f https://deps-cloud.github.io/deploy/k8s/mysql.yaml
+$ kubectl apply -n depscloud -f https://deps-cloud.github.io/deploy/k8s/depscloud-system.yaml
 ```
 
-By default, the depscloud-system doesn't know anything about the MySQL being deployed.
+By default, the system doesn't know anything about the MySQL being deployed.
 This allows deployments to bring their own existing data store or leverage hosted solutions in the cloud.
 To connect deps.cloud to the MySQL deployed above, simply supply the following configuration.
 
@@ -21,7 +21,7 @@ $ cat <<EOF | kubectl apply -f -
 apiVersion: v1
 kind: Secret
 metadata:
-  namespace: depscloud-system
+  namespace: depscloud
   name: depscloud-tracker
 stringData:
   STORAGE_DRIVER: mysql
@@ -42,7 +42,7 @@ $ cat <<EOF | kubectl apply -f -
 apiVersion: v1
 kind: Secret
 metadata:
-  namespace: depscloud-system
+  namespace: depscloud
   name: depscloud-indexer
 stringData:
   config.yaml: |
