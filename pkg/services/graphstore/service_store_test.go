@@ -50,7 +50,10 @@ func TestNewSQLGraphStore_sqlite(t *testing.T) {
 	rodb, err := sqlx.Open("sqlite3", "file::memory:?cache=shared&mode=ro")
 	require.Nil(t, err)
 
-	graphStore, err := graphstore.NewSQLGraphStore(rwdb, rodb, graphstore.DefaultStatements())
+	statements, err := graphstore.DefaultStatementsFor("sqlite3")
+	require.Nil(t, err)
+
+	graphStore, err := graphstore.NewSQLGraphStore(rwdb, rodb, statements)
 	require.Nil(t, err)
 
 	_, err = graphStore.Put(nil, &store.PutRequest{
@@ -118,7 +121,10 @@ func TestReadOnly_sqlite(t *testing.T) {
 	rodb, err := sqlx.Open("sqlite3", "file::memory:?cache=shared&mode=ro")
 	require.Nil(t, err)
 
-	graphStore, err := graphstore.NewSQLGraphStore(nil, rodb, graphstore.DefaultStatements())
+	statements, err := graphstore.DefaultStatementsFor("sqlite3")
+	require.Nil(t, err)
+
+	graphStore, err := graphstore.NewSQLGraphStore(nil, rodb, statements)
 	require.Nil(t, err)
 
 	{
@@ -132,4 +138,18 @@ func TestReadOnly_sqlite(t *testing.T) {
 		require.Nil(t, resp)
 		require.Equal(t, api.ErrUnsupported, err)
 	}
+}
+
+func TestResolveDriverName(t *testing.T) {
+	_, err := graphstore.ResolveDriverName("sqlite")
+	require.Nil(t, err)
+
+	_, err = graphstore.ResolveDriverName("mysql")
+	require.Nil(t, err)
+
+	_, err = graphstore.ResolveDriverName("postgres")
+	require.Nil(t, err)
+
+	_, err = graphstore.ResolveDriverName("noDB")
+	require.NotNil(t, err)
 }

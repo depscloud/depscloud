@@ -1,6 +1,4 @@
-FROM golang:1.12
-
-ARG HEALTH_PROBE_VERSION=0.3.1
+FROM golang:1.14
 
 RUN go get golang.org/x/lint/golint
 
@@ -15,7 +13,7 @@ COPY Makefile .
 RUN make deps
 
 COPY . .
-RUN make test && make install
+RUN make test install
 
 RUN useradd -ms /bin/sh tracker
 WORKDIR /home/tracker

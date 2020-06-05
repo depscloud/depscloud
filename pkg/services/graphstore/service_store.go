@@ -2,6 +2,7 @@ package graphstore
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/deps-cloud/api"
@@ -11,6 +12,29 @@ import (
 
 	"github.com/sirupsen/logrus"
 )
+
+// Constants representing the DBMS's supported with a mapping to the underlying driver names used
+const (
+	mysql    = "mysql"
+	sqlite   = "sqlite3"
+	postgres = "pgx"
+)
+
+// ResolveDriverName resolves the sql driver to use for the given dbms system
+func ResolveDriverName(dbmsName string) (string, error) {
+	switch dbmsName {
+	case "mysql":
+		return mysql, nil
+
+	case "sqlite":
+		return sqlite, nil
+
+	case "postgres":
+		return postgres, nil
+	}
+
+	return "", fmt.Errorf("%s not supported, specify one of the supported systems; mysql/postgres/sqlite", dbmsName)
+}
 
 // NewSQLGraphStore constructs a new GraphStore with a sql driven backend. Current
 // queries support sqlite3 but should be able to work on mysql as well.
@@ -182,6 +206,9 @@ func (gs *graphStore) FindUpstream(ctx context.Context, req *store.FindRequest) 
 		return nil, err
 	}
 
+	// transform the query to the DB specific bindvar type
+	query = gs.rodb.Rebind(query)
+
 	rows, err := gs.rodb.Queryx(query, args...)
 	if err != nil {
 		return nil, err
@@ -210,6 +237,9 @@ func (gs *graphStore) FindDownstream(ctx context.Context, req *store.FindRequest
 	if err != nil {
 		return nil, err
 	}
+
+	// transform the query to the DB specific bindvar type
+	query = gs.rodb.Rebind(query)
 
 	rows, err := gs.rodb.Queryx(query, args...)
 	if err != nil {
