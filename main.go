@@ -13,6 +13,8 @@ import (
 	"github.com/deps-cloud/tracker/pkg/services/graphstore"
 
 	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/jackc/pgx/v4"
+	_ "github.com/jackc/pgx/v4/stdlib"
 
 	"github.com/jmoiron/sqlx"
 
@@ -50,7 +52,7 @@ func registerV1Alpha(rwdb, rodb *sqlx.DB, statements *graphstore.Statements, ser
 
 func main() {
 	port := 8090
-	storageDriver := "sqlite3"
+	storageDriver := "sqlite"
 	storageAddress := "file::memory:?cache=shared"
 	storageReadOnlyAddress := ""
 	storageStatementsFile := ""
@@ -64,6 +66,9 @@ func main() {
 		Run: func(cmd *cobra.Command, args []string) {
 			var rwdb *sqlx.DB
 			var err error
+
+			storageDriver, err = graphstore.ResolveDriverName(storageDriver)
+			panicIff(err)
 
 			if len(storageAddress) > 0 {
 				rwdb, err = sqlx.Open(storageDriver, storageAddress)
@@ -80,11 +85,11 @@ func main() {
 				panicIff(fmt.Errorf("either --storage-address or --storage-readonly-address must be provided"))
 			}
 
-			statements := graphstore.DefaultStatements()
+			statements, err := graphstore.DefaultStatementsFor(storageDriver)
 			if len(storageStatementsFile) > 0 {
 				statements, err = graphstore.LoadStatementsFile(storageStatementsFile)
-				panicIff(err)
 			}
+			panicIff(err)
 
 			options := make([]grpc.ServerOption, 0)
 			if len(tlsCert) > 0 && len(tlsKey) > 0 && len(tlsCA) > 0 {
@@ -129,7 +134,7 @@ func main() {
 
 	flags := cmd.Flags()
 	flags.IntVar(&port, "port", port, "(optional) the port to run on")
-	flags.StringVar(&storageDriver, "storage-driver", storageDriver, "(optional) the driver used to configure the storage tier")
+	flags.StringVar(&storageDriver, "storage-driver", storageDriver, "(optional) the driver used to configure the storage tier; supported drivers- mysql/postgres/sqlite")
 	flags.StringVar(&storageAddress, "storage-address", storageAddress, "(optional) the address of the storage tier")
 	flags.StringVar(&storageReadOnlyAddress, "storage-readonly-address", storageReadOnlyAddress, "(optional) the readonly address of the storage tier")
 	flags.StringVar(&storageStatementsFile, "storage-statements-file", storageStatementsFile, "(optional) path to a yaml file containing the definition of each SQL statement")
