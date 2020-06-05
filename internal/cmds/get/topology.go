@@ -19,20 +19,19 @@ func key(module *schema.Module) string {
 
 type entry struct {
 	module *schema.Module
-	count  uint64
+	seen   map[string]bool
 }
 
 type fetcher func(req *tracker.DependencyRequest) ([]*tracker.Dependency, error)
 
 func topology(root *schema.Module, fetch fetcher) ([][]*schema.Module, error) {
-	dependencies := make(map[string][]string)
-
-	idx := make(map[string]*entry)
+	edges := make(map[string][]string)
+	nodes := make(map[string]*entry)
 
 	current := []*schema.Module{root}
-	idx[key(root)] = &entry{
+	nodes[key(root)] = &entry{
 		module: root,
-		count:  0,
+		seen:   make(map[string]bool),
 	}
 
 	for length := len(current); length > 0; length = len(current) {
@@ -40,6 +39,7 @@ func topology(root *schema.Module, fetch fetcher) ([][]*schema.Module, error) {
 
 		for i := 0; i < length; i++ {
 			module := current[i]
+			moduleKey := key(module)
 
 			results, err := fetch(&tracker.DependencyRequest{
 				Language:     module.Language,
@@ -54,26 +54,25 @@ func topology(root *schema.Module, fetch fetcher) ([][]*schema.Module, error) {
 			modules := make([]*schema.Module, 0, len(results))
 
 			for i, dependency := range results {
-				m := dependency.Module
-				k := key(m)
+				dependencyKey := key(dependency.Module)
 
 				// always set the key so we decrement later
-				keys[i] = k
+				keys[i] = dependencyKey
 
 				// only add the module for processing when we haven't seen it before
-				if _, ok := idx[k]; ok {
-					idx[k].count++
-				} else {
-					idx[k] = &entry{
-						module: m,
-						count:  1,
+				if _, ok := nodes[dependencyKey]; !ok {
+					nodes[dependencyKey] = &entry{
+						module: dependency.Module,
+						seen:   make(map[string]bool),
 					}
 
-					modules = append(modules, m)
+					modules = append(modules, dependency.Module)
 				}
+
+				nodes[dependencyKey].seen[moduleKey] = true
 			}
 
-			dependencies[key(module)] = keys
+			edges[moduleKey] = keys
 			next = append(next, modules...)
 		}
 
@@ -81,7 +80,7 @@ func topology(root *schema.Module, fetch fetcher) ([][]*schema.Module, error) {
 	}
 
 	modules := []string{key(root)}
-	result := [][]*schema.Module{{ root }}
+	result := [][]*schema.Module{{root}}
 
 	for length := len(modules); length > 0; length = len(modules) {
 		next := make([]string, 0)
@@ -90,16 +89,16 @@ func topology(root *schema.Module, fetch fetcher) ([][]*schema.Module, error) {
 		for i := 0; i < length; i++ {
 			k := modules[i]
 
-			results := dependencies[k]
-			delete(dependencies, k)
+			results := edges[k]
+			delete(edges, k)
 
-			for _, dependency := range results {
-				idx[dependency].count--
+			for _, dependencyKey := range results {
+				delete(nodes[dependencyKey].seen, k)
 
-				if idx[dependency].count == 0 {
-					next = append(next, dependency)
-					tier = append(tier, idx[dependency].module)
-					delete(idx, dependency)
+				if len(nodes[dependencyKey].seen) == 0 {
+					next = append(next, dependencyKey)
+					tier = append(tier, nodes[dependencyKey].module)
+					delete(nodes, dependencyKey)
 				}
 			}
 		}
@@ -126,7 +125,9 @@ func TopologyCommand(
 		Short:   "Get the module topology of either dependents or dependencies",
 		Example: "depscloud-cli get topology dependents -l go -o github.com -m deps-cloud/api",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			if req.Language == "" || req.Organization == "" || req.Module == "" {
+			if len(args) < 1 {
+				return fmt.Errorf("expected at least one argument to be provided")
+			} else if req.Language == "" || req.Organization == "" || req.Module == "" {
 				return fmt.Errorf("language, organization, and module must be provided")
 			}
 
