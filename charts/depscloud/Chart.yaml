@@ -35,5 +35,5 @@ dependencies:
     condition: indexer.enabled
   - name: tracker
     repository: file://../tracker
-    version: 0.1.7
+    version: 0.1.8
     condition: tracker.enabled

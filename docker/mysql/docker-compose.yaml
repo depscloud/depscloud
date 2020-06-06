@@ -1,0 +1,52 @@
+version: "3.8"
+
+services:
+  mysql:
+    restart: always
+    image: mysql:8
+    hostname: mysql
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: depscloud
+    expose:
+      - 3306
+
+  tracker:
+    restart: always
+    image: depscloud/tracker:${TRACKER_VERSION:-latest}
+    hostname: tracker
+    depends_on:
+      - mysql
+    command:
+      - --storage-driver=mysql
+      - --storage-address=user:password@tcp(mysql:3306)/depscloud
+
+  extractor:
+    restart: always
+    image: depscloud/extractor:${EXTRACTOR_VERSION:-latest}
+    hostname: extractor
+
+  indexer:
+    restart: on-failure
+    image: depscloud/indexer:${INDEXER_VERSION:-latest}
+    hostname: indexer
+    depends_on:
+      - extractor
+      - tracker
+    volumes:
+      - ./config.yaml:/etc/indexer/config.yaml
+    command:
+      - --config=/etc/indexer/config.yaml
+      - --workers=1
+
+  gateway:
+    restart: always
+    image: depscloud/gateway:${GATEWAY_VERSION:-latest}
+    hostname: gateway
+    depends_on:
+      - extractor
+      - tracker
+    ports:
+      - 8080:8080

@@ -1,29 +1,13 @@
 version: "3.7"
 
 services:
-  mysql:
-    restart: always
-    image: mysql:8
-    hostname: mysql
-    environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: 1
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-      MYSQL_DATABASE: depscloud
-    expose:
-      - 3306
-
   tracker:
     restart: always
     image: depscloud/tracker:${TRACKER_VERSION:-latest}
     hostname: tracker
-    depends_on:
-      - mysql
     volumes:
       - ./certs:/etc/depscloud/certs
     command:
-      - --storage-driver=mysql
-      - --storage-address=user:password@tcp(mysql:3306)/depscloud
       - --tls-key=/etc/depscloud/certs/tracker.key
       - --tls-cert=/etc/depscloud/certs/tracker.crt
       - --tls-ca=/etc/depscloud/certs/ca.crt

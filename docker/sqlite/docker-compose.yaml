@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  tracker:
+    restart: always
+    image: depscloud/tracker:${TRACKER_VERSION:-latest}
+    hostname: tracker
+
+  extractor:
+    restart: always
+    image: depscloud/extractor:${EXTRACTOR_VERSION:-latest}
+    hostname: extractor
+
+  indexer:
+    restart: on-failure
+    image: depscloud/indexer:${INDEXER_VERSION:-latest}
+    hostname: indexer
+    depends_on:
+      - extractor
+      - tracker
+    volumes:
+      - ./config.yaml:/etc/indexer/config.yaml
+    command:
+      - --config=/etc/indexer/config.yaml
+      - --workers=1
+
+  gateway:
+    restart: always
+    image: depscloud/gateway:${GATEWAY_VERSION:-latest}
+    hostname: gateway
+    depends_on:
+      - extractor
+      - tracker
+    ports:
+      - 8080:8080
