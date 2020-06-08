@@ -645,6 +645,7 @@ func local_request_TopologyService_ListDependenciesTopologyTiered_0(ctx context.
 // RegisterSourceServiceHandlerServer registers the http handlers for service SourceService to "mux".
 // UnaryRPC     :call SourceServiceServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
+// Note that using this registration option will cause many gRPC library features (such as grpc.SendHeader, etc) to stop working. Consider using RegisterSourceServiceHandlerFromEndpoint instead.
 func RegisterSourceServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server SourceServiceServer) error {
 
 	mux.Handle("GET", pattern_SourceService_List_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
@@ -693,6 +694,7 @@ func RegisterSourceServiceHandlerServer(ctx context.Context, mux *runtime.ServeM
 // RegisterModuleServiceHandlerServer registers the http handlers for service ModuleService to "mux".
 // UnaryRPC     :call ModuleServiceServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
+// Note that using this registration option will cause many gRPC library features (such as grpc.SendHeader, etc) to stop working. Consider using RegisterModuleServiceHandlerFromEndpoint instead.
 func RegisterModuleServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server ModuleServiceServer) error {
 
 	mux.Handle("GET", pattern_ModuleService_List_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
@@ -761,6 +763,7 @@ func RegisterModuleServiceHandlerServer(ctx context.Context, mux *runtime.ServeM
 // RegisterDependencyServiceHandlerServer registers the http handlers for service DependencyService to "mux".
 // UnaryRPC     :call DependencyServiceServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
+// Note that using this registration option will cause many gRPC library features (such as grpc.SendHeader, etc) to stop working. Consider using RegisterDependencyServiceHandlerFromEndpoint instead.
 func RegisterDependencyServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server DependencyServiceServer) error {
 
 	mux.Handle("GET", pattern_DependencyService_ListDependents_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
@@ -809,6 +812,7 @@ func RegisterDependencyServiceHandlerServer(ctx context.Context, mux *runtime.Se
 // RegisterTopologyServiceHandlerServer registers the http handlers for service TopologyService to "mux".
 // UnaryRPC     :call TopologyServiceServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
+// Note that using this registration option will cause many gRPC library features (such as grpc.SendHeader, etc) to stop working. Consider using RegisterTopologyServiceHandlerFromEndpoint instead.
 func RegisterTopologyServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server TopologyServiceServer) error {
 
 	mux.Handle("GET", pattern_TopologyService_ListDependentsTopology_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
