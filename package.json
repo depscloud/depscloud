@@ -1,7 +1,7 @@
 {
   "name": "@deps-cloud/tracker",
   "description": "Dependency tracking service",
-  "version": "0.2.10",
+  "version": "0.2.11",
   "repository": {
     "type": "git",
     "url": "git@github.com:deps-cloud/tracker.git"
