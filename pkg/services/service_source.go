@@ -180,6 +180,33 @@ func (s *sourceService) getProposed(ctx context.Context, request *tracker.Source
 		idx[readableKey(managedModule)] = managedModule
 		idx[readableKey(manages)] = manages
 
+		if sourceURL := managementFile.GetSourceUrl(); sourceURL != "" {
+			discoveredSource, err := Encode(&schema.Source{
+				Url: sourceURL,
+				Kind: "repository",
+			})
+			if err != nil {
+				logrus.Errorf("[service.source] %s", err.Error())
+				return nil, err
+			}
+
+			discoveredManages, err := Encode(&schema.Manages{
+				Language: managementFile.GetLanguage(),
+				System:   managementFile.GetSystem(),
+				Version:  managementFile.GetVersion(),
+			})
+			if err != nil {
+				logrus.Errorf("[service.source] %s", err.Error())
+				return nil, err
+			}
+
+			discoveredManages.K1 = discoveredSource.GetK1()
+			discoveredManages.K2 = managedModule.GetK1()
+
+			idx[readableKey(discoveredSource)] = discoveredSource
+			idx[readableKey(discoveredManages)] = discoveredManages
+		}
+
 		for _, dependency := range managementFile.GetDependencies() {
 			dependedModule, err := Encode(&schema.Module{
 				Language:     managementFile.GetLanguage(),
