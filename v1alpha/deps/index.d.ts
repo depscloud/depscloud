@@ -8,6 +8,7 @@ export interface Dependency {
 export interface DependencyManagementFile {
     language: string;
     system: string;
+    sourceUrl: string;
 
     organization: string;
     module: string;

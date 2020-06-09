@@ -466,6 +466,9 @@
         "system": {
           "type": "string"
         },
+        "sourceUrl": {
+          "type": "string"
+        },
         "organization": {
           "type": "string"
         },

@@ -14,6 +14,7 @@ message Dependency {
 message DependencyManagementFile {
     optional string language = 1; // java, node, python, golang
     optional string system = 2; // npm, ivy, maven, gradle, godeps
+    optional string sourceUrl = 3;
 
     optional string organization = 5;
     optional string module = 6;
