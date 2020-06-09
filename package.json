@@ -13,14 +13,14 @@
   },
   "homepage": "https://github.com/deps-cloud/api#readme",
   "devDependencies": {
-    "@types/jest": "^24.9.1",
-    "jest": "^24.9.0",
-    "ts-jest": "^24.3.0",
-    "typescript": "^3.8.3"
+    "@types/jest": "24.9.1",
+    "jest": "24.9.0",
+    "ts-jest": "24.3.0",
+    "typescript": "3.8.3"
   },
   "dependencies": {
-    "@grpc/proto-loader": "^0.5.4",
-    "grpc": "^1.24.3"
+    "@grpc/proto-loader": "0.5.4",
+    "grpc": "1.24.3"
   },
   "scripts": {
     "test": "jest --coverage"
