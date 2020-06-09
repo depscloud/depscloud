@@ -17,25 +17,25 @@
     "url": "git@github.com:deps-cloud/extractor.git"
   },
   "devDependencies": {
-    "@types/cheerio": "^0.22.16",
-    "@types/jest": "^24.9.1",
-    "@types/js-yaml": "^3.12.4",
-    "jest": "^24.9.0",
-    "ts-jest": "^24.3.0",
-    "tslint": "^5.20.1",
-    "typescript": "^3.9.5"
+    "@types/cheerio": "0.22.18",
+    "@types/jest": "24.9.1",
+    "@types/js-yaml": "3.12.4",
+    "jest": "24.9.0",
+    "ts-jest": "24.3.0",
+    "tslint": "5.20.1",
+    "typescript": "3.9.5"
   },
   "dependencies": {
-    "@deps-cloud/api": "^0.1.4",
-    "@grpc/grpc-js": "^0.7.3",
-    "@grpc/proto-loader": "^0.4.0",
+    "@deps-cloud/api": "0.1.4",
+    "@grpc/grpc-js": "0.7.9",
+    "@grpc/proto-loader": "0.4.0",
     "caporal": "latest",
-    "cheerio": "^1.0.0-rc.2",
-    "gradle-to-js": "^2.0.0",
-    "grpc-health-check": "^1.8.0",
-    "js-yaml": "^3.14.0",
-    "log4js": "^4.5.1",
+    "cheerio": "1.0.0-rc.3",
+    "gradle-to-js": "2.0.0",
+    "grpc-health-check": "1.8.0",
+    "js-yaml": "3.14.0",
+    "log4js": "4.5.1",
     "tmp": "0.0.33",
-    "toml": "^3.0.0"
+    "toml": "3.0.0"
   }
 }
