@@ -1,4 +1,4 @@
-import {Dependency, DependencyManagementFile} from "@deps-cloud/api/v1alpha/deps/deps";
+import {Dependency, DependencyManagementFile} from "@deps-cloud/api/v1alpha/deps";
 import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
 import Globals from "./Globals";
@@ -35,6 +35,7 @@ export default class CargoTomlExtractor implements Extractor {
         return {
             language: Languages.RUST,
             system: "cargo",
+            sourceUrl: "",
             organization,
             module: toml.package.name,
             version: toml.package.version,

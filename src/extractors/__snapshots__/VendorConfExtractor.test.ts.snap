@@ -85,6 +85,7 @@ Object {
   "language": "go",
   "module": "testMainOrg/testMainModule",
   "organization": "github.com",
+  "sourceUrl": "",
   "system": "vendor",
   "version": "latest",
 }
@@ -94,6 +95,7 @@ exports[`VendorConfExtractor fullParse 2`] = `
 "{
   \\"language\\": \\"go\\",
   \\"system\\": \\"vendor\\",
+  \\"sourceUrl\\": \\"\\",
   \\"organization\\": \\"github.com\\",
   \\"module\\": \\"testMainOrg/testMainModule\\",
   \\"version\\": \\"latest\\",

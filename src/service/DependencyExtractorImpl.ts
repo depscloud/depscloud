@@ -1,7 +1,7 @@
-import {DependencyManagementFile} from "@deps-cloud/api/v1alpha/deps/deps";
+import {DependencyManagementFile} from "@deps-cloud/api/v1alpha/deps";
 import {
     ExtractRequest, ExtractResponse, MatchRequest, MatchResponse,
-} from "@deps-cloud/api/v1alpha/extractor/extractor";
+} from "@deps-cloud/api/v1alpha/extractor";
 import {ServerUnaryCall} from "@grpc/grpc-js";
 import Extractor from "../extractors/Extractor";
 import ExtractorFile from "../extractors/ExtractorFile";

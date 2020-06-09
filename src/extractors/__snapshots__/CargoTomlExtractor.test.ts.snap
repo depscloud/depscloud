@@ -159,6 +159,7 @@ Object {
   "language": "rust",
   "module": "linkerd-tcp",
   "organization": "_",
+  "sourceUrl": "",
   "system": "cargo",
   "version": "0.1.1",
 }
@@ -168,6 +169,7 @@ exports[`CargoTomlExtractor fullParse 2`] = `
 "{
   \\"language\\": \\"rust\\",
   \\"system\\": \\"cargo\\",
+  \\"sourceUrl\\": \\"\\",
   \\"organization\\": \\"_\\",
   \\"module\\": \\"linkerd-tcp\\",
   \\"version\\": \\"0.1.1\\",

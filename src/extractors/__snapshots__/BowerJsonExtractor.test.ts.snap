@@ -55,6 +55,7 @@ Object {
   "language": "node",
   "module": "testName",
   "organization": "_",
+  "sourceUrl": "git@github.com:group/project.git",
   "system": "bower",
   "version": "1.2.3",
 }
@@ -64,6 +65,7 @@ exports[`BowerJsonExtractor fullParse 2`] = `
 "{
   \\"language\\": \\"node\\",
   \\"system\\": \\"bower\\",
+  \\"sourceUrl\\": \\"git@github.com:group/project.git\\",
   \\"organization\\": \\"_\\",
   \\"module\\": \\"testName\\",
   \\"version\\": \\"1.2.3\\",

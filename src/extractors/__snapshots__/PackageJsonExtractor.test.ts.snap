@@ -39,6 +39,7 @@ Object {
   "language": "node",
   "module": "module",
   "organization": "organization",
+  "sourceUrl": "git@github.com:group/project.git",
   "system": "npm",
   "version": "9.9.9",
 }
@@ -48,6 +49,7 @@ exports[`PackageJsonExtractor fullParse 2`] = `
 "{
   \\"language\\": \\"node\\",
   \\"system\\": \\"npm\\",
+  \\"sourceUrl\\": \\"git@github.com:group/project.git\\",
   \\"organization\\": \\"organization\\",
   \\"module\\": \\"module\\",
   \\"version\\": \\"9.9.9\\",

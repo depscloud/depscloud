@@ -1,4 +1,4 @@
-import {Dependency, DependencyManagementFile} from "@deps-cloud/api/v1alpha/deps/deps";
+import {Dependency, DependencyManagementFile} from "@deps-cloud/api/v1alpha/deps";
 import cheerio = require("cheerio");
 import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
@@ -35,6 +35,7 @@ export default class IvyXmlExtractor implements Extractor {
         return {
             language: Languages.JAVA,
             system: "ivy",
+            sourceUrl: "",
             organization: infoNode.attr("organisation") || Globals.ORGANIZATION,
             module: infoNode.attr("module"),
             version: infoNode.attr("revision") || null,

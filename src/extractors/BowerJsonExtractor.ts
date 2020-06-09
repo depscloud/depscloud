@@ -1,4 +1,4 @@
-import {Dependency, DependencyManagementFile} from "@deps-cloud/api/v1alpha/deps/deps";
+import {Dependency, DependencyManagementFile} from "@deps-cloud/api/v1alpha/deps";
 import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
 import Globals from "./Globals";
@@ -43,6 +43,7 @@ export default class BowerJsonExtractor implements Extractor {
         const {
             name,
             version,
+            repository,
             dependencies,
             devDependencies,
             bundledDependencies,
@@ -54,9 +55,15 @@ export default class BowerJsonExtractor implements Extractor {
         allDependencies = allDependencies.concat(extract((devDependencies || {}), "dev"));
         allDependencies = allDependencies.concat(extract((bundledDependencies || {}), "bundled"));
 
+        let sourceUrl = repository;
+        if (typeof repository === "object") {
+            sourceUrl = repository.url;
+        }
+
         return {
             language: Languages.NODE,
             system: "bower",
+            sourceUrl,
             organization,
             module,
             version,

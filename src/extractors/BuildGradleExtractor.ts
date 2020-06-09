@@ -1,6 +1,6 @@
 import {parseText} from "gradle-to-js/lib/parser";
 
-import {Dependency, DependencyManagementFile} from "@deps-cloud/api/v1alpha/deps/deps";
+import {Dependency, DependencyManagementFile} from "@deps-cloud/api/v1alpha/deps";
 import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
 import Globals from "./Globals";
@@ -66,6 +66,7 @@ export default class BuildGradleExtractor implements Extractor {
         return {
             language: Languages.JAVA,
             system: "gradle",
+            sourceUrl: "",
             organization,
             module,
             version: buildGradle.version,

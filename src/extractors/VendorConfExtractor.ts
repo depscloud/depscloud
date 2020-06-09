@@ -1,4 +1,4 @@
-import {Dependency, DependencyManagementFile} from "@deps-cloud/api/v1alpha/deps/deps";
+import {Dependency, DependencyManagementFile} from "@deps-cloud/api/v1alpha/deps";
 import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
 import parseImportPath from "./goutils/parseImportPath";
@@ -65,6 +65,7 @@ export default class VendorConfExtractor implements Extractor {
         return {
             language: Languages.GO,
             system: "vendor",
+            sourceUrl: "",
             organization: id[organizationString],
             module: id[moduleString],
             version: "latest",

@@ -1,6 +1,7 @@
 {
   "name": "@organization/module",
   "version": "9.9.9",
+  "repository": "git@github.com:group/project.git",
   "dependencies": {
     "@scoped/runtimeDependency": "1.0.0"
   },

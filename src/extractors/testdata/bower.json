@@ -2,6 +2,9 @@
   "name": "testName",
   "version": "1.2.3",
   "description": "testDescription",
+  "repository": {
+    "url": "git@github.com:group/project.git"
+  },
   "main": [
     "js/index.js",
     "sass/styles.scss"

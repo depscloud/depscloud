@@ -47,6 +47,7 @@ Object {
   "language": "go",
   "module": "deps-cloud/finch",
   "organization": "github.com",
+  "sourceUrl": "",
   "system": "vgo",
   "version": "latest",
 }
@@ -56,6 +57,7 @@ exports[`GoModExtractor fullParse 2`] = `
 "{
   \\"language\\": \\"go\\",
   \\"system\\": \\"vgo\\",
+  \\"sourceUrl\\": \\"\\",
   \\"organization\\": \\"github.com\\",
   \\"module\\": \\"deps-cloud/finch\\",
   \\"version\\": \\"latest\\",

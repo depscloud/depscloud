@@ -1,4 +1,4 @@
-import {Dependency, DependencyManagementFile} from "@deps-cloud/api/v1alpha/deps/deps";
+import {Dependency, DependencyManagementFile} from "@deps-cloud/api/v1alpha/deps";
 import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
 import Globals from "./Globals";
@@ -43,6 +43,7 @@ export default class PackageJsonExtractor implements Extractor {
         const {
             name,
             version,
+            repository,
             dependencies,
             devDependencies,
             peerDependencies,
@@ -58,9 +59,15 @@ export default class PackageJsonExtractor implements Extractor {
         // deps = deps.concat(extract((bundledDependencies || {}), "bundled"));
         allDependencies = allDependencies.concat(extract((optionalDependencies || {}), "optional"));
 
+        let sourceUrl = repository;
+        if (typeof repository === "object") {
+            sourceUrl = repository.url;
+        }
+
         return {
             language: Languages.NODE,
             system: "npm",
+            sourceUrl,
             organization, module, version,
             dependencies: allDependencies,
         };

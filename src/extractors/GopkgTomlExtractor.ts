@@ -1,4 +1,4 @@
-import {Dependency, DependencyManagementFile} from "@deps-cloud/api/v1alpha/deps/deps";
+import {Dependency, DependencyManagementFile} from "@deps-cloud/api/v1alpha/deps";
 import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
 import inferImportPath from "./goutils/inferImportPath";
@@ -64,6 +64,7 @@ export default class GopkgTomlExtractor implements Extractor {
         return {
             language: Languages.GO,
             system: "gopkg",
+            sourceUrl: "",
             organization,
             module,
             version: "latest",

@@ -1,4 +1,4 @@
-import {DependencyManagementFile} from "@deps-cloud/api/v1alpha/deps/deps";
+import {DependencyManagementFile} from "@deps-cloud/api/v1alpha/deps";
 import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
 import parseImportPath from "./goutils/parseImportPath";
@@ -36,6 +36,7 @@ export default class GodepsJsonExtractor implements Extractor {
         return {
             language: Languages.GO,
             system: "godeps",
+            sourceUrl: "",
             organization,
             module,
             version: "",

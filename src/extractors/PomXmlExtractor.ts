@@ -1,4 +1,4 @@
-import {Dependency, DependencyManagementFile} from "@deps-cloud/api/v1alpha/deps/deps";
+import {Dependency, DependencyManagementFile} from "@deps-cloud/api/v1alpha/deps";
 import cheerio = require("cheerio");
 import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
@@ -19,6 +19,8 @@ export default class PomXmlExtractor implements Extractor {
         const groupId = xml.find("project > groupId").text() || parentGroupId;
         const artifactId = xml.find("project > artifactId").text();
         const version = xml.find("project > version").text();
+
+        const sourceUrl = xml.find("project > scm > url").text();
 
         const dependencies: Dependency[] = [];
         if (parentGroupId && parentArtifactId && parentVersion) {
@@ -45,6 +47,7 @@ export default class PomXmlExtractor implements Extractor {
         return {
             language: Languages.JAVA,
             system: "maven",
+            sourceUrl,
             organization: groupId,
             module: artifactId,
             version,

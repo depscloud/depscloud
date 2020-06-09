@@ -63,6 +63,7 @@ Object {
   "language": "java",
   "module": "sample-java-project",
   "organization": "com.nullprogram",
+  "sourceUrl": "",
   "system": "ivy",
   "version": null,
 }
@@ -72,6 +73,7 @@ exports[`IvyXmlExtractor fullParse 2`] = `
 "{
   \\"language\\": \\"java\\",
   \\"system\\": \\"ivy\\",
+  \\"sourceUrl\\": \\"\\",
   \\"organization\\": \\"com.nullprogram\\",
   \\"module\\": \\"sample-java-project\\",
   \\"version\\": null,

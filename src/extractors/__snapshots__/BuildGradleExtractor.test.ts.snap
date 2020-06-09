@@ -96,6 +96,7 @@ Object {
   "language": "java",
   "module": "module",
   "organization": "organization",
+  "sourceUrl": "",
   "system": "gradle",
   "version": "1.2",
 }
@@ -105,6 +106,7 @@ exports[`CargoTomlExtractor fullParse 2`] = `
 "{
   \\"language\\": \\"java\\",
   \\"system\\": \\"gradle\\",
+  \\"sourceUrl\\": \\"\\",
   \\"organization\\": \\"organization\\",
   \\"module\\": \\"module\\",
   \\"version\\": \\"1.2\\",

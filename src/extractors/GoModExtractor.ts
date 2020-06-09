@@ -1,4 +1,4 @@
-import {Dependency, DependencyManagementFile} from "@deps-cloud/api/v1alpha/deps/deps";
+import {Dependency, DependencyManagementFile} from "@deps-cloud/api/v1alpha/deps";
 import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
 import parseImportPath from "./goutils/parseImportPath";
@@ -92,6 +92,7 @@ export default class GoModExtractor implements Extractor {
         return {
             language: Languages.GO,
             system: "vgo",
+            sourceUrl: "",
             organization: id.organization,
             module: id.module,
             version: "latest",

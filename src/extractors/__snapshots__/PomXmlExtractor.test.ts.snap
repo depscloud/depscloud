@@ -55,6 +55,7 @@ Object {
   "language": "java",
   "module": "artifactId",
   "organization": "groupId",
+  "sourceUrl": "git@github.com:group/project.git",
   "system": "maven",
   "version": "9.9.9",
 }
@@ -64,6 +65,7 @@ exports[`PomXmlExtractor fullParse 2`] = `
 "{
   \\"language\\": \\"java\\",
   \\"system\\": \\"maven\\",
+  \\"sourceUrl\\": \\"git@github.com:group/project.git\\",
   \\"organization\\": \\"groupId\\",
   \\"module\\": \\"artifactId\\",
   \\"version\\": \\"9.9.9\\",
