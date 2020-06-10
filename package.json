@@ -14,7 +14,7 @@
   "homepage": "https://github.com/deps-cloud/api#readme",
   "devDependencies": {
     "@types/jest": "24.9.1",
-    "jest": "24.9.0",
+    "jest": "26.0.1",
     "ts-jest": "24.3.0",
     "typescript": "3.9.5"
   },
