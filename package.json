@@ -18,7 +18,7 @@
   },
   "devDependencies": {
     "@types/cheerio": "0.22.18",
-    "@types/jest": "24.9.1",
+    "@types/jest": "26.0.0",
     "@types/js-yaml": "3.12.4",
     "jest": "24.9.0",
     "ts-jest": "24.3.0",
