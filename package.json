@@ -34,7 +34,7 @@
     "gradle-to-js": "2.0.0",
     "grpc-health-check": "1.8.0",
     "js-yaml": "3.14.0",
-    "log4js": "4.5.1",
+    "log4js": "6.3.0",
     "tmp": "0.2.1",
     "toml": "3.0.0"
   }
