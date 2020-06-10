@@ -4,5 +4,8 @@
   ],
   "excludeCommitPaths": [
     "**/testdata/**"
+  ],
+  "schedule": [
+    "on sunday"
   ]
 }
