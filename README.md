@@ -6,7 +6,7 @@ It works by pulling repositories from sources, extracting dependency information
 ## Support
 
 ![GitHub](https://img.shields.io/github/license/deps-cloud/indexer.svg)
-![branch](https://github.com/deps-cloud/indexer/workflows/branch/badge.svg?branch=master)
+![branch](https://github.com/deps-cloud/indexer/workflows/branch/badge.svg?branch=main)
 
 ## Getting Started
 
