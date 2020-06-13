@@ -6,7 +6,7 @@ This system provides a storage backend so that dependencies can be stored, index
 ## Support
 
 ![GitHub](https://img.shields.io/github/license/deps-cloud/tracker.svg)
-![branch](https://github.com/deps-cloud/tracker/workflows/branch/badge.svg?branch=master)
+![branch](https://github.com/deps-cloud/tracker/workflows/branch/badge.svg?branch=main)
 
 ## Getting Started
 
