@@ -20,9 +20,6 @@ RUN curl -sSL -o protoc.zip https://github.com/protocolbuffers/protobuf/releases
 	unzip -d /usr/local/protoc protoc.zip && \
 	rm -rf protoc.zip
 
-COPY docker/compile.sh /usr/bin/compile.sh
-COPY docker/protoc-gen-protoloader.sh /usr/bin/protoc-gen-protoloader.sh
-
 ENV GOPATH=/go
 ENV PATH="${PATH}:/usr/local/go/bin:/usr/local/node/bin:/usr/local/protoc/bin:/go/bin"
 
@@ -33,4 +30,3 @@ RUN go get -u github.com/gogo/protobuf/protoc-gen-gogo
 RUN go get -u github.com/go-bindata/go-bindata/...
 
 WORKDIR /go/src/github.com/deps-cloud/api
-ENTRYPOINT [ "/usr/bin/compile.sh" ]

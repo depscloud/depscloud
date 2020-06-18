@@ -1,5 +1,5 @@
-import {ChannelCredentials, Client, ServerUnaryCall, ServiceDefinition} from "grpc";
-import {DependencyManagementFile} from "../deps/deps";
+import {ChannelCredentials, Client, ServerUnaryCall, ServiceDefinition} from "@grpc/grpc-js";
+import {DependencyManagementFile} from "../deps";
 
 export interface MatchRequest {
     separator: string;
@@ -21,8 +21,8 @@ export interface ExtractResponse {
 }
 
 export interface IDependencyExtractor {
-    match(call: ServerUnaryCall<MatchRequest>, callback: (error: Error, response: MatchResponse) => void): void;
-    extract(call: ServerUnaryCall<ExtractRequest>, callback: (error: Error, response: ExtractResponse) => void): void;
+    match(call: ServerUnaryCall<MatchRequest, MatchResponse>, callback: (error: Error, response: MatchResponse) => void): void;
+    extract(call: ServerUnaryCall<ExtractRequest, ExtractResponse>, callback: (error: Error, response: ExtractResponse) => void): void;
 }
 
 export class DependencyExtractor extends Client {

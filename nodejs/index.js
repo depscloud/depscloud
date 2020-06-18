@@ -1,6 +1,6 @@
 const path = require('path');
 const protoLoader = require('@grpc/proto-loader');
-const grpc = require('grpc');
+const grpc = require('@grpc/grpc-js');
 
 const filenames = [];
 
@@ -9,6 +9,12 @@ filenames.push(path.join(__dirname, "v1alpha", "extractor", "extractor.proto"));
 filenames.push(path.join(__dirname, "v1alpha", "schema", "schema.proto"));
 filenames.push(path.join(__dirname, "v1alpha", "deps", "deps.proto"));
 filenames.push(path.join(__dirname, "v1alpha", "store", "store.proto"));
+filenames.push(path.join(__dirname, "node_modules", "protobufjs", "google", "api", "http.proto"));
+filenames.push(path.join(__dirname, "node_modules", "protobufjs", "google", "api", "annotations.proto"));
+filenames.push(path.join(__dirname, "node_modules", "protobufjs", "google", "protobuf", "api.proto"));
+filenames.push(path.join(__dirname, "node_modules", "protobufjs", "google", "protobuf", "source_context.proto"));
+filenames.push(path.join(__dirname, "node_modules", "protobufjs", "google", "protobuf", "type.proto"));
+filenames.push(path.join(__dirname, "node_modules", "protobufjs", "google", "protobuf", "descriptor.proto"));
 
 const packageDefinition = protoLoader.loadSync(
     filenames,

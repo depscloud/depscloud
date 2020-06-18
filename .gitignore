@@ -1,4 +1,5 @@
 build-deps/
 coverage/
-node_modules/
 
+nodejs/node_modules/
+nodejs/**/*.proto

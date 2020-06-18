@@ -53,90 +53,6 @@
         ]
       }
     },
-    "/v1alpha/graph/{language}/dependencies/topology": {
-      "get": {
-        "operationId": "TopologyService_ListDependenciesTopology",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/trackerListDependenciesResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "language",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "organization",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "module",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "TopologyService"
-        ]
-      }
-    },
-    "/v1alpha/graph/{language}/dependencies/topology/tiered": {
-      "get": {
-        "operationId": "TopologyService_ListDependenciesTopologyTiered",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/trackerListDependenciesTieredResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "language",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "organization",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "module",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "TopologyService"
-        ]
-      }
-    },
     "/v1alpha/graph/{language}/dependents": {
       "get": {
         "operationId": "DependencyService_ListDependents",
@@ -176,90 +92,6 @@
         ],
         "tags": [
           "DependencyService"
-        ]
-      }
-    },
-    "/v1alpha/graph/{language}/dependents/topology": {
-      "get": {
-        "operationId": "TopologyService_ListDependentsTopology",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/trackerListDependentsResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "language",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "organization",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "module",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "TopologyService"
-        ]
-      }
-    },
-    "/v1alpha/graph/{language}/dependents/topology/tiered": {
-      "get": {
-        "operationId": "TopologyService_ListDependentsTopologyTiered",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/trackerListDependentsTieredResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "language",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "organization",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "module",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "TopologyService"
         ]
       }
     },
@@ -592,17 +424,6 @@
         }
       }
     },
-    "trackerListDependenciesTieredResponse": {
-      "type": "object",
-      "properties": {
-        "tiers": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/trackerTopologyTier"
-          }
-        }
-      }
-    },
     "trackerListDependentsResponse": {
       "type": "object",
       "properties": {
@@ -610,17 +431,6 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/v1alphatrackerDependency"
-          }
-        }
-      }
-    },
-    "trackerListDependentsTieredResponse": {
-      "type": "object",
-      "properties": {
-        "tiers": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/trackerTopologyTier"
           }
         }
       }
@@ -717,17 +527,6 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/depsDependencyManagementFile"
-          }
-        }
-      }
-    },
-    "trackerTopologyTier": {
-      "type": "object",
-      "properties": {
-        "tier": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/v1alphatrackerDependency"
           }
         }
       }

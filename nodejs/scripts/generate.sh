@@ -48,7 +48,7 @@ function root_js() {
 cat <<EOF
 const path = require('path');
 const protoLoader = require('@grpc/proto-loader');
-const grpc = require('grpc');
+const grpc = require('@grpc/grpc-js');
 
 const filenames = [];
 ${filenames}
@@ -86,8 +86,6 @@ for file in $(find . -name *.proto | cut -c 3-); do
 
   index_js "${base}"      > "${directory}/index.js"
   index_test_ts "${base}" > "${directory}/index_test.ts"
-  file_d_ts               > "${directory}/${file_base}.d.ts"
-  file_js                 > "${directory}/${file_base}.js"
 done
 
 root_js "cloud.deps.api" $(find . -name *.proto | cut -c 3- | xargs -I {} echo '"{}"') > index.js

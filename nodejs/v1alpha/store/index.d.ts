@@ -1,4 +1,5 @@
-import {ChannelCredentials, Client, ServerUnaryCall, ServiceDefinition} from "grpc";
+import {ChannelCredentials, Client, ServerUnaryCall, ServiceDefinition} from "@grpc/grpc-js";
+import {ListDependenciesResponse} from "../tracker";
 
 type GraphItemEncoding = number;
 
@@ -9,10 +10,11 @@ type GraphItemEncoding = number;
 
 export interface GraphItem {
     graphItemType: string;
-    // bytes k1 = 2;
-    // bytes k2 = 3;
+    k1: Buffer;
+    k2: Buffer;
+    k3: Buffer;
     encoding: GraphItemEncoding;
-    // bytes graphItemData = 5;
+    graphItemData: Buffer;
 }
 
 export interface GraphItemPair {
@@ -52,12 +54,12 @@ export interface FindResponse {
 }
 
 export interface IGraphStore {
-    put(call: ServerUnaryCall<PutRequest>, callback: (error: Error, response: PutResponse) => void): void;
-    delete(call: ServerUnaryCall<DeleteRequest>, callback: (error: Error, response: DeleteResponse) => void): void;
+    put(call: ServerUnaryCall<PutRequest, PutResponse>, callback: (error: Error, response: PutResponse) => void): void;
+    delete(call: ServerUnaryCall<DeleteRequest, DeleteResponse>, callback: (error: Error, response: DeleteResponse) => void): void;
 
-    list(call: ServerUnaryCall<ListRequest>, callback: (error: Error, response: ListResponse) => void): void;
-    findUpstream(call: ServerUnaryCall<FindRequest>, callback: (error: Error, response: FindResponse) => void): void;
-    findDownstream(call: ServerUnaryCall<FindRequest>, callback: (error: Error, response: FindResponse) => void): void;
+    list(call: ServerUnaryCall<ListRequest, ListResponse>, callback: (error: Error, response: ListResponse) => void): void;
+    findUpstream(call: ServerUnaryCall<FindRequest, FindResponse>, callback: (error: Error, response: FindResponse) => void): void;
+    findDownstream(call: ServerUnaryCall<FindRequest, FindResponse>, callback: (error: Error, response: FindResponse) => void): void;
 }
 
 export class GraphStore extends Client {
