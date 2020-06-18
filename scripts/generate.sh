@@ -51,6 +51,14 @@ helm template mysql bitnami/mysql \
   --set volumePermissions.enabled=true \
   > "${k8s_path}/mysql.yaml"
 
+echo "Packaging Manifests bitnami/postgres"
+helm template postgres bitnami/postgresql \
+  --set postgresqlUsername=user \
+  --set postgresqlPassword=password \
+  --set postgresqlDatabase=depscloud \
+> "${k8s_path}/postgres.yaml"
+
+
 echo "Packaging Manifests stable/depscloud"
 helm template depscloud ${in}/depscloud/ \
   --set indexer.externalConfig.secretRef.name="depscloud-indexer" \
