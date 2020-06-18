@@ -3,3 +3,5 @@ coverage/
 
 nodejs/node_modules/
 nodejs/**/*.proto
+
+*.tgz

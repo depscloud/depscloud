@@ -1,0 +1,7 @@
+coverage/
+node_modules/
+scripts/
+
+*_test.ts
+jest.config.js
+*.tgz

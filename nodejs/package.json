@@ -2,28 +2,25 @@
   "name": "@deps-cloud/api",
   "version": "0.1.4",
   "description": "API to backing deps-cloud services",
+  "main": "index.js",
+  "author": "mjpitz",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/deps-cloud/api.git"
   },
-  "author": "mjpitz",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/deps-cloud/api/issues"
+  "dependencies": {
+    "@grpc/grpc-js": "1.0.5",
+    "@grpc/proto-loader": "0.5.4"
   },
-  "homepage": "https://github.com/deps-cloud/api#readme",
   "devDependencies": {
     "@types/jest": "26.0.0",
     "jest": "26.0.1",
     "ts-jest": "26.1.0",
     "typescript": "3.9.5"
   },
-  "dependencies": {
-    "@grpc/grpc-js": "^1.0.5",
-    "@grpc/proto-loader": "0.5.4"
-  },
   "scripts": {
     "test": "jest --coverage",
     "generate": "bash scripts/generate.sh"
-  }
+  },
+  "license": "MIT"
 }
