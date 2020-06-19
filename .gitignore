@@ -1,7 +1,5 @@
-build-deps/
-coverage/
-
-nodejs/node_modules/
-nodejs/**/*.proto
+packages/**/coverage/
+packages/**/node_modules/
+packages/**/*.proto
 
 *.tgz
