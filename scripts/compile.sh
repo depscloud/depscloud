@@ -29,7 +29,6 @@ function update_protoc {
             -I=. \
             -I=$GOPATH/src \
             -I=$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
-            --plugin=/usr/local/grpc-protoc/bin/grpc_python_plugin \
             --gogo_out=plugins=grpc:$GOPATH/src \
             --grpc-gateway_out=logtostderr=true:$GOPATH/src \
             --swagger_out=logtostderr=true:${SWAGGER_DIR} \
