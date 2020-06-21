@@ -63,7 +63,7 @@ externalStorage:
 
 storage:
   address: file::memory:?cache=shared
-  driver: sqlite3
+  driver: sqlite
   readOnlyAddress:
   statements:
 #    createGraphDataTable: |
