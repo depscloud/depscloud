@@ -22,11 +22,6 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       volumes:
-        {{- if .Values.storage.statements }}
-        - name: storage-statements
-          configMap:
-            name: {{ include "tracker.fullname" . }}
-        {{- end }}
         {{- if .Values.tls.secretName }}
         - name: server-certs
           secret:
@@ -50,10 +45,6 @@ spec:
                 name: {{ include "tracker.fullname" . }}
             {{- end }}
           volumeMounts:
-            {{- if .Values.storage.statements }}
-            - mountPath: /etc/tracker/storage/
-              name: storage-statements
-            {{- end }}
             {{- if .Values.tls.secretName }}
             - mountPath: /etc/ssl/server/
               name: server-certs
@@ -63,9 +54,6 @@ spec:
             - --storage-driver=$(STORAGE_DRIVER)
             - --storage-address=$(STORAGE_ADDRESS)
             - --storage-readonly-address=$(STORAGE_READ_ONLY_ADDRESS)
-            {{- if .Values.storage.statements }}
-            - --storage-statements-file=/etc/tracker/storage/statements.yaml
-            {{- end }}
             {{- if .Values.tls.secretName }}
             - --tls-ca=/etc/ssl/server/ca.crt
             - --tls-cert=/etc/ssl/server/tls.crt

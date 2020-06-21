@@ -10,6 +10,6 @@ dependencies:
   version: 0.1.7
 - name: tracker
   repository: file://../tracker
-  version: 0.1.9
-digest: sha256:ebc61aba478a0ebe69b38f1bbe516b268aec740a3e56949db4f5149d141c63ca
-generated: "2020-06-20T22:09:00.15419-05:00"
+  version: 0.1.10
+digest: sha256:21fefcb88a24d8f1180f6a8fe0f0432e01ab792c386c4905d569d64e314df847
+generated: "2020-06-20T22:34:03.409044-05:00"
