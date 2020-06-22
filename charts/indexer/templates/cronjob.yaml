@@ -1,3 +1,4 @@
+{{- if .Values.schedule }}
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
@@ -32,15 +33,15 @@ spec:
                 secretName: {{ .Values.tracker.secretName }}
             {{- end }}
             {{- if .Values.externalConfig.secretRef.name }}
-            - name: rds-config
+            - name: config
               secret:
                 secretName:  {{ .Values.externalConfig.secretRef.name }}
             {{- else if .Values.externalConfig.configMapRef.name }}
-            - name: rds-config
+            - name: config
               configMap:
                 name:  {{ .Values.externalConfig.configMapRef.name }}
             {{- else }}
-            - name: rds-config
+            - name: config
               secret:
                 secretName: {{ include "indexer.fullname" . }}
             {{- end }}
@@ -59,8 +60,8 @@ spec:
                 - mountPath: /etc/ssl/client/tracker/
                   name: tracker-client-certs
                 {{- end }}
-                - mountPath: /etc/rds
-                  name: rds-config
+                - mountPath: /etc/indexer
+                  name: config
                 - mountPath: /tmp
                   name: tmp
                   readOnly: false
@@ -71,7 +72,7 @@ spec:
                 - --extractor-cert=/etc/ssl/client/tracker/tls.crt
                 - --extractor-key=/etc/ssl/client/tracker/tls.key
                 {{- end }}
-                - --config=/etc/rds/config.yaml
+                - --config=/etc/indexer/config.yaml
                 - --ssh-keypath=
                 - --ssh-user=
                 - --tracker-address={{ tpl .Values.tracker.address $ }}
@@ -95,3 +96,4 @@ spec:
           tolerations:
             {{- toYaml . | nindent 8 }}
         {{- end }}
+{{- end }}

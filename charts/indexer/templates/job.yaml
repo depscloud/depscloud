@@ -1,0 +1,97 @@
+{{- if not .Values.schedule }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "indexer.fullname" . }}
+  labels:
+    {{- include "indexer.labels" . | nindent 4 }}
+spec:
+  template:
+    spec:
+      restartPolicy: OnFailure
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "indexer.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      volumes:
+        - name: tmp
+          emptyDir: {}
+        {{- if .Values.extractor.secretName }}
+        - name: extractor-client-certs
+          secret:
+            secretName: {{ .Values.extractor.secretName }}
+        {{- end }}
+        {{- if .Values.tracker.secretName }}
+        - name: tracker-client-certs
+          secret:
+            secretName: {{ .Values.tracker.secretName }}
+        {{- end }}
+        {{- if .Values.externalConfig.secretRef.name }}
+        - name: config
+          secret:
+            secretName:  {{ .Values.externalConfig.secretRef.name }}
+        {{- else if .Values.externalConfig.configMapRef.name }}
+        - name: config
+          configMap:
+            name:  {{ .Values.externalConfig.configMapRef.name }}
+        {{- else }}
+        - name: config
+          secret:
+            secretName: {{ include "indexer.fullname" . }}
+            {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ include "indexer.version" . }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            {{- if .Values.extractor.secretName }}
+            - mountPath: /etc/ssl/client/extractor/
+              name: extractor-client-certs
+            {{- end }}
+            {{- if .Values.tracker.secretName }}
+            - mountPath: /etc/ssl/client/tracker/
+              name: tracker-client-certs
+            {{- end }}
+            - mountPath: /etc/indexer
+              name: config
+            - mountPath: /tmp
+              name: tmp
+              readOnly: false
+          args:
+            - --extractor-address={{ tpl .Values.extractor.address $ }}
+            {{- if .Values.extractor.secretName }}
+            - --extractor-ca=/etc/ssl/client/tracker/ca.crt
+            - --extractor-cert=/etc/ssl/client/tracker/tls.crt
+            - --extractor-key=/etc/ssl/client/tracker/tls.key
+            {{- end }}
+            - --config=/etc/indexer/config.yaml
+            - --ssh-keypath=
+            - --ssh-user=
+            - --tracker-address={{ tpl .Values.tracker.address $ }}
+            {{- if .Values.tracker.secretName }}
+            - --tracker-ca=/etc/ssl/client/tracker/ca.crt
+            - --tracker-cert=/etc/ssl/client/tracker/tls.crt
+            - --tracker-key=/etc/ssl/client/tracker/tls.key
+            {{- end }}
+            - --workers={{ .Values.workers }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}
+
