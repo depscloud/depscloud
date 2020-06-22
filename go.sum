@@ -82,6 +82,8 @@ google.golang.org/genproto v0.0.0-20200608115520-7c474a2e3482 h1:i+Aiej6cta/Frzp
 google.golang.org/genproto v0.0.0-20200608115520-7c474a2e3482/go.mod h1:jDfRM7FcilCzHH/e9qn6dsT145K34l5v+OpcnNgKAAA=
 google.golang.org/genproto v0.0.0-20200612171551-7676ae05be11 h1:II66Di7x1uAfKBfe3OchemS7pUg9ahSr7qAP3bD0+Mo=
 google.golang.org/genproto v0.0.0-20200612171551-7676ae05be11/go.mod h1:jDfRM7FcilCzHH/e9qn6dsT145K34l5v+OpcnNgKAAA=
+google.golang.org/genproto v0.0.0-20200620020550-bd6e04640131 h1:IXNofpkLhv80L3TJQvj2YQLnMHZgAktycswvtXwQiRk=
+google.golang.org/genproto v0.0.0-20200620020550-bd6e04640131/go.mod h1:jDfRM7FcilCzHH/e9qn6dsT145K34l5v+OpcnNgKAAA=
 google.golang.org/grpc v1.19.0/go.mod h1:mqu4LbDTu4XGKhr4mRzUsmM4RtVoemTSY81AxZiDr8c=
 google.golang.org/grpc v1.23.0/go.mod h1:Y5yQAOtifL1yxbo5wqy6BxZv8vAUGQwXBOALyacEbxg=
 google.golang.org/grpc v1.25.1/go.mod h1:c3i+UQWmh7LiEpx4sFZnkU36qjEYZ0imhYfXVyQciAY=
