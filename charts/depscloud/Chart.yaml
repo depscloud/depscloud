@@ -31,7 +31,7 @@ dependencies:
     condition: gateway.enabled
   - name: indexer
     repository: file://../indexer
-    version: 0.1.7
+    version: 0.1.8
     condition: indexer.enabled
   - name: tracker
     repository: file://../tracker
