@@ -22,8 +22,8 @@ func SourcesCommand(
 		Use:   "sources",
 		Short: "Get a list of source repositories from the service",
 		Example: strings.Join([]string{
-			"depscloud-cli get sources",
-			"depscloud-cli get sources -l go -o github.com -m deps-cloud/api",
+			"deps get sources",
+			"deps get sources -l go -o github.com -m deps-cloud/api",
 		}, "\n"),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx := cmd.Context()

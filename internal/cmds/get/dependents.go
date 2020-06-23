@@ -18,7 +18,7 @@ func DependentsCommand(
 	cmd := &cobra.Command{
 		Use:     "dependents",
 		Short:   "Get the list of modules that depend on the given module",
-		Example: "depscloud-cli get dependents -l go -o github.com -m deps-cloud/api",
+		Example: "deps get dependents -l go -o github.com -m deps-cloud/api",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if req.Language == "" || req.Organization == "" || req.Module == "" {
 				return fmt.Errorf("language, organization, and module must be provided")

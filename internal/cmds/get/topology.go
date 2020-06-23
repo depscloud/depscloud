@@ -123,7 +123,7 @@ func TopologyCommand(
 	cmd := &cobra.Command{
 		Use:     "topology <dependents|dependencies>",
 		Short:   "Get the module topology of either dependents or dependencies",
-		Example: "depscloud-cli get topology dependents -l go -o github.com -m deps-cloud/api",
+		Example: "deps get topology dependents -l go -o github.com -m deps-cloud/api",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return fmt.Errorf("expected at least one argument to be provided")
