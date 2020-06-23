@@ -2,3 +2,4 @@
 /*/*/charts/
 /public
 /docker/tls/certs
+*.lock

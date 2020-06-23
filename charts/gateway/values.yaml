@@ -1,6 +1,7 @@
 # Default values for gateway.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+global: {}
 
 replicaCount: 1
 
@@ -62,3 +63,5 @@ tracker:
 
 tls:
   secretName: ""
+
+labels: {}

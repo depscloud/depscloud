@@ -48,6 +48,7 @@ app.kubernetes.io/version: {{ include "tracker.version" . | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 app.kubernetes.io/part-of: deps.cloud
 app.kubernetes.io/component: tracker
+{{ include "common.labels" . }}
 {{- end -}}
 
 {{/*
@@ -67,4 +68,16 @@ Create the name of the service account to use
 {{- else -}}
     {{ default "default" .Values.serviceAccount.name }}
 {{- end -}}
+{{- end -}}
+
+{{/*
+Common lables inheritable by parent chart.
+*/}}
+{{- define "common.labels" -}}
+{{- if .Values.global.labels }}
+{{- toYaml .Values.global.labels }}
+{{- end }}
+{{- if .Values.labels }}
+{{- toYaml .Values.labels }}
+{{- end }}
 {{- end -}}

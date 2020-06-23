@@ -23,17 +23,17 @@ appVersion: latest
 dependencies:
   - name: extractor
     repository: file://../extractor
-    version: 0.1.7
+    version: 0.1.8
     condition: extractor.enabled
   - name: gateway
     repository: file://../gateway
-    version: 0.1.6
+    version: 0.1.7
     condition: gateway.enabled
   - name: indexer
     repository: file://../indexer
-    version: 0.1.8
+    version: 0.1.9
     condition: indexer.enabled
   - name: tracker
     repository: file://../tracker
-    version: 0.1.10
+    version: 0.1.11
     condition: tracker.enabled

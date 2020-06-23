@@ -1,6 +1,7 @@
 # Default values for tracker.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+global: {}
 
 replicaCount: 1
 
@@ -65,3 +66,5 @@ storage:
   address: file::memory:?cache=shared
   driver: sqlite
   readOnlyAddress:
+
+labels: {}

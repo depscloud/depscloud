@@ -48,6 +48,7 @@ app.kubernetes.io/version: {{ include "gateway.version" . | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 app.kubernetes.io/part-of: deps.cloud
 app.kubernetes.io/component: gateway
+{{ include "common.labels" . }}
 {{- end -}}
 
 {{/*
@@ -69,3 +70,14 @@ Create the name of the service account to use
 {{- end -}}
 {{- end -}}
 
+{{/*
+Common lables inheritable by parent chart.
+*/}}
+{{- define "common.labels" -}}
+{{- if .Values.global.labels }}
+{{- toYaml .Values.global.labels }}
+{{- end }}
+{{- if .Values.labels }}
+{{- toYaml .Values.labels }}
+{{- end }}
+{{- end -}}
