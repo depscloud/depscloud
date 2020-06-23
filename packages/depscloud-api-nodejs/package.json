@@ -9,7 +9,7 @@
     "url": "git+https://github.com/deps-cloud/api.git"
   },
   "dependencies": {
-    "@grpc/grpc-js": "1.0.5",
+    "@grpc/grpc-js": "1.1.1",
     "@grpc/proto-loader": "0.5.4"
   },
   "devDependencies": {
