@@ -17,9 +17,12 @@ test:
 	go test -v ./...
 
 install:
+	go install ./cmds/deps/
 	go install ./cmds/depscloud-cli/
 
 deploy:
 	mkdir -p bin
+	gox -os="windows darwin" -arch="amd64 386" -output="bin/{{.Dir}}_{{.OS}}_{{.Arch}}" ./cmds/deps
+	gox -os="linux" -arch="amd64 386 arm arm64" -output="bin/{{.Dir}}_{{.OS}}_{{.Arch}}" ./cmds/deps
 	gox -os="windows darwin" -arch="amd64 386" -output="bin/{{.Dir}}_{{.OS}}_{{.Arch}}" ./cmds/depscloud-cli
 	gox -os="linux" -arch="amd64 386 arm arm64" -output="bin/{{.Dir}}_{{.OS}}_{{.Arch}}" ./cmds/depscloud-cli
