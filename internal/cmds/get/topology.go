@@ -1,6 +1,7 @@
 package get
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/deps-cloud/api/v1alpha/schema"
@@ -22,9 +23,9 @@ type entry struct {
 	seen   map[string]bool
 }
 
-type fetcher func(req *tracker.DependencyRequest) ([]*tracker.Dependency, error)
+type fetcher func(req *tracker.DependencyRequest, ctx context.Context) ([]*tracker.Dependency, error)
 
-func topology(root *schema.Module, fetch fetcher) ([][]*schema.Module, error) {
+func topology(root *schema.Module, ctx context.Context, fetch fetcher) ([][]*schema.Module, error) {
 	edges := make(map[string][]string)
 	nodes := make(map[string]*entry)
 
@@ -45,7 +46,7 @@ func topology(root *schema.Module, fetch fetcher) ([][]*schema.Module, error) {
 				Language:     module.Language,
 				Organization: module.Organization,
 				Module:       module.Module,
-			})
+			}, ctx)
 			if err != nil {
 				return nil, err
 			}
@@ -112,50 +113,22 @@ func topology(root *schema.Module, fetch fetcher) ([][]*schema.Module, error) {
 	return result, nil
 }
 
-func TopologyCommand(
-	dependencyClient tracker.DependencyServiceClient,
+func topologyCommand(
 	writer writer.Writer,
+	fetch fetcher,
 ) *cobra.Command {
 	req := &schema.Module{}
-
 	tiered := false
 
 	cmd := &cobra.Command{
-		Use:     "topology <dependents|dependencies>",
-		Short:   "Get the module topology of either dependents or dependencies",
-		Example: "deps get topology dependents -l go -o github.com -m deps-cloud/api",
+		Use:   "topology",
+		Short: "Get the associated topology",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			if len(args) < 1 {
-				return fmt.Errorf("expected at least one argument to be provided")
-			} else if req.Language == "" || req.Organization == "" || req.Module == "" {
+			if req.Language == "" || req.Organization == "" || req.Module == "" {
 				return fmt.Errorf("language, organization, and module must be provided")
 			}
 
-			ctx := cmd.Context()
-
-			var results [][]*schema.Module
-			var err error
-
-			switch args[0] {
-			case "dependents":
-				results, err = topology(req, func(req *tracker.DependencyRequest) ([]*tracker.Dependency, error) {
-					resp, err := dependencyClient.ListDependents(ctx, req)
-					if err != nil {
-						return nil, err
-					}
-					return resp.Dependents, nil
-				})
-			case "dependencies":
-				results, err = topology(req, func(req *tracker.DependencyRequest) ([]*tracker.Dependency, error) {
-					resp, err := dependencyClient.ListDependencies(ctx, req)
-					if err != nil {
-						return nil, err
-					}
-					return resp.Dependencies, nil
-				})
-			default:
-				return fmt.Errorf("unrecognized kind: %s", args[0])
-			}
+			results, err := topology(req, cmd.Context(), fetch)
 
 			if err != nil {
 				return err

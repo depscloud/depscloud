@@ -1,6 +1,7 @@
 package get
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/deps-cloud/api/v1alpha/tracker"
@@ -38,6 +39,16 @@ func DependenciesCommand(
 		},
 	}
 
+	topologyCmd := topologyCommand(writer,
+		func(req *tracker.DependencyRequest, ctx context.Context) ([]*tracker.Dependency, error) {
+			resp, err := dependencyClient.ListDependencies(ctx, req)
+			if err != nil {
+				return nil, err
+			}
+			return resp.Dependencies, nil
+		})
+
+	cmd.AddCommand(topologyCmd)
 	addDependencyRequestFlags(cmd, req)
 
 	return cmd

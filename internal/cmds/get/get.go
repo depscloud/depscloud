@@ -20,7 +20,6 @@ func Command(
 	cmd.AddCommand(DependentsCommand(client.Dependencies(), writer))
 	cmd.AddCommand(ModulesCommand(client.Modules(), writer))
 	cmd.AddCommand(SourcesCommand(client.Sources(), client.Modules(), writer))
-	cmd.AddCommand(TopologyCommand(client.Dependencies(), writer))
 
 	return cmd
 }
