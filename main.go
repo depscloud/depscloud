@@ -29,7 +29,8 @@ import (
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
-	_ "google.golang.org/grpc/health"
+	"google.golang.org/grpc/health"
+	healthpb "google.golang.org/grpc/health/grpc_health_v1"
 )
 
 func exitIff(err error) {
@@ -135,6 +136,8 @@ func main() {
 			extractorService := extractor.NewDependencyExtractorClient(extractorConn)
 			extractor.RegisterDependencyExtractorServer(grpcServer, proxies.NewExtractorServiceProxy(extractorService))
 			_ = extractor.RegisterDependencyExtractorHandlerClient(ctx, gatewayMux, extractorService)
+
+			healthpb.RegisterHealthServer(grpcServer, health.NewServer())
 
 			httpMux := http.NewServeMux()
 
