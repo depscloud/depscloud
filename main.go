@@ -155,7 +155,7 @@ func main() {
 
 				asset, err := swagger.Asset(assetPath)
 				if err != nil {
-					writer.WriteHeader(400)
+					writer.WriteHeader(404)
 					return
 				}
 
