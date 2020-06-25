@@ -112,7 +112,6 @@ func main() {
 		Run: func(cmd *cobra.Command, args []string) {
 			address := fmt.Sprintf(":%d", port)
 
-			swagger.AssetNames()
 			grpcServer := grpc.NewServer()
 			gatewayMux := runtime.NewServeMux()
 
