@@ -21,4 +21,5 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build
-        run: make build-deps deps test deploy
+        run: |
+          make build-deps deps test deploy VERSION=${GITHUB_REF##*/}

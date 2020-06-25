@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/deps-cloud/cli/internal/cmds/completion"
 	"github.com/deps-cloud/cli/internal/cmds/get"
 	"github.com/deps-cloud/cli/internal/http"
@@ -30,6 +31,11 @@ deps provides command line access to information stored in a deps.cloud API.
   deps get dependencies -l go -o github.com -m deps-cloud/api
 `
 
+// variables set by build using -X ldflag
+var version string
+var commit string
+var timestamp string
+
 func main() {
 	client := http.DefaultClient()
 	writer := writer.Default
@@ -41,6 +47,18 @@ func main() {
 
 	cmd.AddCommand(completion.Command())
 	cmd.AddCommand(get.Command(client, writer))
+
+	cmd.AddCommand(&cobra.Command{
+		Use: "version",
+		Short: "Output version information",
+		RunE: func(_ *cobra.Command, args []string) error {
+			versionString := fmt.Sprintf("%s {version: %s, commit: %s, timestamp: %s}",
+				cmd.Use, version, commit, timestamp)
+
+			fmt.Println(versionString)
+			return nil
+		},
+	})
 
 	if err := cmd.Execute(); err != nil {
 		logrus.Fatal(err)

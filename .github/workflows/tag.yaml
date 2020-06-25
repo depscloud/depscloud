@@ -18,7 +18,8 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build
-        run: make build-deps deps test deploy
+        run: |
+          make build-deps deps test deploy VERSION=${GITHUB_REF##*/}
 
       - name: Upload Release Assets
         uses: svenstaro/upload-release-action@v1-release
