@@ -26,7 +26,7 @@
     "typescript": "3.9.5"
   },
   "dependencies": {
-    "@depscloud/api": "0.1.4",
+    "@depscloud/api": "0.1.5",
     "@grpc/grpc-js": "1.1.1",
     "@grpc/proto-loader": "0.5.4",
     "caporal": "latest",
