@@ -1,9 +1,9 @@
 {
-  "name": "@deps-cloud/indexer",
+  "name": "@depscloud/indexer",
   "description": "Dependency indexing service",
   "version": "0.2.10",
   "repository": {
     "type": "git",
-    "url": "git@github.com:deps-cloud/indexer.git"
+    "url": "git@github.com:depscloud/indexer.git"
   }
 }
