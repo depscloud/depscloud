@@ -64,7 +64,7 @@ describe("DependencyExtractorImpl", () => {
         await Promise.all(promises);
 
         const dependencyManagementFiles = await extractorImpl.extractInternal(
-            "git@github.com:deps-cloud/extractor.git", path.sep, fileContents);
+            "git@github.com:depscloud/extractor.git", path.sep, fileContents);
 
         expect(dependencyManagementFiles).toMatchSnapshot();
     });

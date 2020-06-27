@@ -14,7 +14,7 @@ describe("GopkgTomlExtractor", () => {
         const parser = new GopkgTomlExtractor();
 
         const actual = await parser.extract(
-            "git@github.com:deps-cloud/extractor.git", {
+            "git@github.com:depscloud/extractor.git", {
                 "Gopkg.toml": new ExtractorFile(content),
             },
         );

@@ -6,8 +6,8 @@ After parsing out the information, it returns a standardized representation maki
 
 ## Support
 
-![GitHub](https://img.shields.io/github/license/deps-cloud/extractor.svg)
-![branch](https://github.com/deps-cloud/extractor/workflows/branch/badge.svg?branch=main)
+![GitHub](https://img.shields.io/github/license/depscloud/extractor.svg)
+![branch](https://github.com/depscloud/extractor/workflows/branch/badge.svg?branch=main)
 
 ## Getting Started
 

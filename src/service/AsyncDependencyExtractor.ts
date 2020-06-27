@@ -1,6 +1,6 @@
 import {
     ExtractRequest, ExtractResponse, MatchRequest, MatchResponse,
-} from "@deps-cloud/api/v1alpha/extractor";
+} from "@depscloud/api/v1alpha/extractor";
 import {ServerUnaryCall} from "@grpc/grpc-js";
 
 export default interface AsyncDependencyExtractor {

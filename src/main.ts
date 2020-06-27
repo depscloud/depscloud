@@ -1,4 +1,4 @@
-import {DependencyExtractor} from "@deps-cloud/api/v1alpha/extractor";
+import {DependencyExtractor} from "@depscloud/api/v1alpha/extractor";
 
 import {Server, ServerCredentials} from "@grpc/grpc-js";
 import {configure, getLogger} from "log4js";

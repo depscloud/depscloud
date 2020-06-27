@@ -2,14 +2,14 @@ import inferImportPath from "./inferImportPath";
 
 describe("inferImportPath", () => {
     test("git-ssh", () => {
-        const importPath = inferImportPath("git@github.com:deps-cloud/deps-cloud-project.git");
+        const importPath = inferImportPath("git@github.com:depscloud/depscloud-project.git");
 
-        expect(importPath).toBe("github.com/deps-cloud/deps-cloud-project");
+        expect(importPath).toBe("github.com/depscloud/depscloud-project");
     });
 
     test("git-https", () => {
-        const importPath = inferImportPath("https://github.com/deps-cloud/deps-cloud-project.git");
+        const importPath = inferImportPath("https://github.com/depscloud/depscloud-project.git");
 
-        expect(importPath).toBe("github.com/deps-cloud/deps-cloud-project");
+        expect(importPath).toBe("github.com/depscloud/depscloud-project");
     });
 });

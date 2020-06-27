@@ -1,4 +1,4 @@
-import {Dependency, DependencyManagementFile} from "@deps-cloud/api/v1alpha/deps";
+import {Dependency, DependencyManagementFile} from "@depscloud/api/v1alpha/deps";
 import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
 import parseImportPath from "./goutils/parseImportPath";

@@ -1,4 +1,4 @@
-import {DependencyManagementFile} from "@deps-cloud/api/v1alpha/deps";
+import {DependencyManagementFile} from "@depscloud/api/v1alpha/deps";
 import ExtractorFile from "./ExtractorFile";
 
 export default interface Extractor {

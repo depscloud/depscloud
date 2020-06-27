@@ -349,7 +349,7 @@ Array [
         "versionConstraint": "v1.2.1",
       },
       Object {
-        "module": "deps-cloud/rds",
+        "module": "depscloud/rds",
         "organization": "github.com",
         "scopes": Array [
           "direct",
@@ -382,7 +382,7 @@ Array [
       },
     ],
     "language": "go",
-    "module": "deps-cloud/finch",
+    "module": "depscloud/finch",
     "organization": "github.com",
     "sourceUrl": "",
     "system": "vgo",
@@ -984,7 +984,7 @@ Array [
       },
     ],
     "language": "go",
-    "module": "deps-cloud/extractor",
+    "module": "depscloud/extractor",
     "organization": "github.com",
     "sourceUrl": "",
     "system": "gopkg",

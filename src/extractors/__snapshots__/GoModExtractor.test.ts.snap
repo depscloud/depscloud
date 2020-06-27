@@ -12,7 +12,7 @@ Object {
       "versionConstraint": "v1.2.1",
     },
     Object {
-      "module": "deps-cloud/rds",
+      "module": "depscloud/rds",
       "organization": "github.com",
       "scopes": Array [
         "direct",
@@ -45,7 +45,7 @@ Object {
     },
   ],
   "language": "go",
-  "module": "deps-cloud/finch",
+  "module": "depscloud/finch",
   "organization": "github.com",
   "sourceUrl": "",
   "system": "vgo",
@@ -59,7 +59,7 @@ exports[`GoModExtractor fullParse 2`] = `
   \\"system\\": \\"vgo\\",
   \\"sourceUrl\\": \\"\\",
   \\"organization\\": \\"github.com\\",
-  \\"module\\": \\"deps-cloud/finch\\",
+  \\"module\\": \\"depscloud/finch\\",
   \\"version\\": \\"latest\\",
   \\"dependencies\\": [
     {
@@ -72,7 +72,7 @@ exports[`GoModExtractor fullParse 2`] = `
     },
     {
       \\"organization\\": \\"github.com\\",
-      \\"module\\": \\"deps-cloud/rds\\",
+      \\"module\\": \\"depscloud/rds\\",
       \\"versionConstraint\\": \\"v0.0.2\\",
       \\"scopes\\": [
         \\"direct\\"
