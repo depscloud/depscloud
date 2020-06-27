@@ -46,28 +46,31 @@ helm repo add bitnami https://charts.bitnami.com/bitnami 1>/dev/null
 helm repo update 1>/dev/null
 
 echo "Packaging Manifests bitnami/mysql"
+echo "---" > "${k8s_path}/mysql.yaml"
 helm template mysql bitnami/mysql \
   --version 6.14.4 \
   --set db.user=user \
   --set db.password=password \
   --set db.name=depscloud \
   --set volumePermissions.enabled=true \
-  > "${k8s_path}/mysql.yaml"
+  >> "${k8s_path}/mysql.yaml"
 
 echo "Packaging Manifests bitnami/postgres"
+echo "---" > "${k8s_path}/postgres.yaml"
 helm template postgres bitnami/postgresql \
   --version 8.10.10 \
   --set postgresqlUsername=user \
   --set postgresqlPassword=password \
   --set postgresqlDatabase=depscloud \
-> "${k8s_path}/postgres.yaml"
+  >> "${k8s_path}/postgres.yaml"
 
 
 echo "Packaging Manifests stable/depscloud"
+echo "---" > "${k8s_path}/depscloud-system.yaml"
 helm template depscloud ${in}/depscloud/ \
   --set indexer.externalConfig.secretRef.name="depscloud-indexer" \
   --set tracker.externalStorage.secretRef.name="depscloud-tracker" \
-  > "${k8s_path}/depscloud-system.yaml"
+  >> "${k8s_path}/depscloud-system.yaml"
 
 ## copy in README
 
