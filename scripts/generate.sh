@@ -47,6 +47,7 @@ helm repo update 1>/dev/null
 
 echo "Packaging Manifests bitnami/mysql"
 helm template mysql bitnami/mysql \
+  --version 6.14.1 \
   --set db.user=user \
   --set db.password=password \
   --set db.name=depscloud \
