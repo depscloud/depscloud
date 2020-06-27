@@ -25,4 +25,4 @@ jobs:
           curl -sfL https://install.goreleaser.com/github.com/goreleaser/goreleaser.sh | sh
           make build-deps deps test
           ./bin/goreleaser
-          find dist/ -iname *.deb | xargs -I{} curl -F package=@{} https://${GEMFURY_TOKEN}@push.fury.io/deps-cloud/
+          find dist/ -iname *.deb | xargs -I{} curl -F package=@{} https://${GEMFURY_TOKEN}@push.fury.io/depscloud/
