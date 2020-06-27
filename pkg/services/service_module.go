@@ -3,11 +3,11 @@ package services
 import (
 	"context"
 
-	"github.com/deps-cloud/api"
-	"github.com/deps-cloud/api/v1alpha/schema"
-	"github.com/deps-cloud/api/v1alpha/store"
-	"github.com/deps-cloud/api/v1alpha/tracker"
-	"github.com/deps-cloud/tracker/pkg/types"
+	"github.com/depscloud/api"
+	"github.com/depscloud/api/v1alpha/schema"
+	"github.com/depscloud/api/v1alpha/store"
+	"github.com/depscloud/api/v1alpha/tracker"
+	"github.com/depscloud/tracker/pkg/types"
 
 	"github.com/sirupsen/logrus"
 

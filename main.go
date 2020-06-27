@@ -8,9 +8,9 @@ import (
 	"net"
 	"os"
 
-	"github.com/deps-cloud/api/v1alpha/store"
-	"github.com/deps-cloud/tracker/pkg/services"
-	"github.com/deps-cloud/tracker/pkg/services/graphstore"
+	"github.com/depscloud/api/v1alpha/store"
+	"github.com/depscloud/tracker/pkg/services"
+	"github.com/depscloud/tracker/pkg/services/graphstore"
 
 	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/jackc/pgx/v4"

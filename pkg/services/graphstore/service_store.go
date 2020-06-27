@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/deps-cloud/api"
-	"github.com/deps-cloud/api/v1alpha/store"
+	"github.com/depscloud/api"
+	"github.com/depscloud/api/v1alpha/store"
 
 	"github.com/jmoiron/sqlx"
 

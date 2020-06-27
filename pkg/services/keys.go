@@ -4,9 +4,9 @@ import (
 	"crypto/sha256"
 	"strings"
 
-	"github.com/deps-cloud/api/v1alpha/schema"
-	"github.com/deps-cloud/api/v1alpha/store"
-	"github.com/deps-cloud/tracker/pkg/services/graphstore"
+	"github.com/depscloud/api/v1alpha/schema"
+	"github.com/depscloud/api/v1alpha/store"
+	"github.com/depscloud/tracker/pkg/services/graphstore"
 )
 
 func key(vars ...string) []byte {
