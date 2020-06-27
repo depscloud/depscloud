@@ -70,6 +70,6 @@ config:
     - github:
         strategy: HTTP
         organizations:
-          - deps-cloud
+          - depscloud
 
 labels: {}

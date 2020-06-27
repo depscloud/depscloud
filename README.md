@@ -8,8 +8,8 @@ You will need to configure some credentials later on.
 
 ```
 $ kubectl create ns depscloud
-$ kubectl apply -n depscloud -f https://deps-cloud.github.io/deploy/k8s/mysql.yaml
-$ kubectl apply -n depscloud -f https://deps-cloud.github.io/deploy/k8s/depscloud-system.yaml
+$ kubectl apply -n depscloud -f https://depscloud.github.io/deploy/k8s/mysql.yaml
+$ kubectl apply -n depscloud -f https://depscloud.github.io/deploy/k8s/depscloud-system.yaml
 ```
 
 By default, the system doesn't know anything about the MySQL being deployed.
@@ -35,7 +35,7 @@ Once this configuration is provided, the tracker pods should start up without an
 
 Once the tracker is configured and running, we can configure the indexer.
 The indexer needs a config.yaml file to bootstrap the indexer with the repos it's intended to crawl.
-The configuration below demonstrates how the indexer can be configured to index the deps-cloud projects.
+The configuration below demonstrates how the indexer can be configured to index the depscloud projects.
 
 ```bash
 $ cat <<EOF | kubectl apply -f -
@@ -50,7 +50,7 @@ stringData:
     - github:
         strategy: HTTP
         organizations:
-        - deps-cloud
+        - depscloud
 EOF
 ```
 
@@ -66,11 +66,11 @@ For a quick introduction to Charts, see the [Chart Guide](https://helm.sh/docs/t
 ### How do I install these charts?
 
 ```
-$ helm repo add depscloud https://deps-cloud.github.io/deploy/charts
+$ helm repo add depscloud https://depscloud.github.io/deploy/charts
 "depscloud" has been added to your repositories
 ```
 
 ### Resources
 
-* [Chart Sources](https://github.com/deps-cloud/deploy)
+* [Chart Sources](https://github.com/depscloud/deploy)
 * [deps.cloud](https://deps.cloud)

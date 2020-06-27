@@ -2,8 +2,8 @@
 
 set -e -o pipefail
 
-readonly base_url="https://deps-cloud.github.io/deploy"
-readonly repo_url="https://github.com/deps-cloud/deploy.git"
+readonly base_url="https://depscloud.github.io/deploy"
+readonly repo_url="https://github.com/depscloud/deploy.git"
 
 readonly in=charts
 readonly out=public
