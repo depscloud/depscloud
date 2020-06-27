@@ -31,6 +31,22 @@ If release name contains chart name it will be used as a full name.
 {{- end -}}
 {{- end -}}
 
+{{- define "extractor.address" -}}
+{{- if .Values.extractor.address -}}
+{{- .Values.extractor.address | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+dns:///{{ .Release.Name }}-extractor:8090
+{{- end -}}
+{{- end -}}
+
+{{- define "tracker.address" -}}
+{{- if .Values.tracker.address -}}
+{{- .Values.tracker.address | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+dns:///{{ .Release.Name }}-tracker:8090
+{{- end -}}
+{{- end -}}
+
 {{/*
 Create chart name and version as used by the chart label.
 */}}

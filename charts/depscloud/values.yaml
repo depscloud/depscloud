@@ -8,17 +8,17 @@ extractor:
 gateway:
   enabled: true
   extractor:
-    address: dns:///depscloud-extractor:8090
+    address: ""
   tracker:
-    address: dns:///depscloud-tracker:8090
+    address: ""
 
 indexer:
   enabled: true
   schedule: ""
   extractor:
-    address: dns:///depscloud-extractor:8090
+    address: ""
   tracker:
-    address: dns:///depscloud-tracker:8090
+    address: ""
 
 tracker:
   enabled: true

@@ -66,7 +66,7 @@ spec:
                   name: tmp
                   readOnly: false
               args:
-                - --extractor-address={{ tpl .Values.extractor.address $ }}
+                - --extractor-address={{ include "extractor.address" . }}
                 {{- if .Values.extractor.secretName }}
                 - --extractor-ca=/etc/ssl/client/tracker/ca.crt
                 - --extractor-cert=/etc/ssl/client/tracker/tls.crt
@@ -75,7 +75,7 @@ spec:
                 - --config=/etc/indexer/config.yaml
                 - --ssh-keypath=
                 - --ssh-user=
-                - --tracker-address={{ tpl .Values.tracker.address $ }}
+                - --tracker-address={{ include "tracker.address" . }}
                 {{- if .Values.tracker.secretName }}
                 - --tracker-ca=/etc/ssl/client/tracker/ca.crt
                 - --tracker-cert=/etc/ssl/client/tracker/tls.crt
