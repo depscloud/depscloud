@@ -50,15 +50,6 @@ nfpms:
     formats:
       - deb
 
-publishers:
-  - name: deps
-    ids:
-      - depscloud-cli-deb
-    cmd: |
-      curl -F package=@{{ .ArtifactPath }} https://${TOKEN}@push.fury.io/deps-cloud/
-    env:
-      - TOKEN={{ .Env.GEMFURY_TOKEN }}
-
 checksum:
   name_template: 'checksums.txt'
 
