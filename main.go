@@ -10,10 +10,10 @@ import (
 	"os"
 	"strings"
 
-	"github.com/deps-cloud/api/swagger"
-	"github.com/deps-cloud/api/v1alpha/extractor"
-	"github.com/deps-cloud/api/v1alpha/tracker"
-	"github.com/deps-cloud/gateway/internal/proxies"
+	"github.com/depscloud/api/swagger"
+	"github.com/depscloud/api/v1alpha/extractor"
+	"github.com/depscloud/api/v1alpha/tracker"
+	"github.com/depscloud/gateway/internal/proxies"
 
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 

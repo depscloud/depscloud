@@ -5,8 +5,8 @@ This translates standard HTTP requests into a gRPC request based on annotations 
 
 ## Support
 
-![GitHub](https://img.shields.io/github/license/deps-cloud/gateway.svg)
-![branch](https://github.com/deps-cloud/gateway/workflows/branch/badge.svg?branch=main)
+![GitHub](https://img.shields.io/github/license/depscloud/gateway.svg)
+![branch](https://github.com/depscloud/gateway/workflows/branch/badge.svg?branch=main)
 
 ## Getting Started
 

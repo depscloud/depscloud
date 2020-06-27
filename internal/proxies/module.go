@@ -3,8 +3,8 @@ package proxies
 import (
 	"context"
 
-	"github.com/deps-cloud/api/v1alpha/schema"
-	"github.com/deps-cloud/api/v1alpha/tracker"
+	"github.com/depscloud/api/v1alpha/schema"
+	"github.com/depscloud/api/v1alpha/tracker"
 )
 
 func NewModuleServiceProxy(client tracker.ModuleServiceClient) tracker.ModuleServiceServer {
