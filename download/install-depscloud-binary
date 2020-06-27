@@ -28,6 +28,6 @@ echo "arch:     ${ARCH}"
 echo "app:      ${APP}"
 echo "version:  ${APP_VERSION}"
 
-curl -L -O "https://github.com/deps-cloud/${APP}/releases/download/v${APP_VERSION}/${APP}_${OS}_${ARCH}"
+curl -L -O "https://github.com/depscloud/${APP}/releases/download/v${APP_VERSION}/${APP}_${OS}_${ARCH}"
 chmod 755 ${APP}_${OS}_${ARCH}
 mv ${APP}_${OS}_${ARCH} /usr/bin/${APP}
