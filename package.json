@@ -1,9 +1,9 @@
 {
-  "name": "@deps-cloud/gateway",
+  "name": "@depscloud/gateway",
   "description": "HTTP to gRPC proxy",
   "version": "0.2.11",
   "repository": {
     "type": "git",
-    "url": "git@github.com:deps-cloud/gateway.git"
+    "url": "git@github.com:depscloud/gateway.git"
   }
 }
