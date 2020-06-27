@@ -32,7 +32,6 @@ brews:
     github:
       owner: deps-cloud
       name: homebrew-tap
-    download_strategy: CurlDownloadStrategy.
     commit_author:
       name: goreleaserbot
       email: mjpitz@deps.cloud
