@@ -42,8 +42,10 @@ helm repo index "${charts_path}" --url "${base_url}/charts"
 tmp=$(mktemp -d)
 trap "rm -rf '${tmp}'" EXIT
 
-echo "Packaging Manifests bitnami/mysql"
 helm repo add bitnami https://charts.bitnami.com/bitnami 1>/dev/null
+helm repo update 1>/dev/null
+
+echo "Packaging Manifests bitnami/mysql"
 helm template mysql bitnami/mysql \
   --set db.user=user \
   --set db.password=password \
