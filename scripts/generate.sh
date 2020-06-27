@@ -65,7 +65,7 @@ helm template postgres bitnami/postgresql \
   >> "${k8s_path}/postgres.yaml"
 
 
-echo "Packaging Manifests stable/depscloud"
+echo "Packaging Manifests ${in}/depscloud"
 echo "---" > "${k8s_path}/depscloud-system.yaml"
 helm template depscloud ${in}/depscloud/ \
   --set indexer.externalConfig.secretRef.name="depscloud-indexer" \

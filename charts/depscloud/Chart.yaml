@@ -14,7 +14,7 @@ type: application
 
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
-version: 0.1.4
+version: 0.1.5
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application.
@@ -23,17 +23,17 @@ appVersion: latest
 dependencies:
   - name: extractor
     repository: file://../extractor
-    version: 0.1.8
+    version: 0.1.9
     condition: extractor.enabled
   - name: gateway
     repository: file://../gateway
-    version: 0.1.8
+    version: 0.1.9
     condition: gateway.enabled
   - name: indexer
     repository: file://../indexer
-    version: 0.1.9
+    version: 0.1.10
     condition: indexer.enabled
   - name: tracker
     repository: file://../tracker
-    version: 0.1.12
+    version: 0.1.13
     condition: tracker.enabled

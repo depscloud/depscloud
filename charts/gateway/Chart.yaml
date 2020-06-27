@@ -1,6 +1,6 @@
 apiVersion: v2
 name: gateway
-description: A Helm chart for running the depscloud gateway process
+description: A Helm chart for running the deps.cloud gateway process
 
 # A chart can be either an 'application' or a 'library' chart.
 #
@@ -14,8 +14,8 @@ type: application
 
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
-version: 0.1.8
+version: 0.1.9
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application.
-appVersion: 0.2.11
+appVersion: 0.2.12
