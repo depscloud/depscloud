@@ -3,10 +3,10 @@ package main
 import (
 	"fmt"
 
-	"github.com/deps-cloud/cli/internal/cmds/completion"
-	"github.com/deps-cloud/cli/internal/cmds/get"
-	"github.com/deps-cloud/cli/internal/http"
-	"github.com/deps-cloud/cli/internal/writer"
+	"github.com/depscloud/cli/internal/cmds/completion"
+	"github.com/depscloud/cli/internal/cmds/get"
+	"github.com/depscloud/cli/internal/http"
+	"github.com/depscloud/cli/internal/writer"
 
 	"github.com/sirupsen/logrus"
 
@@ -23,13 +23,13 @@ deps provides command line access to information stored in a deps.cloud API.
   deps get sources
 
   # list modules for a source
-  deps get modules --url https://github.com/deps-cloud/api.git
+  deps get modules --url https://github.com/depscloud/api.git
 
   # list dependents a module
-  deps get dependents -l go -o github.com -m deps-cloud/api
+  deps get dependents -l go -o github.com -m depscloud/api
 
   # list dependencies of a module
-  deps get dependencies -l go -o github.com -m deps-cloud/api
+  deps get dependencies -l go -o github.com -m depscloud/api
 `
 
 // variables set by build using -X ldflag

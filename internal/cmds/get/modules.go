@@ -3,9 +3,9 @@ package get
 import (
 	"strings"
 
-	"github.com/deps-cloud/api/v1alpha/schema"
-	"github.com/deps-cloud/api/v1alpha/tracker"
-	"github.com/deps-cloud/cli/internal/writer"
+	"github.com/depscloud/api/v1alpha/schema"
+	"github.com/depscloud/api/v1alpha/tracker"
+	"github.com/depscloud/cli/internal/writer"
 
 	"github.com/spf13/cobra"
 )
@@ -21,7 +21,7 @@ func ModulesCommand(
 		Short: "Get a list of modules from the service",
 		Example: strings.Join([]string{
 			"deps get modules",
-			"deps get modules --url https://github.com/deps-cloud/api.git",
+			"deps get modules --url https://github.com/depscloud/api.git",
 		}, "\n"),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx := cmd.Context()

@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/deps-cloud/api/v1alpha/tracker"
+	"github.com/depscloud/api/v1alpha/tracker"
 
 	"github.com/gogo/protobuf/jsonpb"
 

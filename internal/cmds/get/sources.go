@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/deps-cloud/api/v1alpha/schema"
-	"github.com/deps-cloud/api/v1alpha/tracker"
-	"github.com/deps-cloud/cli/internal/writer"
+	"github.com/depscloud/api/v1alpha/schema"
+	"github.com/depscloud/api/v1alpha/tracker"
+	"github.com/depscloud/cli/internal/writer"
 
 	"github.com/spf13/cobra"
 )
@@ -23,7 +23,7 @@ func SourcesCommand(
 		Short: "Get a list of source repositories from the service",
 		Example: strings.Join([]string{
 			"deps get sources",
-			"deps get sources -l go -o github.com -m deps-cloud/api",
+			"deps get sources -l go -o github.com -m depscloud/api",
 		}, "\n"),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx := cmd.Context()

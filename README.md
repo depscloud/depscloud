@@ -11,31 +11,31 @@ Early alpha. Hacked together in a night.
 **List modules within the source repository**
 
 ```bash
-$ deps get modules -u https://github.com/deps-cloud/api.git
-{"manages":{"language":"go","system":"vgo","version":"latest"},"module":{"language":"go","organization":"github.com","module":"deps-cloud/api"}}
-{"manages":{"language":"node","system":"npm","version":"0.1.0"},"module":{"language":"node","organization":"deps-cloud","module":"api"}}
+$ deps get modules -u https://github.com/depscloud/api.git
+{"manages":{"language":"go","system":"vgo","version":"latest"},"module":{"language":"go","organization":"github.com","module":"depscloud/api"}}
+{"manages":{"language":"node","system":"npm","version":"0.1.0"},"module":{"language":"node","organization":"depscloud","module":"api"}}
 ```
 
 **List source repositories for the given module**
 
 ```bash
-$ deps get sources -l go -o github.com -m deps-cloud/api
-{"source":{"url":"https://github.com/deps-cloud/api.git"},"manages":{"language":"go","system":"vgo","version":"latest"}}
+$ deps get sources -l go -o github.com -m depscloud/api
+{"source":{"url":"https://github.com/depscloud/api.git"},"manages":{"language":"go","system":"vgo","version":"latest"}}
 ```
 
 **List modules that depend on a given module**
 
 ```bash
-$ deps get dependents -l go -o github.com -m deps-cloud/api
-{"depends":{"language":"go","version_constraint":"v0.1.0","scopes":["direct"]},"module":{"language":"go","organization":"github.com","module":"deps-cloud/gateway"}}
-{"depends":{"language":"go","version_constraint":"v0.1.0","scopes":["direct"]},"module":{"language":"go","organization":"github.com","module":"deps-cloud/tracker"}}
-{"depends":{"language":"go","version_constraint":"v0.1.0","scopes":["direct"]},"module":{"language":"go","organization":"github.com","module":"deps-cloud/indexer"}}
+$ deps get dependents -l go -o github.com -m depscloud/api
+{"depends":{"language":"go","version_constraint":"v0.1.0","scopes":["direct"]},"module":{"language":"go","organization":"github.com","module":"depscloud/gateway"}}
+{"depends":{"language":"go","version_constraint":"v0.1.0","scopes":["direct"]},"module":{"language":"go","organization":"github.com","module":"depscloud/tracker"}}
+{"depends":{"language":"go","version_constraint":"v0.1.0","scopes":["direct"]},"module":{"language":"go","organization":"github.com","module":"depscloud/indexer"}}
 ```
 
 **List modules that a given module depends on**
 
 ```bash
-$ deps get dependencies -l go -o github.com -m deps-cloud/api
+$ deps get dependencies -l go -o github.com -m depscloud/api
 {"depends":{"language":"go","version_constraint":"v1.3.0","scopes":["direct"]},"module":{"language":"go","organization":"github.com","module":"gogo/protobuf"}}
 {"depends":{"language":"go","version_constraint":"v0.3.2","scopes":["indirect"]},"module":{"language":"go","organization":"golang.org","module":"x/text"}}
 {"depends":{"language":"go","version_constraint":"v0.0.0-20190628185345-da137c7871d7","scopes":["indirect"]},"module":{"language":"go","organization":"golang.org","module":"x/net"}}

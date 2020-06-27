@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/deps-cloud/api/v1alpha/tracker"
-	"github.com/deps-cloud/cli/internal/writer"
+	"github.com/depscloud/api/v1alpha/tracker"
+	"github.com/depscloud/cli/internal/writer"
 
 	"github.com/spf13/cobra"
 )
@@ -19,7 +19,7 @@ func DependenciesCommand(
 	cmd := &cobra.Command{
 		Use:     "dependencies",
 		Short:   "Get the list of modules the given module depends on",
-		Example: "deps get dependencies -l go -o github.com -m deps-cloud/api",
+		Example: "deps get dependencies -l go -o github.com -m depscloud/api",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if req.Language == "" || req.Organization == "" || req.Module == "" {
 				return fmt.Errorf("language, organization, and module must be provided")

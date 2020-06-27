@@ -1,8 +1,8 @@
 package get
 
 import (
-	"github.com/deps-cloud/cli/internal/http"
-	"github.com/deps-cloud/cli/internal/writer"
+	"github.com/depscloud/cli/internal/http"
+	"github.com/depscloud/cli/internal/writer"
 
 	"github.com/spf13/cobra"
 )

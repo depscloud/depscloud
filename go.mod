@@ -1,9 +1,9 @@
-module github.com/deps-cloud/cli
+module github.com/depscloud/cli
 
 go 1.13
 
 require (
-	github.com/deps-cloud/api v0.1.4
+	github.com/depscloud/api v0.1.4
 	github.com/gogo/protobuf v1.3.1
 	github.com/golang/protobuf v1.4.2 // indirect
 	github.com/grpc-ecosystem/grpc-gateway v1.14.6 // indirect

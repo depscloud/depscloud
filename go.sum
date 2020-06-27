@@ -21,10 +21,10 @@ github.com/cpuguy83/go-md2man/v2 v2.0.0 h1:EoUDS0afbrsXAZ9YQ9jdu/mZ2sXgT1/2yyNng
 github.com/cpuguy83/go-md2man/v2 v2.0.0/go.mod h1:maD7wRr/U5Z6m/iR4s+kqSMx2CaBsrgA7czyZG/E6dU=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
-github.com/deps-cloud/api v0.1.3 h1:hh6X1YJNG768AzPAxRLYqH+PE5hHZJgdGdpP9DczELQ=
-github.com/deps-cloud/api v0.1.3/go.mod h1:+qCuS3PEg2lxQtQo9F/kObIIIn+ZtP4FSlU8n+QH4vQ=
-github.com/deps-cloud/api v0.1.4 h1:Qu6iCLSJ1zvU2D9rqIAKcSB9dRk9MJH+IdYAewBlg60=
-github.com/deps-cloud/api v0.1.4/go.mod h1:+qCuS3PEg2lxQtQo9F/kObIIIn+ZtP4FSlU8n+QH4vQ=
+github.com/depscloud/api v0.1.3 h1:hh6X1YJNG768AzPAxRLYqH+PE5hHZJgdGdpP9DczELQ=
+github.com/depscloud/api v0.1.3/go.mod h1:+qCuS3PEg2lxQtQo9F/kObIIIn+ZtP4FSlU8n+QH4vQ=
+github.com/depscloud/api v0.1.4 h1:Qu6iCLSJ1zvU2D9rqIAKcSB9dRk9MJH+IdYAewBlg60=
+github.com/depscloud/api v0.1.4/go.mod h1:+qCuS3PEg2lxQtQo9F/kObIIIn+ZtP4FSlU8n+QH4vQ=
 github.com/dgrijalva/jwt-go v3.2.0+incompatible/go.mod h1:E3ru+11k8xSBh+hMPgOLZmtrrCbhqsmaPHjLKYnJCaQ=
 github.com/dgryski/go-sip13 v0.0.0-20181026042036-e10d5fee7954/go.mod h1:vAd38F8PWV+bWy6jNmig1y/TA+kYO4g3RSRF0IAv0no=
 github.com/envoyproxy/go-control-plane v0.9.0/go.mod h1:YTl/9mNaCwkRvm6d1a2C3ymFceY/DCBVvsKhRF0iEA4=

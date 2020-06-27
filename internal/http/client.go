@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/deps-cloud/api/v1alpha/tracker"
+	"github.com/depscloud/api/v1alpha/tracker"
 )
 
 func DefaultClient() Client {
