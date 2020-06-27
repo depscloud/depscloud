@@ -1,6 +1,7 @@
+project_name: deps
+
 builds:
-  - id: deps
-    main: ./cmds/deps/main.go
+  - main: ./cmds/deps/main.go
     binary: deps
     env:
       - CGO_ENABLED=0
@@ -41,8 +42,7 @@ brews:
 nfpms:
   - id: depscloud-cli-deb
     package_name: depscloud-cli
-    builds:
-      - deps
+    file_name_template: "depscloud-cli_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
     vendor: deps.cloud
     homepage: https://deps.cloud/
     description: Command line interface to the deps.cloud API.
