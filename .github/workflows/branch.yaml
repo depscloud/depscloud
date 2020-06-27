@@ -15,11 +15,13 @@ jobs:
       image: golang:1.14-alpine3.11
     steps:
       - name: Prepare
-        run: apk -U upgrade && apk add build-base git ca-certificates
+        run: apk -U upgrade && apk add build-base git ca-certificates curl
 
       - name: Checkout
         uses: actions/checkout@v2
 
       - name: Build
         run: |
-          make build-deps deps test deploy VERSION=${GITHUB_REF##*/}
+          curl -sfL https://install.goreleaser.com/github.com/goreleaser/goreleaser.sh | sh
+          make build-deps deps test
+          ./bin/goreleaser --snapshot --skip-publish

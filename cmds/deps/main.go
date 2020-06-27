@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/deps-cloud/cli/internal/cmds/completion"
 	"github.com/deps-cloud/cli/internal/cmds/get"
 	"github.com/deps-cloud/cli/internal/http"
@@ -34,7 +35,7 @@ deps provides command line access to information stored in a deps.cloud API.
 // variables set by build using -X ldflag
 var version string
 var commit string
-var timestamp string
+var date string
 
 func main() {
 	client := http.DefaultClient()
@@ -49,11 +50,11 @@ func main() {
 	cmd.AddCommand(get.Command(client, writer))
 
 	cmd.AddCommand(&cobra.Command{
-		Use: "version",
+		Use:   "version",
 		Short: "Output version information",
 		RunE: func(_ *cobra.Command, args []string) error {
-			versionString := fmt.Sprintf("%s {version: %s, commit: %s, timestamp: %s}",
-				cmd.Use, version, commit, timestamp)
+			versionString := fmt.Sprintf("%s {version: %s, commit: %s, date: %s}",
+				cmd.Use, version, commit, date)
 
 			fmt.Println(versionString)
 			return nil

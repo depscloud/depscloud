@@ -12,20 +12,15 @@ jobs:
       image: golang:1.14-alpine3.11
     steps:
       - name: Prepare
-        run: apk -U upgrade && apk add build-base git ca-certificates
+        run: apk -U upgrade && apk add build-base git ca-certificates curl
 
       - name: Checkout
         uses: actions/checkout@v2
 
       - name: Build
+        env:
+          GEMFURY_TOKEN: ${{ secrets.GEMFURY_TOKEN }}
         run: |
-          make build-deps deps test deploy VERSION=${GITHUB_REF##*/}
-
-      - name: Upload Release Assets
-        uses: svenstaro/upload-release-action@v1-release
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: bin/*
-          tag: ${{ github.ref }}
-          overwrite: true
-          file_glob: true
+          curl -sfL https://install.goreleaser.com/github.com/goreleaser/goreleaser.sh | sh
+          make build-deps deps test deploy
+          ./bin/goreleaser
