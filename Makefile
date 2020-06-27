@@ -3,6 +3,6 @@ build-docker:
 
 compile-docker:
 	docker run --rm \
-		-v $(PWD):/go/src/github.com/deps-cloud/api \
+		-v $(PWD):/go/src/github.com/depscloud/api \
 		depscloud/api-builder \
 		bash scripts/compile.sh

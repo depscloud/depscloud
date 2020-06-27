@@ -13,7 +13,7 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/deps-cloud/api/v1alpha/schema"
+	"github.com/depscloud/api/v1alpha/schema"
 	"github.com/golang/protobuf/descriptor"
 	"github.com/golang/protobuf/proto"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"

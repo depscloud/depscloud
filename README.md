@@ -1,17 +1,17 @@
 # api
 
-All deps-cloud API definitions consolidated into a single repostory.
-This repository currenlty produces 2 libraries:
+All deps.cloud API definitions consolidated into a single repository.
+This repository currently produces 2 libraries:
 
-* npm: [@deps-cloud/api](https://www.npmjs.com/package/@deps-cloud/api)
-* vgo: [github.com/deps-cloud/api](https://github.com/deps-cloud/api)
+* npm: [@depscloud/api](https://www.npmjs.com/package/@depscloud/api)
+* vgo: [github.com/depscloud/api](https://github.com/depscloud/api)
 
 ## Getting Started with NodeJS
 
 To install:
 
 ``` bash
-npm install --save @deps-cloud/api
+npm install --save @depscloud/api
 ```
 
 Usage:
@@ -19,19 +19,19 @@ Usage:
 ```javascript
 const grpc = require('grpc');
 
-const { DependencyExtractor } = require('@deps-cloud/api/v1alpha/extractor');
+const { DependencyExtractor } = require('@depscloud/api/v1alpha/extractor');
 const {
     SourceService,
     ModuleService,
     DependencyService,
-} = require('@deps-cloud/api/v1alpha/tracker');
+} = require('@depscloud/api/v1alpha/tracker');
 
 const credentials = grpc.credentials.createInsecure();
 
-const dependencyExtractor = new DependencyExtractor('address', credentials);
-const sourceService = new SourceService('address', credentials);
-const moduleService = new ModuleService('address', credentials);
-const dependencyService = new DependencyService('address', credentials);
+const dependencyExtractor = new DependencyExtractor('gateway:80', credentials);
+const sourceService = new SourceService('gateway:80', credentials);
+const moduleService = new ModuleService('gateway:80', credentials);
+const dependencyService = new DependencyService('gateway:80', credentials);
 ```
 
 ## Getting Started with Go
@@ -39,7 +39,7 @@ const dependencyService = new DependencyService('address', credentials);
 To install:
 
 ```bash
-go get -u github.com/deps-cloud/api
+go get -u github.com/depscloud/api
 ```
 
 Usage:
@@ -48,8 +48,8 @@ Usage:
 package main
 
 import (
-    "github.com/deps-cloud/api/v1alpha/extractor"
-    "github.com/deps-cloud/api/v1alpha/tracker"
+    "github.com/depscloud/api/v1alpha/extractor"
+    "github.com/depscloud/api/v1alpha/tracker"
 
     "google.golang.org/grpc"
     "google.golang.org/grpc/credentials"
@@ -61,10 +61,10 @@ func dial(target string) *grpc.ClientConn {
 }
 
 func main() {
-    dependencyExtractor := extractor.NewDependencyExtractorClient(dial("address"))
-    sourceService := tracker.NewSourceServiceClient(dial("address"))
-    moduleService := tracker.NewModuleServiceClient(dial("address"))
-    dependencyService := tracker.NewDependencyServiceClient(dial("address"))
+    dependencyExtractor := extractor.NewDependencyExtractorClient(dial("gateway:80"))
+    sourceService := tracker.NewSourceServiceClient(dial("gateway:80"))
+    moduleService := tracker.NewModuleServiceClient(dial("gateway:80"))
+    dependencyService := tracker.NewDependencyServiceClient(dial("gateway:80"))
 }
 ```
 
@@ -73,13 +73,13 @@ func main() {
 I've provided a docker container that encapsulates the dependencies for regenerating the different language files.
 
 ```bash
-docker run --rm -it \
-    -v $(pwd)/swagger:/go/src/github.com/deps-cloud/api/swagger \
-    -v $(pwd)/v1alpha:/go/src/github.com/deps-cloud/api/v1alpha \
-    depscloud/api-builder
+docker run --rm \
+    -v $(PWD):/go/src/github.com/depscloud/api \
+    depscloud/api-builder \
+    bash scripts/compile.sh
 ```
 
 You can quickly invoke this command using the `make compile-docker` target.
 
 **NOTE:** Changes to `*.js` and `*.d.ts` are done manually.
-Currently evaluating code generation options.
+Evaluating code generation options.

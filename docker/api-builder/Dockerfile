@@ -38,4 +38,4 @@ RUN go get -u github.com/golang/protobuf/protoc-gen-go
 RUN go get -u github.com/gogo/protobuf/protoc-gen-gogo
 RUN go get -u github.com/go-bindata/go-bindata/...
 
-WORKDIR /go/src/github.com/deps-cloud/api
+WORKDIR /go/src/github.com/depscloud/api

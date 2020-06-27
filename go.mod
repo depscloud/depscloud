@@ -1,4 +1,4 @@
-module github.com/deps-cloud/api
+module github.com/depscloud/api
 
 go 1.14
 

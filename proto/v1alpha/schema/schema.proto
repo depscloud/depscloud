@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package cloud.deps.api.v1alpha.schema;
 
-option go_package = "github.com/deps-cloud/api/v1alpha/schema";
+option go_package = "github.com/depscloud/api/v1alpha/schema";
 
 message Source {
     string url = 1;
