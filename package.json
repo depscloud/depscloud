@@ -1,5 +1,5 @@
 {
-  "name": "@deps-cloud/extractor",
+  "name": "@depscloud/extractor",
   "version": "0.2.16",
   "scripts": {
     "package": "tar -czvf extractor.tar.gz lib/ LICENSE package.json package-lock.json",
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:deps-cloud/extractor.git"
+    "url": "git@github.com:depscloud/extractor.git"
   },
   "devDependencies": {
     "@types/cheerio": "0.22.18",
@@ -26,7 +26,7 @@
     "typescript": "3.9.5"
   },
   "dependencies": {
-    "@deps-cloud/api": "0.1.4",
+    "@depscloud/api": "0.1.4",
     "@grpc/grpc-js": "1.1.1",
     "@grpc/proto-loader": "0.5.4",
     "caporal": "latest",
