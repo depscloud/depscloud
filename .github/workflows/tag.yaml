@@ -20,6 +20,7 @@ jobs:
       - name: Build
         env:
           GEMFURY_TOKEN: ${{ secrets.GEMFURY_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           curl -sfL https://install.goreleaser.com/github.com/goreleaser/goreleaser.sh | sh
           make build-deps deps test
