@@ -47,7 +47,6 @@ func registerV1Alpha(rwdb, rodb *sqlx.DB, statements *graphstore.Statements, ser
 	services.RegisterDependencyService(server, graphStoreClient)
 	services.RegisterModuleService(server, graphStoreClient)
 	services.RegisterSourceService(server, graphStoreClient)
-	services.RegisterTopologyService(server, graphStoreClient)
 }
 
 func main() {
