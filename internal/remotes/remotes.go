@@ -3,7 +3,7 @@ package remotes
 import (
 	"fmt"
 
-	"github.com/deps-cloud/indexer/internal/config"
+	"github.com/depscloud/indexer/internal/config"
 )
 
 // ParseConfig is used to parse the account configuration and construct the

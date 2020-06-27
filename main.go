@@ -8,11 +8,11 @@ import (
 	"os"
 	"sync"
 
-	"github.com/deps-cloud/api/v1alpha/extractor"
-	"github.com/deps-cloud/api/v1alpha/tracker"
-	"github.com/deps-cloud/indexer/internal/config"
-	"github.com/deps-cloud/indexer/internal/consumer"
-	"github.com/deps-cloud/indexer/internal/remotes"
+	"github.com/depscloud/api/v1alpha/extractor"
+	"github.com/depscloud/api/v1alpha/tracker"
+	"github.com/depscloud/indexer/internal/config"
+	"github.com/depscloud/indexer/internal/consumer"
+	"github.com/depscloud/indexer/internal/remotes"
 
 	"github.com/sirupsen/logrus"
 

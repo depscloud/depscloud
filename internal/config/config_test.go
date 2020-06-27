@@ -3,7 +3,7 @@ package config_test
 import (
 	"testing"
 
-	"github.com/deps-cloud/indexer/internal/config"
+	"github.com/depscloud/indexer/internal/config"
 
 	"github.com/stretchr/testify/require"
 )

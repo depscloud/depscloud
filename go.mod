@@ -1,10 +1,10 @@
-module github.com/deps-cloud/indexer
+module github.com/depscloud/indexer
 
 go 1.14
 
 require (
 	github.com/davidji99/bitbucket-go v0.1.4
-	github.com/deps-cloud/api v0.1.4
+	github.com/depscloud/api v0.1.4
 	github.com/ghodss/yaml v1.0.0
 	github.com/gogo/protobuf v1.3.1
 	github.com/golang/protobuf v1.4.2 // indirect

@@ -5,7 +5,7 @@ import (
 
 	"github.com/davidji99/bitbucket-go/bitbucket"
 
-	"github.com/deps-cloud/indexer/internal/config"
+	"github.com/depscloud/indexer/internal/config"
 
 	"github.com/sirupsen/logrus"
 )

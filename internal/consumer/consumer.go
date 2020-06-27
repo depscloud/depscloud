@@ -6,10 +6,10 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/deps-cloud/api/v1alpha/extractor"
-	"github.com/deps-cloud/api/v1alpha/schema"
-	"github.com/deps-cloud/api/v1alpha/tracker"
-	"github.com/deps-cloud/indexer/internal/remotes"
+	"github.com/depscloud/api/v1alpha/extractor"
+	"github.com/depscloud/api/v1alpha/schema"
+	"github.com/depscloud/api/v1alpha/tracker"
+	"github.com/depscloud/indexer/internal/remotes"
 
 	"github.com/sirupsen/logrus"
 
