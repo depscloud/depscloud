@@ -6,7 +6,7 @@
   "author": "mjpitz",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deps-cloud/api.git"
+    "url": "git@github.com:depscloud/api.git"
   },
   "dependencies": {
     "@grpc/grpc-js": "1.1.1",
