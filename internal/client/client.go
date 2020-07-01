@@ -1,34 +1,43 @@
-package http
+package client
 
 import (
-	"net/http"
 	"os"
 
 	"github.com/depscloud/api/v1alpha/tracker"
 )
 
-func DefaultClient() Client {
-	baseURL := os.Getenv("DEPSCLOUD_BASE_URL")
-	if baseURL == "" {
-		baseURL = "https://api.deps.cloud"
+const (
+	VariableProtocol = "DEPSCLOUD_PROTOCOL"
+	VariableBaseURL  = "DEPSCLOUD_BASE_URL"
+
+	DefaultProtocol = "grpc"
+	DefaultBaseURL  = "https://api.deps.cloud"
+)
+
+var (
+	protocol = or(os.Getenv(VariableProtocol), DefaultProtocol)
+	baseURL  = or(os.Getenv(VariableBaseURL), DefaultBaseURL)
+)
+
+func or(read, def string) string {
+	if read == "" {
+		return def
 	}
-	return NewClient(baseURL)
+	return read
+}
+
+func DefaultClient() Client {
+	if protocol == "grpc" {
+		return grpcClient(baseURL)
+	}
+
+	return httpClient(baseURL)
 }
 
 type Client interface {
 	Dependencies() tracker.DependencyServiceClient
 	Modules() tracker.ModuleServiceClient
 	Sources() tracker.SourceServiceClient
-}
-
-func NewClient(baseURL string) Client {
-	httpClient := http.DefaultClient
-
-	return &client{
-		dependencies: &dependencyService{httpClient, baseURL},
-		modules:      &moduleClient{httpClient, baseURL},
-		sources:      &sourceClient{httpClient, baseURL},
-	}
 }
 
 type client struct {

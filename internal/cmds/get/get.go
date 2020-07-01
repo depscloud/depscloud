@@ -1,14 +1,14 @@
 package get
 
 import (
-	"github.com/depscloud/cli/internal/http"
+	"github.com/depscloud/cli/internal/client"
 	"github.com/depscloud/cli/internal/writer"
 
 	"github.com/spf13/cobra"
 )
 
 func Command(
-	client http.Client,
+	client client.Client,
 	writer writer.Writer,
 ) *cobra.Command {
 	cmd := &cobra.Command{

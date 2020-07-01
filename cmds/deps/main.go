@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 
+	"github.com/depscloud/cli/internal/client"
 	"github.com/depscloud/cli/internal/cmds/completion"
 	"github.com/depscloud/cli/internal/cmds/get"
-	"github.com/depscloud/cli/internal/http"
 	"github.com/depscloud/cli/internal/writer"
 
 	"github.com/sirupsen/logrus"
@@ -38,7 +38,7 @@ var commit string
 var date string
 
 func main() {
-	client := http.DefaultClient()
+	client := client.DefaultClient()
 	writer := writer.Default
 
 	cmd := &cobra.Command{
