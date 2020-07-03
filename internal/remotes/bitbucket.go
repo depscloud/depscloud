@@ -14,14 +14,19 @@ import (
 // for repository related information.
 func NewBitbucketRemote(cfg *config.Bitbucket) (Remote, error) {
 	var client *bitbucket.Client
+	var err error
 
 	if basic := cfg.GetBasic(); basic != nil {
 		username := basic.GetUsername()
 		password := basic.GetPassword()
 
-		client = bitbucket.NewBasicAuth(username, password)
+		client, err = bitbucket.New(username, password)
 	} else {
-		return nil, fmt.Errorf("auth format not supported")
+		err = fmt.Errorf("auth format not supported")
+	}
+
+	if err != nil {
+		return nil, err
 	}
 
 	return &bitbucketRemote{

@@ -13,18 +13,22 @@ import (
 // NewGitlabRemote constructs a new remote implementation that speaks with Gitlab
 // for repository related information.
 func NewGitlabRemote(cfg *config.Gitlab) (Remote, error) {
-	var client *gitlab.Client
-
-	if private := cfg.GetPrivate(); private != nil {
-		client = gitlab.NewClient(nil, private.GetToken())
-	} else {
-		return nil, fmt.Errorf("no auth method provided")
+	options := make([]gitlab.ClientOptionFunc, 0)
+	if baseURL := cfg.GetBaseUrl(); baseURL != "" {
+		options = append(options, gitlab.WithBaseURL(baseURL))
 	}
 
-	if baseURL := cfg.GetBaseUrl(); baseURL != "" {
-		if err := client.SetBaseURL(baseURL); err != nil {
-			return nil, err
-		}
+	var client *gitlab.Client
+	var err error
+
+	if private := cfg.GetPrivate(); private != nil {
+		client, err = gitlab.NewClient(private.GetToken(), options...)
+	} else {
+		err = fmt.Errorf("no auth method provided")
+	}
+
+	if err != nil {
+		return nil, err
 	}
 
 	return &gitlabRemote{
