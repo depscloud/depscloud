@@ -94,6 +94,11 @@ func topology(root *schema.Module, ctx context.Context, fetch fetcher) ([][]*sch
 			delete(edges, k)
 
 			for _, dependencyKey := range results {
+				// cycle in the graph, dependencyKey no longer exists
+				if _, ok := nodes[dependencyKey]; !ok {
+					continue
+				}
+
 				delete(nodes[dependencyKey].seen, k)
 
 				if len(nodes[dependencyKey].seen) == 0 {
