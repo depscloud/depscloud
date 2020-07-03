@@ -76,7 +76,7 @@ func (r *gitlabRemote) FetchRepositories(request *FetchRepositoriesRequest) (*Fe
 		}
 
 		for _, group := range grps {
-			groups[group.Name] = true
+			groups[group.Path] = true
 		}
 
 		page = resp.NextPage
