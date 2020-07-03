@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "v1alpha/store/store.proto",
+    "title": "depscloud_api/v1alpha/store/store.proto",
     "version": "version not set"
   },
   "consumes": [

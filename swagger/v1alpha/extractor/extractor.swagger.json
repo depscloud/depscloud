@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "v1alpha/extractor/extractor.proto",
+    "title": "depscloud_api/v1alpha/extractor/extractor.proto",
     "version": "version not set"
   },
   "consumes": [
@@ -10,72 +10,7 @@
   "produces": [
     "application/json"
   ],
-  "paths": {
-    "/v1alpha/dependencies/extract": {
-      "post": {
-        "operationId": "DependencyExtractor_Extract",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/extractorExtractResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/extractorExtractRequest"
-            }
-          }
-        ],
-        "tags": [
-          "DependencyExtractor"
-        ]
-      }
-    },
-    "/v1alpha/dependencies/match": {
-      "post": {
-        "operationId": "DependencyExtractor_Match",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/extractorMatchResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/extractorMatchRequest"
-            }
-          }
-        ],
-        "tags": [
-          "DependencyExtractor"
-        ]
-      }
-    }
-  },
+  "paths": {},
   "definitions": {
     "depsDependency": {
       "type": "object",
@@ -126,23 +61,6 @@
         }
       }
     },
-    "extractorExtractRequest": {
-      "type": "object",
-      "properties": {
-        "separator": {
-          "type": "string"
-        },
-        "fileContents": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          }
-        },
-        "url": {
-          "type": "string"
-        }
-      }
-    },
     "extractorExtractResponse": {
       "type": "object",
       "properties": {
@@ -150,20 +68,6 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/depsDependencyManagementFile"
-          }
-        }
-      }
-    },
-    "extractorMatchRequest": {
-      "type": "object",
-      "properties": {
-        "separator": {
-          "type": "string"
-        },
-        "paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
           }
         }
       }

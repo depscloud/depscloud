@@ -1,0 +1,11 @@
+type: google.api.Service
+config_version: 3
+
+http:
+  rules:
+    - selector: cloud.deps.api.v1alpha.extractor.DependencyExtractor.Match
+      post: /v1alpha/dependencies/match
+      body: "*"
+    - selector: cloud.deps.api.v1alpha.extractor.DependencyExtractor.Extract
+      post: /v1alpha/dependencies/extract
+      body: "*"

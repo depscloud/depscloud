@@ -2,10 +2,8 @@ syntax = "proto3";
 
 package cloud.deps.api.v1alpha.tracker;
 
-import "v1alpha/deps/deps.proto";
-import "v1alpha/schema/schema.proto";
-
-import "github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis/google/api/annotations.proto";
+import "depscloud_api/v1alpha/deps/deps.proto";
+import "depscloud_api/v1alpha/schema/schema.proto";
 
 option go_package = "github.com/depscloud/api/v1alpha/tracker";
 
@@ -31,18 +29,8 @@ message ListSourceResponse {
 }
 
 service SourceService {
-    rpc List(ListRequest) returns (ListSourceResponse) {
-        option (google.api.http) = {
-            get: "/v1alpha/sources"
-        };
-    };
-
-    rpc Track(SourceRequest) returns (TrackResponse) {
-        option (google.api.http) = {
-            post: "/v1alpha/sources/track"
-            body: "*"
-        };
-    };
+    rpc List(ListRequest) returns (ListSourceResponse);
+    rpc Track(SourceRequest) returns (TrackResponse);
 }
 
 message ListModuleResponse {
@@ -71,23 +59,9 @@ message ListManagedResponse {
 }
 
 service ModuleService {
-    rpc List(ListRequest) returns (ListModuleResponse) {
-        option (google.api.http) = {
-            get: "/v1alpha/modules"
-        };
-    };
-
-    rpc ListSources(cloud.deps.api.v1alpha.schema.Module) returns (ListSourcesResponse) {
-        option (google.api.http) = {
-            get: "/v1alpha/modules/source"
-        };
-    }
-
-    rpc ListManaged(cloud.deps.api.v1alpha.schema.Source) returns (ListManagedResponse) {
-        option (google.api.http) = {
-            get: "/v1alpha/modules/managed"
-        };
-    }
+    rpc List(ListRequest) returns (ListModuleResponse);
+    rpc ListSources(cloud.deps.api.v1alpha.schema.Module) returns (ListSourcesResponse);
+    rpc ListManaged(cloud.deps.api.v1alpha.schema.Source) returns (ListManagedResponse);
 }
 
 message DependencyRequest {
@@ -111,15 +85,6 @@ message ListDependenciesResponse {
 }
 
 service DependencyService {
-    rpc ListDependents(DependencyRequest) returns (ListDependentsResponse) {
-        option (google.api.http) = {
-            get: "/v1alpha/graph/{language}/dependents"
-        };
-    };
-
-    rpc ListDependencies(DependencyRequest) returns (ListDependenciesResponse) {
-        option (google.api.http) = {
-            get: "/v1alpha/graph/{language}/dependencies"
-        };
-    };
+    rpc ListDependents(DependencyRequest) returns (ListDependentsResponse);
+    rpc ListDependencies(DependencyRequest) returns (ListDependenciesResponse);
 }

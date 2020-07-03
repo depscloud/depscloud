@@ -1,38 +1,13 @@
 # api
 
 All deps.cloud API definitions consolidated into a single repository.
-This repository currently produces 2 libraries:
+This repository currently produces 3 libraries:
 
-* npm: [@depscloud/api](https://www.npmjs.com/package/@depscloud/api)
-* vgo: [github.com/depscloud/api](https://github.com/depscloud/api)
-
-## Getting Started with NodeJS
-
-To install:
-
-``` bash
-npm install --save @depscloud/api
-```
-
-Usage:
-
-```javascript
-const grpc = require('grpc');
-
-const { DependencyExtractor } = require('@depscloud/api/v1alpha/extractor');
-const {
-    SourceService,
-    ModuleService,
-    DependencyService,
-} = require('@depscloud/api/v1alpha/tracker');
-
-const credentials = grpc.credentials.createInsecure();
-
-const dependencyExtractor = new DependencyExtractor('gateway:80', credentials);
-const sourceService = new SourceService('gateway:80', credentials);
-const moduleService = new ModuleService('gateway:80', credentials);
-const dependencyService = new DependencyService('gateway:80', credentials);
-```
+| Tech   | Source                                  | Package                                                        |
+|:-------|:----------------------------------------|:---------------------------------------------------------------|
+| npm    | [source](packages/depscloud-api-nodejs) | [@depscloud/api](https://www.npmjs.com/package/@depscloud/api) |
+| pip    | [source](packages/depscloud-api-python) | [depscloud_api](https://pypi.org/project/depscloud_api/)       |
+| go mod |                                         | [github.com/depscloud/api](https://github.com/depscloud/api)   |
 
 ## Getting Started with Go
 
@@ -48,6 +23,8 @@ Usage:
 package main
 
 import (
+    "crypto/tls"
+
     "github.com/depscloud/api/v1alpha/extractor"
     "github.com/depscloud/api/v1alpha/tracker"
 
@@ -55,31 +32,15 @@ import (
     "google.golang.org/grpc/credentials"
 )
 
-func dial(target string) *grpc.ClientConn {
-    cc, _ := grpc.Dial(target, grpc.WithBlock(), grpc.WithInsecure())
-    return cc
-}
-
 func main() {
-    dependencyExtractor := extractor.NewDependencyExtractorClient(dial("gateway:80"))
-    sourceService := tracker.NewSourceServiceClient(dial("gateway:80"))
-    moduleService := tracker.NewModuleServiceClient(dial("gateway:80"))
-    dependencyService := tracker.NewDependencyServiceClient(dial("gateway:80"))
+    target := "api.deps.cloud:443"
+    creds := credentials.NewTLS(&tls.Config{})
+
+    conn, _ := grpc.Dial(target, grpc.WithTransportCredentials(creds))
+    defer conn.Close()
+
+    sourceService := tracker.NewSourceServiceClient(conn)
+    moduleService := tracker.NewModuleServiceClient(conn)
+    dependencyService := tracker.NewDependencyServiceClient(conn)
 }
 ```
-
-## Recompiling Protocol Buffer Files
-
-I've provided a docker container that encapsulates the dependencies for regenerating the different language files.
-
-```bash
-docker run --rm \
-    -v $(PWD):/go/src/github.com/depscloud/api \
-    depscloud/api-builder \
-    bash scripts/compile.sh
-```
-
-You can quickly invoke this command using the `make compile-docker` target.
-
-**NOTE:** Changes to `*.js` and `*.d.ts` are done manually.
-Evaluating code generation options.

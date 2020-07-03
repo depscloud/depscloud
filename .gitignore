@@ -1,5 +1,12 @@
-packages/**/coverage/
-packages/**/node_modules/
+packages/**/LICENSE
 packages/**/*.proto
+
+packages/depscloud-api-nodejs/coverage/
+packages/depscloud-api-nodejs/node_modules/
+
+packages/depscloud-api-python/build/
+packages/depscloud-api-python/dist/
+packages/depscloud-api-python/venv/
+packages/depscloud-api-python/*.egg-info/
 
 *.tgz
