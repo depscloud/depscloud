@@ -57,6 +57,14 @@ func (c *consumer) Consume(repository *remotes.Repository) {
 		return
 	}
 
+	// ensure proper cleanup
+	defer func() {
+		logrus.Infof("[%s] cleaning up file system", repourl)
+		if err := os.RemoveAll(dir); err != nil {
+			logrus.Errorf("failed to cleanup scratch directory: %s", err.Error())
+		}
+	}()
+
 	fs := osfs.New(dir)
 	gitfs, err := fs.Chroot(git.GitDirName)
 	if err != nil {
@@ -145,6 +153,11 @@ func (c *consumer) Consume(repository *remotes.Repository) {
 		Paths:     paths,
 	})
 
+	if err != nil {
+		logrus.Errorf("[%s] failed to match patchs for repository", repourl)
+		return
+	}
+
 	fileContents := make(map[string]string)
 	for _, matched := range matchedResponse.MatchedPaths {
 		file, err := fs.Open(matched)
@@ -191,11 +204,5 @@ func (c *consumer) Consume(repository *remotes.Repository) {
 
 	if err != nil {
 		logrus.Errorf("failed to update deps for repo: %s, %v", repourl, err)
-		return
-	}
-
-	logrus.Infof("[%s] cleaning up file system", repourl)
-	if err := os.RemoveAll(dir); err != nil {
-		logrus.Errorf("failed to cleanup scratch directory: %s", err.Error())
 	}
 }
