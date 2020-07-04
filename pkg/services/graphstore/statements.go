@@ -24,13 +24,14 @@ createGraphDataTable: |
       graph_item_type VARCHAR(55),
       k1 CHAR(64),
       k2 CHAR(64),
-      k3 CHAR(64),
+      k3 VARCHAR(64),
       encoding TINYINT,
       graph_item_data TEXT,
       last_modified DATETIME,
       date_deleted DATETIME DEFAULT NULL,
       PRIMARY KEY (graph_item_type, k1, k2, k3)
   );
+  CREATE INDEX IF NOT EXISTS secondary ON dts_graphdata(graph_item_type, k2, k1, k3);
   CREATE INDEX IF NOT EXISTS date_deleted ON dts_graphdata(date_deleted);
 
 insertGraphData: |
@@ -81,12 +82,13 @@ createGraphDataTable: |
       graph_item_type VARCHAR(55),
       k1 CHAR(64),
       k2 CHAR(64),
-      k3 CHAR(64),
+      k3 VARCHAR(64),
       encoding TINYINT,
       graph_item_data TEXT,
       last_modified DATETIME,
       date_deleted DATETIME DEFAULT NULL,
       PRIMARY KEY (graph_item_type, k1, k2, k3),
+      KEY secondary (graph_item_type, k2, k1, k3),
       KEY (date_deleted)
   );
 
@@ -140,16 +142,17 @@ selectGraphDataDownstreamDependencies: |
 const postgresStatements = `
 createGraphDataTable: |
   CREATE TABLE IF NOT EXISTS dts_graphdata(
-      graph_item_type varchar(55),
-      k1 char(64),
-      k2 char(64),
-      k3 char(64),
-      encoding smallint,
-      graph_item_data text,
-      last_modified timestamp,
-      date_deleted timestamp DEFAULT NULL,
+      graph_item_type VARCHAR(55),
+      k1 CHAR(64),
+      k2 CHAR(64),
+      k3 VARCHAR(64),
+      encoding SMALLINT,
+      graph_item_data TEXT,
+      last_modified TIMESTAMP,
+      date_deleted TIMESTAMP DEFAULT NULL,
       PRIMARY KEY (graph_item_type, k1, k2, k3)
   );
+  CREATE INDEX IF NOT EXISTS secondary ON dts_graphdata(graph_item_type, k2, k1, k3);
   CREATE INDEX IF NOT EXISTS date_deleted ON dts_graphdata(date_deleted);
 
 insertGraphData: |
