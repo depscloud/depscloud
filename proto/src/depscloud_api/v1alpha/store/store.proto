@@ -46,8 +46,9 @@ message ListResponse {
 }
 
 message FindRequest {
-    bytes key = 1;
+    repeated bytes keys = 1;
     repeated string edgeTypes = 2;
+    repeated string nodeTypes = 3;
 }
 
 message FindResponse {

@@ -45,8 +45,9 @@ export interface ListResponse {
 }
 
 export interface FindRequest {
-    // bytes key = 1;
+    keys: Array<Buffer>;
     edgeTypes: Array<string>;
+    nodeTypes: Array<string>;
 }
 
 export interface FindResponse {

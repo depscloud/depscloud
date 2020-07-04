@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'Z&github.com/depscloud/api/v1alpha/store',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\'depscloud_api/v1alpha/store/store.proto\x12\x1c\x63loud.deps.api.v1alpha.store\"\xa0\x01\n\tGraphItem\x12\x15\n\rgraphItemType\x18\x01 \x01(\t\x12\n\n\x02k1\x18\x02 \x01(\x0c\x12\n\n\x02k2\x18\x03 \x01(\x0c\x12\n\n\x02k3\x18\x04 \x01(\x0c\x12\x41\n\x08\x65ncoding\x18\x06 \x01(\x0e\x32/.cloud.deps.api.v1alpha.store.GraphItemEncoding\x12\x15\n\rgraphItemData\x18\x07 \x01(\x0c\"}\n\rGraphItemPair\x12\x35\n\x04\x65\x64ge\x18\x01 \x01(\x0b\x32\'.cloud.deps.api.v1alpha.store.GraphItem\x12\x35\n\x04node\x18\x02 \x01(\x0b\x32\'.cloud.deps.api.v1alpha.store.GraphItem\"D\n\nPutRequest\x12\x36\n\x05items\x18\x01 \x03(\x0b\x32\'.cloud.deps.api.v1alpha.store.GraphItem\"\r\n\x0bPutResponse\"G\n\rDeleteRequest\x12\x36\n\x05items\x18\x01 \x03(\x0b\x32\'.cloud.deps.api.v1alpha.store.GraphItem\"\x10\n\x0e\x44\x65leteResponse\"8\n\x0bListRequest\x12\x0c\n\x04page\x18\x01 \x01(\x05\x12\r\n\x05\x63ount\x18\x02 \x01(\x05\x12\x0c\n\x04type\x18\x03 \x01(\t\"F\n\x0cListResponse\x12\x36\n\x05items\x18\x01 \x03(\x0b\x32\'.cloud.deps.api.v1alpha.store.GraphItem\"-\n\x0b\x46indRequest\x12\x0b\n\x03key\x18\x01 \x01(\x0c\x12\x11\n\tedgeTypes\x18\x02 \x03(\t\"J\n\x0c\x46indResponse\x12:\n\x05pairs\x18\x01 \x03(\x0b\x32+.cloud.deps.api.v1alpha.store.GraphItemPair*&\n\x11GraphItemEncoding\x12\x07\n\x03RAW\x10\x00\x12\x08\n\x04JSON\x10\x01\x32\xfc\x03\n\nGraphStore\x12Z\n\x03Put\x12(.cloud.deps.api.v1alpha.store.PutRequest\x1a).cloud.deps.api.v1alpha.store.PutResponse\x12\x63\n\x06\x44\x65lete\x12+.cloud.deps.api.v1alpha.store.DeleteRequest\x1a,.cloud.deps.api.v1alpha.store.DeleteResponse\x12]\n\x04List\x12).cloud.deps.api.v1alpha.store.ListRequest\x1a*.cloud.deps.api.v1alpha.store.ListResponse\x12\x65\n\x0c\x46indUpstream\x12).cloud.deps.api.v1alpha.store.FindRequest\x1a*.cloud.deps.api.v1alpha.store.FindResponse\x12g\n\x0e\x46indDownstream\x12).cloud.deps.api.v1alpha.store.FindRequest\x1a*.cloud.deps.api.v1alpha.store.FindResponseB(Z&github.com/depscloud/api/v1alpha/storeb\x06proto3'
+  serialized_pb=b'\n\'depscloud_api/v1alpha/store/store.proto\x12\x1c\x63loud.deps.api.v1alpha.store\"\xa0\x01\n\tGraphItem\x12\x15\n\rgraphItemType\x18\x01 \x01(\t\x12\n\n\x02k1\x18\x02 \x01(\x0c\x12\n\n\x02k2\x18\x03 \x01(\x0c\x12\n\n\x02k3\x18\x04 \x01(\x0c\x12\x41\n\x08\x65ncoding\x18\x06 \x01(\x0e\x32/.cloud.deps.api.v1alpha.store.GraphItemEncoding\x12\x15\n\rgraphItemData\x18\x07 \x01(\x0c\"}\n\rGraphItemPair\x12\x35\n\x04\x65\x64ge\x18\x01 \x01(\x0b\x32\'.cloud.deps.api.v1alpha.store.GraphItem\x12\x35\n\x04node\x18\x02 \x01(\x0b\x32\'.cloud.deps.api.v1alpha.store.GraphItem\"D\n\nPutRequest\x12\x36\n\x05items\x18\x01 \x03(\x0b\x32\'.cloud.deps.api.v1alpha.store.GraphItem\"\r\n\x0bPutResponse\"G\n\rDeleteRequest\x12\x36\n\x05items\x18\x01 \x03(\x0b\x32\'.cloud.deps.api.v1alpha.store.GraphItem\"\x10\n\x0e\x44\x65leteResponse\"8\n\x0bListRequest\x12\x0c\n\x04page\x18\x01 \x01(\x05\x12\r\n\x05\x63ount\x18\x02 \x01(\x05\x12\x0c\n\x04type\x18\x03 \x01(\t\"F\n\x0cListResponse\x12\x36\n\x05items\x18\x01 \x03(\x0b\x32\'.cloud.deps.api.v1alpha.store.GraphItem\"A\n\x0b\x46indRequest\x12\x0c\n\x04keys\x18\x01 \x03(\x0c\x12\x11\n\tedgeTypes\x18\x02 \x03(\t\x12\x11\n\tnodeTypes\x18\x03 \x03(\t\"J\n\x0c\x46indResponse\x12:\n\x05pairs\x18\x01 \x03(\x0b\x32+.cloud.deps.api.v1alpha.store.GraphItemPair*&\n\x11GraphItemEncoding\x12\x07\n\x03RAW\x10\x00\x12\x08\n\x04JSON\x10\x01\x32\xfc\x03\n\nGraphStore\x12Z\n\x03Put\x12(.cloud.deps.api.v1alpha.store.PutRequest\x1a).cloud.deps.api.v1alpha.store.PutResponse\x12\x63\n\x06\x44\x65lete\x12+.cloud.deps.api.v1alpha.store.DeleteRequest\x1a,.cloud.deps.api.v1alpha.store.DeleteResponse\x12]\n\x04List\x12).cloud.deps.api.v1alpha.store.ListRequest\x1a*.cloud.deps.api.v1alpha.store.ListResponse\x12\x65\n\x0c\x46indUpstream\x12).cloud.deps.api.v1alpha.store.FindRequest\x1a*.cloud.deps.api.v1alpha.store.FindResponse\x12g\n\x0e\x46indDownstream\x12).cloud.deps.api.v1alpha.store.FindRequest\x1a*.cloud.deps.api.v1alpha.store.FindResponseB(Z&github.com/depscloud/api/v1alpha/storeb\x06proto3'
 )
 
 _GRAPHITEMENCODING = _descriptor.EnumDescriptor(
@@ -43,8 +43,8 @@ _GRAPHITEMENCODING = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=792,
-  serialized_end=830,
+  serialized_start=812,
+  serialized_end=850,
 )
 _sym_db.RegisterEnumDescriptor(_GRAPHITEMENCODING)
 
@@ -361,15 +361,22 @@ _FINDREQUEST = _descriptor.Descriptor(
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='key', full_name='cloud.deps.api.v1alpha.store.FindRequest.key', index=0,
-      number=1, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"",
+      name='keys', full_name='cloud.deps.api.v1alpha.store.FindRequest.keys', index=0,
+      number=1, type=12, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='edgeTypes', full_name='cloud.deps.api.v1alpha.store.FindRequest.edgeTypes', index=1,
       number=2, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='nodeTypes', full_name='cloud.deps.api.v1alpha.store.FindRequest.nodeTypes', index=2,
+      number=3, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -387,7 +394,7 @@ _FINDREQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=669,
-  serialized_end=714,
+  serialized_end=734,
 )
 
 
@@ -418,8 +425,8 @@ _FINDRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=716,
-  serialized_end=790,
+  serialized_start=736,
+  serialized_end=810,
 )
 
 _GRAPHITEM.fields_by_name['encoding'].enum_type = _GRAPHITEMENCODING
@@ -522,8 +529,8 @@ _GRAPHSTORE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=833,
-  serialized_end=1341,
+  serialized_start=853,
+  serialized_end=1361,
   methods=[
   _descriptor.MethodDescriptor(
     name='Put',
