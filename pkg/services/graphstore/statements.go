@@ -31,7 +31,7 @@ createGraphDataTable: |
       date_deleted DATETIME DEFAULT NULL,
       PRIMARY KEY (graph_item_type, k1, k2, k3)
   );
-  CREATE INDEX idx_date_deleted ON dts_graphdata(date_deleted);
+  CREATE INDEX IF NOT EXISTS date_deleted ON dts_graphdata(date_deleted);
 
 insertGraphData: |
   REPLACE INTO dts_graphdata 
@@ -150,7 +150,7 @@ createGraphDataTable: |
       date_deleted timestamp DEFAULT NULL,
       PRIMARY KEY (graph_item_type, k1, k2, k3)
   );
-  CREATE INDEX idx_date_deleted ON dts_graphdata(date_deleted);
+  CREATE INDEX IF NOT EXISTS date_deleted ON dts_graphdata(date_deleted);
 
 insertGraphData: |
   INSERT INTO dts_graphdata 
