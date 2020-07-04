@@ -6,7 +6,7 @@ This repository currently produces 3 libraries:
 | Tech   | Source                                  | Package                                                        |
 |:-------|:----------------------------------------|:---------------------------------------------------------------|
 | npm    | [source](packages/depscloud-api-nodejs) | [@depscloud/api](https://www.npmjs.com/package/@depscloud/api) |
-| pip    | [source](packages/depscloud-api-python) | [depscloud_api](https://pypi.org/project/depscloud_api/)       |
+| pip    | [source](packages/depscloud-api-python) | [depscloud_api](https://pypi.org/project/depscloud_api/) (coming soon!)      |
 | go mod |                                         | [github.com/depscloud/api](https://github.com/depscloud/api)   |
 
 ## Getting Started with Go
