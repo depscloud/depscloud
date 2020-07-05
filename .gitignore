@@ -3,6 +3,7 @@ packages/**/*.proto
 
 packages/depscloud-api-nodejs/coverage/
 packages/depscloud-api-nodejs/node_modules/
+packages/depscloud-api-nodejs/.npmrc
 
 packages/depscloud-api-python/build/
 packages/depscloud-api-python/dist/
