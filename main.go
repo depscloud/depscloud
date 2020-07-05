@@ -13,6 +13,7 @@ import (
 	"github.com/depscloud/tracker/pkg/services/graphstore"
 
 	_ "github.com/go-sql-driver/mysql"
+
 	_ "github.com/jackc/pgx/v4"
 	_ "github.com/jackc/pgx/v4/stdlib"
 

@@ -54,8 +54,9 @@ func (s *moduleService) ListSources(ctx context.Context, req *schema.Module) (*t
 	key := keyForModule(req)
 
 	response, err := s.gs.FindDownstream(ctx, &store.FindRequest{
-		Key:       key,
+		Keys:      [][]byte{key},
 		EdgeTypes: []string{types.ManagesType},
+		NodeTypes: []string{types.SourceType},
 	})
 
 	if err != nil {
@@ -82,8 +83,9 @@ func (s *moduleService) ListManaged(ctx context.Context, req *schema.Source) (*t
 	key := keyForSource(req)
 
 	response, err := s.gs.FindUpstream(ctx, &store.FindRequest{
-		Key:       key,
+		Keys:      [][]byte{key},
 		EdgeTypes: []string{types.ManagesType},
+		NodeTypes: []string{types.ModuleType},
 	})
 
 	if err != nil {

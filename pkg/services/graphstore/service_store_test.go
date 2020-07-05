@@ -70,14 +70,16 @@ func TestNewSQLGraphStore_sqlite(t *testing.T) {
 	require.Len(t, response.Items, 6)
 
 	downstream, err := graphStore.FindDownstream(nil, &store.FindRequest{
-		Key:       k2,
+		Keys:      [][]byte{k2},
 		EdgeTypes: []string{"edge"},
+		NodeTypes: []string{"node"},
 	})
 	require.Nil(t, err)
 
 	upstream, err := graphStore.FindUpstream(nil, &store.FindRequest{
-		Key:       k2,
+		Keys:      [][]byte{k2},
 		EdgeTypes: []string{"edge"},
+		NodeTypes: []string{"node"},
 	})
 	require.Nil(t, err)
 
@@ -98,8 +100,9 @@ func TestNewSQLGraphStore_sqlite(t *testing.T) {
 
 	// Tests for multiple edges between nodes
 	upstreamNodeK3, err := graphStore.FindUpstream(nil, &store.FindRequest{
-		Key:       k3,
+		Keys:      [][]byte{k3},
 		EdgeTypes: []string{"edge"},
+		NodeTypes: []string{"node"},
 	})
 	require.Nil(t, err)
 

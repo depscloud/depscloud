@@ -35,8 +35,9 @@ func (d *dependencyService) ListDependents(ctx context.Context, req *tracker.Dep
 	key := keyForDependencyRequest(req)
 
 	response, err := d.gs.FindDownstream(ctx, &store.FindRequest{
-		Key:       key,
+		Keys:      [][]byte{key},
 		EdgeTypes: []string{types.DependsType},
+		NodeTypes: []string{types.ModuleType},
 	})
 
 	if err != nil {
@@ -63,8 +64,9 @@ func (d *dependencyService) ListDependencies(ctx context.Context, req *tracker.D
 	key := keyForDependencyRequest(req)
 
 	response, err := d.gs.FindUpstream(ctx, &store.FindRequest{
-		Key:       key,
+		Keys:      [][]byte{key},
 		EdgeTypes: []string{types.DependsType},
+		NodeTypes: []string{types.ModuleType},
 	})
 
 	if err != nil {

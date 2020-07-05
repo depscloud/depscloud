@@ -104,8 +104,9 @@ func (s *sourceService) getCurrent(ctx context.Context, source *schema.Source) (
 	idx[readableKey(item)] = item
 
 	manages, err := s.gs.FindUpstream(ctx, &store.FindRequest{
-		Key:       keyForSource(source),
+		Keys:      [][]byte{keyForSource(source)},
 		EdgeTypes: []string{types.ManagesType},
+		NodeTypes: []string{types.ModuleType},
 	})
 
 	if err != nil {
@@ -119,8 +120,9 @@ func (s *sourceService) getCurrent(ctx context.Context, source *schema.Source) (
 		idx[readableKey(managed.GetEdge())] = managed.GetEdge()
 
 		depends, err := s.gs.FindUpstream(ctx, &store.FindRequest{
-			Key:       managed.GetNode().GetK1(),
+			Keys:      [][]byte{managed.GetNode().GetK1()},
 			EdgeTypes: []string{types.DependsType},
+			NodeTypes: []string{types.ModuleType},
 		})
 
 		if err != nil {
@@ -182,7 +184,7 @@ func (s *sourceService) getProposed(ctx context.Context, request *tracker.Source
 
 		if sourceURL := managementFile.GetSourceUrl(); sourceURL != "" {
 			discoveredSource, err := Encode(&schema.Source{
-				Url: sourceURL,
+				Url:  sourceURL,
 				Kind: "repository",
 			})
 			if err != nil {

@@ -193,9 +193,15 @@ func (gs *graphStore) List(ctx context.Context, req *store.ListRequest) (*store.
 }
 
 func (gs *graphStore) FindUpstream(ctx context.Context, req *store.FindRequest) (*store.FindResponse, error) {
+	keys := make([]string, len(req.GetKeys()))
+	for i, key := range req.GetKeys() {
+		keys[i] = Base64encode(key)
+	}
+
 	query, args, err := sqlx.Named(gs.statements.SelectGraphDataUpstreamDependencies, map[string]interface{}{
-		"key":        Base64encode(req.GetKey()),
+		"keys":       keys,
 		"edge_types": req.GetEdgeTypes(),
+		"node_types": req.GetNodeTypes(),
 	})
 	if err != nil {
 		return nil, err
@@ -225,9 +231,15 @@ func (gs *graphStore) FindUpstream(ctx context.Context, req *store.FindRequest) 
 }
 
 func (gs *graphStore) FindDownstream(ctx context.Context, req *store.FindRequest) (*store.FindResponse, error) {
+	keys := make([]string, len(req.GetKeys()))
+	for i, key := range req.GetKeys() {
+		keys[i] = Base64encode(key)
+	}
+
 	query, args, err := sqlx.Named(gs.statements.SelectGraphDataDownstreamDependencies, map[string]interface{}{
-		"key":        Base64encode(req.GetKey()),
+		"keys":       keys,
 		"edge_types": req.GetEdgeTypes(),
+		"node_types": req.GetNodeTypes(),
 	})
 	if err != nil {
 		return nil, err
