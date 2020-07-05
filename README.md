@@ -1,4 +1,4 @@
-# gateway
+# Gateway
 
 The gateway project provides a grpc-gateway implementation to the backend services running.
 This translates standard HTTP requests into a gRPC request based on annotations provided in the `.proto` files.
