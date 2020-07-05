@@ -1,0 +1,44 @@
+name: tag
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  nodejs:
+    runs-on: ubuntu-latest
+    container:
+      image: node:12-alpine3.11
+    steps:
+      - name: Prepare
+        run: apk -U upgrade && apk add build-base git ca-certificates curl
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Publish
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          cd packages/depscloud-api-nodejs/
+          npm publish
+
+  python:
+    runs-on: ubuntu-latest
+    container:
+      image: python:3-alpine-3.11
+    steps:
+      - name: Prepare
+        run: apk -U upgrade && apk add build-base git ca-certificates curl
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Publish
+        env:
+          GEMFURY_TOKEN: ${{ secrets.GEMFURY_TOKEN }}
+        run: |
+          cd packages/depscloud-api-python/
+          python setup.py sdist
+          find dist/* | xargs -I{} curl -F package=@{} https://${GEMFURY_TOKEN}@push.fury.io/depscloud/
