@@ -1,6 +1,6 @@
-# Dependency Indexing Service
+# Dependency Indexer
 
-Dependency Indexing Service is the core indexing engine to deps cloud.
+Dependency Indexer is the core indexing engine to deps cloud.
 It works by pulling repositories from sources, extracting dependency information via extractor, before storing in the tracker.
 
 ## Support
