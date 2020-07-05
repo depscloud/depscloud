@@ -28,7 +28,7 @@ jobs:
   python:
     runs-on: ubuntu-latest
     container:
-      image: python:3-alpine-3.11
+      image: python:3-alpine3.11
     steps:
       - name: Prepare
         run: apk -U upgrade && apk add build-base git ca-certificates curl
