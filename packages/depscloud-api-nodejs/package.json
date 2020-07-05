@@ -1,6 +1,6 @@
 {
   "name": "@depscloud/api",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "NodeJS client to the deps.cloud API",
   "main": "index.js",
   "author": "deps.cloud Authors",
