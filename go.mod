@@ -3,7 +3,7 @@ module github.com/depscloud/tracker
 go 1.14
 
 require (
-	github.com/depscloud/api v0.1.6
+	github.com/depscloud/api v0.1.8
 	github.com/ghodss/yaml v1.0.0
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/jackc/pgx/v4 v4.7.1
