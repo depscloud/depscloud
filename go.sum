@@ -36,6 +36,8 @@ github.com/davidji99/simpleresty v0.2.1 h1:yTyP0iPCEQebr4VUJNrIqzcs8nh/E7QzL0KCL
 github.com/davidji99/simpleresty v0.2.1/go.mod h1:B1ZRSWhCx53BHzjc5i9r0Tp11aH6Q8KmdbiR/VINnWw=
 github.com/depscloud/api v0.1.5 h1:7VNohtTO+PICqhyFWLznvFJ0Nxma4uuNdvxpOVZC2Ng=
 github.com/depscloud/api v0.1.5/go.mod h1:2RlrFi+zKck3vazSEyx0vQsX4VoscvhnxgHtCXqS8BI=
+github.com/depscloud/api v0.1.8 h1:FqtDeWf4k9NybjHcdQuODzFiJzMh12saMIuP42aLMSI=
+github.com/depscloud/api v0.1.8/go.mod h1:2RlrFi+zKck3vazSEyx0vQsX4VoscvhnxgHtCXqS8BI=
 github.com/dgrijalva/jwt-go v3.2.0+incompatible/go.mod h1:E3ru+11k8xSBh+hMPgOLZmtrrCbhqsmaPHjLKYnJCaQ=
 github.com/dgryski/go-sip13 v0.0.0-20181026042036-e10d5fee7954/go.mod h1:vAd38F8PWV+bWy6jNmig1y/TA+kYO4g3RSRF0IAv0no=
 github.com/emirpasic/gods v1.12.0 h1:QAUIPSaCu4G+POclxeqb3F+WPpdKqFGlw36+yOzGlrg=
