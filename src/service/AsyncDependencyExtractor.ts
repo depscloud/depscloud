@@ -4,7 +4,7 @@ import {
 import {ServerUnaryCall} from "@grpc/grpc-js";
 
 export default interface AsyncDependencyExtractor {
-    match(request: ServerUnaryCall<MatchRequest, MatchResponse>): Promise<MatchResponse>;
+    match(call: ServerUnaryCall<MatchRequest, MatchResponse>): Promise<MatchResponse>;
 
-    extract(request: ServerUnaryCall<ExtractRequest, ExtractResponse>): Promise<ExtractResponse>;
+    extract(call: ServerUnaryCall<ExtractRequest, ExtractResponse>): Promise<ExtractResponse>;
 }

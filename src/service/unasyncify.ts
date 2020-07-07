@@ -13,20 +13,16 @@ function toString(error: Error): string {
 
 export default function unasyncify(instance: AsyncDependencyExtractor): UntypedServiceImplementation {
     return {
-        match(request, callback) {
-            logger.trace(`[service] match request: ${JSON.stringify(request)}`);
-
-            instance.match(request)
+        match(call, callback) {
+            instance.match(call)
                 .then((response) => callback(null, response))
                 .catch((error) => {
                     logger.error(`[service] match error: ${toString(error)}`);
                     callback(error, null);
                 });
         },
-        extract(request, callback) {
-            logger.trace(`[service] extract request: ${JSON.stringify(request)}`);
-
-            instance.extract(request)
+        extract(call, callback) {
+            instance.extract(call)
                 .then((response) => callback(null, response))
                 .catch((error) => {
                     logger.error(`[service] extract error: ${toString(error)}`);
