@@ -21,7 +21,7 @@
     "@types/jest": "26.0.3",
     "@types/js-yaml": "3.12.5",
     "jest": "26.1.0",
-    "ts-jest": "26.1.0",
+    "ts-jest": "26.1.2",
     "tslint": "5.20.1",
     "typescript": "3.9.5"
   },
