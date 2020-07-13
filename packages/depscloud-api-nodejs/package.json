@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@grpc/grpc-js": "1.1.1",
-    "@grpc/proto-loader": "0.5.4"
+    "@grpc/proto-loader": "0.5.5"
   },
   "devDependencies": {
     "@types/jest": "26.0.4",
