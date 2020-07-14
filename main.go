@@ -13,6 +13,7 @@ import (
 	"github.com/depscloud/api/swagger"
 	"github.com/depscloud/api/v1alpha/extractor"
 	"github.com/depscloud/api/v1alpha/tracker"
+	"github.com/depscloud/gateway/internal/checks"
 	"github.com/depscloud/gateway/internal/proxies"
 
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
@@ -29,8 +30,7 @@ import (
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
-	"google.golang.org/grpc/health"
-	healthpb "google.golang.org/grpc/health/grpc_health_v1"
+	_ "google.golang.org/grpc/health"
 )
 
 func exitIff(err error) {
@@ -137,8 +137,6 @@ func main() {
 			extractor.RegisterDependencyExtractorServer(grpcServer, proxies.NewExtractorServiceProxy(extractorService))
 			_ = extractor.RegisterDependencyExtractorHandlerClient(ctx, gatewayMux, extractorService)
 
-			healthpb.RegisterHealthServer(grpcServer, health.NewServer())
-
 			httpMux := http.NewServeMux()
 
 			httpMux.HandleFunc("/swagger/", func(writer http.ResponseWriter, request *http.Request) {
@@ -176,6 +174,12 @@ func main() {
 			h2cMux := h2c.NewHandler(httpMux, &http2.Server{})
 
 			apiMux := cors.Default().Handler(h2cMux)
+
+			ctx, cancel := context.WithCancel(context.Background())
+			defer cancel()
+
+			allChecks := checks.Checks(extractorService, sourceService, moduleService)
+			checks.RegisterHealthCheck(ctx, grpcServer, allChecks)
 
 			var err error
 			if len(tlsCert) > 0 && len(tlsKey) > 0 && len(tlsCA) > 0 {
