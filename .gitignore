@@ -1,6 +1,6 @@
 packages/**/LICENSE
-packages/**/*.proto
 
+packages/depscloud-api-nodejs/depscloud_api/
 packages/depscloud-api-nodejs/coverage/
 packages/depscloud-api-nodejs/node_modules/
 packages/depscloud-api-nodejs/.npmrc

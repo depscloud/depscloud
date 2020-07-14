@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+readonly ROOT_DIR="$(dirname "$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )" )"
+
 function index_js() {
 cat <<EOF
 const parent = require("../");
@@ -75,8 +77,9 @@ EOF
 
 ## MAIN EXECUTION
 
+pushd "${ROOT_DIR}/depscloud_api"
 for file in $(find . -name *.proto | cut -c 3-); do
-  directory="$(dirname "${file}")"
+  directory="${ROOT_DIR}/$(dirname "${file}")"
   base="$(basename "${directory}")"
   file_base="$(basename "${file}" .proto)"
 
@@ -87,6 +90,7 @@ for file in $(find . -name *.proto | cut -c 3-); do
   index_js "${base}"      > "${directory}/index.js"
   index_test_ts "${base}" > "${directory}/index_test.ts"
 done
+popd
 
 root_js "cloud.deps.api" $(find . -name *.proto | cut -c 3- | xargs -I {} echo '"{}"') > index.js
 index_test_ts "api" > index_test.ts
