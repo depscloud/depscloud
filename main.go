@@ -1,9 +1,11 @@
 package main
 
 import (
+	"context"
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
+	"github.com/depscloud/tracker/internal/checks"
 	"io/ioutil"
 	"net"
 	"os"
@@ -27,8 +29,6 @@ import (
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
-	"google.golang.org/grpc/health"
-	healthpb "google.golang.org/grpc/health/grpc_health_v1"
 )
 
 func panicIff(err error) {
@@ -38,12 +38,7 @@ func panicIff(err error) {
 	}
 }
 
-func registerV1Alpha(rwdb, rodb *sqlx.DB, statements *graphstore.Statements, server *grpc.Server) {
-	graphStore, err := graphstore.NewSQLGraphStore(rwdb, rodb, statements)
-	panicIff(err)
-
-	graphStoreClient := store.NewInProcessGraphStoreClient(graphStore)
-
+func registerV1Alpha(graphStoreClient store.GraphStoreClient, server *grpc.Server) {
 	// v1alpha
 	services.RegisterDependencyService(server, graphStoreClient)
 	services.RegisterModuleService(server, graphStoreClient)
@@ -116,9 +111,19 @@ func main() {
 				options = append(options, grpc.Creds(transportCreds))
 			}
 
-			server := grpc.NewServer(options...)
-			healthpb.RegisterHealthServer(server, health.NewServer())
-			registerV1Alpha(rwdb, rodb, statements, server)
+			graphStore, err := graphstore.NewSQLGraphStore(rwdb, rodb, statements)
+			panicIff(err)
+
+			graphStoreClient := store.NewInProcessGraphStoreClient(graphStore)
+
+			grpcServer := grpc.NewServer(options...)
+			registerV1Alpha(graphStoreClient, grpcServer)
+
+			ctx, cancel := context.WithCancel(context.Background())
+			defer cancel()
+
+			allChecks := checks.Checks(graphStoreClient)
+			checks.RegisterHealthCheck(ctx, grpcServer, allChecks)
 
 			// setup server
 			address := fmt.Sprintf(":%d", port)
@@ -127,7 +132,7 @@ func main() {
 			panicIff(err)
 
 			logrus.Infof("[main] starting gRPC on %s", address)
-			err = server.Serve(listener)
+			err = grpcServer.Serve(listener)
 			panicIff(err)
 		},
 	}

@@ -9,6 +9,7 @@ require (
 	github.com/jackc/pgx/v4 v4.7.1
 	github.com/jmoiron/sqlx v1.2.0
 	github.com/mattn/go-sqlite3 v2.0.3+incompatible
+	github.com/mjpitz/go-gracefully v0.0.1
 	github.com/sirupsen/logrus v1.6.0
 	github.com/spf13/cobra v1.0.0
 	github.com/spf13/pflag v1.0.5 // indirect
