@@ -2,9 +2,11 @@
 
 A simple command line interface that makes the API a little more digestible.
 
-## Status
+## Support
 
-Early alpha. Hacked together in a night.
+![GitHub](https://img.shields.io/github/license/depscloud/cli.svg)
+![branch](https://github.com/depscloud/cli/workflows/branch/badge.svg?branch=main)
+![Google Analytics](https://www.google-analytics.com/collect?v=1&cid=1&t=event&ec=repo&ea=open&dp=depscloud%2Fcli&dt=depscloud%2Fcli&tid=UA-143087272-2)
 
 ## Cheat Sheet
 
