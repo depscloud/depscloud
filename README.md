@@ -7,6 +7,7 @@ This translates standard HTTP requests into a gRPC request based on annotations 
 
 ![GitHub](https://img.shields.io/github/license/depscloud/gateway.svg)
 ![branch](https://github.com/depscloud/gateway/workflows/branch/badge.svg?branch=main)
+![Google Analytics](https://www.google-analytics.com/collect?v=1&cid=1&t=event&ec=repo&ea=open&dp=depscloud%2Fgateway&dt=depscloud%2Fgateway&tid=UA-143087272-2)
 
 ## Getting Started
 
