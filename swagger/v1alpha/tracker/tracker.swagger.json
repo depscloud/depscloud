@@ -74,6 +74,31 @@
         }
       }
     },
+    "runtimeStreamError": {
+      "type": "object",
+      "properties": {
+        "grpc_code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "http_code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "http_status": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
     "schemaDepends": {
       "type": "object",
       "properties": {
@@ -132,6 +157,20 @@
           "type": "string"
         },
         "kind": {
+          "type": "string"
+        }
+      }
+    },
+    "trackerDependencyRequest": {
+      "type": "object",
+      "properties": {
+        "language": {
+          "type": "string"
+        },
+        "organization": {
+          "type": "string"
+        },
+        "module": {
           "type": "string"
         }
       }
@@ -237,6 +276,59 @@
         },
         "manages": {
           "$ref": "#/definitions/schemaManages"
+        }
+      }
+    },
+    "trackerSearchRequest": {
+      "type": "object",
+      "properties": {
+        "cancel": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "dependentsOf": {
+          "$ref": "#/definitions/trackerDependencyRequest"
+        },
+        "dependenciesOf": {
+          "$ref": "#/definitions/trackerDependencyRequest"
+        },
+        "modulesFor": {
+          "$ref": "#/definitions/schemaSource"
+        },
+        "sourcesFor": {
+          "$ref": "#/definitions/schemaModule"
+        }
+      }
+    },
+    "trackerSearchResponse": {
+      "type": "object",
+      "properties": {
+        "request": {
+          "$ref": "#/definitions/trackerSearchRequest"
+        },
+        "dependents": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1alphatrackerDependency"
+          }
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1alphatrackerDependency"
+          }
+        },
+        "modules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/trackerManagedModule"
+          }
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/trackerManagedSource"
+          }
         }
       }
     },

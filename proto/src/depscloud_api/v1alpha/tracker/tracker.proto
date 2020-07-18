@@ -88,3 +88,31 @@ service DependencyService {
     rpc ListDependents(DependencyRequest) returns (ListDependentsResponse);
     rpc ListDependencies(DependencyRequest) returns (ListDependenciesResponse);
 }
+
+message SearchRequest {
+    bool cancel = 1;
+
+    // one of the following
+
+    DependencyRequest dependentsOf = 5;
+    DependencyRequest dependenciesOf = 6;
+    cloud.deps.api.v1alpha.schema.Source modulesFor = 7;
+    cloud.deps.api.v1alpha.schema.Module sourcesFor = 8;
+}
+
+message SearchResponse {
+    SearchRequest request = 1;
+
+    // one of the following, based on the associated request
+
+    repeated Dependency dependents = 5;
+    repeated Dependency dependencies = 6;
+    repeated ManagedModule modules = 7;
+    repeated ManagedSource sources = 8;
+}
+
+service SearchService {
+    rpc Search(stream SearchRequest) returns (stream SearchResponse);
+    rpc BreadthFirstSearch(stream SearchRequest) returns (stream SearchResponse);
+    rpc DepthFirstSearch(stream SearchRequest) returns (stream SearchResponse);
+}

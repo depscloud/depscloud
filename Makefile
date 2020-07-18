@@ -24,6 +24,9 @@ compile-golang:
 		depscloud/builder-grpc-golang \
 		bash scripts/compile-files.sh compile-golang
 
+compile-dts:
+	bash scripts/compile-files.sh compile-dts
+
 compile-nodejs:
 	docker run --rm -it \
 		-v $(PWD):/depscloud/api \

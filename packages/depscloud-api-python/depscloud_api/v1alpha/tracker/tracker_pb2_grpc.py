@@ -312,3 +312,127 @@ class DependencyService(object):
             depscloud__api_dot_v1alpha_dot_tracker_dot_tracker__pb2.ListDependenciesResponse.FromString,
             options, channel_credentials,
             call_credentials, compression, wait_for_ready, timeout, metadata)
+
+
+class SearchServiceStub(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def __init__(self, channel):
+        """Constructor.
+
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.Search = channel.stream_stream(
+                '/cloud.deps.api.v1alpha.tracker.SearchService/Search',
+                request_serializer=depscloud__api_dot_v1alpha_dot_tracker_dot_tracker__pb2.SearchRequest.SerializeToString,
+                response_deserializer=depscloud__api_dot_v1alpha_dot_tracker_dot_tracker__pb2.SearchResponse.FromString,
+                )
+        self.BreadthFirstSearch = channel.stream_stream(
+                '/cloud.deps.api.v1alpha.tracker.SearchService/BreadthFirstSearch',
+                request_serializer=depscloud__api_dot_v1alpha_dot_tracker_dot_tracker__pb2.SearchRequest.SerializeToString,
+                response_deserializer=depscloud__api_dot_v1alpha_dot_tracker_dot_tracker__pb2.SearchResponse.FromString,
+                )
+        self.DepthFirstSearch = channel.stream_stream(
+                '/cloud.deps.api.v1alpha.tracker.SearchService/DepthFirstSearch',
+                request_serializer=depscloud__api_dot_v1alpha_dot_tracker_dot_tracker__pb2.SearchRequest.SerializeToString,
+                response_deserializer=depscloud__api_dot_v1alpha_dot_tracker_dot_tracker__pb2.SearchResponse.FromString,
+                )
+
+
+class SearchServiceServicer(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def Search(self, request_iterator, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def BreadthFirstSearch(self, request_iterator, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DepthFirstSearch(self, request_iterator, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+
+def add_SearchServiceServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+            'Search': grpc.stream_stream_rpc_method_handler(
+                    servicer.Search,
+                    request_deserializer=depscloud__api_dot_v1alpha_dot_tracker_dot_tracker__pb2.SearchRequest.FromString,
+                    response_serializer=depscloud__api_dot_v1alpha_dot_tracker_dot_tracker__pb2.SearchResponse.SerializeToString,
+            ),
+            'BreadthFirstSearch': grpc.stream_stream_rpc_method_handler(
+                    servicer.BreadthFirstSearch,
+                    request_deserializer=depscloud__api_dot_v1alpha_dot_tracker_dot_tracker__pb2.SearchRequest.FromString,
+                    response_serializer=depscloud__api_dot_v1alpha_dot_tracker_dot_tracker__pb2.SearchResponse.SerializeToString,
+            ),
+            'DepthFirstSearch': grpc.stream_stream_rpc_method_handler(
+                    servicer.DepthFirstSearch,
+                    request_deserializer=depscloud__api_dot_v1alpha_dot_tracker_dot_tracker__pb2.SearchRequest.FromString,
+                    response_serializer=depscloud__api_dot_v1alpha_dot_tracker_dot_tracker__pb2.SearchResponse.SerializeToString,
+            ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+            'cloud.deps.api.v1alpha.tracker.SearchService', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
+
+
+ # This class is part of an EXPERIMENTAL API.
+class SearchService(object):
+    """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def Search(request_iterator,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.stream_stream(request_iterator, target, '/cloud.deps.api.v1alpha.tracker.SearchService/Search',
+            depscloud__api_dot_v1alpha_dot_tracker_dot_tracker__pb2.SearchRequest.SerializeToString,
+            depscloud__api_dot_v1alpha_dot_tracker_dot_tracker__pb2.SearchResponse.FromString,
+            options, channel_credentials,
+            call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def BreadthFirstSearch(request_iterator,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.stream_stream(request_iterator, target, '/cloud.deps.api.v1alpha.tracker.SearchService/BreadthFirstSearch',
+            depscloud__api_dot_v1alpha_dot_tracker_dot_tracker__pb2.SearchRequest.SerializeToString,
+            depscloud__api_dot_v1alpha_dot_tracker_dot_tracker__pb2.SearchResponse.FromString,
+            options, channel_credentials,
+            call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def DepthFirstSearch(request_iterator,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.stream_stream(request_iterator, target, '/cloud.deps.api.v1alpha.tracker.SearchService/DepthFirstSearch',
+            depscloud__api_dot_v1alpha_dot_tracker_dot_tracker__pb2.SearchRequest.SerializeToString,
+            depscloud__api_dot_v1alpha_dot_tracker_dot_tracker__pb2.SearchResponse.FromString,
+            options, channel_credentials,
+            call_credentials, compression, wait_for_ready, timeout, metadata)

@@ -21,7 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'Z(github.com/depscloud/api/v1alpha/tracker',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n+depscloud_api/v1alpha/tracker/tracker.proto\x12\x1e\x63loud.deps.api.v1alpha.tracker\x1a%depscloud_api/v1alpha/deps/deps.proto\x1a)depscloud_api/v1alpha/schema/schema.proto\"\x96\x01\n\rSourceRequest\x12\x35\n\x06source\x18\x01 \x01(\x0b\x32%.cloud.deps.api.v1alpha.schema.Source\x12N\n\x0fmanagementFiles\x18\x02 \x03(\x0b\x32\x35.cloud.deps.api.v1alpha.deps.DependencyManagementFile\"*\n\x0bListRequest\x12\x0c\n\x04page\x18\x01 \x01(\x05\x12\r\n\x05\x63ount\x18\x02 \x01(\x05\"!\n\rTrackResponse\x12\x10\n\x08tracking\x18\x01 \x01(\x08\"i\n\x12ListSourceResponse\x12\x0c\n\x04page\x18\x01 \x01(\x05\x12\r\n\x05\x63ount\x18\x02 \x01(\x05\x12\x36\n\x07sources\x18\x03 \x03(\x0b\x32%.cloud.deps.api.v1alpha.schema.Source\"i\n\x12ListModuleResponse\x12\x0c\n\x04page\x18\x01 \x01(\x05\x12\r\n\x05\x63ount\x18\x02 \x01(\x05\x12\x36\n\x07modules\x18\x03 \x03(\x0b\x32%.cloud.deps.api.v1alpha.schema.Module\"\x7f\n\rManagedSource\x12\x35\n\x06source\x18\x01 \x01(\x0b\x32%.cloud.deps.api.v1alpha.schema.Source\x12\x37\n\x07manages\x18\x02 \x01(\x0b\x32&.cloud.deps.api.v1alpha.schema.Manages\"\x7f\n\rManagedModule\x12\x37\n\x07manages\x18\x01 \x01(\x0b\x32&.cloud.deps.api.v1alpha.schema.Manages\x12\x35\n\x06module\x18\x02 \x01(\x0b\x32%.cloud.deps.api.v1alpha.schema.Module\"U\n\x13ListSourcesResponse\x12>\n\x07sources\x18\x01 \x03(\x0b\x32-.cloud.deps.api.v1alpha.tracker.ManagedSource\"U\n\x13ListManagedResponse\x12>\n\x07modules\x18\x01 \x03(\x0b\x32-.cloud.deps.api.v1alpha.tracker.ManagedModule\"K\n\x11\x44\x65pendencyRequest\x12\x10\n\x08language\x18\x01 \x01(\t\x12\x14\n\x0corganization\x18\x05 \x01(\t\x12\x0e\n\x06module\x18\x06 \x01(\t\"|\n\nDependency\x12\x37\n\x07\x64\x65pends\x18\x01 \x01(\x0b\x32&.cloud.deps.api.v1alpha.schema.Depends\x12\x35\n\x06module\x18\x02 \x01(\x0b\x32%.cloud.deps.api.v1alpha.schema.Module\"X\n\x16ListDependentsResponse\x12>\n\ndependents\x18\x01 \x03(\x0b\x32*.cloud.deps.api.v1alpha.tracker.Dependency\"\\\n\x18ListDependenciesResponse\x12@\n\x0c\x64\x65pendencies\x18\x01 \x03(\x0b\x32*.cloud.deps.api.v1alpha.tracker.Dependency2\xdf\x01\n\rSourceService\x12g\n\x04List\x12+.cloud.deps.api.v1alpha.tracker.ListRequest\x1a\x32.cloud.deps.api.v1alpha.tracker.ListSourceResponse\x12\x65\n\x05Track\x12-.cloud.deps.api.v1alpha.tracker.SourceRequest\x1a-.cloud.deps.api.v1alpha.tracker.TrackResponse2\xce\x02\n\rModuleService\x12g\n\x04List\x12+.cloud.deps.api.v1alpha.tracker.ListRequest\x1a\x32.cloud.deps.api.v1alpha.tracker.ListModuleResponse\x12i\n\x0bListSources\x12%.cloud.deps.api.v1alpha.schema.Module\x1a\x33.cloud.deps.api.v1alpha.tracker.ListSourcesResponse\x12i\n\x0bListManaged\x12%.cloud.deps.api.v1alpha.schema.Source\x1a\x33.cloud.deps.api.v1alpha.tracker.ListManagedResponse2\x91\x02\n\x11\x44\x65pendencyService\x12{\n\x0eListDependents\x12\x31.cloud.deps.api.v1alpha.tracker.DependencyRequest\x1a\x36.cloud.deps.api.v1alpha.tracker.ListDependentsResponse\x12\x7f\n\x10ListDependencies\x12\x31.cloud.deps.api.v1alpha.tracker.DependencyRequest\x1a\x38.cloud.deps.api.v1alpha.tracker.ListDependenciesResponseB*Z(github.com/depscloud/api/v1alpha/trackerb\x06proto3'
+  serialized_pb=b'\n+depscloud_api/v1alpha/tracker/tracker.proto\x12\x1e\x63loud.deps.api.v1alpha.tracker\x1a%depscloud_api/v1alpha/deps/deps.proto\x1a)depscloud_api/v1alpha/schema/schema.proto\"\x96\x01\n\rSourceRequest\x12\x35\n\x06source\x18\x01 \x01(\x0b\x32%.cloud.deps.api.v1alpha.schema.Source\x12N\n\x0fmanagementFiles\x18\x02 \x03(\x0b\x32\x35.cloud.deps.api.v1alpha.deps.DependencyManagementFile\"*\n\x0bListRequest\x12\x0c\n\x04page\x18\x01 \x01(\x05\x12\r\n\x05\x63ount\x18\x02 \x01(\x05\"!\n\rTrackResponse\x12\x10\n\x08tracking\x18\x01 \x01(\x08\"i\n\x12ListSourceResponse\x12\x0c\n\x04page\x18\x01 \x01(\x05\x12\r\n\x05\x63ount\x18\x02 \x01(\x05\x12\x36\n\x07sources\x18\x03 \x03(\x0b\x32%.cloud.deps.api.v1alpha.schema.Source\"i\n\x12ListModuleResponse\x12\x0c\n\x04page\x18\x01 \x01(\x05\x12\r\n\x05\x63ount\x18\x02 \x01(\x05\x12\x36\n\x07modules\x18\x03 \x03(\x0b\x32%.cloud.deps.api.v1alpha.schema.Module\"\x7f\n\rManagedSource\x12\x35\n\x06source\x18\x01 \x01(\x0b\x32%.cloud.deps.api.v1alpha.schema.Source\x12\x37\n\x07manages\x18\x02 \x01(\x0b\x32&.cloud.deps.api.v1alpha.schema.Manages\"\x7f\n\rManagedModule\x12\x37\n\x07manages\x18\x01 \x01(\x0b\x32&.cloud.deps.api.v1alpha.schema.Manages\x12\x35\n\x06module\x18\x02 \x01(\x0b\x32%.cloud.deps.api.v1alpha.schema.Module\"U\n\x13ListSourcesResponse\x12>\n\x07sources\x18\x01 \x03(\x0b\x32-.cloud.deps.api.v1alpha.tracker.ManagedSource\"U\n\x13ListManagedResponse\x12>\n\x07modules\x18\x01 \x03(\x0b\x32-.cloud.deps.api.v1alpha.tracker.ManagedModule\"K\n\x11\x44\x65pendencyRequest\x12\x10\n\x08language\x18\x01 \x01(\t\x12\x14\n\x0corganization\x18\x05 \x01(\t\x12\x0e\n\x06module\x18\x06 \x01(\t\"|\n\nDependency\x12\x37\n\x07\x64\x65pends\x18\x01 \x01(\x0b\x32&.cloud.deps.api.v1alpha.schema.Depends\x12\x35\n\x06module\x18\x02 \x01(\x0b\x32%.cloud.deps.api.v1alpha.schema.Module\"X\n\x16ListDependentsResponse\x12>\n\ndependents\x18\x01 \x03(\x0b\x32*.cloud.deps.api.v1alpha.tracker.Dependency\"\\\n\x18ListDependenciesResponse\x12@\n\x0c\x64\x65pendencies\x18\x01 \x03(\x0b\x32*.cloud.deps.api.v1alpha.tracker.Dependency\"\xa9\x02\n\rSearchRequest\x12\x0e\n\x06\x63\x61ncel\x18\x01 \x01(\x08\x12G\n\x0c\x64\x65pendentsOf\x18\x05 \x01(\x0b\x32\x31.cloud.deps.api.v1alpha.tracker.DependencyRequest\x12I\n\x0e\x64\x65pendenciesOf\x18\x06 \x01(\x0b\x32\x31.cloud.deps.api.v1alpha.tracker.DependencyRequest\x12\x39\n\nmodulesFor\x18\x07 \x01(\x0b\x32%.cloud.deps.api.v1alpha.schema.Source\x12\x39\n\nsourcesFor\x18\x08 \x01(\x0b\x32%.cloud.deps.api.v1alpha.schema.Module\"\xd2\x02\n\x0eSearchResponse\x12>\n\x07request\x18\x01 \x01(\x0b\x32-.cloud.deps.api.v1alpha.tracker.SearchRequest\x12>\n\ndependents\x18\x05 \x03(\x0b\x32*.cloud.deps.api.v1alpha.tracker.Dependency\x12@\n\x0c\x64\x65pendencies\x18\x06 \x03(\x0b\x32*.cloud.deps.api.v1alpha.tracker.Dependency\x12>\n\x07modules\x18\x07 \x03(\x0b\x32-.cloud.deps.api.v1alpha.tracker.ManagedModule\x12>\n\x07sources\x18\x08 \x03(\x0b\x32-.cloud.deps.api.v1alpha.tracker.ManagedSource2\xdf\x01\n\rSourceService\x12g\n\x04List\x12+.cloud.deps.api.v1alpha.tracker.ListRequest\x1a\x32.cloud.deps.api.v1alpha.tracker.ListSourceResponse\x12\x65\n\x05Track\x12-.cloud.deps.api.v1alpha.tracker.SourceRequest\x1a-.cloud.deps.api.v1alpha.tracker.TrackResponse2\xce\x02\n\rModuleService\x12g\n\x04List\x12+.cloud.deps.api.v1alpha.tracker.ListRequest\x1a\x32.cloud.deps.api.v1alpha.tracker.ListModuleResponse\x12i\n\x0bListSources\x12%.cloud.deps.api.v1alpha.schema.Module\x1a\x33.cloud.deps.api.v1alpha.tracker.ListSourcesResponse\x12i\n\x0bListManaged\x12%.cloud.deps.api.v1alpha.schema.Source\x1a\x33.cloud.deps.api.v1alpha.tracker.ListManagedResponse2\x91\x02\n\x11\x44\x65pendencyService\x12{\n\x0eListDependents\x12\x31.cloud.deps.api.v1alpha.tracker.DependencyRequest\x1a\x36.cloud.deps.api.v1alpha.tracker.ListDependentsResponse\x12\x7f\n\x10ListDependencies\x12\x31.cloud.deps.api.v1alpha.tracker.DependencyRequest\x1a\x38.cloud.deps.api.v1alpha.tracker.ListDependenciesResponse2\xec\x02\n\rSearchService\x12k\n\x06Search\x12-.cloud.deps.api.v1alpha.tracker.SearchRequest\x1a..cloud.deps.api.v1alpha.tracker.SearchResponse(\x01\x30\x01\x12w\n\x12\x42readthFirstSearch\x12-.cloud.deps.api.v1alpha.tracker.SearchRequest\x1a..cloud.deps.api.v1alpha.tracker.SearchResponse(\x01\x30\x01\x12u\n\x10\x44\x65pthFirstSearch\x12-.cloud.deps.api.v1alpha.tracker.SearchRequest\x1a..cloud.deps.api.v1alpha.tracker.SearchResponse(\x01\x30\x01\x42*Z(github.com/depscloud/api/v1alpha/trackerb\x06proto3'
   ,
   dependencies=[depscloud__api_dot_v1alpha_dot_deps_dot_deps__pb2.DESCRIPTOR,depscloud__api_dot_v1alpha_dot_schema_dot_schema__pb2.DESCRIPTOR,])
 
@@ -520,6 +520,126 @@ _LISTDEPENDENCIESRESPONSE = _descriptor.Descriptor(
   serialized_end=1424,
 )
 
+
+_SEARCHREQUEST = _descriptor.Descriptor(
+  name='SearchRequest',
+  full_name='cloud.deps.api.v1alpha.tracker.SearchRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='cancel', full_name='cloud.deps.api.v1alpha.tracker.SearchRequest.cancel', index=0,
+      number=1, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='dependentsOf', full_name='cloud.deps.api.v1alpha.tracker.SearchRequest.dependentsOf', index=1,
+      number=5, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='dependenciesOf', full_name='cloud.deps.api.v1alpha.tracker.SearchRequest.dependenciesOf', index=2,
+      number=6, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='modulesFor', full_name='cloud.deps.api.v1alpha.tracker.SearchRequest.modulesFor', index=3,
+      number=7, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='sourcesFor', full_name='cloud.deps.api.v1alpha.tracker.SearchRequest.sourcesFor', index=4,
+      number=8, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1427,
+  serialized_end=1724,
+)
+
+
+_SEARCHRESPONSE = _descriptor.Descriptor(
+  name='SearchResponse',
+  full_name='cloud.deps.api.v1alpha.tracker.SearchResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='request', full_name='cloud.deps.api.v1alpha.tracker.SearchResponse.request', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='dependents', full_name='cloud.deps.api.v1alpha.tracker.SearchResponse.dependents', index=1,
+      number=5, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='dependencies', full_name='cloud.deps.api.v1alpha.tracker.SearchResponse.dependencies', index=2,
+      number=6, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='modules', full_name='cloud.deps.api.v1alpha.tracker.SearchResponse.modules', index=3,
+      number=7, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='sources', full_name='cloud.deps.api.v1alpha.tracker.SearchResponse.sources', index=4,
+      number=8, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1727,
+  serialized_end=2065,
+)
+
 _SOURCEREQUEST.fields_by_name['source'].message_type = depscloud__api_dot_v1alpha_dot_schema_dot_schema__pb2._SOURCE
 _SOURCEREQUEST.fields_by_name['managementFiles'].message_type = depscloud__api_dot_v1alpha_dot_deps_dot_deps__pb2._DEPENDENCYMANAGEMENTFILE
 _LISTSOURCERESPONSE.fields_by_name['sources'].message_type = depscloud__api_dot_v1alpha_dot_schema_dot_schema__pb2._SOURCE
@@ -534,6 +654,15 @@ _DEPENDENCY.fields_by_name['depends'].message_type = depscloud__api_dot_v1alpha_
 _DEPENDENCY.fields_by_name['module'].message_type = depscloud__api_dot_v1alpha_dot_schema_dot_schema__pb2._MODULE
 _LISTDEPENDENTSRESPONSE.fields_by_name['dependents'].message_type = _DEPENDENCY
 _LISTDEPENDENCIESRESPONSE.fields_by_name['dependencies'].message_type = _DEPENDENCY
+_SEARCHREQUEST.fields_by_name['dependentsOf'].message_type = _DEPENDENCYREQUEST
+_SEARCHREQUEST.fields_by_name['dependenciesOf'].message_type = _DEPENDENCYREQUEST
+_SEARCHREQUEST.fields_by_name['modulesFor'].message_type = depscloud__api_dot_v1alpha_dot_schema_dot_schema__pb2._SOURCE
+_SEARCHREQUEST.fields_by_name['sourcesFor'].message_type = depscloud__api_dot_v1alpha_dot_schema_dot_schema__pb2._MODULE
+_SEARCHRESPONSE.fields_by_name['request'].message_type = _SEARCHREQUEST
+_SEARCHRESPONSE.fields_by_name['dependents'].message_type = _DEPENDENCY
+_SEARCHRESPONSE.fields_by_name['dependencies'].message_type = _DEPENDENCY
+_SEARCHRESPONSE.fields_by_name['modules'].message_type = _MANAGEDMODULE
+_SEARCHRESPONSE.fields_by_name['sources'].message_type = _MANAGEDSOURCE
 DESCRIPTOR.message_types_by_name['SourceRequest'] = _SOURCEREQUEST
 DESCRIPTOR.message_types_by_name['ListRequest'] = _LISTREQUEST
 DESCRIPTOR.message_types_by_name['TrackResponse'] = _TRACKRESPONSE
@@ -547,6 +676,8 @@ DESCRIPTOR.message_types_by_name['DependencyRequest'] = _DEPENDENCYREQUEST
 DESCRIPTOR.message_types_by_name['Dependency'] = _DEPENDENCY
 DESCRIPTOR.message_types_by_name['ListDependentsResponse'] = _LISTDEPENDENTSRESPONSE
 DESCRIPTOR.message_types_by_name['ListDependenciesResponse'] = _LISTDEPENDENCIESRESPONSE
+DESCRIPTOR.message_types_by_name['SearchRequest'] = _SEARCHREQUEST
+DESCRIPTOR.message_types_by_name['SearchResponse'] = _SEARCHRESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 SourceRequest = _reflection.GeneratedProtocolMessageType('SourceRequest', (_message.Message,), {
@@ -640,6 +771,20 @@ ListDependenciesResponse = _reflection.GeneratedProtocolMessageType('ListDepende
   })
 _sym_db.RegisterMessage(ListDependenciesResponse)
 
+SearchRequest = _reflection.GeneratedProtocolMessageType('SearchRequest', (_message.Message,), {
+  'DESCRIPTOR' : _SEARCHREQUEST,
+  '__module__' : 'depscloud_api.v1alpha.tracker.tracker_pb2'
+  # @@protoc_insertion_point(class_scope:cloud.deps.api.v1alpha.tracker.SearchRequest)
+  })
+_sym_db.RegisterMessage(SearchRequest)
+
+SearchResponse = _reflection.GeneratedProtocolMessageType('SearchResponse', (_message.Message,), {
+  'DESCRIPTOR' : _SEARCHRESPONSE,
+  '__module__' : 'depscloud_api.v1alpha.tracker.tracker_pb2'
+  # @@protoc_insertion_point(class_scope:cloud.deps.api.v1alpha.tracker.SearchResponse)
+  })
+_sym_db.RegisterMessage(SearchResponse)
+
 
 DESCRIPTOR._options = None
 
@@ -650,8 +795,8 @@ _SOURCESERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=1427,
-  serialized_end=1650,
+  serialized_start=2068,
+  serialized_end=2291,
   methods=[
   _descriptor.MethodDescriptor(
     name='List',
@@ -686,8 +831,8 @@ _MODULESERVICE = _descriptor.ServiceDescriptor(
   index=1,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=1653,
-  serialized_end=1987,
+  serialized_start=2294,
+  serialized_end=2628,
   methods=[
   _descriptor.MethodDescriptor(
     name='List',
@@ -732,8 +877,8 @@ _DEPENDENCYSERVICE = _descriptor.ServiceDescriptor(
   index=2,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=1990,
-  serialized_end=2263,
+  serialized_start=2631,
+  serialized_end=2904,
   methods=[
   _descriptor.MethodDescriptor(
     name='ListDependents',
@@ -759,5 +904,51 @@ _DEPENDENCYSERVICE = _descriptor.ServiceDescriptor(
 _sym_db.RegisterServiceDescriptor(_DEPENDENCYSERVICE)
 
 DESCRIPTOR.services_by_name['DependencyService'] = _DEPENDENCYSERVICE
+
+
+_SEARCHSERVICE = _descriptor.ServiceDescriptor(
+  name='SearchService',
+  full_name='cloud.deps.api.v1alpha.tracker.SearchService',
+  file=DESCRIPTOR,
+  index=3,
+  serialized_options=None,
+  create_key=_descriptor._internal_create_key,
+  serialized_start=2907,
+  serialized_end=3271,
+  methods=[
+  _descriptor.MethodDescriptor(
+    name='Search',
+    full_name='cloud.deps.api.v1alpha.tracker.SearchService.Search',
+    index=0,
+    containing_service=None,
+    input_type=_SEARCHREQUEST,
+    output_type=_SEARCHRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='BreadthFirstSearch',
+    full_name='cloud.deps.api.v1alpha.tracker.SearchService.BreadthFirstSearch',
+    index=1,
+    containing_service=None,
+    input_type=_SEARCHREQUEST,
+    output_type=_SEARCHRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='DepthFirstSearch',
+    full_name='cloud.deps.api.v1alpha.tracker.SearchService.DepthFirstSearch',
+    index=2,
+    containing_service=None,
+    input_type=_SEARCHREQUEST,
+    output_type=_SEARCHRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+])
+_sym_db.RegisterServiceDescriptor(_SEARCHSERVICE)
+
+DESCRIPTOR.services_by_name['SearchService'] = _SEARCHSERVICE
 
 # @@protoc_insertion_point(module_scope)
