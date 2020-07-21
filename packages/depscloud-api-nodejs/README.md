@@ -26,4 +26,4 @@ const moduleService = new ModuleService(target, creds);
 const dependencyService = new DependencyService(target, creds);
 ```
 
-![Google Analytics](https://www.google-analytics.com/collect?v=1&cid=1&t=event&ec=repo&ea=open&dp=depscloud%2Fapi%2Fpackages%2Fnodejs&dt=depscloud%2Fapi%2Fpackages%2Fnodejs&tid=UA-143087272-2)
+![Google Analytics](https://www.google-analytics.com/collect?v=1&cid=555&t=event&ec=repo&ea=open&dp=depscloud%2Fapi%2Fpackages%2Fnodejs&dt=depscloud%2Fapi%2Fpackages%2Fnodejs&tid=UA-143087272-2)
