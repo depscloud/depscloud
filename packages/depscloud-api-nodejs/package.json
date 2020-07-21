@@ -16,7 +16,7 @@
     "@types/jest": "26.0.4",
     "jest": "26.1.0",
     "ts-jest": "26.1.1",
-    "typescript": "3.9.6"
+    "typescript": "3.9.7"
   },
   "scripts": {
     "test": "jest --coverage",
