@@ -7,7 +7,7 @@ It works by pulling repositories from sources, extracting dependency information
 
 ![GitHub](https://img.shields.io/github/license/depscloud/indexer.svg)
 ![branch](https://github.com/depscloud/indexer/workflows/branch/badge.svg?branch=main)
-![Google Analytics](https://www.google-analytics.com/collect?v=1&cid=1&t=event&ec=repo&ea=open&dp=depscloud%2Findexer&dt=depscloud%2Findexer&tid=UA-143087272-2)
+![Google Analytics](https://www.google-analytics.com/collect?v=1&cid=555&t=event&ec=repo&ea=open&dp=depscloud%2Findexer&dt=depscloud%2Findexer&tid=UA-143087272-2)
 
 ## Getting Started
 
