@@ -2,9 +2,10 @@ package checks
 
 import (
 	"context"
+	"time"
+
 	"github.com/depscloud/api/v1alpha/store"
 	"github.com/depscloud/tracker/pkg/types"
-	"time"
 
 	"github.com/mjpitz/go-gracefully/check"
 	"github.com/mjpitz/go-gracefully/health"
@@ -30,7 +31,7 @@ func Checks(
 			RunFunc: func(ctx context.Context) (state.State, error) {
 				_, err := graphStore.List(ctx, &store.ListRequest{
 					Count: 1,
-					Type: types.SourceType,
+					Type:  types.SourceType,
 				})
 				if err != nil {
 					return state.Outage, err

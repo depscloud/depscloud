@@ -5,12 +5,12 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
-	"github.com/depscloud/tracker/internal/checks"
 	"io/ioutil"
 	"net"
 	"os"
 
 	"github.com/depscloud/api/v1alpha/store"
+	"github.com/depscloud/tracker/internal/checks"
 	"github.com/depscloud/tracker/pkg/services"
 	"github.com/depscloud/tracker/pkg/services/graphstore"
 
@@ -43,6 +43,7 @@ func registerV1Alpha(graphStoreClient store.GraphStoreClient, server *grpc.Serve
 	services.RegisterDependencyService(server, graphStoreClient)
 	services.RegisterModuleService(server, graphStoreClient)
 	services.RegisterSourceService(server, graphStoreClient)
+	services.RegisterSearchService(server, graphStoreClient)
 }
 
 func main() {
