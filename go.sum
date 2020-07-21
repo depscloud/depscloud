@@ -23,6 +23,7 @@ github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/depscloud/api v0.1.8 h1:FqtDeWf4k9NybjHcdQuODzFiJzMh12saMIuP42aLMSI=
 github.com/depscloud/api v0.1.8/go.mod h1:2RlrFi+zKck3vazSEyx0vQsX4VoscvhnxgHtCXqS8BI=
+github.com/depscloud/api v0.1.9/go.mod h1:SLd+BhIcn8u7zpOey1wd+0XpHMR6H3wk1nyQOzgsmGU=
 github.com/dgrijalva/jwt-go v3.2.0+incompatible/go.mod h1:E3ru+11k8xSBh+hMPgOLZmtrrCbhqsmaPHjLKYnJCaQ=
 github.com/dgryski/go-sip13 v0.0.0-20181026042036-e10d5fee7954/go.mod h1:vAd38F8PWV+bWy6jNmig1y/TA+kYO4g3RSRF0IAv0no=
 github.com/envoyproxy/go-control-plane v0.9.0/go.mod h1:YTl/9mNaCwkRvm6d1a2C3ymFceY/DCBVvsKhRF0iEA4=
@@ -205,6 +206,7 @@ google.golang.org/genproto v0.0.0-20200513103714-09dca8ec2884/go.mod h1:55QSHmfG
 google.golang.org/genproto v0.0.0-20200526211855-cb27e3aa2013/go.mod h1:NbSheEEYHJ7i3ixzK3sjbqSGDJWnxyFXZblF3eUsNvo=
 google.golang.org/genproto v0.0.0-20200620020550-bd6e04640131 h1:IXNofpkLhv80L3TJQvj2YQLnMHZgAktycswvtXwQiRk=
 google.golang.org/genproto v0.0.0-20200620020550-bd6e04640131/go.mod h1:jDfRM7FcilCzHH/e9qn6dsT145K34l5v+OpcnNgKAAA=
+google.golang.org/genproto v0.0.0-20200711021454-869866162049/go.mod h1:FWY/as6DDZQgahTzZj3fqbO1CbirC29ZNUFHwi0/+no=
 google.golang.org/genproto v0.0.0-20200714145754-f631a03bbd91 h1:XXNq+5IwpPXUBWh3/Yvj4m8ATxujPQ3Ktzou2mSIeE4=
 google.golang.org/genproto v0.0.0-20200714145754-f631a03bbd91/go.mod h1:FWY/as6DDZQgahTzZj3fqbO1CbirC29ZNUFHwi0/+no=
 google.golang.org/grpc v1.19.0/go.mod h1:mqu4LbDTu4XGKhr4mRzUsmM4RtVoemTSY81AxZiDr8c=

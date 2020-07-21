@@ -3,7 +3,7 @@ module github.com/depscloud/gateway
 go 1.14
 
 require (
-	github.com/depscloud/api v0.1.8
+	github.com/depscloud/api v0.1.9
 	github.com/grpc-ecosystem/grpc-gateway v1.14.6
 	github.com/jonboulle/clockwork v0.2.0 // indirect
 	github.com/mjpitz/go-gracefully v0.0.1
