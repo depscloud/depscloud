@@ -1,6 +1,6 @@
 # deps.cloud
 
-![Google Analytics](https://www.google-analytics.com/collect?v=1&cid=1&t=event&ec=repo&ea=open&dp=depscloud%2Fdeploy&dt=depscloud%2Fdeploy&tid=UA-143087272-2)
+![Google Analytics](https://www.google-analytics.com/collect?v=1&cid=555&t=event&ec=repo&ea=open&dp=depscloud%2Fdeploy&dt=depscloud%2Fdeploy&tid=UA-143087272-2)
 
 ## Kubernetes Manifests
 
