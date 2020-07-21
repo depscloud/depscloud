@@ -4,7 +4,7 @@ go 1.14
 
 require (
 	github.com/davidji99/bitbucket-go v0.2.1
-	github.com/depscloud/api v0.1.8
+	github.com/depscloud/api v0.1.9
 	github.com/ghodss/yaml v1.0.0
 	github.com/go-resty/resty/v2 v2.3.0 // indirect
 	github.com/gogo/protobuf v1.3.1
@@ -24,7 +24,6 @@ require (
 	golang.org/x/text v0.3.3 // indirect
 	golang.org/x/time v0.0.0-20200630173020-3af7569d3a1e // indirect
 	google.golang.org/appengine v1.6.6 // indirect
-	google.golang.org/genproto v0.0.0-20200702021140-07506425bd67 // indirect
 	google.golang.org/grpc v1.30.0
 	google.golang.org/protobuf v1.25.0 // indirect
 	gopkg.in/src-d/go-billy.v4 v4.3.2
