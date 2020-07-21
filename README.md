@@ -8,7 +8,7 @@ After parsing out the information, it returns a standardized representation maki
 
 ![GitHub](https://img.shields.io/github/license/depscloud/extractor.svg)
 ![branch](https://github.com/depscloud/extractor/workflows/branch/badge.svg?branch=main)
-![Google Analytics](https://www.google-analytics.com/collect?v=1&cid=1&t=event&ec=repo&ea=open&dp=depscloud%2Fextractor&dt=depscloud%2Fextractor&tid=UA-143087272-2)
+![Google Analytics](https://www.google-analytics.com/collect?v=1&cid=555&t=event&ec=repo&ea=open&dp=depscloud%2Fextractor&dt=depscloud%2Fextractor&tid=UA-143087272-2)
 
 ## Getting Started
 
