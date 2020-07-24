@@ -4,12 +4,6 @@ const grpc = require('@grpc/grpc-js');
 
 const filenames = [];
 
-filenames.push(path.join(__dirname, "node_modules", "protobufjs", "google", "api", "http.proto"));
-filenames.push(path.join(__dirname, "node_modules", "protobufjs", "google", "api", "annotations.proto"));
-filenames.push(path.join(__dirname, "node_modules", "protobufjs", "google", "protobuf", "api.proto"));
-filenames.push(path.join(__dirname, "node_modules", "protobufjs", "google", "protobuf", "source_context.proto"));
-filenames.push(path.join(__dirname, "node_modules", "protobufjs", "google", "protobuf", "type.proto"));
-filenames.push(path.join(__dirname, "node_modules", "protobufjs", "google", "protobuf", "descriptor.proto"));
 filenames.push(path.join(__dirname, "depscloud_api", "v1alpha", "tracker", "tracker.proto"));
 filenames.push(path.join(__dirname, "depscloud_api", "v1alpha", "extractor", "extractor.proto"));
 filenames.push(path.join(__dirname, "depscloud_api", "v1alpha", "schema", "schema.proto"));

@@ -92,5 +92,5 @@ for file in $(find . -name *.proto | cut -c 3-); do
 done
 popd
 
-root_js "cloud.deps.api" $(find . -name *.proto | cut -c 3- | xargs -I {} echo '"{}"') > index.js
+root_js "cloud.deps.api" $(find . -name *.proto | grep -v node_modules | cut -c 3- | xargs -I {} echo '"{}"') > index.js
 index_test_ts "api" > index_test.ts
