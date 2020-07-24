@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package cloud.deps.api.v1alpha.schema;
+
+option go_package = "github.com/depscloud/api/v1alpha/schema";
+
+message Source {
+    string url = 1;
+    string ref = 2;
+    string kind = 3;
+}
+
+message Manages {
+    string language = 1;
+    string system = 2;
+    string version = 3;
+}
+
+message Module {
+    string language = 1;
+    string organization = 2;
+    string module = 3;
+}
+
+message Depends {
+    string language = 1;
+    string version_constraint = 2;
+    repeated string scopes = 3;
+    string ref = 4;
+}

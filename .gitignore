@@ -1,6 +1,5 @@
 packages/**/LICENSE
 
-packages/depscloud-api-nodejs/depscloud_api/**/*.proto
 packages/depscloud-api-nodejs/depscloud_api/**/*.yaml
 packages/depscloud-api-nodejs/coverage/
 packages/depscloud-api-nodejs/node_modules/

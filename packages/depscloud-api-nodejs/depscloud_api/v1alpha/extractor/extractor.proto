@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package cloud.deps.api.v1alpha.extractor;
+
+import "depscloud_api/v1alpha/deps/deps.proto";
+
+option go_package = "github.com/depscloud/api/v1alpha/extractor";
+
+message ExtractRequest {
+    string separator = 1;
+    map<string, string> fileContents = 2;
+    string url = 3;
+}
+
+message ExtractResponse {
+    repeated cloud.deps.api.v1alpha.deps.DependencyManagementFile managementFiles = 1;
+}
+
+message MatchRequest {
+    string separator = 1;
+    repeated string paths = 2;
+}
+
+message MatchResponse {
+    repeated string matchedPaths = 1;
+}
+
+service DependencyExtractor {
+    rpc Match(MatchRequest) returns (MatchResponse);
+    rpc Extract(ExtractRequest) returns (ExtractResponse);
+}

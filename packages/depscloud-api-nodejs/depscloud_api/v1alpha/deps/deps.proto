@@ -1,0 +1,23 @@
+syntax = "proto2";
+
+package cloud.deps.api.v1alpha.deps;
+
+option go_package = "github.com/depscloud/api/v1alpha/deps";
+
+message Dependency {
+    optional string organization = 1;
+    optional string module = 2;
+    optional string versionConstraint = 3;
+    repeated string scopes = 4;
+}
+
+message DependencyManagementFile {
+    optional string language = 1; // java, node, python, golang
+    optional string system = 2; // npm, ivy, maven, gradle, godeps
+    optional string sourceUrl = 3;
+
+    optional string organization = 5;
+    optional string module = 6;
+    optional string version = 7;
+    repeated Dependency dependencies = 8;
+}
