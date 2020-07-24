@@ -7,6 +7,7 @@ A simple command line interface that makes the API a little more digestible.
 ![GitHub](https://img.shields.io/github/license/depscloud/cli.svg)
 ![branch](https://github.com/depscloud/cli/workflows/branch/badge.svg?branch=main)
 ![Google Analytics](https://www.google-analytics.com/collect?v=1&cid=555&t=event&ec=repo&ea=open&dp=depscloud%2Fcli&dt=depscloud%2Fcli&tid=UA-143087272-2)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdepscloud%2Fcli.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdepscloud%2Fcli?ref=badge_shield)
 
 ## Cheat Sheet
 
@@ -47,3 +48,7 @@ $ deps get dependencies -l go -o github.com -m depscloud/api
 {"depends":{"language":"go","version_constraint":"v1.11.2","scopes":["direct"]},"module":{"language":"go","organization":"github.com","module":"grpc-ecosystem/grpc-gateway"}}
 {"depends":{"language":"go","version_constraint":"v1.23.1","scopes":["direct"]},"module":{"language":"go","organization":"google.golang.org","module":"grpc"}}
 ```
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdepscloud%2Fcli.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdepscloud%2Fcli?ref=badge_large)
