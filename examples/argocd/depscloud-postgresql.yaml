@@ -1,0 +1,61 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: depscloud-postgres
+  finalizers: # cascade deletes
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: depscloud-postgres
+
+  source:
+    repoURL: https://depscloud.github.io/deploy/charts
+    chart: depscloud
+    helm:
+      releaseName: depscloud-postgres
+      values: |
+        postgres:
+          enabled: true
+          postgresqlUsername: user
+          postgresqlPassword: password
+          postgresqlDatabase: depscloud
+          
+        extractor:
+          enabled: true
+
+        gateway:
+          enabled: true
+
+        indexer:
+          enabled: true
+          schedule: "@daily"
+          config:
+            accounts:
+              - github:
+                  clone:
+                    strategy: HTTP
+                  organizations:
+                    - depscloud
+
+        tracker:
+          enabled: true
+          storage:
+            driver: postgres
+            address: postgres://user:password@depscloud-postgresql:5432/depscloud
+            readOnlyAddress: postgres://user:password@depscloud-postgresql:5432/depscloud
+
+
+  destination:
+    server: https://kubernetes.default.svc
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    validate: true
+
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jsonPointers:
+        - /spec/replicas

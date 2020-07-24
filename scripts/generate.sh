@@ -57,7 +57,7 @@ helm template mysql bitnami/mysql \
 
 echo "Packaging Manifests bitnami/postgres"
 echo "---" > "${k8s_path}/postgres.yaml"
-helm template postgres bitnami/postgresql \
+helm template postgresql bitnami/postgresql \
   --version 8.10.10 \
   --set postgresqlUsername=user \
   --set postgresqlPassword=password \

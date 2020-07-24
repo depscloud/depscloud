@@ -1,0 +1,43 @@
+---
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: depscloud-mysql
+spec:
+  releaseName: depscloud-mysql
+  chart:
+    repository: https://depscloud.github.io/deploy/charts
+    name: depscloud
+  values:
+    mysql:
+      enabled: true
+      db:
+        user: user
+        password: password
+        name: depscloud
+      volumePermissions:
+        enabled: true
+
+    extractor:
+      enabled: true
+
+    gateway:
+      enabled: true
+
+    indexer:
+      enabled: true
+      schedule: "@daily"
+      config:
+        accounts:
+          - github:
+              clone:
+                strategy: HTTP
+              organizations:
+                - depscloud
+
+    tracker:
+      enabled: true
+      storage:
+        driver: mysql
+        address: user:password@tcp(depscloud-mysql:3306)/depscloud
+        readOnlyAddress: user:password@tcp(depscloud-mysql-slave:3306)/depscloud

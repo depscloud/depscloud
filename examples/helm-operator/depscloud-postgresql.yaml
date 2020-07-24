@@ -1,0 +1,40 @@
+---
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: depscloud-postgres
+spec:
+  releaseName: depscloud-postgres
+  chart:
+    repository: https://depscloud.github.io/deploy/charts
+    name: depscloud
+  values:
+    postgres:
+      enabled: true
+      postgresqlUsername: user
+      postgresqlPassword: password
+      postgresqlDatabase: depscloud
+      
+    extractor:
+      enabled: true
+
+    gateway:
+      enabled: true
+
+    indexer:
+      enabled: true
+      schedule: "@daily"
+      config:
+        accounts:
+          - github:
+              clone:
+                strategy: HTTP
+              organizations:
+                - depscloud
+
+    tracker:
+      enabled: true
+      storage:
+        driver: postgres
+        address: postgres://user:password@depscloud-postgresql:5432/depscloud
+        readOnlyAddress: postgres://user:password@depscloud-postgresql:5432/depscloud

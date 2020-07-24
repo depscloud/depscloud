@@ -1,0 +1,23 @@
+extractor:
+  enabled: true
+
+gateway:
+  enabled: true
+
+indexer:
+  enabled: true
+  schedule: "@daily"
+  config:
+    accounts:
+      - github:
+          clone:
+            strategy: HTTP
+          organizations:
+            - depscloud
+
+tracker:
+  enabled: true
+  storage:
+    driver: sqlite
+    address: file::memory:?cache=shared
+    readOnlyAddress:

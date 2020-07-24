@@ -1,0 +1,54 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: depscloud-sqlite
+  finalizers: # cascade deletes
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: depscloud-sqlite
+
+  source:
+    repoURL: https://depscloud.github.io/deploy/charts
+    chart: depscloud
+    helm:
+      releaseName: depscloud-sqlite
+      values: |
+        extractor:
+          enabled: true
+
+        gateway:
+          enabled: true
+
+        indexer:
+          enabled: true
+          schedule: "@daily"
+          config:
+            accounts:
+              - github:
+                  clone:
+                    strategy: HTTP
+                  organizations:
+                    - depscloud
+
+        tracker:
+          enabled: true
+          storage:
+            driver: sqlite
+            address: file::memory:?cache=shared
+            readOnlyAddress:
+
+  destination:
+    server: https://kubernetes.default.svc
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    validate: true
+
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jsonPointers:
+        - /spec/replicas

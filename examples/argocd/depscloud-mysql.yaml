@@ -1,0 +1,63 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: depscloud-mysql
+  finalizers: # cascade deletes
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: depscloud-mysql
+
+  source:
+    repoURL: https://depscloud.github.io/deploy/charts
+    chart: depscloud
+    helm:
+      releaseName: depscloud-mysql
+      values: |
+        mysql:
+          enabled: true
+          db:
+            user: user
+            password: password
+            name: depscloud
+          volumePermissions:
+            enabled: true
+
+        extractor:
+          enabled: true
+
+        gateway:
+          enabled: true
+
+        indexer:
+          enabled: true
+          schedule: "@daily"
+          config:
+            accounts:
+              - github:
+                  clone:
+                    strategy: HTTP
+                  organizations:
+                    - depscloud
+
+        tracker:
+          enabled: true
+          storage:
+            driver: mysql
+            address: user:password@tcp(depscloud-mysql:3306)/depscloud
+            readOnlyAddress: user:password@tcp(depscloud-mysql-slave:3306)/depscloud
+
+  destination:
+    server: https://kubernetes.default.svc
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    validate: true
+
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jsonPointers:
+        - /spec/replicas
