@@ -1,5 +1,0 @@
-accounts:
-- github:
-    strategy: HTTP
-    organizations:
-    - depscloud

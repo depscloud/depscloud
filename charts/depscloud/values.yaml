@@ -2,6 +2,12 @@ global:
   # labels applied to all subcharts
   labels: {}
 
+mysql:
+  enabled: false
+
+postgres:
+  enabled: false
+
 extractor:
   enabled: true
 
