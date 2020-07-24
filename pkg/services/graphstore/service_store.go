@@ -58,8 +58,6 @@ type graphStore struct {
 	statements *Statements
 }
 
-var _ store.GraphStoreServer = &graphStore{}
-
 func (gs *graphStore) Put(ctx context.Context, req *store.PutRequest) (*store.PutResponse, error) {
 	if gs.rwdb == nil {
 		return nil, api.ErrUnsupported
@@ -356,3 +354,5 @@ func readGraphItemPairs(rows *sqlx.Rows) ([]*store.GraphItemPair, error) {
 
 	return results, nil
 }
+
+var _ store.GraphStoreServer = &graphStore{}

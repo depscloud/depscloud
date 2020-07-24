@@ -67,7 +67,11 @@ func (s *sourceService) Track(ctx context.Context, req *tracker.SourceRequest) (
 	toDelete := make([]*store.GraphItem, 0)
 	for key, item := range currentSet {
 		if _, ok := proposedSet[key]; !ok {
-			toDelete = append(toDelete, item)
+			// don't delete modules from the graph when an edge to it is removed.
+			// we'll put a cleanup in later
+			if item.GetGraphItemType() != types.ModuleType {
+				toDelete = append(toDelete, item)
+			}
 		}
 	}
 
