@@ -1,6 +1,7 @@
 package services
 
 import (
+	"github.com/depscloud/api"
 	"github.com/depscloud/api/v1alpha/store"
 	"github.com/depscloud/api/v1alpha/tracker"
 
@@ -13,9 +14,19 @@ func RegisterSearchService(server *grpc.Server, gs store.GraphStoreClient) {
 }
 
 type searchService struct {
-	tracker.UnimplementedSearchServiceServer
-
 	gs store.GraphStoreClient
+}
+
+func (s *searchService) Search(server tracker.SearchService_SearchServer) error {
+	return api.ErrUnimplemented
+}
+
+func (s *searchService) BreadthFirstSearch(server tracker.SearchService_BreadthFirstSearchServer) error {
+	return api.ErrUnimplemented
+}
+
+func (s *searchService) DepthFirstSearch(server tracker.SearchService_DepthFirstSearchServer) error {
+	return api.ErrUnimplemented
 }
 
 var _ tracker.SearchServiceServer = &searchService{}
