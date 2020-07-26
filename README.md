@@ -8,6 +8,8 @@
 [deps.cloud](https://deps.cloud/) is system that helps track and manage library usage across an organization.
 Unlike many alternatives, it was built with portability in mind making easy for anyone to get started.
 
+For more information on how to get involved take a look at our [project board](https://github.com/orgs/depscloud/projects/1).
+
 ## Tracker
 
 This repository contains the [tracker](https://deps.cloud/docs/services/tracker/) process.
