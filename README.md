@@ -1,19 +1,19 @@
-# Dependency Extractor
-
-Dependency Extractor is a simple gRPC service that encapsulates the logic for extracting library dependency information.
-It does this by parsing well known dependency management files (pom.xml, build.gradle, go.mod, package.json to name a few).
-After parsing out the information, it returns a standardized representation making it easy to store and query.
-
-## Support
-
 ![GitHub](https://img.shields.io/github/license/depscloud/extractor.svg)
 ![branch](https://github.com/depscloud/extractor/workflows/branch/badge.svg?branch=main)
 ![Google Analytics](https://www.google-analytics.com/collect?v=1&cid=555&t=event&ec=repo&ea=open&dp=depscloud%2Fextractor&dt=depscloud%2Fextractor&tid=UA-143087272-2)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdepscloud%2Fextractor.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdepscloud%2Fextractor?ref=badge_shield)
 
-## Getting Started
+# deps.cloud
 
-For more information on how to get started, see the [documentation](https://deps.cloud/docs/).
+[deps.cloud](https://deps.cloud/) is system that helps track and manage library usage across an organization.
+Unlike many alternatives, it was built with portability in mind making easy for anyone to get started.
+
+For more information on how to get involved take a look at our [project board](https://github.com/orgs/depscloud/projects/1).
+
+## Extractor
+
+This repository contains the [extractor](https://deps.cloud/docs/services/extractor/) process.
+It is responsible for parsing the contents of manifest files and returning a standard representation of the file.
 
 ## License
 
