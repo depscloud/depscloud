@@ -72,6 +72,4 @@ helm template depscloud ${in}/depscloud/ \
   --set tracker.externalStorage.secretRef.name="depscloud-tracker" \
   >> "${k8s_path}/depscloud-system.yaml"
 
-## copy in README
-
-cp "README.md" "${out}/README.md"
+rm -rf "${out}/README.md"
