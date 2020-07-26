@@ -1,13 +1,45 @@
-# deps
-
-A simple command line interface that makes the API a little more digestible.
-
-## Support
-
 ![GitHub](https://img.shields.io/github/license/depscloud/cli.svg)
 ![branch](https://github.com/depscloud/cli/workflows/branch/badge.svg?branch=main)
 ![Google Analytics](https://www.google-analytics.com/collect?v=1&cid=555&t=event&ec=repo&ea=open&dp=depscloud%2Fcli&dt=depscloud%2Fcli&tid=UA-143087272-2)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdepscloud%2Fcli.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdepscloud%2Fcli?ref=badge_shield)
+
+# deps.cloud
+
+[deps.cloud](https://deps.cloud/) is system that helps track and manage library usage across an organization.
+Unlike many alternatives, it was built with portability in mind making easy for anyone to get started.
+
+For more information on how to get involved take a look at our [project board](https://github.com/orgs/depscloud/projects/1).
+
+## deps
+
+`deps` is a command line tool that facilitates communication with the deps.cloud API.
+It's endpoint can be configured by setting the `DEPSCLOUD_BASE_URL` environment variable.
+A public API is provided, but surfaces limited information at this time.
+
+For more information on how to leverage `deps`, see our [documentation](https://deps.cloud/docs/cli/).
+
+### Installation
+
+#### OSX
+
+```
+$ brew tap depscloud/tap
+$ brew install depscloud-cli
+
+$ deps version
+deps {version: 0.0.13, commit: a99e9a737103b7b79294b3b754e005c49267cdbd, date: 2020-06-27T22:21:27Z}
+```
+
+#### Ubuntu/Debian
+
+```
+$ echo "deb [trusted=yes] https://apt.fury.io/depscloud/ /" | sudo tee /etc/apt/sources.list.d/depscloud.list
+$ sudo apt-get update
+$ sudo apt-get install depscloud-cli
+
+$ deps version
+deps {version: 0.0.13, commit: a99e9a737103b7b79294b3b754e005c49267cdbd, date: 2020-06-27T22:21:27Z}
+```
 
 ## Cheat Sheet
 
@@ -50,4 +82,5 @@ $ deps get dependencies -l go -o github.com -m depscloud/api
 ```
 
 ## License
+
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdepscloud%2Fcli.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdepscloud%2Fcli?ref=badge_large)
