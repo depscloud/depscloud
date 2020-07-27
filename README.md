@@ -1,6 +1,6 @@
 ![GitHub](https://img.shields.io/github/license/depscloud/extractor.svg)
 ![branch](https://github.com/depscloud/extractor/workflows/branch/badge.svg?branch=main)
-![Google Analytics](https://www.google-analytics.com/collect?v=1&cid=555&t=event&ec=repo&ea=open&dp=depscloud%2Fdeploy&dt=depscloud%2Fdeploy&tid=UA-143087272-2)
+![Google Analytics](https://www.google-analytics.com/collect?v=1&cid=555&t=event&ec=repo&ea=open&dp=deploy&dt=deploy&tid=UA-143087272-2)
 
 # deps.cloud
 
