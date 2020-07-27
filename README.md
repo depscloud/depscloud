@@ -45,4 +45,4 @@ func main() {
 }
 ```
 
-![Google Analytics](https://www.google-analytics.com/collect?v=1&cid=555&t=event&ec=repo&ea=open&dp=depscloud%2Fapi&dt=depscloud%2Fapi&tid=UA-143087272-2)
+![Google Analytics](https://www.google-analytics.com/collect?v=1&cid=555&t=event&ec=repo&ea=open&dp=api&dt=api&tid=UA-143087272-2)

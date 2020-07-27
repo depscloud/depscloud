@@ -24,4 +24,4 @@ moduleService = tracker_pb2_grpc.ModuleServiceStub(channel)
 dependencyService = tracker_pb2_grpc.DependencyServiceStub(channel)
 ```
 
-![Google Analytics](https://www.google-analytics.com/collect?v=1&cid=555&t=event&ec=repo&ea=open&dp=depscloud%2Fapi%2Fpackages%2Fpython&dt=depscloud%2Fapi%2Fpackages%2Fpython&tid=UA-143087272-2)
+![Google Analytics](https://www.google-analytics.com/collect?v=1&cid=555&t=event&ec=repo&ea=open&dp=api%2Fpackages%2Fpython&dt=api%2Fpackages%2Fpython&tid=UA-143087272-2)
