@@ -1,7 +1,7 @@
 ![GitHub](https://img.shields.io/github/license/depscloud/extractor.svg)
 ![base](https://github.com/depscloud/dockerfiles/workflows/base/badge.svg?branch=main)
 ![download](https://github.com/depscloud/dockerfiles/workflows/download/badge.svg?branch=main)
-![Google Analytics](https://www.google-analytics.com/collect?v=1&cid=555&t=event&ec=repo&ea=open&dp=depscloud%2Fdockerfiles&dt=depscloud%2Fdockerfiles&tid=UA-143087272-2)
+![Google Analytics](https://www.google-analytics.com/collect?v=1&cid=555&t=event&ec=repo&ea=open&dp=dockerfiles&dt=dockerfiles&tid=UA-143087272-2)
 
 # deps.cloud
 
