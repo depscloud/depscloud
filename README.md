@@ -1,6 +1,6 @@
 ![GitHub](https://img.shields.io/github/license/depscloud/extractor.svg)
 ![branch](https://github.com/depscloud/extractor/workflows/branch/badge.svg?branch=main)
-![Google Analytics](https://www.google-analytics.com/collect?v=1&cid=555&t=event&ec=repo&ea=open&dp=depscloud%2Fextractor&dt=depscloud%2Fextractor&tid=UA-143087272-2)
+![Google Analytics](https://www.google-analytics.com/collect?v=1&cid=555&t=event&ec=repo&ea=open&dp=extractor&dt=extractor&tid=UA-143087272-2)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdepscloud%2Fextractor.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdepscloud%2Fextractor?ref=badge_shield)
 
 # deps.cloud
