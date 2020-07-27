@@ -4,7 +4,7 @@ go 1.14
 
 require (
 	github.com/davidji99/bitbucket-go v0.2.1
-	github.com/depscloud/api v0.1.9
+	github.com/depscloud/api v0.1.11
 	github.com/ghodss/yaml v1.0.0
 	github.com/go-resty/resty/v2 v2.3.0 // indirect
 	github.com/gogo/protobuf v1.3.1

@@ -40,6 +40,8 @@ github.com/depscloud/api v0.1.8 h1:FqtDeWf4k9NybjHcdQuODzFiJzMh12saMIuP42aLMSI=
 github.com/depscloud/api v0.1.8/go.mod h1:2RlrFi+zKck3vazSEyx0vQsX4VoscvhnxgHtCXqS8BI=
 github.com/depscloud/api v0.1.9 h1:yxnZQpBRk36l1RpRZX4dSFjtWmF9gb2GmJmgX6qAd1s=
 github.com/depscloud/api v0.1.9/go.mod h1:SLd+BhIcn8u7zpOey1wd+0XpHMR6H3wk1nyQOzgsmGU=
+github.com/depscloud/api v0.1.11 h1:qgu27C/THCWuXKirA3x5T6DWbN5x0tw8B5tALnHyDqs=
+github.com/depscloud/api v0.1.11/go.mod h1:xljNIsy2P3U8Sq3S8O8PvlPr1O93S7V9r+n9mbSamyk=
 github.com/dgrijalva/jwt-go v3.2.0+incompatible/go.mod h1:E3ru+11k8xSBh+hMPgOLZmtrrCbhqsmaPHjLKYnJCaQ=
 github.com/dgryski/go-sip13 v0.0.0-20181026042036-e10d5fee7954/go.mod h1:vAd38F8PWV+bWy6jNmig1y/TA+kYO4g3RSRF0IAv0no=
 github.com/emirpasic/gods v1.12.0 h1:QAUIPSaCu4G+POclxeqb3F+WPpdKqFGlw36+yOzGlrg=
@@ -295,6 +297,8 @@ google.golang.org/genproto v0.0.0-20200702021140-07506425bd67 h1:4BC1C1i30F3MZei
 google.golang.org/genproto v0.0.0-20200702021140-07506425bd67/go.mod h1:FWY/as6DDZQgahTzZj3fqbO1CbirC29ZNUFHwi0/+no=
 google.golang.org/genproto v0.0.0-20200711021454-869866162049 h1:YFTFpQhgvrLrmxtiIncJxFXeCyq84ixuKWVCaCAi9Oc=
 google.golang.org/genproto v0.0.0-20200711021454-869866162049/go.mod h1:FWY/as6DDZQgahTzZj3fqbO1CbirC29ZNUFHwi0/+no=
+google.golang.org/genproto v0.0.0-20200720141249-1244ee217b7e h1:KoSCpgvphmtnpVycBCtfV9hNdHbInsqdx4gqnDPQCkg=
+google.golang.org/genproto v0.0.0-20200720141249-1244ee217b7e/go.mod h1:FWY/as6DDZQgahTzZj3fqbO1CbirC29ZNUFHwi0/+no=
 google.golang.org/grpc v1.19.0/go.mod h1:mqu4LbDTu4XGKhr4mRzUsmM4RtVoemTSY81AxZiDr8c=
 google.golang.org/grpc v1.21.0/go.mod h1:oYelfM1adQP15Ek0mdvEgi9Df8B9CZIaU1084ijfRaM=
 google.golang.org/grpc v1.23.0/go.mod h1:Y5yQAOtifL1yxbo5wqy6BxZv8vAUGQwXBOALyacEbxg=
