@@ -162,6 +162,16 @@ func main() {
 				_, _ = writer.Write(asset)
 			})
 
+			// setup /healthz
+
+			ctx, cancel := context.WithCancel(context.Background())
+			defer cancel()
+
+			allChecks := checks.Checks(extractorService, sourceService, moduleService)
+			checks.RegisterHealthCheck(ctx, httpMux, grpcServer, allChecks)
+
+			// set up root
+
 			httpMux.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
 				if request.ProtoMajor == 2 &&
 					strings.HasPrefix(request.Header.Get("Content-Type"), "application/grpc") {
@@ -171,15 +181,11 @@ func main() {
 				}
 			})
 
+			// set up edge mux
+
 			h2cMux := h2c.NewHandler(httpMux, &http2.Server{})
 
 			apiMux := cors.Default().Handler(h2cMux)
-
-			ctx, cancel := context.WithCancel(context.Background())
-			defer cancel()
-
-			allChecks := checks.Checks(extractorService, sourceService, moduleService)
-			checks.RegisterHealthCheck(ctx, grpcServer, allChecks)
 
 			var err error
 			if len(tlsCert) > 0 && len(tlsKey) > 0 && len(tlsCA) > 0 {

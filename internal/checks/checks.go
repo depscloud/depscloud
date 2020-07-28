@@ -2,6 +2,7 @@ package checks
 
 import (
 	"context"
+	"net/http"
 	"time"
 
 	"github.com/depscloud/api/v1alpha/extractor"
@@ -70,7 +71,7 @@ func Checks(
 	}
 }
 
-func RegisterHealthCheck(ctx context.Context, grpcServer *grpc.Server, checks []check.Check) {
+func RegisterHealthCheck(ctx context.Context, httpMux *http.ServeMux, grpcServer *grpc.Server, checks []check.Check) {
 	monitor := health.NewMonitor(checks...)
 	reports, unsubscribe := monitor.Subscribe()
 	stopCh := ctx.Done()
@@ -96,6 +97,7 @@ func RegisterHealthCheck(ctx context.Context, grpcServer *grpc.Server, checks []
 		}
 	}()
 
+	httpMux.HandleFunc("/healthz", health.HandlerFunc(monitor))
 	healthpb.RegisterHealthServer(grpcServer, healthCheck)
 	_ = monitor.Start(ctx)
 }
