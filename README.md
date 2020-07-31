@@ -1,7 +1,8 @@
 ![GitHub](https://img.shields.io/github/license/depscloud/tracker.svg)
 ![branch](https://github.com/depscloud/tracker/workflows/branch/badge.svg?branch=main)
-![Google Analytics](https://www.google-analytics.com/collect?v=1&cid=555&t=pageview&ec=repo&ea=open&dp=tracker&dt=tracker&tid=UA-143087272-2)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdepscloud%2Ftracker.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdepscloud%2Ftracker?ref=badge_shield)
+[![Go Report Card](https://goreportcard.com/badge/github.com/depscloud/tracker)](https://goreportcard.com/report/github.com/depscloud/tracker)
+![Google Analytics](https://www.google-analytics.com/collect?v=1&cid=555&t=pageview&ec=repo&ea=open&dp=tracker&dt=tracker&tid=UA-143087272-2)
 
 # deps.cloud
 
