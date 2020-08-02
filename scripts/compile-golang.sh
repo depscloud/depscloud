@@ -18,5 +18,5 @@ protoc \
   -I=${ROOT_DIR}/proto/src \
   --gogo_out=plugins=grpc:$GOPATH/src \
   --grpc-gateway_out=logtostderr=true${api_configuration}:$GOPATH/src \
-  --swagger_out=logtostderr=true:${SWAGGER_DIR} \
+  --swagger_out=logtostderr=true${api_configuration}:${SWAGGER_DIR} \
   ${1}
