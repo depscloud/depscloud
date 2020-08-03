@@ -7,7 +7,7 @@ require (
 	github.com/depscloud/api v0.1.11
 	github.com/ghodss/yaml v1.0.0
 	github.com/go-sql-driver/mysql v1.5.0
-	github.com/jackc/pgx/v4 v4.8.0
+	github.com/jackc/pgx/v4 v4.8.1
 	github.com/jmoiron/sqlx v1.2.0
 	github.com/jonboulle/clockwork v0.2.0 // indirect
 	github.com/mattn/go-sqlite3 v2.0.3+incompatible
