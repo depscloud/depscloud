@@ -18,6 +18,7 @@ func DependentsCommand(
 
 	cmd := &cobra.Command{
 		Use:     "dependents",
+		Aliases: []string{"dependent"},
 		Short:   "Get the list of modules that depend on the given module",
 		Example: "deps get dependents -l go -o github.com -m depscloud/api",
 		RunE: func(cmd *cobra.Command, args []string) error {

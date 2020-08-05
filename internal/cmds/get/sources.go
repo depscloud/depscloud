@@ -20,6 +20,7 @@ func SourcesCommand(
 
 	cmd := &cobra.Command{
 		Use:   "sources",
+		Aliases: []string{"source", "srcs", "src"},
 		Short: "Get a list of source repositories from the service",
 		Example: strings.Join([]string{
 			"deps get sources",

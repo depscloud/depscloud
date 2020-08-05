@@ -18,6 +18,7 @@ func ModulesCommand(
 
 	cmd := &cobra.Command{
 		Use:   "modules",
+		Aliases: []string{"module", "mods", "mod"},
 		Short: "Get a list of modules from the service",
 		Example: strings.Join([]string{
 			"deps get modules",

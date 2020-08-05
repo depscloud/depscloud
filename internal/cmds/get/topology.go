@@ -127,6 +127,7 @@ func topologyCommand(
 
 	cmd := &cobra.Command{
 		Use:   "topology",
+		Aliases: []string{"topo"},
 		Short: "Get the associated topology",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if req.Language == "" || req.Organization == "" || req.Module == "" {
