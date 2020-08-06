@@ -17,6 +17,9 @@ import (
 func RegisterSearchService(server *grpc.Server, gs store.GraphStoreClient) {
 	tracker.RegisterSearchServiceServer(server, &searchService{
 		gs: gs,
+		ss: &sourceService{ gs: gs },
+		ms: &moduleService{ gs: gs },
+		ds: &dependencyService{ gs: gs },
 	})
 }
 
