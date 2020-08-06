@@ -116,7 +116,7 @@ func main() {
 			panicIff(err)
 
 			graphStoreClient := store.NewInProcessGraphStoreClient(graphStore)
-			graphStoreClient = graphstore.Retryable(graphStoreClient)
+			graphStoreClient = graphstore.Retryable(graphStoreClient, 5)
 
 			grpcServer := grpc.NewServer(options...)
 			registerV1Alpha(graphStoreClient, grpcServer)
