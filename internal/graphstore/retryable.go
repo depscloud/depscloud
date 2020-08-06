@@ -2,8 +2,11 @@ package graphstore
 
 import (
 	"context"
+
 	"github.com/cenkalti/backoff/v4"
+
 	"github.com/depscloud/api/v1alpha/store"
+
 	"github.com/pkg/errors"
 
 	"google.golang.org/grpc"
@@ -16,13 +19,13 @@ func Retryable(delegate store.GraphStoreClient, maxAttempts int) store.GraphStor
 	}
 
 	return &retryingClient{
-		delegate: delegate,
+		delegate:    delegate,
 		maxAttempts: maxAttempts,
 	}
 }
 
 type retryingClient struct {
-	delegate store.GraphStoreClient
+	delegate    store.GraphStoreClient
 	maxAttempts int
 }
 

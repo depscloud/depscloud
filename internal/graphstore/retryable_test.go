@@ -3,19 +3,22 @@ package graphstore_test
 import (
 	"context"
 	"fmt"
+	"testing"
+
 	"github.com/depscloud/api"
 	"github.com/depscloud/api/v1alpha/store"
 	"github.com/depscloud/tracker/internal/graphstore"
+
 	"github.com/stretchr/testify/require"
+
 	"google.golang.org/grpc"
-	"testing"
 )
 
 type graphStoreClientFuncs struct {
-	PutFunc func(ctx context.Context, in *store.PutRequest, opts ...grpc.CallOption) (*store.PutResponse, error)
-	DeleteFunc func(ctx context.Context, in *store.DeleteRequest, opts ...grpc.CallOption) (*store.DeleteResponse, error)
-	ListFunc func(ctx context.Context, in *store.ListRequest, opts ...grpc.CallOption) (*store.ListResponse, error)
-	FindUpstreamFunc func(ctx context.Context, in *store.FindRequest, opts ...grpc.CallOption) (*store.FindResponse, error)
+	PutFunc            func(ctx context.Context, in *store.PutRequest, opts ...grpc.CallOption) (*store.PutResponse, error)
+	DeleteFunc         func(ctx context.Context, in *store.DeleteRequest, opts ...grpc.CallOption) (*store.DeleteResponse, error)
+	ListFunc           func(ctx context.Context, in *store.ListRequest, opts ...grpc.CallOption) (*store.ListResponse, error)
+	FindUpstreamFunc   func(ctx context.Context, in *store.FindRequest, opts ...grpc.CallOption) (*store.FindResponse, error)
 	FindDownstreamFunc func(ctx context.Context, in *store.FindRequest, opts ...grpc.CallOption) (*store.FindResponse, error)
 }
 
