@@ -9,7 +9,7 @@ This chart bootstraps an Indexer cron on a [Kubernetes](http://kubernetes.io) cl
 
 ## Prerequisites
 
-- Kubernetes 1.15+
+- Kubernetes 1.16+
 - Helm 3.0+
 
 ## Installing the Chart

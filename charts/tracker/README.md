@@ -9,7 +9,7 @@ This chart bootstraps a Tracker deployment on a [Kubernetes](http://kubernetes.i
 
 ## Prerequisites
 
-- Kubernetes 1.15+
+- Kubernetes 1.16+
 - Helm 3.0+
 
 ## Installing the Chart
