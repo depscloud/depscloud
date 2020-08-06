@@ -8,7 +8,7 @@ import (
 
 	"github.com/depscloud/api/v1alpha/schema"
 	"github.com/depscloud/api/v1alpha/store"
-	"github.com/depscloud/tracker/pkg/services/graphstore"
+	"github.com/depscloud/tracker/internal/graphstore"
 )
 
 var sep = "---"

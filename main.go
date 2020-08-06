@@ -11,8 +11,8 @@ import (
 
 	"github.com/depscloud/api/v1alpha/store"
 	"github.com/depscloud/tracker/internal/checks"
-	"github.com/depscloud/tracker/pkg/services"
-	"github.com/depscloud/tracker/pkg/services/graphstore"
+	"github.com/depscloud/tracker/internal/graphstore"
+	"github.com/depscloud/tracker/internal/services"
 
 	_ "github.com/go-sql-driver/mysql"
 
