@@ -1,6 +1,6 @@
 {
   "name": "@depscloud/extractor",
-  "version": "0.2.19",
+  "version": "0.2.20",
   "scripts": {
     "package": "tar -czvf extractor.tar.gz lib/ LICENSE package.json package-lock.json",
     "build": "tsc",
