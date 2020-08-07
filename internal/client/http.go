@@ -9,5 +9,6 @@ func httpClient(baseURL string) Client {
 		dependencies: &dependencyService{httpClient, baseURL},
 		modules:      &moduleClient{httpClient, baseURL},
 		sources:      &sourceClient{httpClient, baseURL},
+		search:       nil,
 	}
 }

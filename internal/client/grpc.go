@@ -53,5 +53,6 @@ func grpcClient(baseURL string) Client {
 		dependencies: tracker.NewDependencyServiceClient(conn),
 		modules:      tracker.NewModuleServiceClient(conn),
 		sources:      tracker.NewSourceServiceClient(conn),
+		search:       tracker.NewSearchServiceClient(conn),
 	}
 }

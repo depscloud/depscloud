@@ -1,7 +1,6 @@
 package get
 
 import (
-	"context"
 	"fmt"
 
 	"github.com/depscloud/api/v1alpha/tracker"
@@ -12,6 +11,7 @@ import (
 
 func DependentsCommand(
 	dependencyClient tracker.DependencyServiceClient,
+	searchClient tracker.SearchServiceClient,
 	writer writer.Writer,
 ) *cobra.Command {
 	req := &tracker.DependencyRequest{}
@@ -41,14 +41,11 @@ func DependentsCommand(
 		},
 	}
 
-	topologyCmd := topologyCommand(writer,
-		func(req *tracker.DependencyRequest, ctx context.Context) ([]*tracker.Dependency, error) {
-			resp, err := dependencyClient.ListDependents(ctx, req)
-			if err != nil {
-				return nil, err
-			}
-			return resp.Dependents, nil
-		})
+	topologyCmd := topologyCommand(writer, searchClient, func(depRequest *tracker.DependencyRequest) *tracker.SearchRequest {
+		return &tracker.SearchRequest{
+			DependentsOf: depRequest,
+		}
+	})
 
 	cmd.AddCommand(topologyCmd)
 	addDependencyRequestFlags(cmd, req)

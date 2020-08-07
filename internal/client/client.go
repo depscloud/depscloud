@@ -38,12 +38,14 @@ type Client interface {
 	Dependencies() tracker.DependencyServiceClient
 	Modules() tracker.ModuleServiceClient
 	Sources() tracker.SourceServiceClient
+	Search() tracker.SearchServiceClient
 }
 
 type client struct {
 	dependencies tracker.DependencyServiceClient
 	modules      tracker.ModuleServiceClient
 	sources      tracker.SourceServiceClient
+	search       tracker.SearchServiceClient
 }
 
 func (c *client) Dependencies() tracker.DependencyServiceClient {
@@ -56,6 +58,10 @@ func (c *client) Modules() tracker.ModuleServiceClient {
 
 func (c *client) Sources() tracker.SourceServiceClient {
 	return c.sources
+}
+
+func (c *client) Search() tracker.SearchServiceClient {
+	return c.search
 }
 
 var _ Client = &client{}

@@ -3,6 +3,7 @@ package get
 import (
 	"context"
 	"fmt"
+	"io"
 
 	"github.com/depscloud/api/v1alpha/schema"
 	"github.com/depscloud/api/v1alpha/tracker"
@@ -18,66 +19,91 @@ func key(module *schema.Module) string {
 		module.Module)
 }
 
+func keyForRequest(req *tracker.DependencyRequest) string {
+	return fmt.Sprintf("%s|%s|%s",
+		req.Language,
+		req.Organization,
+		req.Module)
+}
+
 type entry struct {
+	req    *tracker.DependencyRequest
 	module *schema.Module
 	seen   map[string]bool
 }
 
-type fetcher func(req *tracker.DependencyRequest, ctx context.Context) ([]*tracker.Dependency, error)
+type convertRequest func(request *tracker.DependencyRequest) *tracker.SearchRequest
 
-func topology(root *schema.Module, ctx context.Context, fetch fetcher) ([][]*schema.Module, error) {
+func topology(ctx context.Context, searchService tracker.SearchServiceClient, request *tracker.SearchRequest) ([][]*schema.Module, error) {
+	call, err := searchService.BreadthFirstSearch(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := call.Send(request); err != nil {
+		return nil, err
+	}
+
 	edges := make(map[string][]string)
 	nodes := make(map[string]*entry)
 
-	current := []*schema.Module{root}
-	nodes[key(root)] = &entry{
-		module: root,
-		seen:   make(map[string]bool),
-	}
-
-	for length := len(current); length > 0; length = len(current) {
-		next := make([]*schema.Module, 0)
-
-		for i := 0; i < length; i++ {
-			module := current[i]
-			moduleKey := key(module)
-
-			results, err := fetch(&tracker.DependencyRequest{
-				Language:     module.Language,
-				Organization: module.Organization,
-				Module:       module.Module,
-			}, ctx)
-			if err != nil {
-				return nil, err
-			}
-
-			keys := make([]string, len(results))
-			modules := make([]*schema.Module, 0, len(results))
-
-			for i, dependency := range results {
-				dependencyKey := key(dependency.Module)
-
-				// always set the key so we decrement later
-				keys[i] = dependencyKey
-
-				// only add the module for processing when we haven't seen it before
-				if _, ok := nodes[dependencyKey]; !ok {
-					nodes[dependencyKey] = &entry{
-						module: dependency.Module,
-						seen:   make(map[string]bool),
-					}
-
-					modules = append(modules, dependency.Module)
-				}
-
-				nodes[dependencyKey].seen[moduleKey] = true
-			}
-
-			edges[moduleKey] = keys
-			next = append(next, modules...)
+	for resp, err := call.Recv(); true; resp, err = call.Recv() {
+		if err == io.EOF {
+			break
+		} else if err != nil {
+			return nil, err
 		}
 
-		current = next
+		var source *tracker.DependencyRequest
+		var items []*tracker.Dependency
+
+		if source = resp.GetRequest().GetDependentsOf(); source != nil {
+			items = resp.GetDependents()
+		} else if source = resp.GetRequest().GetDependenciesOf(); source != nil {
+			items = resp.GetDependencies()
+		}
+
+		if source == nil {
+			return nil, fmt.Errorf("source module not included")
+		}
+
+		sourceKey := keyForRequest(source)
+		targets := make([]string, len(items))
+
+		for i, dependency := range items {
+			targets[i] = key(dependency.Module)
+
+			if _, ok := nodes[targets[i]]; !ok {
+				nodes[targets[i]] = &entry{
+					module: dependency.GetModule(),
+					seen: make(map[string]bool),
+				}
+			}
+
+			nodes[targets[i]].seen[sourceKey] = true
+		}
+
+		edges[sourceKey] = targets
+	}
+
+	var root *schema.Module
+
+	if req := request.GetDependentsOf(); req != nil {
+		root = &schema.Module{
+			Language: req.GetLanguage(),
+			Organization: req.GetOrganization(),
+			Module: req.GetModule(),
+		}
+	} else if req := request.GetDependenciesOf(); req != nil {
+		root = &schema.Module{
+			Language: req.GetLanguage(),
+			Organization: req.GetOrganization(),
+			Module: req.GetModule(),
+		}
+	}
+
+	if root == nil {
+		return nil, fmt.Errorf("failed to determine root key for topological sort")
 	}
 
 	modules := []string{key(root)}
@@ -120,9 +146,10 @@ func topology(root *schema.Module, ctx context.Context, fetch fetcher) ([][]*sch
 
 func topologyCommand(
 	writer writer.Writer,
-	fetch fetcher,
+	searchService tracker.SearchServiceClient,
+	requestConverter convertRequest,
 ) *cobra.Command {
-	req := &schema.Module{}
+	req := &tracker.DependencyRequest{}
 	tiered := false
 
 	cmd := &cobra.Command{
@@ -134,7 +161,7 @@ func topologyCommand(
 				return fmt.Errorf("language, organization, and module must be provided")
 			}
 
-			results, err := topology(req, cmd.Context(), fetch)
+			results, err := topology(cmd.Context(), searchService, requestConverter(req))
 
 			if err != nil {
 				return err
@@ -158,7 +185,7 @@ func topologyCommand(
 		},
 	}
 
-	addModuleFlags(cmd, req)
+	addDependencyRequestFlags(cmd, req)
 
 	cmd.Flags().BoolVar(&tiered, "tiered", tiered, "Produce a tiered output instead of a flat stream")
 
