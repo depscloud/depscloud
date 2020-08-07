@@ -1,7 +1,6 @@
 apiVersion: v2
 name: depscloud
 description: A Helm chart for Kubernetes
-
 # A chart can be either an 'application' or a 'library' chart.
 #
 # Application charts are a collection of templates that can be packaged into versioned archives
@@ -11,15 +10,12 @@ description: A Helm chart for Kubernetes
 # a dependency of application charts to inject those utilities and functions into the rendering
 # pipeline. Library charts do not define any templates and therefore cannot be deployed.
 type: application
-
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
-version: 0.1.9
-
+version: 0.2.0
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application.
 appVersion: latest
-
 dependencies:
   - name: mysql
     repository: https://charts.bitnami.com/bitnami
@@ -31,11 +27,11 @@ dependencies:
     condition: postgres.enabled
   - name: extractor
     repository: file://../extractor
-    version: 0.1.12
+    version: 0.1.13
     condition: extractor.enabled
   - name: gateway
     repository: file://../gateway
-    version: 0.1.12
+    version: 0.1.13
     condition: gateway.enabled
   - name: indexer
     repository: file://../indexer
@@ -43,5 +39,5 @@ dependencies:
     condition: indexer.enabled
   - name: tracker
     repository: file://../tracker
-    version: 0.1.17
+    version: 0.1.18
     condition: tracker.enabled
