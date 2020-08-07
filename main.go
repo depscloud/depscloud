@@ -137,6 +137,9 @@ func main() {
 			extractor.RegisterDependencyExtractorServer(grpcServer, proxies.NewExtractorServiceProxy(extractorService))
 			_ = extractor.RegisterDependencyExtractorHandlerClient(ctx, gatewayMux, extractorService)
 
+			searchService := tracker.NewSearchServiceClient(trackerConn)
+			tracker.RegisterSearchServiceServer(grpcServer, proxies.NewSearchServiceProxy(searchService))
+
 			httpMux := http.NewServeMux()
 
 			httpMux.HandleFunc("/swagger/", func(writer http.ResponseWriter, request *http.Request) {
