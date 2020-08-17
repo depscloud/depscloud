@@ -4,7 +4,7 @@ go 1.14
 
 require (
 	github.com/depscloud/api v0.1.12
-	github.com/grpc-ecosystem/grpc-gateway v1.14.6
+	github.com/grpc-ecosystem/grpc-gateway v1.14.7
 	github.com/jonboulle/clockwork v0.2.0 // indirect
 	github.com/mjpitz/go-gracefully v0.0.3
 	github.com/rs/cors v1.7.0
