@@ -7,6 +7,13 @@ build-deps:
 	GO111MODULE=off go get -u oss.indeed.com/go/go-groups
 	GO111MODULE=off go get -u github.com/mitchellh/gox
 
+generate:
+	docker run --rm -it \
+		-v $(PWD):/go/src/github.com/depscloud/indexer \
+		-w /go/src/github.com/depscloud/indexer \
+		depscloud/builder-grpc-golang \
+		go generate ./...
+
 fmt:
 	go-groups -w .
 	gofmt -s -w .

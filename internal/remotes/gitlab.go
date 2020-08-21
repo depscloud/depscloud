@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/depscloud/indexer/internal/config"
+	"github.com/depscloud/indexer/internal/set"
 
 	"github.com/sirupsen/logrus"
 
@@ -44,7 +45,7 @@ type gitlabRemote struct {
 	client *gitlab.Client
 }
 
-func (r *gitlabRemote) FetchRepositories(request *FetchRepositoriesRequest) (*FetchRepositoriesResponse, error) {
+func (r *gitlabRemote) FetchRepositories(*FetchRepositoriesRequest) (*FetchRepositoriesResponse, error) {
 	cloneConfig := r.config.GetClone()
 
 	// if clone config is nil, fall back
@@ -121,7 +122,12 @@ func (r *gitlabRemote) FetchRepositories(request *FetchRepositoriesRequest) (*Fe
 		}
 	}
 
+	skipGroups := set.FromSlice(r.config.SkipGroups)
 	for group := range groups {
+		if skipGroups.Contains(group) {
+			logrus.Infof("[remotes.gitlab] skipping group %q", group)
+			continue
+		}
 		logrus.Infof("[remotes.gitlab] fetching projects for group: %s", group)
 
 		page = 1

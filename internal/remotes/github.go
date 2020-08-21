@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/depscloud/indexer/internal/config"
+	"github.com/depscloud/indexer/internal/set"
 
 	"github.com/google/go-github/v20/github"
 
@@ -55,7 +56,7 @@ type githubRemote struct {
 	client *github.Client
 }
 
-func (r *githubRemote) FetchRepositories(request *FetchRepositoriesRequest) (*FetchRepositoriesResponse, error) {
+func (r *githubRemote) FetchRepositories(*FetchRepositoriesRequest) (*FetchRepositoriesResponse, error) {
 	cloneConfig := r.config.GetClone()
 
 	// if clone config is nil, fall back
@@ -133,7 +134,12 @@ func (r *githubRemote) FetchRepositories(request *FetchRepositoriesRequest) (*Fe
 		}
 	}
 
+	skipOrganizations := set.FromSlice(r.config.SkipOrganizations)
 	for _, organization := range organizations {
+		if skipOrganizations.Contains(organization) {
+			logrus.Infof("[remotes.github] skipping org %q", organization)
+			continue
+		}
 		logrus.Infof("[remotes.github] processing repositories for organization: %s", organization)
 
 		for orgRepoPage := 1; orgRepoPage != 0; {

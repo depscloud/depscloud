@@ -46,6 +46,7 @@ message Github {
     repeated string organizations = 4;
     CloneStrategy strategy = 5 [deprecated = true];
     Clone clone = 6;
+    repeated string skip_organizations = 7;
 
     OAuth2Token oauth2 = 10;
 }
@@ -57,6 +58,7 @@ message Gitlab {
     repeated string groups = 4;
     CloneStrategy strategy = 5 [deprecated = true];
     Clone clone = 6;
+    repeated string skip_groups = 7;
 
     OAuthToken private = 10;
     OAuthToken oauth = 11;
@@ -67,6 +69,7 @@ message Bitbucket {
     repeated string teams = 4;
     CloneStrategy strategy = 5 [deprecated = true];
     Clone clone = 6;
+    repeated string skip_teams = 7;
 
     Basic basic = 10;
     OAuthToken oauth = 11;

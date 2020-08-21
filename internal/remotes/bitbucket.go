@@ -6,6 +6,7 @@ import (
 	"github.com/davidji99/bitbucket-go/bitbucket"
 
 	"github.com/depscloud/indexer/internal/config"
+	"github.com/depscloud/indexer/internal/set"
 
 	"github.com/sirupsen/logrus"
 )
@@ -74,7 +75,7 @@ type bitbucketRemote struct {
 	config *config.Bitbucket
 }
 
-func (r *bitbucketRemote) FetchRepositories(request *FetchRepositoriesRequest) (*FetchRepositoriesResponse, error) {
+func (r *bitbucketRemote) FetchRepositories(*FetchRepositoriesRequest) (*FetchRepositoriesResponse, error) {
 	pageLen := uint64(10)
 	allRepos := make([]*Repository, 0)
 	cloneConfig := r.config.GetClone()
@@ -109,7 +110,12 @@ func (r *bitbucketRemote) FetchRepositories(request *FetchRepositoriesRequest) (
 		}
 	}
 
+	skipTeams := set.FromSlice(r.config.SkipTeams)
 	for _, team := range r.config.Teams {
+		if skipTeams.Contains(team) {
+			logrus.Infof("[remotes.bitbucket] skipping team %q", team)
+			continue
+		}
 		logrus.Infof("[remotes.bitbucket] fetching projects for team: %s", team)
 
 		for page := uint64(1); true; page++ {
