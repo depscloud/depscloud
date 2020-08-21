@@ -1,0 +1,46 @@
+#!/bin/sh
+
+OS=$(uname -s | tr '[:upper:]' '[:lower:]')
+ARCH=$(uname -m)
+
+if [[ "${ARCH}" == "x86_64" ]]; then
+    ARCH=amd64
+elif [[ "${ARCH}" == "i386" ]]; then
+    ARCH=386
+elif [[ "${ARCH}" == "aarch64" ]]; then
+    ARCH=arm64
+else
+    ARCH=arm
+fi
+
+if [[ $# -lt 2 ]]; then
+cat <<EOF
+  usage: install-depscloud-binary <app> <version> [command]
+EOF
+exit 1
+fi
+
+readonly APP="${1}"
+readonly APP_VERSION="${2}"
+readonly COMMAND="${3:-$APP}"
+
+echo "os:       ${OS}"
+echo "arch:     ${ARCH}"
+echo "app:      ${APP}"
+echo "version:  ${APP_VERSION}"
+echo "command:  ${COMMAND}"
+
+if [[ "${RELEASE_CHAIN}" == "goreleaser" ]]; then
+    if [[ "${ARCH}" == "arm" ]]; then
+        ARCH=armv7
+    fi
+
+    curl -sSL -O "https://github.com/depscloud/${APP}/releases/download/v${APP_VERSION}/${COMMAND}_${APP_VERSION}_${OS}_${ARCH}.tar.gz"
+    tar zxvf ${COMMAND}_${APP_VERSION}_${OS}_${ARCH}.tar.gz
+    rm ${COMMAND}_${APP_VERSION}_${OS}_${ARCH}.tar.gz
+    mv ${COMMAND} /usr/bin/${COMMAND}
+else
+    curl -sSL -O "https://github.com/depscloud/${APP}/releases/download/v${APP_VERSION}/${APP}_${OS}_${ARCH}"
+    chmod 755 ${APP}_${OS}_${ARCH}
+    mv ${APP}_${OS}_${ARCH} /usr/bin/${APP}
+fi
