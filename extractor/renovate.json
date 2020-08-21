@@ -1,0 +1,9 @@
+{
+  "extends": [
+    "config:base",
+    "schedule:weekly"
+  ],
+  "excludeCommitPaths": [
+    "**/testdata/**"
+  ]
+}

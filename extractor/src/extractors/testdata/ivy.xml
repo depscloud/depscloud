@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<ivy-module version="2.0">
+    <info organisation="com.nullprogram" module="sample-java-project"/>
+    <configurations>
+        <conf name="default"/>
+        <conf name="build" extends="default" visibility="private"/>
+        <conf name="test" extends="build" visibility="private"/>
+        <conf name="analysis" extends="build" visibility="private"/>
+    </configurations>
+    <dependencies>
+        <dependency org="com.beust" name="jcommander" rev="1.20"
+                    conf="default"/>
+
+        <!-- Build -->
+        <dependency org="org.projectlombok" name="lombok" rev="0.10.4"
+                    conf="build->default"/>
+
+        <!-- Unit Test -->
+        <dependency org="junit" name="junit" rev="4.10"
+                    conf="test->default"/>
+        <dependency org="net.sourceforge.cobertura" name="cobertura" rev="1.9.4.1"
+                    conf="test->default">
+            <exclude module="ant"/>
+        </dependency>
+
+        <!-- Static Analysis -->
+        <dependency org="com.puppycrawl.tools" name="checkstyle" rev="5.5"
+                    conf="analysis->default"/>
+        <dependency org="com.google.code.findbugs" name="findbugs" rev="2.0.0"
+                    conf="analysis->default"/>
+        <!-- note: due to FindBugs BCEL conflict, list PMD last. -->
+        <dependency org="net.sourceforge.pmd" name="pmd" rev="5.0.0"
+                    conf="analysis->default"/>
+    </dependencies>
+</ivy-module>

@@ -1,0 +1,6 @@
+rootProject {
+    name = "module"
+    parent {
+        name = "parent_organization:parent_module"
+    }
+}

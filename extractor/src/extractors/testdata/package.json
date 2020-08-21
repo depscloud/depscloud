@@ -1,0 +1,20 @@
+{
+  "name": "@organization/module",
+  "version": "9.9.9",
+  "repository": "git@github.com:group/project.git",
+  "dependencies": {
+    "@scoped/runtimeDependency": "1.0.0"
+  },
+  "devDependencies": {
+    "devDependency": "1.0.0"
+  },
+  "peerDependencies": {
+    "@scoped/peerDependency": "1.0.0"
+  },
+  "bundledDependencies": [
+    "bundledDependency"
+  ],
+  "optionalDependencies": {
+    "optionalDependency": "1.0.0"
+  }
+}

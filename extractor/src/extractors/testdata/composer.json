@@ -1,0 +1,19 @@
+{
+  "name": "organization/module",
+  "version": "version",
+  "repositories": [
+    {
+      "type": "package",
+      "package": {
+        "name": "repoOrganization/repoModule",
+        "version": "repoVersion"
+      }
+    }
+  ],
+  "require": {
+    "requireOrganization/requireModule": "requireVersionConstraint"
+  },
+  "require-dev": {
+    "requireDevOrganization/requireDevModule": "requireDevVersionConstraint"
+  }
+}

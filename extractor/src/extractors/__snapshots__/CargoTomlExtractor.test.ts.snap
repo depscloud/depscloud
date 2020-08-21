@@ -1,0 +1,313 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CargoTomlExtractor fullParse 1`] = `
+Object {
+  "dependencies": Array [
+    Object {
+      "module": "bytes",
+      "organization": "_",
+      "scopes": Array [
+        "direct",
+      ],
+      "versionConstraint": undefined,
+    },
+    Object {
+      "module": "clap",
+      "organization": "_",
+      "scopes": Array [
+        "direct",
+      ],
+      "versionConstraint": undefined,
+    },
+    Object {
+      "module": "futures",
+      "organization": "_",
+      "scopes": Array [
+        "direct",
+      ],
+      "versionConstraint": undefined,
+    },
+    Object {
+      "module": "hyper",
+      "organization": "_",
+      "scopes": Array [
+        "direct",
+      ],
+      "versionConstraint": undefined,
+    },
+    Object {
+      "module": "log",
+      "organization": "_",
+      "scopes": Array [
+        "direct",
+      ],
+      "versionConstraint": undefined,
+    },
+    Object {
+      "module": "ordermap",
+      "organization": "_",
+      "scopes": Array [
+        "direct",
+      ],
+      "versionConstraint": undefined,
+    },
+    Object {
+      "module": "pretty_env_logger",
+      "organization": "_",
+      "scopes": Array [
+        "direct",
+      ],
+      "versionConstraint": undefined,
+    },
+    Object {
+      "module": "rand",
+      "organization": "_",
+      "scopes": Array [
+        "direct",
+      ],
+      "versionConstraint": undefined,
+    },
+    Object {
+      "module": "rustls",
+      "organization": "_",
+      "scopes": Array [
+        "direct",
+      ],
+      "versionConstraint": "make_server_sni_public",
+    },
+    Object {
+      "module": "serde",
+      "organization": "_",
+      "scopes": Array [
+        "direct",
+      ],
+      "versionConstraint": undefined,
+    },
+    Object {
+      "module": "serde_derive",
+      "organization": "_",
+      "scopes": Array [
+        "direct",
+      ],
+      "versionConstraint": undefined,
+    },
+    Object {
+      "module": "serde_json",
+      "organization": "_",
+      "scopes": Array [
+        "direct",
+      ],
+      "versionConstraint": undefined,
+    },
+    Object {
+      "module": "serde_yaml",
+      "organization": "_",
+      "scopes": Array [
+        "direct",
+      ],
+      "versionConstraint": undefined,
+    },
+    Object {
+      "module": "tacho",
+      "organization": "_",
+      "scopes": Array [
+        "direct",
+      ],
+      "versionConstraint": undefined,
+    },
+    Object {
+      "module": "tokio-core",
+      "organization": "_",
+      "scopes": Array [
+        "direct",
+      ],
+      "versionConstraint": undefined,
+    },
+    Object {
+      "module": "tokio-io",
+      "organization": "_",
+      "scopes": Array [
+        "direct",
+      ],
+      "versionConstraint": undefined,
+    },
+    Object {
+      "module": "tokio-service",
+      "organization": "_",
+      "scopes": Array [
+        "direct",
+      ],
+      "versionConstraint": undefined,
+    },
+    Object {
+      "module": "tokio-timer",
+      "organization": "_",
+      "scopes": Array [
+        "direct",
+      ],
+      "versionConstraint": undefined,
+    },
+    Object {
+      "module": "url",
+      "organization": "_",
+      "scopes": Array [
+        "direct",
+      ],
+      "versionConstraint": undefined,
+    },
+  ],
+  "language": "rust",
+  "module": "linkerd-tcp",
+  "organization": "_",
+  "sourceUrl": "",
+  "system": "cargo",
+  "version": "0.1.1",
+}
+`;
+
+exports[`CargoTomlExtractor fullParse 2`] = `
+"{
+  \\"language\\": \\"rust\\",
+  \\"system\\": \\"cargo\\",
+  \\"sourceUrl\\": \\"\\",
+  \\"organization\\": \\"_\\",
+  \\"module\\": \\"linkerd-tcp\\",
+  \\"version\\": \\"0.1.1\\",
+  \\"dependencies\\": [
+    {
+      \\"organization\\": \\"_\\",
+      \\"module\\": \\"bytes\\",
+      \\"scopes\\": [
+        \\"direct\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"_\\",
+      \\"module\\": \\"clap\\",
+      \\"scopes\\": [
+        \\"direct\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"_\\",
+      \\"module\\": \\"futures\\",
+      \\"scopes\\": [
+        \\"direct\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"_\\",
+      \\"module\\": \\"hyper\\",
+      \\"scopes\\": [
+        \\"direct\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"_\\",
+      \\"module\\": \\"log\\",
+      \\"scopes\\": [
+        \\"direct\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"_\\",
+      \\"module\\": \\"ordermap\\",
+      \\"scopes\\": [
+        \\"direct\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"_\\",
+      \\"module\\": \\"pretty_env_logger\\",
+      \\"scopes\\": [
+        \\"direct\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"_\\",
+      \\"module\\": \\"rand\\",
+      \\"scopes\\": [
+        \\"direct\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"_\\",
+      \\"module\\": \\"rustls\\",
+      \\"versionConstraint\\": \\"make_server_sni_public\\",
+      \\"scopes\\": [
+        \\"direct\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"_\\",
+      \\"module\\": \\"serde\\",
+      \\"scopes\\": [
+        \\"direct\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"_\\",
+      \\"module\\": \\"serde_derive\\",
+      \\"scopes\\": [
+        \\"direct\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"_\\",
+      \\"module\\": \\"serde_json\\",
+      \\"scopes\\": [
+        \\"direct\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"_\\",
+      \\"module\\": \\"serde_yaml\\",
+      \\"scopes\\": [
+        \\"direct\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"_\\",
+      \\"module\\": \\"tacho\\",
+      \\"scopes\\": [
+        \\"direct\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"_\\",
+      \\"module\\": \\"tokio-core\\",
+      \\"scopes\\": [
+        \\"direct\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"_\\",
+      \\"module\\": \\"tokio-io\\",
+      \\"scopes\\": [
+        \\"direct\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"_\\",
+      \\"module\\": \\"tokio-service\\",
+      \\"scopes\\": [
+        \\"direct\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"_\\",
+      \\"module\\": \\"tokio-timer\\",
+      \\"scopes\\": [
+        \\"direct\\"
+      ]
+    },
+    {
+      \\"organization\\": \\"_\\",
+      \\"module\\": \\"url\\",
+      \\"scopes\\": [
+        \\"direct\\"
+      ]
+    }
+  ]
+}"
+`;
