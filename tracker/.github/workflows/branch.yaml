@@ -1,0 +1,38 @@
+name: branch
+
+on:
+  pull_request:
+    branches:
+      - "*"
+  push:
+    branches:
+      - "*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: golang:1.14-alpine3.11
+    steps:
+      - name: Prepare
+        run: apk -U upgrade && apk add build-base git ca-certificates sqlite bash curl
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build
+        run: make build-deps deps test deploy
+
+      - name: Check for proper formatting
+        run: |
+          make fmt
+          if [[ $(git diff --stat) != '' ]]; then
+            echo 'run make fmt and commit changes'
+            exit 1
+          fi
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        if: github.ref == 'refs/heads/main'
+        with:
+          file: ./coverage.txt

@@ -1,0 +1,22 @@
+FROM golang:1.14
+
+RUN go get golang.org/x/lint/golint
+
+ENV GO111MODULE on
+
+WORKDIR /go/src/tracker
+
+COPY go.mod .
+COPY go.sum .
+COPY Makefile .
+
+RUN make deps
+
+COPY . .
+RUN make test install
+
+RUN useradd -ms /bin/sh tracker
+WORKDIR /home/tracker
+USER tracker
+
+ENTRYPOINT [ "tracker" ]
