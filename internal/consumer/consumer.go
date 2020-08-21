@@ -195,9 +195,9 @@ func (c *consumer) Consume(repository *remotes.Repository) {
 	logrus.Infof("[%s] storing dependencies", repourl)
 	_, err = c.sourceService.Track(context.Background(), &tracker.SourceRequest{
 		Source: &schema.Source{
-			Url: repourl,
+			Url:  repourl,
 			Kind: "repository",
-			Ref: ref,
+			Ref:  ref,
 		},
 		ManagementFiles: extractResponse.GetManagementFiles(),
 	})

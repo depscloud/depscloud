@@ -79,36 +79,11 @@ func dial(target, certFile, keyFile, caFile, lbPolicy string) *grpc.ClientConn {
 }
 
 // NewWorker encapsulates logic for pulling information off a channel and invoking the consumer
-func NewWorker(repositories chan *remotes.Repository, done chan bool, rc consumer.RepositoryConsumer) {
+func NewWorker(repositories chan *remotes.Repository, wg *sync.WaitGroup, rc consumer.RepositoryConsumer) {
 	for repository := range repositories {
 		rc.Consume(repository)
-		done <- true
-	}
-}
-
-func run(remote remotes.Remote, repositories chan *remotes.Repository, done chan bool) error {
-	resp, err := remote.FetchRepositories(&remotes.FetchRepositoriesRequest{})
-	if err != nil {
-		return err
-	}
-
-	// wait for the done goroutine to finish
-	wg := &sync.WaitGroup{}
-	wg.Add(1)
-
-	go func(size int, wg *sync.WaitGroup) {
-		for i := 0; i < size; i++ {
-			<-done
-		}
 		wg.Done()
-	}(len(resp.Repositories), wg)
-
-	for _, repository := range resp.Repositories {
-		repositories <- repository
 	}
-
-	wg.Wait()
-	return nil
 }
 
 func main() {
@@ -133,20 +108,24 @@ func main() {
 	cmd := &cobra.Command{
 		Use:   "indexer",
 		Short: "dependency indexing service",
-		Run: func(cmd *cobra.Command, args []string) {
-			desClient := extractor.NewDependencyExtractorClient(dial(extractorAddress, extractorCert, extractorKey, extractorCA, extractorLBPolicy))
+		RunE: func(cmd *cobra.Command, args []string) error {
+			extractorClient := extractor.NewDependencyExtractorClient(dial(extractorAddress, extractorCert, extractorKey, extractorCA, extractorLBPolicy))
 			sourceService := tracker.NewSourceServiceClient(dial(trackerAddress, trackerCert, trackerKey, trackerCA, trackerLBPolicy))
 
-			var rdsConfig *config.Configuration
+			var remoteConfig *config.Configuration
 
 			if len(configPath) > 0 {
 				var err error
-				rdsConfig, err = config.Load(configPath)
-				exitIff(err)
+				remoteConfig, err = config.Load(configPath)
+				if err != nil {
+					return err
+				}
 			}
 
-			remote, err := remotes.ParseConfig(rdsConfig)
-			exitIff(err)
+			remote, err := remotes.ParseConfig(remoteConfig)
+			if err != nil {
+				return err
+			}
 
 			var authMethod transport.AuthMethod
 
@@ -154,22 +133,36 @@ func main() {
 				logrus.Infof("[main] loading ssh key")
 				var err error
 				authMethod, err = ssh.NewPublicKeysFromFile(sshUser, sshKeyPath, "")
-				exitIff(err)
+				if err != nil {
+					return err
+				}
 			}
+
+			resp, err := remote.FetchRepositories(&remotes.FetchRepositoriesRequest{})
+			if err != nil {
+				return err
+			}
+
+			// start a wait group to track remaining work
+			wg := &sync.WaitGroup{}
+			wg.Add(len(resp.Repositories))
 
 			repositories := make(chan *remotes.Repository, workers)
-			done := make(chan bool, workers)
+			defer close(repositories)
 
-			rc := consumer.NewConsumer(authMethod, desClient, sourceService)
+			rc := consumer.NewConsumer(authMethod, extractorClient, sourceService)
 			for i := 0; i < workers; i++ {
-				go NewWorker(repositories, done, rc)
+				go NewWorker(repositories, wg, rc)
 			}
 
-			logrus.Infof("[main] running indexer cron")
-			if err := run(remote, repositories, done); err != nil {
-				logrus.Errorf("[main] encountered an error trying to list repositories from rds: %v", err)
-				os.Exit(1)
+			// feed until there are no more left
+			for _, repository := range resp.Repositories {
+				repositories <- repository
 			}
+
+			// wait for all work to be done
+			wg.Wait()
+			return nil
 		},
 	}
 
