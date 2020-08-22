@@ -3,16 +3,18 @@ name: branch-goreleaser
 on:
   pull_request:
     paths:
-      - "deps"
-      - "gateway"
-      - "indexer"
-      - "tracker"
+      - ".github/workflows/goreleaser-branch.yaml"
+      - "deps/**"
+      - "gateway/**"
+      - "indexer/**"
+      - "tracker/**"
   push:
     paths:
-      - "deps"
-      - "gateway"
-      - "indexer"
-      - "tracker"
+      - ".github/workflows/goreleaser-branch.yaml"
+      - "deps/**"
+      - "gateway/**"
+      - "indexer/**"
+      - "tracker/**"
 
 jobs:
   goreleaser:

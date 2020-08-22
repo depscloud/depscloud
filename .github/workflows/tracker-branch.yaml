@@ -3,10 +3,12 @@ name: tracker-branch
 on:
   pull_request:
     paths:
-      - "tracker"
+      - ".github/workflows/tracker-branch.yaml"
+        - "tracker/**"
   push:
     paths:
-      - "tracker"
+      - ".github/workflows/tracker-branch.yaml"
+        - "tracker/**"
 
 jobs:
   build:

@@ -3,10 +3,12 @@ name: branch-extractor
 on:
   pull_request:
     paths:
-      - "extractor"
+      - ".github/workflows/extractor-branch.yaml"
+      - "extractor/**"
   push:
     paths:
-      - "extractor"
+      - ".github/workflows/extractor-branch.yaml"
+      - "extractor/**"
 
 jobs:
   build:

@@ -3,10 +3,12 @@ name: gateway-branch
 on:
   pull_request:
     paths:
-      - "gateway"
+      - ".github/workflows/gateway-branch.yaml"
+        - "gateway/**"
   push:
     paths:
-      - "gateway"
+      - ".github/workflows/gateway-branch.yaml"
+        - "gateway/**"
 
 jobs:
   build:

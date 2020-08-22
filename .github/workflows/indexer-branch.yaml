@@ -3,10 +3,12 @@ name: indexer-branch
 on:
   pull_request:
     paths:
-      - "indexer"
+      - ".github/workflows/indexer-branch.yaml"
+      - "indexer/**"
   push:
     paths:
-      - "indexer"
+      - ".github/workflows/indexer-branch.yaml"
+      - "indexer/**"
 
 jobs:
   build:
