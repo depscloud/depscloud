@@ -1,4 +1,4 @@
-module github.com/depscloud/gateway
+module github.com/depscloud/depscloud/gateway
 
 go 1.14
 

@@ -13,8 +13,8 @@ import (
 	"github.com/depscloud/api/swagger"
 	"github.com/depscloud/api/v1alpha/extractor"
 	"github.com/depscloud/api/v1alpha/tracker"
-	"github.com/depscloud/gateway/internal/checks"
-	"github.com/depscloud/gateway/internal/proxies"
+	"github.com/depscloud/depscloud/gateway/internal/checks"
+	"github.com/depscloud/depscloud/gateway/internal/proxies"
 
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 

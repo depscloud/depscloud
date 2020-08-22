@@ -1,6 +1,6 @@
 ![GitHub](https://img.shields.io/github/license/depscloud/gateway.svg)
-![branch](https://github.com/depscloud/gateway/workflows/branch/badge.svg?branch=main)
-[![Go Report Card](https://goreportcard.com/badge/github.com/depscloud/gateway)](https://goreportcard.com/report/github.com/depscloud/gateway)
+![branch](https://github.com/depscloud/depscloud/gateway/workflows/branch/badge.svg?branch=main)
+[![Go Report Card](https://goreportcard.com/badge/github.com/depscloud/depscloud/gateway)](https://goreportcard.com/report/github.com/depscloud/depscloud/gateway)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdepscloud%2Fgateway.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdepscloud%2Fgateway?ref=badge_shield)
 ![Google Analytics](https://www.google-analytics.com/collect?v=1&cid=555&t=pageview&ec=repo&ea=open&dp=gateway&dt=gateway&tid=UA-143087272-2)
 
