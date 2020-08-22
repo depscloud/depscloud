@@ -10,8 +10,8 @@
 ![branch](https://github.com/depscloud/depscloud/workflows/tracker-branch/badge.svg?branch=main)
 ![branch](https://github.com/depscloud/depscloud/workflows/goreleaser-branch/badge.svg?branch=main)
 
-![tag](https://github.com/depscloud/depscloud/workflows/extractor-tag/badge.svg?branch=main)
-![tag](https://github.com/depscloud/depscloud/workflows/goreleaser-tag/badge.svg?branch=main)
+![tag](https://github.com/depscloud/depscloud/workflows/extractor-tag/badge.svg)
+![tag](https://github.com/depscloud/depscloud/workflows/goreleaser-tag/badge.svg)
 
 The deps.cloud [monorepo](https://en.wikipedia.org/wiki/Monorepo).
 After spending a year developing across many different projects, I wanted to simplify the process for new comers.
