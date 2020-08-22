@@ -1,6 +1,10 @@
-project_name: deps
+project_name: depscloud
+
+snapshot:
+  name_template: "{{ .Tag }}-next"
 
 builds:
+  # deps command line interface
   - id: deps
     dir: deps
     main: ./main.go
@@ -27,6 +31,8 @@ builds:
         goarch: arm
       - goos: windows
         goarch: arm64
+
+  # gateway service
   - id: gateway
     dir: gateway
     main: ./main.go
@@ -40,6 +46,8 @@ builds:
       - arm64
     goarm:
       - 7
+
+  # indexing cron
   - id: indexer
     dir: indexer
     main: ./main.go
@@ -53,6 +61,8 @@ builds:
       - arm64
     goarm:
       - 7
+
+  # tracker service
   - id: tracker
     dir: tracker
     main: ./main.go
@@ -67,8 +77,29 @@ builds:
     goarm:
       - 7
 
+archives:
+  - id: deps
+    name_template: "deps_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    builds:
+      - deps
+  - id: gateway
+    name_template: "gateway_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    builds:
+      - gateway
+  - id: indexer
+    name_template: "indexer_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    builds:
+      - indexer
+  - id: tracker
+    name_template: "tracker_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    builds:
+      - tracker
+
 brews:
+  # deps command line interface
   - name: depscloud-cli
+    ids:
+      - deps
     goarm: 7
     tap:
       owner: depscloud
@@ -80,9 +111,11 @@ brews:
     description: Command line interface to the deps.cloud API
 
 nfpms:
-  - id: depscloud-cli
+  - id: depscloud-cli-deb
     package_name: depscloud-cli
     file_name_template: "depscloud-cli_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    builds:
+      - deps
     vendor: deps.cloud
     homepage: https://deps.cloud/
     description: Command line interface to the deps.cloud API.
@@ -93,8 +126,5 @@ nfpms:
 checksum:
   name_template: 'checksums.txt'
 
-snapshot:
-  name_template: "{{ .Tag }}-next"
-
 changelog:
-  sort: asc
+  sort: descdesc
