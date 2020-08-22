@@ -5,7 +5,7 @@ import (
 
 	"github.com/depscloud/api"
 	"github.com/depscloud/api/v1alpha/store"
-	"github.com/depscloud/tracker/internal/graphstore"
+	"github.com/depscloud/depscloud/tracker/internal/graphstore"
 
 	"github.com/jmoiron/sqlx"
 

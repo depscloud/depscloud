@@ -6,7 +6,7 @@ import (
 
 	"github.com/depscloud/api/v1alpha/schema"
 	"github.com/depscloud/api/v1alpha/store"
-	"github.com/depscloud/tracker/internal/types"
+	"github.com/depscloud/depscloud/tracker/internal/types"
 )
 
 // Encode turns the provided schma type into the corresponding GraphItem

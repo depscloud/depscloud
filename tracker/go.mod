@@ -1,4 +1,4 @@
-module github.com/depscloud/tracker
+module github.com/depscloud/depscloud/tracker
 
 go 1.14
 

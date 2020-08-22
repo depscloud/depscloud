@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/depscloud/api/v1alpha/store"
-	"github.com/depscloud/tracker/internal/types"
+	"github.com/depscloud/depscloud/tracker/internal/types"
 
 	"github.com/mjpitz/go-gracefully/check"
 	"github.com/mjpitz/go-gracefully/health"

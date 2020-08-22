@@ -10,9 +10,9 @@ import (
 	"os"
 
 	"github.com/depscloud/api/v1alpha/store"
-	"github.com/depscloud/tracker/internal/checks"
-	"github.com/depscloud/tracker/internal/graphstore"
-	"github.com/depscloud/tracker/internal/services"
+	"github.com/depscloud/depscloud/tracker/internal/checks"
+	"github.com/depscloud/depscloud/tracker/internal/graphstore"
+	"github.com/depscloud/depscloud/tracker/internal/services"
 
 	_ "github.com/go-sql-driver/mysql"
 
