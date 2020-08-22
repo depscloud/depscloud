@@ -1,4 +1,4 @@
-name: branch-goreleaser
+name: goreleaser-branch
 
 on:
   pull_request:

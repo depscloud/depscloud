@@ -1,4 +1,4 @@
-name: branch-extractor
+name: extractor-branch
 
 on:
   pull_request:

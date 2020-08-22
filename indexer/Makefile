@@ -10,7 +10,7 @@ generate:
 		-w /go/src/github.com/depscloud/depscloud/indexer \
 		depscloud/builder-grpc-golang \
 		go generate ./...
-  make fmt
+	make fmt
 
 fmt:
 	go-groups -w .
