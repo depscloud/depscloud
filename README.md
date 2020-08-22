@@ -1,7 +1,17 @@
-![GitHub](https://img.shields.io/github/license/depscloud/PROJECT.svg)
-![branch](https://github.com/depscloud/PROJECT/workflows/branch/badge.svg?branch=main)
-[![Go Report Card](https://goreportcard.com/badge/github.com/depscloud/PROJECT)](https://goreportcard.com/report/github.com/depscloud/PROJECT)
-![Google Analytics](https://www.google-analytics.com/collect?v=1&cid=555&t=pageview&ec=repo&ea=open&dp=PROJECT&dt=PROJECT&tid=UA-143087272-2)
+![GitHub](https://img.shields.io/github/license/depscloud/depscloud.svg)
+![Google Analytics](https://www.google-analytics.com/collect?v=1&cid=555&t=pageview&ec=repo&ea=open&dp=depscloud&dt=depscloud&tid=UA-143087272-2)
+
+![branch](https://github.com/depscloud/depscloud/workflows/dockerfiles-base/badge.svg?branch=main)
+![branch](https://github.com/depscloud/depscloud/workflows/dockerfiles-download/badge.svg?branch=main)
+
+![branch](https://github.com/depscloud/depscloud/workflows/extractor-branch/badge.svg?branch=main)
+![branch](https://github.com/depscloud/depscloud/workflows/gateway-branch/badge.svg?branch=main)
+![branch](https://github.com/depscloud/depscloud/workflows/indexer-branch/badge.svg?branch=main)
+![branch](https://github.com/depscloud/depscloud/workflows/tracker-branch/badge.svg?branch=main)
+![branch](https://github.com/depscloud/depscloud/workflows/goreleaser-branch/badge.svg?branch=main)
+
+![tag](https://github.com/depscloud/depscloud/workflows/extractor-tag/badge.svg?branch=main)
+![tag](https://github.com/depscloud/depscloud/workflows/goreleaser-tag/badge.svg?branch=main)
 
 The deps.cloud [monorepo](https://en.wikipedia.org/wiki/Monorepo).
 After spending a year developing across many different projects, I wanted to simplify the process for new comers.
