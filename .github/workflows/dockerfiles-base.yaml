@@ -3,8 +3,8 @@ name: base
 on:
   push:
     paths:
-      - '.github/workflows/base.yaml'
-      - 'base/**'
+      - '.github/workflows/dockerfiles-base.yaml'
+      - 'dockerfiles/base/**'
 
 jobs:
   build:
@@ -31,6 +31,6 @@ jobs:
           docker buildx build \
             --platform linux/amd64,linux/arm64,linux/arm/v7 \
             --tag depscloud/base:latest \
-            -f ./base/Dockerfile \
-            ./base \
+            -f ./dockerfiles/base/Dockerfile \
+            ./dockerfiles/base \
             --push

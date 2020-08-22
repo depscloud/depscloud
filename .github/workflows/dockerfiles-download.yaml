@@ -3,8 +3,8 @@ name: download
 on:
   push:
     paths:
-      - '.github/workflows/download.yaml'
-      - 'download/**'
+      - '.github/workflows/dockerfiles-download.yaml'
+      - 'dockerfiles/download/**'
 
 jobs:
   build:
@@ -31,6 +31,6 @@ jobs:
           docker buildx build \
             --platform linux/amd64,linux/arm64,linux/arm/v7 \
             --tag depscloud/download:latest \
-            -f ./download/Dockerfile \
-            ./download \
+            -f ./dockerfiles/download/Dockerfile \
+            ./dockerfiles/download \
             --push
