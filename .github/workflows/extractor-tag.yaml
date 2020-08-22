@@ -24,13 +24,13 @@ jobs:
           npm run lint
           npm run test
           npm run build
-          npm run package
+          VERSION=${GITHUB_REF##*/v} npm run package
 
       - name: Upload Release Assets
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: extractor/extractor.tar.gz
+          file: extractor/extractor-*
           tag: ${{ github.ref }}
           file_glob: true
   docker:

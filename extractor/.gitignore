@@ -2,4 +2,4 @@ node_modules/
 coverage/
 lib/
 .idea/
-extractor.tar.gz
+extractor-*
