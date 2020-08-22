@@ -127,4 +127,4 @@ checksum:
   name_template: 'checksums.txt'
 
 changelog:
-  sort: descdesc
+  sort: desc
