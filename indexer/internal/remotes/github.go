@@ -4,8 +4,8 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/depscloud/indexer/internal/config"
-	"github.com/depscloud/indexer/internal/set"
+	"github.com/depscloud/depscloud/indexer/internal/config"
+	"github.com/depscloud/depscloud/indexer/internal/set"
 
 	"github.com/google/go-github/v20/github"
 

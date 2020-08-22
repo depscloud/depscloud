@@ -9,7 +9,7 @@ import (
 	"github.com/depscloud/api/v1alpha/extractor"
 	"github.com/depscloud/api/v1alpha/schema"
 	"github.com/depscloud/api/v1alpha/tracker"
-	"github.com/depscloud/indexer/internal/remotes"
+	"github.com/depscloud/depscloud/indexer/internal/remotes"
 
 	"github.com/sirupsen/logrus"
 

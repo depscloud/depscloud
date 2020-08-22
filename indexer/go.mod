@@ -1,4 +1,4 @@
-module github.com/depscloud/indexer
+module github.com/depscloud/depscloud/indexer
 
 go 1.14
 

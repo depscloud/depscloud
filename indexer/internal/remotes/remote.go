@@ -1,6 +1,6 @@
 package remotes
 
-import "github.com/depscloud/indexer/internal/config"
+import "github.com/depscloud/depscloud/indexer/internal/config"
 
 // Repository represents the combination of a URL and it's corresponding clone credentials.
 type Repository struct {

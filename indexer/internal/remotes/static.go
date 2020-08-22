@@ -1,6 +1,6 @@
 package remotes
 
-import "github.com/depscloud/indexer/internal/config"
+import "github.com/depscloud/depscloud/indexer/internal/config"
 
 var _ Remote = &staticRemote{}
 

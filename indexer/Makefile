@@ -9,8 +9,8 @@ build-deps:
 
 generate:
 	docker run --rm -it \
-		-v $(PWD):/go/src/github.com/depscloud/indexer \
-		-w /go/src/github.com/depscloud/indexer \
+		-v $(PWD):/go/src/github.com/depscloud/depscloud/indexer \
+		-w /go/src/github.com/depscloud/depscloud/indexer \
 		depscloud/builder-grpc-golang \
 		go generate ./...
 

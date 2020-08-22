@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/depscloud/indexer/internal/config"
+	"github.com/depscloud/depscloud/indexer/internal/config"
 
 	"github.com/nytlabs/gojee"
 
