@@ -20,5 +20,8 @@ test:
 	# golint -set_exit_status ./...
 	go test -v -cover -race ./...
 
+build:
+	go build -ldflags="${LD_FLAGS}" .
+
 install:
-	go install -ldflags="${LD_FLAGS}" ./cmds/deps/
+	go install -ldflags="${LD_FLAGS}" .

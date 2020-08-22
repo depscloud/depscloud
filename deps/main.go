@@ -3,10 +3,10 @@ package main
 import (
 	"fmt"
 
-	"github.com/depscloud/cli/internal/client"
-	"github.com/depscloud/cli/internal/cmds/completion"
-	"github.com/depscloud/cli/internal/cmds/get"
-	"github.com/depscloud/cli/internal/writer"
+	"github.com/depscloud/depscloud/deps/internal/client"
+	"github.com/depscloud/depscloud/deps/internal/cmds/completion"
+	"github.com/depscloud/depscloud/deps/internal/cmds/get"
+	"github.com/depscloud/depscloud/deps/internal/writer"
 
 	"github.com/sirupsen/logrus"
 
