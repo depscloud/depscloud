@@ -30,3 +30,10 @@ jobs:
           npm run test
           npm run build
           npm run package
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        if: github.ref == 'refs/heads/main'
+        with:
+          file: ./extractor/coverage/clover.xml
+          name: extractor

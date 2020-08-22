@@ -31,3 +31,10 @@ jobs:
             echo 'run make fmt and commit changes'
             exit 1
           fi
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        if: github.ref == 'refs/heads/main'
+        with:
+          file: ./indexer/coverage.txt
+          name: indexer

@@ -1,14 +1,14 @@
-name: gateway-branch
+name: deps-branch
 
 on:
   pull_request:
     paths:
-      - ".github/workflows/gateway-branch.yaml"
-      - "gateway/**"
+      - ".github/workflows/deps-branch.yaml"
+      - "deps/**"
   push:
     paths:
-      - ".github/workflows/gateway-branch.yaml"
-      - "gateway/**"
+      - ".github/workflows/deps-branch.yaml"
+      - "deps/**"
 
 jobs:
   build:
@@ -24,7 +24,7 @@ jobs:
 
       - name: Build
         run: |
-          cd gateway
+          cd deps
           make build-deps deps test
           make fmt
           if [[ $(git diff --stat) != '' ]]; then
@@ -36,5 +36,5 @@ jobs:
         uses: codecov/codecov-action@v1
         if: github.ref == 'refs/heads/main'
         with:
-          file: ./gateway/coverage.txt
-          name: gateway
+          file: ./deps/coverage.txt
+          name: deps
