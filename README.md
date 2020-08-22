@@ -1,7 +1,6 @@
 # deps.cloud
 
-![license](https://img.shields.io/github/license/depscloud/depscloud.svg)
-![analytics](https://www.google-analytics.com/collect?v=1&cid=555&t=pageview&ec=repo&ea=open&dp=depscloud&dt=depscloud&tid=UA-143087272-2)
+<img alt="logo" width="64" src="https://deps.cloud/favicons/android-chrome-512x512.png"/>
 
 deps.cloud is a tool built to help companies understand how projects relate to one another.
 It does this by detecting dependencies defined in common manifest files.
@@ -63,3 +62,8 @@ We also have a [Slack] channel.
 ![gateway](https://img.shields.io/docker/v/depscloud/gateway?color=blue&label=gateway%20version&sort=semver)
 ![indexer](https://img.shields.io/docker/v/depscloud/indexer?color=blue&label=indexer%20version&sort=semver)
 ![tracker](https://img.shields.io/docker/v/depscloud/tracker?color=blue&label=tracker%20version&sort=semver)
+
+## License Checks
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdepscloud%2Fdepscloud.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdepscloud%2Fdepscloud?ref=badge_large)
+![analytics](https://www.google-analytics.com/collect?v=1&cid=555&t=pageview&ec=repo&ea=open&dp=depscloud&dt=depscloud&tid=UA-143087272-2)
