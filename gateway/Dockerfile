@@ -1,8 +1,9 @@
 FROM depscloud/download:latest AS BUILDER
 
 ARG VERSION=0.0.1
+ENV RELEASE_CHAIN=goreleaser
 
-RUN install-depscloud-binary gateway ${VERSION}
+RUN install-depscloud-binary depscloud ${VERSION} gateway
 
 FROM depscloud/base:latest
 

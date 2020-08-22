@@ -1,7 +1,9 @@
 project_name: deps
 
 builds:
-  - main: ./main.go
+  - id: deps
+    dir: deps
+    main: ./main.go
     binary: deps
     env:
       - CGO_ENABLED=0
@@ -25,21 +27,60 @@ builds:
         goarch: arm
       - goos: windows
         goarch: arm64
+  - id: gateway
+    dir: gateway
+    main: ./main.go
+    binary: gateway
+    goos:
+      - linux
+    goarch:
+      - 386
+      - amd64
+      - arm
+      - arm64
+    goarm:
+      - 7
+  - id: indexer
+    dir: indexer
+    main: ./main.go
+    binary: indexer
+    goos:
+      - linux
+    goarch:
+      - 386
+      - amd64
+      - arm
+      - arm64
+    goarm:
+      - 7
+  - id: tracker
+    dir: tracker
+    main: ./main.go
+    binary: tracker
+    goos:
+      - linux
+    goarch:
+      - 386
+      - amd64
+      - arm
+      - arm64
+    goarm:
+      - 7
 
 brews:
   - name: depscloud-cli
     goarm: 7
-    github:
-      owner: deps-cloud
+    tap:
+      owner: depscloud
       name: homebrew-tap
     commit_author:
       name: goreleaserbot
       email: mjpitz@deps.cloud
     homepage: https://deps.cloud/
-    description: Command line interface to the deps.cloud API.
+    description: Command line interface to the deps.cloud API
 
 nfpms:
-  - id: depscloud-cli-deb
+  - id: depscloud-cli
     package_name: depscloud-cli
     file_name_template: "depscloud-cli_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
     vendor: deps.cloud

@@ -1,12 +1,12 @@
-name: branch
+name: tracker-branch
 
 on:
   pull_request:
-    branches:
-      - "*"
+    paths:
+      - "tracker"
   push:
-    branches:
-      - "*"
+    paths:
+      - "tracker"
 
 jobs:
   build:
@@ -21,18 +21,17 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build
-        run: make build-deps deps test deploy
-
-      - name: Check for proper formatting
         run: |
+          cd tracker
+          make build-deps deps test
           make fmt
           if [[ $(git diff --stat) != '' ]]; then
             echo 'run make fmt and commit changes'
             exit 1
           fi
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
-        if: github.ref == 'refs/heads/main'
-        with:
-          file: ./coverage.txt
+#      - name: Upload coverage to Codecov
+#        uses: codecov/codecov-action@v1
+#        if: github.ref == 'refs/heads/main'
+#        with:
+#          file: ./coverage.txt

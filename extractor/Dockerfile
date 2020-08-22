@@ -10,7 +10,7 @@ ARG VERSION=0.2.10
 
 WORKDIR /home/depscloud
 
-ADD https://github.com/depscloud/extractor/releases/download/v${VERSION}/extractor.tar.gz extractor.tar.gz
+ADD https://github.com/depscloud/depscloud/releases/download/v${VERSION}/extractor.tar.gz extractor.tar.gz
 RUN tar -zxvf extractor.tar.gz && rm extractor.tar.gz
 
 RUN npm install --production

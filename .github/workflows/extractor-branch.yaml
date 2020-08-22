@@ -1,12 +1,12 @@
-name: branch
+name: branch-extractor
 
 on:
   pull_request:
-    branches:
-      - "*"
+    paths:
+      - "extractor"
   push:
-    branches:
-      - "*"
+    paths:
+      - "extractor"
 
 jobs:
   build:
@@ -22,6 +22,7 @@ jobs:
 
       - name: Build
         run: |
+          cd extractor
           npm install
           npm run lint
           npm run test

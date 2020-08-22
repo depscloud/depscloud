@@ -1,0 +1,31 @@
+name: indexer-branch
+
+on:
+  pull_request:
+    paths:
+      - "indexer"
+  push:
+    paths:
+      - "indexer"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: golang:1.14-alpine3.11
+    steps:
+      - name: Prepare
+        run: apk -U upgrade && apk add build-base git ca-certificates sqlite bash curl
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build
+        run: |
+          cd indexer
+          make build-deps deps test
+          make fmt
+          if [[ $(git diff --stat) != '' ]]; then
+            echo 'run make fmt and commit changes'
+            exit 1
+          fi

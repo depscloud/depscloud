@@ -2,9 +2,10 @@ FROM depscloud/download:latest AS BUILDER
 
 ARG VERSION=0.0.1
 ARG HEALTH_PROBE_VERSION=0.3.1
+ENV RELEASE_CHAIN=goreleaser
 
 RUN install-grpc-probe ${HEALTH_PROBE_VERSION}
-RUN install-depscloud-binary tracker ${VERSION}
+RUN install-depscloud-binary depscloud ${VERSION} tracker
 
 FROM depscloud/base:latest
 

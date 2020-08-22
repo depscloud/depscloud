@@ -1,4 +1,4 @@
-name: tag
+name: tag-extractor
 
 on:
   push:
@@ -19,6 +19,7 @@ jobs:
 
       - name: Build
         run: |
+          cd extractor
           npm install
           npm run lint
           npm run test
@@ -29,10 +30,8 @@ jobs:
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: extractor.tar.gz
+          file: extractor/extractor.tar.gz
           tag: ${{ github.ref }}
-          overwrite: true
-          file_glob: true
   docker:
     runs-on: ubuntu-latest
     needs:
@@ -60,6 +59,6 @@ jobs:
             --build-arg VERSION=${GITHUB_REF##*/v} \
             --tag depscloud/extractor:latest \
             --tag depscloud/extractor:${GITHUB_REF##*/v} \
-            -f Dockerfile \
-            . \
+            -f extractor/Dockerfile \
+            extractor \
             --push

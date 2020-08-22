@@ -1,0 +1,126 @@
+name: goreleaser-tag
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  ##===
+  ## Binaries
+  ##===
+  goreleaser:
+    runs-on: ubuntu-latest
+    container:
+      image: golang:1.14-alpine3.11
+    steps:
+      - name: Prepare
+        run: apk -U upgrade && apk add build-base git ca-certificates curl
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build
+        env:
+          GEMFURY_TOKEN: ${{ secrets.GEMFURY_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GORELEASER_TOKEN }}
+        run: |
+          curl -sfL https://install.goreleaser.com/github.com/goreleaser/goreleaser.sh | sh
+          ./bin/goreleaser
+          find dist/ -iname *.deb | xargs -I{} curl -F package=@{} https://${GEMFURY_TOKEN}@push.fury.io/depscloud/
+
+  ##===
+  ## Docker
+  ##===
+  docker-gateway:
+    runs-on: ubuntu-latest
+    needs:
+      - release
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: crazy-max/ghaction-docker-buildx@v1
+        with:
+          version: latest
+
+      - name: Login to GitHub Docker Registry
+        run: echo "${REGISTRY_PASSWORD}" | docker login -u "${REGISTRY_USERNAME}" --password-stdin
+        env:
+          REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+          REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: Build Container Image
+        run: |
+          docker buildx build \
+            --platform linux/amd64,linux/arm64,linux/arm/v7 \
+            --build-arg VERSION=${GITHUB_REF##*/v} \
+            --tag depscloud/gateway:latest \
+            --tag depscloud/gateway:${GITHUB_REF##*/v} \
+            -f gateway/Dockerfile \
+            gateway \
+            --push
+
+  docker-indexer:
+    runs-on: ubuntu-latest
+    needs:
+      - release
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: crazy-max/ghaction-docker-buildx@v1
+        with:
+          version: latest
+
+      - name: Login to GitHub Docker Registry
+        run: echo "${REGISTRY_PASSWORD}" | docker login -u "${REGISTRY_USERNAME}" --password-stdin
+        env:
+          REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+          REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: Build Container Image
+        run: |
+          docker buildx build \
+            --platform linux/amd64,linux/arm64,linux/arm/v7 \
+            --build-arg VERSION=${GITHUB_REF##*/v} \
+            --tag depscloud/indexer:latest \
+            --tag depscloud/indexer:${GITHUB_REF##*/v} \
+            -f indexer/Dockerfile \
+            indexer \
+            --push
+
+  docker-tracker:
+    runs-on: ubuntu-latest
+    needs:
+      - release
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: crazy-max/ghaction-docker-buildx@v1
+        with:
+          version: latest
+
+      - name: Login to GitHub Docker Registry
+        run: echo "${REGISTRY_PASSWORD}" | docker login -u "${REGISTRY_USERNAME}" --password-stdin
+        env:
+          REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+          REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: Build Container Image
+        run: |
+          docker buildx build \
+            --platform linux/amd64,linux/arm64,linux/arm/v7 \
+            --build-arg VERSION=${GITHUB_REF##*/v} \
+            --tag depscloud/tracker:latest \
+            --tag depscloud/tracker:${GITHUB_REF##*/v} \
+            -f tracker/Dockerfile \
+            tracker \
+            --push

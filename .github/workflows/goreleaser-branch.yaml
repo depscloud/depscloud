@@ -1,15 +1,21 @@
-name: branch
+name: branch-goreleaser
 
 on:
   pull_request:
-    branches:
-      - "*"
+    paths:
+      - "deps"
+      - "gateway"
+      - "indexer"
+      - "tracker"
   push:
-    branches:
-      - "*"
+    paths:
+      - "deps"
+      - "gateway"
+      - "indexer"
+      - "tracker"
 
 jobs:
-  build:
+  goreleaser:
     runs-on: ubuntu-latest
     container:
       image: golang:1.14-alpine3.11
@@ -20,8 +26,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Build
+      - name: Release
         run: |
           curl -sfL https://install.goreleaser.com/github.com/goreleaser/goreleaser.sh | sh
-          make build-deps deps test
           ./bin/goreleaser --snapshot --skip-publish
