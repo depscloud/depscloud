@@ -1,4 +1,4 @@
-name: tag-extractor
+name: extractor-tag
 
 on:
   push:
