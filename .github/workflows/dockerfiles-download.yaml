@@ -1,4 +1,4 @@
-name: download
+name: dockerfiles-download
 
 on:
   push:
