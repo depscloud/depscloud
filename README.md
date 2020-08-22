@@ -1,25 +1,65 @@
-![GitHub](https://img.shields.io/github/license/depscloud/depscloud.svg)
-![Google Analytics](https://www.google-analytics.com/collect?v=1&cid=555&t=pageview&ec=repo&ea=open&dp=depscloud&dt=depscloud&tid=UA-143087272-2)
-
-![branch](https://github.com/depscloud/depscloud/workflows/dockerfiles-base/badge.svg?branch=main)
-![branch](https://github.com/depscloud/depscloud/workflows/dockerfiles-download/badge.svg?branch=main)
-
-![branch](https://github.com/depscloud/depscloud/workflows/extractor-branch/badge.svg?branch=main)
-![branch](https://github.com/depscloud/depscloud/workflows/gateway-branch/badge.svg?branch=main)
-![branch](https://github.com/depscloud/depscloud/workflows/indexer-branch/badge.svg?branch=main)
-![branch](https://github.com/depscloud/depscloud/workflows/tracker-branch/badge.svg?branch=main)
-![branch](https://github.com/depscloud/depscloud/workflows/goreleaser-branch/badge.svg?branch=main)
-
-![tag](https://github.com/depscloud/depscloud/workflows/extractor-tag/badge.svg)
-![tag](https://github.com/depscloud/depscloud/workflows/goreleaser-tag/badge.svg)
-
-The deps.cloud [monorepo](https://en.wikipedia.org/wiki/Monorepo).
-After spending a year developing across many different projects, I wanted to simplify the process for new comers.
-Instead of needing clone and fork dozens of repositories, you now only need to fork and clone one.
-
 # deps.cloud
 
-[deps.cloud](https://deps.cloud/) is system that helps track and manage library usage across an organization.
-Unlike many alternatives, it was built with portability in mind making easy for anyone to get started.
+![license](https://img.shields.io/github/license/depscloud/depscloud.svg)
+![analytics](https://www.google-analytics.com/collect?v=1&cid=555&t=pageview&ec=repo&ea=open&dp=depscloud&dt=depscloud&tid=UA-143087272-2)
 
-For more information on how to get involved take a look at our [project board](https://github.com/orgs/depscloud/projects/1).
+deps.cloud is a tool built to help companies understand how projects relate to one another.
+It does this by detecting dependencies defined in common manifest files.
+Using this information, we’re able to construct a dependency graph.
+As a result we’re able to answer questions like:
+
+* Which libraries get produced by a project?
+* Which libraries do I depend on and what version?
+* Which projects depend on library X and what version?
+* Which projects can produce library X?
+* Which projects do our systems use the most?
+
+## To start using deps.cloud
+
+See our documentation on [deps.cloud](https://deps.cloud/docs/).
+
+## To start developing deps.cloud
+
+Take a look at our [contributing guidelines] and [project board].
+
+```bash
+# setup a workspace for all depscloud
+mkdir depscloud && cd $_
+
+# clone necessary repositories
+#   - the first is for the source code
+#   - the second is for the deployment configuration
+git clone git@github.com:depscloud/depscloud.git
+git clone git@github.com:depscloud/deploy.git
+```
+
+[contributing guidelines]: https://deps.cloud/docs/contrib/
+[project board]: https://github.com/orgs/depscloud/projects/1
+
+# Support
+
+Join our [mailing list] and ask any questions there.
+
+We also have a [Slack] channel.
+
+[mailing list]: https://groups.google.com/a/deps.cloud/forum/#!forum/community/join
+[Slack]: https://depscloud.slack.com/join/shared_invite/zt-fd03dm8x-L5Vxh07smWr_vlK9Qg9q5A
+
+## Branch Checks
+
+![deps](https://github.com/depscloud/depscloud/workflows/deps-branch/badge.svg?branch=main)
+![extractor](https://github.com/depscloud/depscloud/workflows/extractor-branch/badge.svg?branch=main)
+![gateway](https://github.com/depscloud/depscloud/workflows/gateway-branch/badge.svg?branch=main)
+![indexer](https://github.com/depscloud/depscloud/workflows/indexer-branch/badge.svg?branch=main)
+![tracker](https://github.com/depscloud/depscloud/workflows/tracker-branch/badge.svg?branch=main)
+![goreleaser](https://github.com/depscloud/depscloud/workflows/goreleaser-branch/badge.svg?branch=main)
+
+## Release Checks
+
+![extractor](https://github.com/depscloud/depscloud/workflows/extractor-tag/badge.svg)
+![goreleaser](https://github.com/depscloud/depscloud/workflows/goreleaser-tag/badge.svg)
+
+![extractor](https://img.shields.io/docker/v/depscloud/extractor?color=blue&label=extractor%20version&sort=semver)
+![gateway](https://img.shields.io/docker/v/depscloud/gateway?color=blue&label=gateway%20version&sort=semver)
+![indexer](https://img.shields.io/docker/v/depscloud/indexer?color=blue&label=indexer%20version&sort=semver)
+![tracker](https://img.shields.io/docker/v/depscloud/tracker?color=blue&label=tracker%20version&sort=semver)
