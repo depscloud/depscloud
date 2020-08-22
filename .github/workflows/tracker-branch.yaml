@@ -6,6 +6,8 @@ on:
       - ".github/workflows/tracker-branch.yaml"
       - "tracker/**"
   push:
+    branches:
+      - "*"
     paths:
       - ".github/workflows/tracker-branch.yaml"
       - "tracker/**"

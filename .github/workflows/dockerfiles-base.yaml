@@ -2,6 +2,8 @@ name: dockerfiles-base
 
 on:
   push:
+    branches:
+      - "*"
     paths:
       - '.github/workflows/dockerfiles-base.yaml'
       - 'dockerfiles/base/**'

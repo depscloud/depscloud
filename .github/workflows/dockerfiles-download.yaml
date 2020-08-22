@@ -2,6 +2,8 @@ name: dockerfiles-download
 
 on:
   push:
+    branches:
+      - "*"
     paths:
       - '.github/workflows/dockerfiles-download.yaml'
       - 'dockerfiles/download/**'
