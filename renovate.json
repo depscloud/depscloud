@@ -2,5 +2,8 @@
   "extends": [
     "config:base",
     "schedule:weekly"
+  ],
+  "excludeCommitPaths": [
+    "extractor/**/testdata/**"
   ]
 }
