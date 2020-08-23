@@ -59,8 +59,11 @@ jobs:
             --set ${{ matrix.service }}.image.pullPolicy=Never \
             --set ${{ matrix.service }}.image.tag=latest
 
-          kubectl rollout status -w deployment/depscloud-extractor
-          kubectl rollout status -w deployment/depscloud-tracker
-          kubectl rollout status -w deployment/depscloud-gateway
+          sleep 15
+          kubectl get pods
 
-          kubectl get pods -A
+          sleep 15
+          kubectl get pods
+
+          sleep 30
+          kubectl get pods
