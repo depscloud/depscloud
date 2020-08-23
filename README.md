@@ -57,8 +57,8 @@ We also have a [Slack] channel.
 
 ## Release Checks
 
-[![extractor-tag workflow](https://github.com/depscloud/depscloud/workflows/extractor-tag/badge.svg)](https://github.com/depscloud/depscloud/actions?query=workflow%3Aextractor-tag+branch%3Amain)
-[![goreleaser-tag workflow](https://github.com/depscloud/depscloud/workflows/goreleaser-tag/badge.svg)](https://github.com/depscloud/depscloud/actions?query=workflow%3Agoreleaser-tag+branch%3Amain)
+[![extractor-tag workflow](https://github.com/depscloud/depscloud/workflows/extractor-tag/badge.svg)](https://github.com/depscloud/depscloud/actions?query=workflow%3Aextractor-tag)
+[![goreleaser-tag workflow](https://github.com/depscloud/depscloud/workflows/goreleaser-tag/badge.svg)](https://github.com/depscloud/depscloud/actions?query=workflow%3Agoreleaser-tag)
 
 [![extractor docker hub](https://img.shields.io/docker/v/depscloud/extractor?color=blue&label=extractor%20version&sort=semver)](https://hub.docker.com/r/depscloud/extractor/tags)
 [![gateway docker hub](https://img.shields.io/docker/v/depscloud/gateway?color=blue&label=gateway%20version&sort=semver)](https://hub.docker.com/r/depscloud/gateway/tags)
