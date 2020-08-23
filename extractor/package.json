@@ -8,9 +8,7 @@
     "test": "jest --coverage",
     "start": "node lib/main.js",
     "clean": "rm -rf coverage lib node_modules",
-    "docker": "docker build -t depscloud/extractor:latest -f Dockerfile.dev .",
-    "predockerx": "docker buildx rm depscloud--extractor || echo \"depscloud--extractor does not exist\"; docker buildx create --append --name depscloud--extractor --use",
-    "dockerx": "docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t depscloud/extractor:latest ."
+    "docker": "docker build -t depscloud/extractor:latest -f Dockerfile.dev ."
   },
   "repository": {
     "type": "git",
