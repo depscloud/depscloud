@@ -61,6 +61,6 @@ jobs:
 
           kubectl rollout status -w --timeout 30s deployment/depscloud-extractor
           kubectl rollout status -w --timeout 30s deployment/depscloud-tracker
-          kubectl rollout status -w --timeout 30s deployment/depscloud-gatway
+          kubectl rollout status -w --timeout 30s deployment/depscloud-gateway
 
-          kubectl get pods -A
+          kubectl wait --for=condition=complete --timeout=300s job/depscloud-indexer
