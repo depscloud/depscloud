@@ -22,7 +22,7 @@ import (
 
 	"github.com/sirupsen/logrus"
 
-	"github.com/spf13/cobra"
+	"github.com/urfave/cli/v2"
 
 	"golang.org/x/net/context"
 	"golang.org/x/net/http2"
@@ -33,13 +33,6 @@ import (
 	_ "google.golang.org/grpc/health"
 )
 
-func exitIff(err error) {
-	if err != nil {
-		logrus.Error(err.Error())
-		os.Exit(1)
-	}
-}
-
 // https://github.com/grpc/grpc/blob/master/doc/service_config.md
 const serviceConfigTemplate = `{
 	"loadBalancingPolicy": "%s",
@@ -48,24 +41,28 @@ const serviceConfigTemplate = `{
 	}
 }`
 
-func dialOptions(certFile, keyFile, caFile, lbPolicy string) []grpc.DialOption {
+func dial(target, certFile, keyFile, caFile, lbPolicy string) (*grpc.ClientConn, error) {
 	serviceConfig := fmt.Sprintf(serviceConfigTemplate, lbPolicy)
 
-	opts := []grpc.DialOption{
+	dialOptions := []grpc.DialOption{
 		grpc.WithDefaultServiceConfig(serviceConfig),
 	}
 
 	if len(certFile) > 0 {
 		certificate, err := tls.LoadX509KeyPair(certFile, keyFile)
-		exitIff(err)
+		if err != nil {
+			return nil, err
+		}
 
 		certPool := x509.NewCertPool()
 		bs, err := ioutil.ReadFile(caFile)
-		exitIff(err)
+		if err != nil {
+			return nil, err
+		}
 
 		ok := certPool.AppendCertsFromPEM(bs)
 		if !ok {
-			exitIff(fmt.Errorf("failed to append certs"))
+			return nil, fmt.Errorf("failed to append certs")
 		}
 
 		transportCreds := credentials.NewTLS(&tls.Config{
@@ -73,53 +70,187 @@ func dialOptions(certFile, keyFile, caFile, lbPolicy string) []grpc.DialOption {
 			RootCAs:      certPool,
 		})
 
-		opts = append(opts, grpc.WithTransportCredentials(transportCreds))
+		dialOptions = append(dialOptions, grpc.WithTransportCredentials(transportCreds))
 	} else {
-		opts = append(opts, grpc.WithInsecure())
+		dialOptions = append(dialOptions, grpc.WithInsecure())
 	}
-	return opts
+
+	return grpc.Dial(target, dialOptions...)
 }
 
-func dial(target string, options []grpc.DialOption) *grpc.ClientConn {
-	cc, err := grpc.Dial(target, options...)
-	if err != nil {
-		exitIff(err)
-	}
-	return cc
+func dialExtractor(cfg *gatewayConfig) (*grpc.ClientConn, error) {
+	return dial(cfg.extractorAddress,
+		cfg.extractorCertPath, cfg.extractorKeyPath, cfg.extractorCAPath,
+		cfg.extractorLBPolicy)
+}
+
+func dialTracker(cfg *gatewayConfig) (*grpc.ClientConn, error) {
+	return dial(cfg.trackerAddress,
+		cfg.trackerCertPath, cfg.trackerKeyPath, cfg.trackerCAPath,
+		cfg.trackerLBPolicy)
+}
+
+type gatewayConfig struct {
+	port int
+
+	extractorAddress  string
+	extractorCertPath string
+	extractorKeyPath  string
+	extractorCAPath   string
+	extractorLBPolicy string
+
+	trackerAddress  string
+	trackerCertPath string
+	trackerKeyPath  string
+	trackerCAPath   string
+	trackerLBPolicy string
+
+	tlsKeyPath  string
+	tlsCertPath string
+	tlsCAPath   string
 }
 
 func main() {
-	port := 8080
+	cfg := &gatewayConfig{
+		port: 8080,
 
-	extractorAddress := "extractor:8090"
-	extractorCert := ""
-	extractorKey := ""
-	extractorCA := ""
-	extractorLBPolicy := "round_robin"
+		extractorAddress:  "extractor:8090",
+		extractorCertPath: "",
+		extractorKeyPath:  "",
+		extractorCAPath:   "",
+		extractorLBPolicy: "round_robin",
 
-	trackerAddress := "tracker:8090"
-	trackerCert := ""
-	trackerKey := ""
-	trackerCA := ""
-	trackerLBPolicy := "round_robin"
+		trackerAddress:  "tracker:8090",
+		trackerCertPath: "",
+		trackerKeyPath:  "",
+		trackerCAPath:   "",
+		trackerLBPolicy: "round_robin",
 
-	tlsCert := ""
-	tlsKey := ""
-	tlsCA := ""
+		tlsCertPath: "",
+		tlsKeyPath:  "",
+		tlsCAPath:   "",
+	}
 
-	cmd := &cobra.Command{
-		Use:   "gateway",
-		Short: "Start up an HTTP proxy for the gRPC services",
-		Run: func(cmd *cobra.Command, args []string) {
-			address := fmt.Sprintf(":%d", port)
-
+	app := &cli.App{
+		Name:  "gateway",
+		Usage: "an HTTP/gRPC proxy to backend services",
+		Flags: []cli.Flag{
+			&cli.IntFlag{
+				Name:        "port",
+				Usage:       "the port to run on",
+				Value:       cfg.port,
+				Destination: &cfg.port,
+				EnvVars:     []string{"HTTP_PORT"},
+			},
+			&cli.StringFlag{
+				Name:        "extractor-address",
+				Usage:       "address to the extractor service",
+				Value:       cfg.extractorAddress,
+				Destination: &cfg.extractorAddress,
+				EnvVars:     []string{"EXTRACTOR_ADDRESS"},
+			},
+			&cli.StringFlag{
+				Name:        "extractor-cert",
+				Usage:       "certificate used to enable TLS for the extractor",
+				Value:       cfg.extractorCertPath,
+				Destination: &cfg.extractorCertPath,
+				EnvVars:     []string{"EXTRACTOR_CERT_PATH"},
+			},
+			&cli.StringFlag{
+				Name:        "extractor-key",
+				Usage:       "key used to enable TLS for the extractor",
+				Value:       cfg.extractorKeyPath,
+				Destination: &cfg.extractorKeyPath,
+				EnvVars:     []string{"EXTRACTOR_KEY_PATH"},
+			},
+			&cli.StringFlag{
+				Name:        "extractor-ca",
+				Usage:       "ca used to enable TLS for the extractor",
+				Value:       cfg.extractorCAPath,
+				Destination: &cfg.extractorCAPath,
+				EnvVars:     []string{"EXTRACTOR_CA_PATH"},
+			},
+			&cli.StringFlag{
+				Name:        "extractor-lb",
+				Usage:       "the load balancer policy to use for the extractor",
+				Value:       cfg.extractorLBPolicy,
+				Destination: &cfg.extractorLBPolicy,
+				EnvVars:     []string{"EXTRACTOR_LBPOLICY"},
+			},
+			&cli.StringFlag{
+				Name:        "tracker-address",
+				Usage:       "address to the tracker service",
+				Value:       cfg.trackerAddress,
+				Destination: &cfg.trackerAddress,
+				EnvVars:     []string{"TRACKER_ADDRESS"},
+			},
+			&cli.StringFlag{
+				Name:        "tracker-cert",
+				Usage:       "certificate used to enable TLS for the tracker",
+				Value:       cfg.trackerCertPath,
+				Destination: &cfg.trackerCertPath,
+				EnvVars:     []string{"TRACKER_CERT_PATH"},
+			},
+			&cli.StringFlag{
+				Name:        "tracker-key",
+				Usage:       "key used to enable TLS for the tracker",
+				Value:       cfg.trackerKeyPath,
+				Destination: &cfg.trackerKeyPath,
+				EnvVars:     []string{"TRACKER_KEY_PATH"},
+			},
+			&cli.StringFlag{
+				Name:        "tracker-ca",
+				Usage:       "ca used to enable TLS for the tracker",
+				Value:       cfg.trackerCAPath,
+				Destination: &cfg.trackerCAPath,
+				EnvVars:     []string{"TRACKER_CA_PATH"},
+			},
+			&cli.StringFlag{
+				Name:        "tracker-lb",
+				Usage:       "the load balancer policy to use for the tracker",
+				Value:       cfg.trackerLBPolicy,
+				Destination: &cfg.trackerLBPolicy,
+				EnvVars:     []string{"TRACKER_LBPOLICY"},
+			},
+			&cli.StringFlag{
+				Name:        "tls-key",
+				Usage:       "path to the file containing the TLS private key",
+				Value:       cfg.tlsKeyPath,
+				Destination: &cfg.tlsKeyPath,
+				EnvVars:     []string{"TLS_KEY_PATH"},
+			},
+			&cli.StringFlag{
+				Name:        "tls-cert",
+				Usage:       "path to the file containing the TLS certificate",
+				Value:       cfg.tlsCertPath,
+				Destination: &cfg.tlsCertPath,
+				EnvVars:     []string{"TLS_CERT_PATH"},
+			},
+			&cli.StringFlag{
+				Name:        "tls-ca",
+				Usage:       "path to the file containing the TLS certificate authority",
+				Value:       cfg.tlsCAPath,
+				Destination: &cfg.tlsCAPath,
+				EnvVars:     []string{"TLS_CA_PATH"},
+			},
+		},
+		Action: func(c *cli.Context) error {
 			grpcServer := grpc.NewServer()
 			gatewayMux := runtime.NewServeMux()
 
 			ctx := context.Background()
 
-			trackerConn := dial(trackerAddress, dialOptions(trackerCert, trackerKey, trackerCA, trackerLBPolicy))
-			extractorConn := dial(extractorAddress, dialOptions(extractorCert, extractorKey, extractorCA, extractorLBPolicy))
+			extractorConn, err := dialExtractor(cfg)
+			if err != nil {
+				return err
+			}
+			defer extractorConn.Close()
+
+			trackerConn, err := dialTracker(cfg)
+			if err != nil {
+				return err
+			}
+			defer trackerConn.Close()
 
 			sourceService := tracker.NewSourceServiceClient(trackerConn)
 			tracker.RegisterSourceServiceServer(grpcServer, proxies.NewSourceServiceProxy(sourceService))
@@ -190,18 +321,22 @@ func main() {
 
 			apiMux := cors.Default().Handler(h2cMux)
 
-			var err error
-			if len(tlsCert) > 0 && len(tlsKey) > 0 && len(tlsCA) > 0 {
-				certificate, err := tls.LoadX509KeyPair(tlsCert, tlsKey)
-				exitIff(err)
+			address := fmt.Sprintf(":%d", cfg.port)
+			if len(cfg.tlsCertPath) > 0 && len(cfg.tlsKeyPath) > 0 && len(cfg.tlsCAPath) > 0 {
+				certificate, err := tls.LoadX509KeyPair(cfg.tlsCertPath, cfg.tlsKeyPath)
+				if err != nil {
+					return err
+				}
 
 				certPool := x509.NewCertPool()
-				bs, err := ioutil.ReadFile(tlsCA)
-				exitIff(err)
+				bs, err := ioutil.ReadFile(cfg.tlsCAPath)
+				if err != nil {
+					return err
+				}
 
 				ok := certPool.AppendCertsFromPEM(bs)
 				if !ok {
-					exitIff(fmt.Errorf("failed to append certs"))
+					return fmt.Errorf("failed to append certs")
 				}
 
 				listener, err := tls.Listen("tcp", address, &tls.Config{
@@ -209,37 +344,20 @@ func main() {
 					ClientAuth:   tls.RequireAndVerifyClientCert,
 					ClientCAs:    certPool,
 				})
-				exitIff(err)
+				if err != nil {
+					return err
+				}
 
 				logrus.Infof("[main] starting TLS server on %s", address)
-				err = http.Serve(listener, apiMux)
-			} else {
-				logrus.Infof("[main] starting plaintext server on %s", address)
-				err = http.ListenAndServe(address, apiMux)
+				return http.Serve(listener, apiMux)
 			}
-			exitIff(err)
+
+			logrus.Infof("[main] starting plaintext server on %s", address)
+			return http.ListenAndServe(address, apiMux)
 		},
 	}
 
-	flags := cmd.Flags()
-	flags.IntVar(&port, "port", port, "(optional) the port to run on")
-
-	flags.StringVar(&extractorAddress, "extractor-address", extractorAddress, "(optional) address to the extractor service")
-	flags.StringVar(&extractorCert, "extractor-cert", extractorCert, "(optional) certificate used to enable TLS for the extractor")
-	flags.StringVar(&extractorKey, "extractor-key", extractorKey, "(optional) key used to enable TLS for the extractor")
-	flags.StringVar(&extractorCA, "extractor-ca", extractorCA, "(optional) ca used to enable TLS for the extractor")
-	flags.StringVar(&extractorLBPolicy, "extractor-lb", extractorLBPolicy, "(optional) the load balancer policy to use for the extractor")
-
-	flags.StringVar(&trackerAddress, "tracker-address", trackerAddress, "(optional) address to the tracker service")
-	flags.StringVar(&trackerCert, "tracker-cert", trackerCert, "(optional) certificate used to enable TLS for the tracker")
-	flags.StringVar(&trackerKey, "tracker-key", trackerKey, "(optional) key used to enable TLS for the tracker")
-	flags.StringVar(&trackerCA, "tracker-ca", trackerCA, "(optional) ca used to enable TLS for the tracker")
-	flags.StringVar(&trackerLBPolicy, "tracker-lb", trackerLBPolicy, "(optional) the load balancer policy to use for the tracker")
-
-	flags.StringVar(&tlsKey, "tls-key", tlsKey, "(optional) path to the file containing the TLS private key")
-	flags.StringVar(&tlsCert, "tls-cert", tlsCert, "(optional) path to the file containing the TLS certificate")
-	flags.StringVar(&tlsCA, "tls-ca", tlsCA, "(optional) path to the file containing the TLS certificate authority")
-
-	err := cmd.Execute()
-	exitIff(err)
+	if err := app.Run(os.Args); err != nil {
+		logrus.Fatal(err)
+	}
 }
