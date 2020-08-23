@@ -9,14 +9,6 @@ on:
       - "gateway/**"
       - "indexer/**"
       - "tracker/**"
-  push:
-    paths:
-      - ".github/workflows/integration.yaml"
-      - "deps/**"
-      - "extractor/**"
-      - "gateway/**"
-      - "indexer/**"
-      - "tracker/**"
 
 jobs:
   integration:
