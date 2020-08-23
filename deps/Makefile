@@ -1,6 +1,6 @@
-GIT_SHA := $(shell git rev-parse HEAD)
+GIT_SHA ?= $(shell git rev-parse HEAD)
 VERSION ?= local
-TIMESTAMP := $(shell date +%Y-%m-%dT%T)
+TIMESTAMP ?= $(shell date +%Y-%m-%dT%T)
 LD_FLAGS := -X main.version=${VERSION} -X main.commit=${GIT_SHA} -X main.date=${TIMESTAMP}
 
 build-deps:
@@ -25,3 +25,11 @@ build:
 
 install:
 	go install -ldflags="${LD_FLAGS}" .
+
+docker:
+	docker build . \
+		--build-arg GIT_SHA=${GIT_SHA} \
+		--build-arg VERSION=${VERSION} \
+		--build-arg TIMESTAMP=${TIMESTAMP} \
+		-t depscloud/cli:latest \
+		-f Dockerfile.dev

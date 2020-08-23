@@ -5,11 +5,8 @@ ENV RELEASE_CHAIN=goreleaser
 
 RUN install-depscloud-binary depscloud ${VERSION} gateway
 
-FROM depscloud/base:latest
+FROM depscloud/runtime:latest
 
 COPY --from=BUILDER /usr/bin/gateway /usr/bin/gateway
-
-WORKDIR /home/depscloud
-USER 13490:13490
 
 ENTRYPOINT [ "/usr/bin/gateway" ]

@@ -5,11 +5,8 @@ ENV RELEASE_CHAIN=goreleaser
 
 RUN install-depscloud-binary depscloud ${VERSION} indexer
 
-FROM depscloud/base:latest
+FROM depscloud/runtime:latest
 
 COPY --from=BUILDER /usr/bin/indexer /usr/bin/indexer
-
-WORKDIR /home/depscloud
-USER 13490:13490
 
 ENTRYPOINT [ "/usr/bin/indexer" ]

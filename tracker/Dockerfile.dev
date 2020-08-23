@@ -1,6 +1,9 @@
-FROM golang:1.14
+ARG GO_VERSION=1.14
+ARG ALPINE_VERSION=3.12
 
-RUN go get golang.org/x/lint/golint
+FROM golang:${GO_VERSION}-alpine${ALPINE_VERSION} AS builder
+
+RUN apk -U upgrade && apk add build-base git ca-certificates sqlite bash curl
 
 ENV GO111MODULE on
 
@@ -9,14 +12,13 @@ WORKDIR /go/src/tracker
 COPY go.mod .
 COPY go.sum .
 COPY Makefile .
-
-RUN make deps
+RUN make build-deps deps
 
 COPY . .
 RUN make test install
 
-RUN useradd -ms /bin/sh tracker
-WORKDIR /home/tracker
-USER tracker
+FROM depscloud/runtime:latest
 
-ENTRYPOINT [ "tracker" ]
+COPY --from=builder /go/bin/tracker /usr/bin/tracker
+
+ENTRYPOINT [ "/usr/bin/tracker" ]

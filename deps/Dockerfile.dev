@@ -3,11 +3,16 @@ ARG ALPINE_VERSION=3.12
 
 FROM golang:${GO_VERSION}-alpine${ALPINE_VERSION} AS builder
 
+# pass these through from host
+ARG GIT_SHA=""
+ARG VERSION=""
+ARG TIMESTAMP=""
+
 RUN apk -U upgrade && apk add build-base git ca-certificates bash curl
 
 ENV GO111MODULE on
 
-WORKDIR /go/src/indexer
+WORKDIR /go/src/gateway
 
 COPY go.mod .
 COPY go.sum .
@@ -19,6 +24,6 @@ RUN make test install
 
 FROM depscloud/runtime:latest
 
-COPY --from=builder /go/bin/indexer /usr/bin/indexer
+COPY --from=builder /go/bin/deps /usr/bin/deps
 
-ENTRYPOINT [ "/usr/bin/indexer" ]
+ENTRYPOINT [ "/usr/bin/deps" ]
