@@ -9,10 +9,14 @@ on:
       - "gateway/**"
       - "indexer/**"
       - "tracker/**"
+  push:
+    branches:
+      - "main"
 
 jobs:
   integration:
     strategy:
+      max-parallel: 2
       matrix:
         service:
           - deps
