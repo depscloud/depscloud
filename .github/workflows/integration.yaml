@@ -40,8 +40,31 @@ jobs:
           kubernetes version: 'v1.18.2'
           github token: ${{ secrets.GITHUB_TOKEN }}
 
-      # set up the docker environment to point to minikube
+      - name: Setup Helm
+        run: |
+          curl https://baltocdn.com/helm/signing.asc | sudo apt-key add -
+          sudo apt-get install apt-transport-https --yes
+          echo "deb https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+          sudo apt-get update
+          sudo apt-get install helm
+
+      # Build a development version of the application on the minikube cluster
       - name: Build Container
         run: |
           eval $(minikube docker-env)
           make ${{ matrix.service }}
+
+      # Deploy the ecosystem using existing the helm chart and force the use
+      # of the docker local image.
+      - name: Deploy Ecosystem
+        run: |
+          helm repo add depscloud https://depscloud.github.io/deploy/charts
+          helm upgrade -i depscloud depscloud/depscloud \
+            --set ${{ matrix.service }}.image.pullPolicy=Never \
+            --set ${{ matrix.service }}.image.tag=latest
+
+          kubectl rollout status -w deployment/depscloud-extractor
+          kubectl rollout status -w deployment/depscloud-tracker
+          kubectl rollout status -w deployment/depscloud-gateway
+
+          kubectl get pods -A
