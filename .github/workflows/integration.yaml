@@ -20,14 +20,14 @@ on:
 
 jobs:
   integration:
-#    strategy:
-#      matrix:
-#        service:
-#          - deps
-#          - extractor
-#          - gateway
-#          - indexer
-#          - tracker
+    strategy:
+      matrix:
+        service:
+          - deps
+          - extractor
+          - gateway
+          - indexer
+          - tracker
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -44,4 +44,4 @@ jobs:
       - name: Build Container
         run: |
           eval $(minikube docker-env)
-          docker ps -a
+          make ${{ matrix.service }}
