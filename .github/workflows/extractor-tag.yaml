@@ -9,7 +9,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
     container:
-      image: node:12-alpine3.11
+      image: node:12-alpine3.12
     steps:
       - name: Prepare
         run: apk -U upgrade && apk add build-base git ca-certificates python2 python3
