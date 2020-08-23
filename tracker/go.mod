@@ -4,6 +4,7 @@ go 1.14
 
 require (
 	github.com/cenkalti/backoff/v4 v4.0.2
+	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
 	github.com/depscloud/api v0.1.12
 	github.com/ghodss/yaml v1.0.0
 	github.com/go-sql-driver/mysql v1.5.0
@@ -14,9 +15,8 @@ require (
 	github.com/mjpitz/go-gracefully v0.0.3
 	github.com/pkg/errors v0.9.1
 	github.com/sirupsen/logrus v1.6.0
-	github.com/spf13/cobra v1.0.0
-	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/stretchr/testify v1.6.1
+	github.com/urfave/cli/v2 v2.2.0
 	golang.org/x/crypto v0.0.0-20200709230013-948cd5f35899 // indirect
 	golang.org/x/net v0.0.0-20200707034311-ab3426394381 // indirect
 	golang.org/x/sys v0.0.0-20200722175500-76b94024e4b6 // indirect
