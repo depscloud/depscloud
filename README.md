@@ -46,26 +46,26 @@ We also have a [Slack] channel.
 
 ## Branch Checks
 
-![dockerfiles](https://github.com/depscloud/depscloud/workflows/dockerfiles/badge.svg?branch=main)
+[![dockerfiles workflow](https://github.com/depscloud/depscloud/workflows/dockerfiles/badge.svg?branch=main)](https://github.com/depscloud/depscloud/actions?query=workflow%3Adockerfiles+branch%3Amain)
 
-![deps](https://github.com/depscloud/depscloud/workflows/deps-branch/badge.svg?branch=main)
-![extractor](https://github.com/depscloud/depscloud/workflows/extractor-branch/badge.svg?branch=main)
-![gateway](https://github.com/depscloud/depscloud/workflows/gateway-branch/badge.svg?branch=main)
-![indexer](https://github.com/depscloud/depscloud/workflows/indexer-branch/badge.svg?branch=main)
-![tracker](https://github.com/depscloud/depscloud/workflows/tracker-branch/badge.svg?branch=main)
-![goreleaser](https://github.com/depscloud/depscloud/workflows/goreleaser-branch/badge.svg?branch=main)
+[![deps-branch workflow](https://github.com/depscloud/depscloud/workflows/deps-branch/badge.svg?branch=main)](https://github.com/depscloud/depscloud/actions?query=workflow%3Adeps-branch+branch%3Amain)
+[![extractor-branch workflow](https://github.com/depscloud/depscloud/workflows/extractor-branch/badge.svg?branch=main)](https://github.com/depscloud/depscloud/actions?query=workflow%3Aextractor-branch+branch%3Amain)
+[![gateway-branch workflow](https://github.com/depscloud/depscloud/workflows/gateway-branch/badge.svg?branch=main)](https://github.com/depscloud/depscloud/actions?query=workflow%3Agateway-branch+branch%3Amain)
+[![indexer-branch workflow](https://github.com/depscloud/depscloud/workflows/indexer-branch/badge.svg?branch=main)](https://github.com/depscloud/depscloud/actions?query=workflow%3Aindexer-branch+branch%3Amain)
+[![tracker-branch workflow](https://github.com/depscloud/depscloud/workflows/tracker-branch/badge.svg?branch=main)](https://github.com/depscloud/depscloud/actions?query=workflow%3Atracker-branch+branch%3Amain)
+[![goreleaser-branch workflow](https://github.com/depscloud/depscloud/workflows/goreleaser-branch/badge.svg?branch=main)](https://github.com/depscloud/depscloud/actions?query=workflow%3Agoreleaser-branch+branch%3Amain)
 
 ## Release Checks
 
-![extractor](https://github.com/depscloud/depscloud/workflows/extractor-tag/badge.svg)
-![goreleaser](https://github.com/depscloud/depscloud/workflows/goreleaser-tag/badge.svg)
+[![extractor-tag workflow](https://github.com/depscloud/depscloud/workflows/extractor-tag/badge.svg)](https://github.com/depscloud/depscloud/actions?query=workflow%3Aextractor-tag+branch%3Amain)
+[![goreleaser-tag workflow](https://github.com/depscloud/depscloud/workflows/goreleaser-tag/badge.svg)](https://github.com/depscloud/depscloud/actions?query=workflow%3Agoreleaser-tag+branch%3Amain)
 
-![extractor](https://img.shields.io/docker/v/depscloud/extractor?color=blue&label=extractor%20version&sort=semver)
-![gateway](https://img.shields.io/docker/v/depscloud/gateway?color=blue&label=gateway%20version&sort=semver)
-![indexer](https://img.shields.io/docker/v/depscloud/indexer?color=blue&label=indexer%20version&sort=semver)
-![tracker](https://img.shields.io/docker/v/depscloud/tracker?color=blue&label=tracker%20version&sort=semver)
+[![extractor docker hub](https://img.shields.io/docker/v/depscloud/extractor?color=blue&label=extractor%20version&sort=semver)](https://hub.docker.com/r/depscloud/extractor/tags)
+[![gateway docker hub](https://img.shields.io/docker/v/depscloud/gateway?color=blue&label=gateway%20version&sort=semver)](https://hub.docker.com/r/depscloud/gateway/tags)
+[![indexer docker hub](https://img.shields.io/docker/v/depscloud/indexer?color=blue&label=indexer%20version&sort=semver)](https://hub.docker.com/r/depscloud/indexer/tags)
+[![tracker docker hub](https://img.shields.io/docker/v/depscloud/tracker?color=blue&label=tracker%20version&sort=semver)](https://hub.docker.com/r/depscloud/tracker/tags)
 
 ## License Checks
 
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdepscloud%2Fdepscloud.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdepscloud%2Fdepscloud?ref=badge_large)
+[![fossa](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdepscloud%2Fdepscloud.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdepscloud%2Fdepscloud?ref=badge_large)
 ![analytics](https://www.google-analytics.com/collect?v=1&cid=555&t=pageview&ec=repo&ea=open&dp=depscloud&dt=depscloud&tid=UA-143087272-2)
