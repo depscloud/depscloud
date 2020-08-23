@@ -1,11 +1,4 @@
-ARG GO_VERSION=1.14
-ARG ALPINE_VERSION=3.12
-
-FROM golang:${GO_VERSION}-alpine${ALPINE_VERSION} AS builder
-
-RUN apk -U upgrade && apk add build-base git ca-certificates sqlite bash curl
-
-ENV GO111MODULE on
+FROM depscloud/devbase:latest AS builder
 
 WORKDIR /go/src/tracker
 
@@ -19,6 +12,7 @@ RUN make test install
 
 FROM depscloud/runtime:latest
 
+COPY --from=builder /go/bin/grpc-health-probe /usr/bin/grpc_health_probe
 COPY --from=builder /go/bin/tracker /usr/bin/tracker
 
 ENTRYPOINT [ "/usr/bin/tracker" ]

@@ -1,11 +1,4 @@
-ARG GO_VERSION=1.14
-ARG ALPINE_VERSION=3.12
-
-FROM golang:${GO_VERSION}-alpine${ALPINE_VERSION} AS builder
-
-RUN apk -U upgrade && apk add build-base git ca-certificates bash curl
-
-ENV GO111MODULE on
+FROM depscloud/devbase:latest AS builder
 
 WORKDIR /go/src/gateway
 

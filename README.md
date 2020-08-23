@@ -57,6 +57,8 @@ We also have a [Slack] channel.
 
 ## Release Checks
 
+[![integration workflow](https://github.com/depscloud/depscloud/workflows/integration/badge.svg?branch=main)](https://github.com/depscloud/depscloud/actions?query=workflow%3Aintegration+branch%3Amain)
+
 [![extractor-tag workflow](https://github.com/depscloud/depscloud/workflows/extractor-tag/badge.svg)](https://github.com/depscloud/depscloud/actions?query=workflow%3Aextractor-tag)
 [![goreleaser-tag workflow](https://github.com/depscloud/depscloud/workflows/goreleaser-tag/badge.svg)](https://github.com/depscloud/depscloud/actions?query=workflow%3Agoreleaser-tag)
 
