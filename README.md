@@ -46,6 +46,8 @@ We also have a [Slack] channel.
 
 ## Branch Checks
 
+![dockerfiles](https://github.com/depscloud/depscloud/workflows/dockerfiles/badge.svg?branch=main)
+
 ![deps](https://github.com/depscloud/depscloud/workflows/deps-branch/badge.svg?branch=main)
 ![extractor](https://github.com/depscloud/depscloud/workflows/extractor-branch/badge.svg?branch=main)
 ![gateway](https://github.com/depscloud/depscloud/workflows/gateway-branch/badge.svg?branch=main)
