@@ -10,8 +10,6 @@ on:
       - "indexer/**"
       - "tracker/**"
   push:
-    branches:
-      - "*"
     paths:
       - ".goreleaser.yml"
       - ".github/workflows/goreleaser-branch.yaml"

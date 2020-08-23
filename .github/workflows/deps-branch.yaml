@@ -6,8 +6,6 @@ on:
       - ".github/workflows/deps-branch.yaml"
       - "deps/**"
   push:
-    branches:
-      - "*"
     paths:
       - ".github/workflows/deps-branch.yaml"
       - "deps/**"

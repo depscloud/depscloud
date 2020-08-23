@@ -6,8 +6,6 @@ on:
       - ".github/workflows/gateway-branch.yaml"
       - "gateway/**"
   push:
-    branches:
-      - "*"
     paths:
       - ".github/workflows/gateway-branch.yaml"
       - "gateway/**"

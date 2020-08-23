@@ -6,8 +6,6 @@ on:
       - ".github/workflows/indexer-branch.yaml"
       - "indexer/**"
   push:
-    branches:
-      - "*"
     paths:
       - ".github/workflows/indexer-branch.yaml"
       - "indexer/**"
