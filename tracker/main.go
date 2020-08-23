@@ -68,8 +68,8 @@ func main() {
 	}
 
 	app := &cli.App{
-		Name: "tracker",
-		Usage: "tracks dependencies between systems",
+		Name:        "tracker",
+		Usage:       "tracks dependencies between systems",
 		Description: description,
 		Flags: []cli.Flag{
 			&cli.IntFlag{
