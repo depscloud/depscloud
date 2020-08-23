@@ -40,7 +40,7 @@ func registerV1Alpha(graphStoreClient store.GraphStoreClient, server *grpc.Serve
 	services.RegisterSearchService(server, graphStoreClient)
 }
 
-type config struct {
+type trackerConfig struct {
 	port                   int
 	storageDriver          string
 	storageAddress         string
@@ -57,7 +57,7 @@ var description = strings.TrimSpace(`
 `)
 
 func main() {
-	cfg := &config{
+	cfg := &trackerConfig{
 		port:                   8090,
 		storageDriver:          "sqlite",
 		storageAddress:         "file::memory:?cache=shared",
