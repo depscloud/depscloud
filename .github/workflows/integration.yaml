@@ -1,0 +1,47 @@
+name: integration
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/integration.yaml"
+      - "deps/**"
+      - "extractor/**"
+      - "gateway/**"
+      - "indexer/**"
+      - "tracker/**"
+  push:
+    paths:
+      - ".github/workflows/integration.yaml"
+      - "deps/**"
+      - "extractor/**"
+      - "gateway/**"
+      - "indexer/**"
+      - "tracker/**"
+
+jobs:
+  integration:
+#    strategy:
+#      matrix:
+#        service:
+#          - deps
+#          - extractor
+#          - gateway
+#          - indexer
+#          - tracker
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Minikube
+        uses: manusa/actions-setup-minikube@v2.0.0
+        with:
+          minikube version: 'v1.12.3'
+          kubernetes version: 'v1.18.2'
+          github token: ${{ secrets.GITHUB_TOKEN }}
+
+      # set up the docker environment to point to minikube
+      - name: Build Container
+        run: |
+          eval $(minikube docker-env)
+          docker ps -a
