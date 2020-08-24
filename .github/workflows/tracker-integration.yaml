@@ -1,0 +1,53 @@
+name: tracker-integration
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/tracker-integration.yaml"
+      - "tracker/**"
+  push:
+    branches:
+      - "main"
+
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Minikube
+        uses: manusa/actions-setup-minikube@v2.0.0
+        with:
+          minikube version: 'v1.12.3'
+          kubernetes version: 'v1.18.2'
+          github token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Helm
+        run: |
+          curl https://baltocdn.com/helm/signing.asc | sudo apt-key add -
+          sudo apt-get install apt-transport-https --yes
+          echo "deb https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+          sudo apt-get update
+          sudo apt-get install helm
+
+      # Build a development version of the application on the minikube cluster
+      - name: Build Container
+        run: |
+          eval $(minikube docker-env)
+          make tracker
+
+      # Deploy the ecosystem using existing the helm chart and force the use
+      # of the docker local image.
+      - name: Deploy Ecosystem
+        run: |
+          helm repo add depscloud https://depscloud.github.io/deploy/charts
+          helm upgrade -i depscloud depscloud/depscloud \
+            --set tracker.image.pullPolicy=Never \
+            --set tracker.image.tag=latest
+
+          kubectl rollout status -w --timeout 120s deployment/depscloud-extractor
+          kubectl rollout status -w --timeout 120s deployment/depscloud-tracker
+          kubectl rollout status -w --timeout 120s deployment/depscloud-gateway
+
+          kubectl wait --for=condition=complete --timeout=300s job/depscloud-indexer

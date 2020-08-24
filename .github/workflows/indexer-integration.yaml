@@ -1,29 +1,16 @@
-name: integration
+name: indexer-integration
 
 on:
   pull_request:
     paths:
-      - ".github/workflows/integration.yaml"
-      - "deps/**"
-      - "extractor/**"
-      - "gateway/**"
+      - ".github/workflows/indexer-integration.yaml"
       - "indexer/**"
-      - "tracker/**"
   push:
     branches:
       - "main"
 
 jobs:
   integration:
-    strategy:
-      max-parallel: 2
-      matrix:
-        service:
-          - deps
-          - extractor
-          - gateway
-          - indexer
-          - tracker
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -48,7 +35,7 @@ jobs:
       - name: Build Container
         run: |
           eval $(minikube docker-env)
-          make ${{ matrix.service }}
+          make indexer
 
       # Deploy the ecosystem using existing the helm chart and force the use
       # of the docker local image.
@@ -56,8 +43,8 @@ jobs:
         run: |
           helm repo add depscloud https://depscloud.github.io/deploy/charts
           helm upgrade -i depscloud depscloud/depscloud \
-            --set ${{ matrix.service }}.image.pullPolicy=Never \
-            --set ${{ matrix.service }}.image.tag=latest
+            --set indexer.image.pullPolicy=Never \
+            --set indexer.image.tag=latest
 
           kubectl rollout status -w --timeout 120s deployment/depscloud-extractor
           kubectl rollout status -w --timeout 120s deployment/depscloud-tracker
