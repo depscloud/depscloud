@@ -6,8 +6,9 @@ on:
       - ".github/workflows/tracker-integration.yaml"
       - "tracker/**"
   push:
-    branches:
-      - "main"
+    paths:
+      - ".github/workflows/tracker-integration.yaml"
+      - "tracker/**"
 
 jobs:
   integration:
@@ -58,9 +59,9 @@ jobs:
             --set mysql.db.user=user \
             --set mysql.db.password=password \
             --set mysql.db.name=depscloud \
-            --set postgres.postgresqlUsername=user \
-            --set postgres.postgresqlPassword=password \
-            --set postgres.postgresqlDatabase=depscloud \
+            --set postgresql.postgresqlUsername=user \
+            --set postgresql.postgresqlPassword=password \
+            --set postgresql.postgresqlDatabase=depscloud \
             --set "tracker.storage.driver=${{ matrix.database.driver }}" \
             --set "tracker.storage.address=${{ matrix.database.address }}"
 
