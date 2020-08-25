@@ -6,8 +6,9 @@ on:
       - ".github/workflows/deps-integration.yaml"
       - "deps/**"
   push:
-    branches:
-      - "main"
+    paths:
+      - ".github/workflows/deps-integration.yaml"
+      - "deps/**"
 
 jobs:
   integration:

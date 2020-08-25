@@ -6,8 +6,9 @@ on:
       - ".github/workflows/gateway-integration.yaml"
       - "gateway/**"
   push:
-    branches:
-      - "main"
+    paths:
+      - ".github/workflows/gateway-integration.yaml"
+      - "gateway/**"
 
 jobs:
   integration:

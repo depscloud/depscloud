@@ -6,8 +6,9 @@ on:
       - ".github/workflows/extractor-integration.yaml"
       - "extractor/**"
   push:
-    branches:
-      - "main"
+    paths:
+      - ".github/workflows/extractor-integration.yaml"
+      - "extractor/**"
 
 jobs:
   integration:
