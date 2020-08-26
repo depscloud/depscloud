@@ -144,6 +144,8 @@ github.com/mattn/go-sqlite3 v2.0.3+incompatible h1:gXHsfypPkaMZrKbD5209QV9jbUTJK
 github.com/mattn/go-sqlite3 v2.0.3+incompatible/go.mod h1:FPy6KqzDD04eiIsT53CuJW3U88zkxoIYsOqkbpncsNc=
 github.com/mjpitz/go-gracefully v0.0.3 h1:1LwI2TnJRYJ0VC65qm9w5oN+Sot1eF8kdOi9d6gHMxo=
 github.com/mjpitz/go-gracefully v0.0.3/go.mod h1:AAoU3f1l1cEXrJEFtPzgrQhSJQ7NXiJmhTz01fCEx8Q=
+github.com/mjpitz/go-gracefully v0.0.5 h1:QDJNbkflvTg9yiY9/2Hl67wQDxee7XJRnfaowo52txc=
+github.com/mjpitz/go-gracefully v0.0.5/go.mod h1:AAoU3f1l1cEXrJEFtPzgrQhSJQ7NXiJmhTz01fCEx8Q=
 github.com/pkg/errors v0.8.1 h1:iURUrRGxPUNPdy5/HRSm+Yj6okJ6UtLINN0Q9M4+h3I=
 github.com/pkg/errors v0.8.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
