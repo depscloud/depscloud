@@ -118,6 +118,7 @@ nfpms:
       - deps
     vendor: deps.cloud
     homepage: https://deps.cloud/
+    maintainer: mjpitz@deps.cloud
     description: Command line interface to the deps.cloud API.
     license: MIT
     formats:
