@@ -3,8 +3,19 @@ import cheerio = require("cheerio");
 import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
 import Languages from "./Languages";
+import MatchConfig from "../matcher/MatchConfig";
 
 export default class PomXmlExtractor implements Extractor {
+    public matchConfig(): MatchConfig {
+        return {
+            includes: [
+                "**/pom.xml",
+                "**/*.pom",
+            ],
+            excludes: [],
+        };
+    }
+
     public requires(): string[] {
         return [ "pom.xml" ];
     }

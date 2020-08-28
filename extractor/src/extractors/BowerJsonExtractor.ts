@@ -3,6 +3,7 @@ import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
 import Globals from "./Globals";
 import Languages from "./Languages";
+import MatchConfig from "../matcher/MatchConfig";
 
 interface ID {
     organization: string;
@@ -35,6 +36,17 @@ function extract(dependencyHash: any, scope: string): Dependency[] {
 }
 
 export default class BowerJsonExtractor implements Extractor {
+    public matchConfig(): MatchConfig {
+        return {
+            includes: [
+                "**/bower.json",
+            ],
+            excludes: [
+                "**/public/**"
+            ],
+        };
+    }
+
     public requires(): string[] {
         return [ "bower.json" ];
     }

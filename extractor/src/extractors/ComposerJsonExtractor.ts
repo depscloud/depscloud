@@ -3,6 +3,7 @@ import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
 import Globals from "./Globals";
 import Languages from "./Languages";
+import MatchConfig from "../matcher/MatchConfig";
 
 interface ID {
     organization: string;
@@ -35,6 +36,17 @@ function processRequires(require: { [key: string]: string }): Dependency[] {
 }
 
 export default class ComposerJsonExtractor implements Extractor {
+    public matchConfig(): MatchConfig {
+        return {
+            includes: [
+                "**/composer.json",
+            ],
+            excludes: [
+                "**/vendor/**"
+            ],
+        };
+    }
+
     public requires(): string[] {
         return [ "composer.json" ];
     }

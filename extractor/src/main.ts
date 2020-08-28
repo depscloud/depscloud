@@ -2,6 +2,7 @@ import {DependencyExtractor} from "@depscloud/api/v1alpha/extractor";
 
 import {Server, ServerCredentials} from "@grpc/grpc-js";
 import {configure, getLogger} from "log4js";
+import { Minimatch } from "minimatch";
 import ExtractorRegistry from "./extractors/ExtractorRegistry";
 import AsyncDependencyExtractor from "./service/AsyncDependencyExtractor";
 import DependencyExtractorImpl from "./service/DependencyExtractorImpl";
@@ -11,6 +12,7 @@ import program = require("caporal");
 import fs = require("fs");
 import health = require("grpc-health-check/health");
 import healthv1 = require("grpc-health-check/v1/health_pb");
+import Matcher from "./matcher/Matcher";
 
 const asyncFs = fs.promises;
 
@@ -48,7 +50,14 @@ program.name("extractor")
 
         const extractors = await Promise.all(extractorReqs);
 
-        const impl: AsyncDependencyExtractor = new DependencyExtractorImpl(extractors);
+        const matchersAndExtractors = extractors.map((extractor) => {
+            return {
+                matcher: new Matcher(extractor.matchConfig()),
+                extractor,
+            }
+        });
+
+        const impl: AsyncDependencyExtractor = new DependencyExtractorImpl(matchersAndExtractors);
 
         const healthcheck = new health.Implementation({
             "": healthv1.HealthCheckResponse.ServingStatus.SERVING,

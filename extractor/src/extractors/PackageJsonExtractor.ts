@@ -3,6 +3,7 @@ import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
 import Globals from "./Globals";
 import Languages from "./Languages";
+import MatchConfig from "../matcher/MatchConfig";
 
 interface ID {
     organization: string;
@@ -35,6 +36,17 @@ function extract(dependencyHash: any, scope: string): Dependency[] {
 }
 
 export default class PackageJsonExtractor implements Extractor {
+    public matchConfig(): MatchConfig {
+        return {
+            includes: [
+                "**/package.json",
+            ],
+            excludes: [
+                "**/node_modules/**"
+            ],
+        };
+    }
+
     public requires(): string[] {
         return [ "package.json" ];
     }

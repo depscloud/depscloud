@@ -2,6 +2,7 @@ import fs = require("fs");
 import path = require("path");
 import ExtractorRegistry from "../extractors/ExtractorRegistry";
 import DependencyExtractorImpl from "./DependencyExtractorImpl";
+import Matcher from "../matcher/Matcher";
 
 const fsp = fs.promises;
 
@@ -47,11 +48,18 @@ describe("DependencyExtractorImpl", () => {
 
         const extractors = await Promise.all(extractorPromises);
 
-        const extractorImpl = new DependencyExtractorImpl(extractors);
+        const matchersAndExtractors = extractors.map((extractor) => {
+            return {
+                matcher: new Matcher(extractor.matchConfig()),
+                extractor,
+            }
+        });
+
+        const extractorImpl = new DependencyExtractorImpl(matchersAndExtractors);
 
         const matched = extractorImpl.matchInternal(path.sep, files);
 
-        expect(matched).toMatchSnapshot();
+        expect(matched.sort()).toMatchSnapshot();
 
         const extractorsDir = path.resolve(__dirname, "../extractors");
 
