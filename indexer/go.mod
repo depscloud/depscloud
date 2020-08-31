@@ -21,7 +21,7 @@ require (
 	github.com/sirupsen/logrus v1.6.0
 	github.com/stretchr/testify v1.6.1
 	github.com/urfave/cli/v2 v2.2.0
-	github.com/xanzy/go-gitlab v0.36.0
+	github.com/xanzy/go-gitlab v0.37.0
 	golang.org/x/crypto v0.0.0-20200820211705-5c72a883971a // indirect
 	golang.org/x/net v0.0.0-20200813134508-3edf25e44fcc // indirect
 	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
