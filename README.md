@@ -71,18 +71,19 @@ We also have a [Slack] channel.
 [![goreleaser-tag workflow](https://github.com/depscloud/depscloud/workflows/goreleaser-tag/badge.svg)](https://github.com/depscloud/depscloud/actions?query=workflow%3Agoreleaser-tag)
 
 [![extractor docker hub](https://img.shields.io/docker/v/depscloud/extractor?color=blue&label=extractor%20version&sort=semver)](https://hub.docker.com/r/depscloud/extractor/tags)
-[![gateway docker hub](https://img.shields.io/docker/v/depscloud/gateway?color=blue&label=gateway%20version&sort=semver)](https://hub.docker.com/r/depscloud/gateway/tags)
-[![indexer docker hub](https://img.shields.io/docker/v/depscloud/indexer?color=blue&label=indexer%20version&sort=semver)](https://hub.docker.com/r/depscloud/indexer/tags)
-[![tracker docker hub](https://img.shields.io/docker/v/depscloud/tracker?color=blue&label=tracker%20version&sort=semver)](https://hub.docker.com/r/depscloud/tracker/tags)
-
 [![extractor image](https://img.shields.io/docker/image-size/depscloud/extractor?label=extractor%20image&sort=semver)](https://hub.docker.com/r/depscloud/extractor/tags)
-[![gateway image](https://img.shields.io/docker/image-size/depscloud/gateway?label=gateway%20image&sort=semver)](https://hub.docker.com/r/depscloud/gateway/tags)
-[![indexer image](https://img.shields.io/docker/image-size/depscloud/indexer?label=indexer%20image&sort=semver)](https://hub.docker.com/r/depscloud/indexer/tags)
-[![tracker image](https://img.shields.io/docker/image-size/depscloud/tracker?label=tracker%20image&sort=semver)](https://hub.docker.com/r/depscloud/tracker/tags)
-
 [![extractor pulls](https://img.shields.io/docker/pulls/depscloud/extractor?label=extractor%20pulls)](https://hub.docker.com/r/depscloud/extractor/tags)
+
+[![gateway docker hub](https://img.shields.io/docker/v/depscloud/gateway?color=blue&label=gateway%20version&sort=semver)](https://hub.docker.com/r/depscloud/gateway/tags)
+[![gateway image](https://img.shields.io/docker/image-size/depscloud/gateway?label=gateway%20image&sort=semver)](https://hub.docker.com/r/depscloud/gateway/tags)
 [![gateway pulls](https://img.shields.io/docker/pulls/depscloud/gateway?label=gateway%20pulls)](https://hub.docker.com/r/depscloud/gateway/tags)
+
+[![indexer docker hub](https://img.shields.io/docker/v/depscloud/indexer?color=blue&label=indexer%20version&sort=semver)](https://hub.docker.com/r/depscloud/indexer/tags)
+[![indexer image](https://img.shields.io/docker/image-size/depscloud/indexer?label=indexer%20image&sort=semver)](https://hub.docker.com/r/depscloud/indexer/tags)
 [![indexer pulls](https://img.shields.io/docker/pulls/depscloud/indexer?label=indexer%20pulls)](https://hub.docker.com/r/depscloud/indexer/tags)
+
+[![tracker docker hub](https://img.shields.io/docker/v/depscloud/tracker?color=blue&label=tracker%20version&sort=semver)](https://hub.docker.com/r/depscloud/tracker/tags)
+[![tracker image](https://img.shields.io/docker/image-size/depscloud/tracker?label=tracker%20image&sort=semver)](https://hub.docker.com/r/depscloud/tracker/tags)
 [![tracker pulls](https://img.shields.io/docker/pulls/depscloud/tracker?label=tracker%20pulls)](https://hub.docker.com/r/depscloud/tracker/tags)
 
 ## License Checks
