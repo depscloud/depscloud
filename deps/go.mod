@@ -8,5 +8,5 @@ require (
 	github.com/sirupsen/logrus v1.6.0
 	github.com/spf13/cobra v1.0.0
 	github.com/stretchr/testify v1.6.1
-	google.golang.org/grpc v1.31.0
+	google.golang.org/grpc v1.31.1
 )
