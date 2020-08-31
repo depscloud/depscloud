@@ -80,6 +80,11 @@ We also have a [Slack] channel.
 [![indexer image](https://img.shields.io/docker/image-size/depscloud/indexer?label=indexer%20image&sort=semver)](https://hub.docker.com/r/depscloud/indexer/tags)
 [![tracker image](https://img.shields.io/docker/image-size/depscloud/tracker?label=tracker%20image&sort=semver)](https://hub.docker.com/r/depscloud/tracker/tags)
 
+[![extractor pulls](https://img.shields.io/docker/pulls/depscloud/extractor?label=extractor%20pulls)](https://hub.docker.com/r/depscloud/extractor/tags)
+[![gateway pulls](https://img.shields.io/docker/pulls/depscloud/gateway?label=gateway%20pulls)](https://hub.docker.com/r/depscloud/gateway/tags)
+[![indexer pulls](https://img.shields.io/docker/pulls/depscloud/indexer?label=indexer%20pulls)](https://hub.docker.com/r/depscloud/indexer/tags)
+[![tracker pulls](https://img.shields.io/docker/pulls/depscloud/tracker?label=tracker%20pulls)](https://hub.docker.com/r/depscloud/tracker/tags)
+
 ## License Checks
 
 [![fossa](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdepscloud%2Fdepscloud.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdepscloud%2Fdepscloud?ref=badge_large)
