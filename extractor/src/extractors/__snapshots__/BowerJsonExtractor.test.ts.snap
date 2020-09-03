@@ -52,7 +52,7 @@ Object {
       "versionConstraint": "bundledDependency",
     },
   ],
-  "language": "node",
+  "language": "js",
   "module": "testName",
   "organization": "_",
   "sourceUrl": "git@github.com:group/project.git",
@@ -63,7 +63,7 @@ Object {
 
 exports[`BowerJsonExtractor fullParse 2`] = `
 "{
-  \\"language\\": \\"node\\",
+  \\"language\\": \\"js\\",
   \\"system\\": \\"bower\\",
   \\"sourceUrl\\": \\"git@github.com:group/project.git\\",
   \\"organization\\": \\"_\\",

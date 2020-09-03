@@ -73,7 +73,7 @@ export default class BowerJsonExtractor implements Extractor {
         }
 
         return {
-            language: Languages.NODE,
+            language: Languages.JAVASCRIPT,
             system: "bower",
             sourceUrl,
             organization,

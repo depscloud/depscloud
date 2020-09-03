@@ -18,6 +18,10 @@ const Languages = {
     get NODE() {
         return "node";
     },
+
+    get JAVASCRIPT() {
+        return "js";
+    }
 };
 
 export default Languages;
