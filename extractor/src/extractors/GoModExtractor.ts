@@ -3,8 +3,20 @@ import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
 import parseImportPath from "./goutils/parseImportPath";
 import Languages from "./Languages";
+import MatchConfig from "../matcher/MatchConfig";
 
 export default class GoModExtractor implements Extractor {
+    public matchConfig(): MatchConfig {
+        return {
+            includes: [
+                "**/go.mod",
+            ],
+            excludes: [
+                "**/vendor/**"
+            ],
+        };
+    }
+
     public requires(): string[] {
         return [ "go.mod" ];
     }

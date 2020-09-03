@@ -3,12 +3,24 @@ import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
 import parseImportPath from "./goutils/parseImportPath";
 import Languages from "./Languages";
+import MatchConfig from "../matcher/MatchConfig";
 
 const fileName = "vendor.conf";
 const organizationString = "organization";
 const moduleString = "module";
 
 export default class VendorConfExtractor implements Extractor {
+    public matchConfig(): MatchConfig {
+        return {
+            includes: [
+                "**/vendor.conf",
+            ],
+            excludes: [
+                "**/vendor/**"
+            ],
+        };
+    }
+
     public requires(): string[] {
         return [ fileName ];
     }

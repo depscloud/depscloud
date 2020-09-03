@@ -4,6 +4,7 @@ import ExtractorFile from "./ExtractorFile";
 import inferImportPath from "./goutils/inferImportPath";
 import parseImportPath from "./goutils/parseImportPath";
 import Languages from "./Languages";
+import MatchConfig from "../matcher/MatchConfig";
 
 interface Constraint {
     name: string;
@@ -46,6 +47,17 @@ function transformSimple(data: string[], versionConstraint: string, scope: strin
 }
 
 export default class GopkgTomlExtractor implements Extractor {
+    public matchConfig(): MatchConfig {
+        return {
+            includes: [
+                "**/Gopkg.toml",
+            ],
+            excludes: [
+                "**/vendor/**"
+            ],
+        };
+    }
+
     public requires(): string[] {
         return [ "Gopkg.toml" ];
     }

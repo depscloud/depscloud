@@ -3,9 +3,11 @@ import {
     ExtractRequest, ExtractResponse, MatchRequest, MatchResponse,
 } from "@depscloud/api/v1alpha/extractor";
 import {ServerUnaryCall} from "@grpc/grpc-js";
-import Extractor from "../extractors/Extractor";
 import ExtractorFile from "../extractors/ExtractorFile";
 import AsyncDependencyExtractor from "./AsyncDependencyExtractor";
+import MatcherAndExtractor from "./MatcherAndExtractor";
+
+import path = require("path")
 
 function constructTree(separator: string, paths: string[]): any {
     const root: any = {};
@@ -28,41 +30,32 @@ function constructTree(separator: string, paths: string[]): any {
     return root;
 }
 
-export default class DependencyExtractorImpl implements AsyncDependencyExtractor {
-    private readonly extractors: Extractor[];
+function normalizePaths(separator: string, paths: string[]): string[] {
+    return paths.map((p) => {
+        if (separator === path.win32.sep) {
+            return path.posix.join(path.win32.parse(p))
+        }
+        return p
+    })
+}
 
-    constructor(extractors: Extractor[]) {
-        this.extractors = extractors;
+export default class DependencyExtractorImpl implements AsyncDependencyExtractor {
+    private readonly matcherAndExtractors: MatcherAndExtractor[];
+
+    constructor(matcherAndExtractors: MatcherAndExtractor[]) {
+        this.matcherAndExtractors = matcherAndExtractors;
     }
 
     public matchInternal(separator: string, paths: string[]): string[] {
-        const root = constructTree(separator, paths);
-
-        let level = [ root ];
         const matchedPaths = [];
+        const normPaths = normalizePaths(separator, paths);
 
-        while (level.length > 0) {
-            const size = level.length;
-
-            for (let i = 0; i < size; i++) {
-                const dir = level.shift();
-
-                this.extractors
-                    .filter((extractor) =>
-                        extractor.requires()
-                            .map((req) => dir[req] && typeof dir[req] === "string")
-                            .reduce((last, current) => last && current))
-                    .forEach((extractor) =>
-                        extractor.requires()
-                            .forEach((req) => matchedPaths.push(dir[req])));
-
-                const nextLevel = Object.keys(dir)
-                    .map((name) => dir[name])
-                    .filter((val) => typeof val !== "string");
-
-                level = level.concat(nextLevel);
+        normPaths.forEach((p, i) => {
+            const found = this.matcherAndExtractors.find((me) => me.matcher.match(p))
+            if (found) {
+                matchedPaths.push(paths[i]);
             }
-        }
+        })
 
         return matchedPaths;
     }
@@ -80,12 +73,13 @@ export default class DependencyExtractorImpl implements AsyncDependencyExtractor
         separator: string,
         fileContents: { [key: string]: string },
     ): Promise<DependencyManagementFile[]> {
-        const matchedPaths = this.matchInternal(separator, Object.keys(fileContents));
+        const paths = Object.keys(fileContents);
+        const matchedPaths = this.matchInternal(separator, paths);
 
         const root = constructTree(separator, matchedPaths);
 
         let level = [ root ];
-        let managementFilePromises: Array<Promise<DependencyManagementFile>> = [];
+        let managementFilePromises: Promise<DependencyManagementFile>[] = [];
 
         while (level.length > 0) {
             const size = level.length;
@@ -93,18 +87,18 @@ export default class DependencyExtractorImpl implements AsyncDependencyExtractor
             for (let i = 0; i < size; i++) {
                 const dir = level.shift();
 
-                const nextManagementFilePromises = this.extractors
-                    .filter((extractor) =>
-                        extractor.requires()
+                const nextManagementFilePromises = this.matcherAndExtractors
+                    .filter((me) =>
+                        me.extractor.requires()
                             .map((req) => dir[req] && typeof dir[req] === "string")
                             .reduce((last, current) => last && current))
-                    .map((extractor) => {
+                    .map((me) => {
                         const files = {};
-                        extractor.requires().forEach((req) => {
+                        me.extractor.requires().forEach((req) => {
                             const key = dir[req];
                             files[req] = new ExtractorFile(fileContents[key]);
                         });
-                        return extractor.extract(url, files);
+                        return me.extractor.extract(url, files);
                     });
 
                 managementFilePromises = managementFilePromises.concat(nextManagementFilePromises);

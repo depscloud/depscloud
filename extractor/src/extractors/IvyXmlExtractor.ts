@@ -4,8 +4,18 @@ import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
 import Globals from "./Globals";
 import Languages from "./Languages";
+import MatchConfig from "../matcher/MatchConfig";
 
 export default class IvyXmlExtractor implements Extractor {
+    public matchConfig(): MatchConfig {
+        return {
+            includes: [
+                "**/ivy.xml",
+            ],
+            excludes: [],
+        };
+    }
+
     public requires(): string[] {
         return [ "ivy.xml" ];
     }

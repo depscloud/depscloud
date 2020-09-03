@@ -3,11 +3,27 @@ import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
 import Globals from "./Globals";
 import Languages from "./Languages";
+import MatchConfig from "../matcher/MatchConfig";
 
 const organization = Globals.ORGANIZATION;
 const scopes = [ "direct" ];
 
 export default class CargoTomlExtractor implements Extractor {
+    public matchConfig(): MatchConfig {
+        return {
+            includes: [
+                "**/Cargo.toml",
+            ],
+            excludes: [
+                "**/vendor/**"
+            ],
+        };
+    }
+
+    public requires(): string[] {
+        return [ "Cargo.toml" ];
+    }
+
     public async extract(_: string, files: { [p: string]: ExtractorFile }): Promise<DependencyManagementFile> {
         const toml = files["Cargo.toml"].toml();
 
@@ -41,9 +57,5 @@ export default class CargoTomlExtractor implements Extractor {
             version: toml.package.version,
             dependencies,
         };
-    }
-
-    public requires(): string[] {
-        return [ "Cargo.toml" ];
     }
 }

@@ -3,8 +3,20 @@ import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
 import parseImportPath from "./goutils/parseImportPath";
 import Languages from "./Languages";
+import MatchConfig from "../matcher/MatchConfig";
 
 export default class GodepsJsonExtractor implements Extractor {
+    public matchConfig(): MatchConfig {
+        return {
+            includes: [
+                "**/Godeps.json",
+            ],
+            excludes: [
+                "**/vendor/**"
+            ],
+        };
+    }
+
     public requires(): string[] {
         return [ "Godeps.json" ];
     }

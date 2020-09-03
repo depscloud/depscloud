@@ -5,6 +5,7 @@ import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
 import Globals from "./Globals";
 import Languages from "./Languages";
+import MatchConfig from "../matcher/MatchConfig";
 
 // infer the module name of the last segment of the git url
 function inferModuleName(url: string): string {
@@ -12,6 +13,20 @@ function inferModuleName(url: string): string {
 }
 
 export default class BuildGradleExtractor implements Extractor {
+    public matchConfig(): MatchConfig {
+        return {
+            includes: [
+                "**/build.gradle",
+                "**/settings.gradle",
+            ],
+            excludes: [],
+        };
+    }
+
+    public requires(): string[] {
+        return [ "build.gradle", "settings.gradle" ];
+    }
+
     public async extract(url: string, files: { [p: string]: ExtractorFile }): Promise<DependencyManagementFile> {
         const promises = this.requires()
             .map((req) => files[req].raw())
@@ -73,9 +88,5 @@ export default class BuildGradleExtractor implements Extractor {
             dependencies: Object.keys(dependencies)
                 .map((k) => dependencies[k]),
         };
-    }
-
-    public requires(): string[] {
-        return [ "build.gradle", "settings.gradle" ];
     }
 }
