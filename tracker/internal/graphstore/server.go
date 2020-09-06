@@ -130,6 +130,7 @@ func (gs *graphStore) Delete(ctx context.Context, req *store.DeleteRequest) (*st
 			"graph_item_type": key.GetGraphItemType(),
 			"k1":              Base64encode(key.GetK1()),
 			"k2":              Base64encode(key.GetK2()),
+			"k3":              Base64encode(key.GetK3()),
 		})
 		if err != nil {
 			errors = append(errors, err)

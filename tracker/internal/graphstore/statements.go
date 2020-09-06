@@ -42,7 +42,7 @@ insertGraphData: |
 deleteGraphData: |
   UPDATE dts_graphdata
   SET date_deleted = :date_deleted
-  WHERE (graph_item_type = :graph_item_type and k1 = :k1 and k2 = :k2);
+  WHERE (graph_item_type = :graph_item_type and k1 = :k1 and k2 = :k2 and k3 = :k3);
 
 listGraphData: |
   SELECT graph_item_type, k1, k2, encoding, graph_item_data
@@ -107,7 +107,7 @@ insertGraphData: |
 deleteGraphData: |
   UPDATE dts_graphdata
   SET date_deleted = :date_deleted
-  WHERE (graph_item_type = :graph_item_type and k1 = :k1 and k2 = :k2);
+  WHERE (graph_item_type = :graph_item_type and k1 = :k1 and k2 = :k2 and k3 = :k3);
 
 listGraphData: |
   SELECT graph_item_type, k1, k2, encoding, graph_item_data
@@ -171,7 +171,7 @@ insertGraphData: |
 deleteGraphData: |
   UPDATE dts_graphdata
   SET date_deleted = :date_deleted
-  WHERE (graph_item_type = :graph_item_type and k1 = :k1 and k2 = :k2);
+  WHERE (graph_item_type = :graph_item_type and k1 = :k1 and k2 = :k2 and k3 = :k3);
 
 listGraphData: |
   SELECT graph_item_type, k1, k2, encoding, graph_item_data

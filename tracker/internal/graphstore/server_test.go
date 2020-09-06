@@ -98,21 +98,45 @@ func TestNewSQLGraphStore_sqlite(t *testing.T) {
 	require.Equal(t, upstream.Pairs[1].Edge.K1, k2)
 	require.Equal(t, upstream.Pairs[1].Edge.K2, k4)
 
-	// Tests for multiple edges between nodes
-	upstreamNodeK3, err := graphStore.FindUpstream(nil, &store.FindRequest{
-		Keys:      [][]byte{k3},
-		EdgeTypes: []string{"edge"},
-		NodeTypes: []string{"node"},
+	{
+		// Tests for multiple edges between nodes
+		upstreamNodeK3, err := graphStore.FindUpstream(nil, &store.FindRequest{
+			Keys:      [][]byte{k3},
+			EdgeTypes: []string{"edge"},
+			NodeTypes: []string{"node"},
+		})
+		require.Nil(t, err)
+
+		require.Len(t, upstreamNodeK3.Pairs, 2)
+		require.Equal(t, upstreamNodeK3.Pairs[0].GetEdge().GetK1(), k3)
+		require.Equal(t, upstreamNodeK3.Pairs[0].GetEdge().GetK2(), k5)
+		require.Equal(t, upstreamNodeK3.Pairs[0].GetEdge().GetK3(), k1)
+		require.Equal(t, upstreamNodeK3.Pairs[1].GetEdge().GetK1(), k3)
+		require.Equal(t, upstreamNodeK3.Pairs[1].GetEdge().GetK2(), k5)
+		require.Equal(t, upstreamNodeK3.Pairs[1].GetEdge().GetK3(), k2)
+	}
+
+	_, err = graphStore.Delete(nil, &store.DeleteRequest{
+		Items: []*store.GraphItem{
+			{ GraphItemType: "edge", K1: k3, K2: k5, K3: k1 },
+		},
 	})
 	require.Nil(t, err)
 
-	require.Len(t, upstreamNodeK3.Pairs, 2)
-	require.Equal(t, upstreamNodeK3.Pairs[0].GetEdge().GetK1(), k3)
-	require.Equal(t, upstreamNodeK3.Pairs[0].GetEdge().GetK2(), k5)
-	require.Equal(t, upstreamNodeK3.Pairs[0].GetEdge().GetK3(), k1)
-	require.Equal(t, upstreamNodeK3.Pairs[1].GetEdge().GetK1(), k3)
-	require.Equal(t, upstreamNodeK3.Pairs[1].GetEdge().GetK2(), k5)
-	require.Equal(t, upstreamNodeK3.Pairs[1].GetEdge().GetK3(), k2)
+	{
+		// Test delete single edge
+		upstreamNodeK3, err := graphStore.FindUpstream(nil, &store.FindRequest{
+			Keys:      [][]byte{k3},
+			EdgeTypes: []string{"edge"},
+			NodeTypes: []string{"node"},
+		})
+		require.Nil(t, err)
+
+		require.Len(t, upstreamNodeK3.Pairs, 1)
+		require.Equal(t, upstreamNodeK3.Pairs[0].GetEdge().GetK1(), k3)
+		require.Equal(t, upstreamNodeK3.Pairs[0].GetEdge().GetK2(), k5)
+		require.Equal(t, upstreamNodeK3.Pairs[0].GetEdge().GetK3(), k2)
+	}
 
 	_, err = graphStore.Delete(nil, &store.DeleteRequest{
 		Items: data,
