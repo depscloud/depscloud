@@ -71,3 +71,8 @@ jobs:
 
           kubectl wait --for=condition=complete --timeout=300s job/depscloud-indexer
           kubectl logs -l job-name=depscloud-indexer
+
+      - name: Run integration tests
+        run: |
+          cd tracker
+          make test-integration
