@@ -20,12 +20,12 @@ var testNode = &graphstore.Node{
 }
 
 var testGraphItemNode = &v1beta.GraphData{
-	K1:       []byte("key"),
-	K2:       []byte("key"),
-	K3:       []byte{},
+	K1:       "key",
+	K2:       "key",
+	K3:       "",
 	Kind:     "kind",
 	Encoding: v1beta.EncodingUnspecified,
-	Data:     []byte("data"),
+	Data:     "data",
 }
 
 var testEdge = &graphstore.Edge{
@@ -38,12 +38,12 @@ var testEdge = &graphstore.Edge{
 	},
 }
 var testGraphItemEdge = &v1beta.GraphData{
-	K1:       []byte("fromKey"),
-	K2:       []byte("toKey"),
-	K3:       []byte("key"),
+	K1:       "fromKey",
+	K2:       "toKey",
+	K3:       "key",
 	Kind:     "kind",
 	Encoding: v1beta.EncodingUnspecified,
-	Data:     []byte("data"),
+	Data:     "data",
 }
 
 func Test_ConvertNode(t *testing.T) {

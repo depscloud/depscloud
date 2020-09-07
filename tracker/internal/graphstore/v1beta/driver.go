@@ -19,8 +19,8 @@ type Driver interface {
 	Put(ctx context.Context, data []*GraphData) error
 	Delete(ctx context.Context, data []*GraphData) error
 	List(ctx context.Context, kind string, offset, limit int) ([]*GraphData, bool, error)
-	ToNeighbors(ctx context.Context, node *GraphData) ([]*GraphData, error)
-	FromNeighbors(ctx context.Context, node *GraphData) ([]*GraphData, error)
+	NeighborsTo(ctx context.Context, to *GraphData) ([]*GraphData, error)
+	NeighborsFrom(ctx context.Context, from *GraphData) ([]*GraphData, error)
 }
 
 // Resolve takes in connection criteria and returns the appropriate driver
@@ -88,8 +88,9 @@ func Resolve(driver, storageAddress, storageReadOnlyAddress string) (Driver, err
 		return nil, fmt.Errorf("must provide one storage address")
 	}
 
-	sqlxrw := sqlx.NewDb(dbrw, driver)
-	sqlxro := sqlx.NewDb(dbro, driver)
-
-	return NewSQLDriver(sqlxrw, sqlxro, statements), nil
+	return &sqlDriver{
+		rwdb:       sqlx.NewDb(dbrw, driver),
+		rodb:       sqlx.NewDb(dbro, driver),
+		statements: statements,
+	}, nil
 }

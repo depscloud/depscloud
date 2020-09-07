@@ -18,8 +18,8 @@ var PostgreSQLStatements = &Statements{
 	InsertGraphData: postgresqlInsertGraphData,
 
 	// everything else is fine, no modifications required
-	DeleteGraphData:     sqliteDeleteGraphData,
-	ListGraphData:       sqliteListGraphData,
-	SelectToNeighbors:   sqliteSelectToNeighbors,
-	SelectFromNeighbors: sqliteSelectFromNeighbors,
+	DeleteGraphData:    sqliteDeleteGraphData,
+	ListGraphData:      sqliteListGraphData,
+	SelectToNeighbor:   sqliteSelectToNeighbor,
+	SelectFromNeighbor: sqliteSelectFromNeighbor,
 }

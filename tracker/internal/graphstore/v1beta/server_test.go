@@ -41,23 +41,26 @@ func testServer(t *testing.T, storageDriver v1beta.Driver) {
 		Driver: storageDriver,
 	}
 
-	_, err := store.Put(ctx, &graphstore.PutRequest{
-		Nodes: []*graphstore.Node{
-			newNode("a"),
-			newNode("b"),
-			newNode("c"),
-			newNode("d"),
-		},
-		Edges: []*graphstore.Edge{
-			newEdge("a", "b", ""),
-			newEdge("a", "c", ""),
-			newEdge("b", "d", ""),
-			newEdge("c", "d", ""),
-		},
-	})
-	require.Nil(t, err)
+	// Put
+	{
+		_, err := store.Put(ctx, &graphstore.PutRequest{
+			Nodes: []*graphstore.Node{
+				newNode("a"),
+				newNode("b"),
+				newNode("c"),
+				newNode("d"),
+			},
+			Edges: []*graphstore.Edge{
+				newEdge("a", "b", ""),
+				newEdge("a", "c", ""),
+				newEdge("b", "d", ""),
+				newEdge("c", "d", ""),
+			},
+		})
+		require.Nil(t, err)
+	}
 
-	// list page 1
+	// List page 1
 	nextPageToken := ""
 	{
 		resp, err := store.List(ctx, &graphstore.ListRequest{
@@ -73,7 +76,7 @@ func testServer(t *testing.T, storageDriver v1beta.Driver) {
 		require.Len(t, resp.GetNodes(), 2)
 	}
 
-	// list page 2
+	// List page 2
 	{
 		resp, err := store.List(ctx, &graphstore.ListRequest{
 			PageToken: nextPageToken,
@@ -86,5 +89,63 @@ func testServer(t *testing.T, storageDriver v1beta.Driver) {
 		require.Equal(t, "", nextPageToken)
 		require.Len(t, resp.GetEdges(), 0)
 		require.Len(t, resp.GetNodes(), 2)
+	}
+
+	// Neighbors from
+	{
+		resp, err := store.Neighbors(ctx, &graphstore.NeighborsRequest{
+			From: newNode("a"),
+		})
+		require.Nil(t, err)
+
+		neighbors := resp.GetNeighbors()
+		require.Len(t, neighbors, 2)
+		require.Equal(t, "b", string(neighbors[0].Node.Key))
+		require.Equal(t, "c", string(neighbors[1].Node.Key))
+	}
+
+	// Neighbors to
+	{
+		resp, err := store.Neighbors(ctx, &graphstore.NeighborsRequest{
+			To: newNode("d"),
+		})
+		require.Nil(t, err)
+
+		neighbors := resp.GetNeighbors()
+		require.Len(t, neighbors, 2)
+		require.Equal(t, "b", string(neighbors[0].Node.Key))
+		require.Equal(t, "c", string(neighbors[1].Node.Key))
+	}
+
+	// Neighbors
+	{
+		resp, err := store.Neighbors(ctx, &graphstore.NeighborsRequest{
+			Node: newNode("b"),
+		})
+		require.Nil(t, err)
+
+		neighbors := resp.GetNeighbors()
+		require.Len(t, neighbors, 2)
+		require.Equal(t, "a", string(neighbors[0].Node.Key))
+		require.Equal(t, "d", string(neighbors[1].Node.Key))
+	}
+
+	// Delete
+	{
+		_, err := store.Delete(ctx, &graphstore.DeleteRequest{
+			Nodes: []*graphstore.Node{
+				newNode("a"),
+				newNode("b"),
+				newNode("c"),
+				newNode("d"),
+			},
+			Edges: []*graphstore.Edge{
+				newEdge("a", "b", ""),
+				newEdge("a", "c", ""),
+				newEdge("b", "d", ""),
+				newEdge("c", "d", ""),
+			},
+		})
+		require.Nil(t, err)
 	}
 }

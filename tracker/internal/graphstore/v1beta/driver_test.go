@@ -1,9 +1,11 @@
 package v1beta_test
 
 import (
-	"github.com/depscloud/depscloud/tracker/internal/graphstore/v1beta"
-	"github.com/stretchr/testify/require"
 	"testing"
+
+	"github.com/depscloud/depscloud/tracker/internal/graphstore/v1beta"
+
+	"github.com/stretchr/testify/require"
 )
 
 func Test_Resolve_dne(t *testing.T) {
@@ -19,11 +21,11 @@ func Test_Resolve_sqlite_noaddress(t *testing.T) {
 }
 
 func Test_Resolve_sqlite_readwrite(t *testing.T) {
-	_, err := v1beta.Resolve("sqlite", "file::memory:?cache=shared", "")
+	_, err := v1beta.Resolve("sqlite", "file::memory:", "")
 	require.Nil(t, err)
 }
 
 func Test_Resolve_sqlite_readonly(t *testing.T) {
-	_, err := v1beta.Resolve("sqlite", "", "file::memory:?cache=shared&mode=ro")
+	_, err := v1beta.Resolve("sqlite", "", "file::memory:?mode=ro")
 	require.Nil(t, err)
 }

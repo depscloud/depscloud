@@ -135,19 +135,82 @@ func (s *GraphStoreServer) List(ctx context.Context, request *graphstore.ListReq
 	}, nil
 }
 
-// Neighbors ...
-func (s *GraphStoreServer) Neighbors(ctx context.Context, request *graphstore.NeighborsRequest) (*graphstore.NeighborsResponse, error) {
-	// filters := request.GetFilter()
+func processNeighbors(neighborData []*GraphData, keyFn func(edge *graphstore.Edge) string) []*graphstore.Neighbor {
+	results := make([]*graphstore.Neighbor, 0)
+	index := make(map[string]int)
 
-	if node := request.GetNode(); node != nil {
+	for _, neighbor := range neighborData {
+		node, edge, err := ConvertGraphData(neighbor)
+		if err != nil {
+			logrus.Errorf("encountered issue decoding row [%s, %s, %s] in database: %v",
+				string(neighbor.K1), string(neighbor.K2), string(neighbor.K3), err)
+			continue
+		}
 
-	} else if toNode := request.GetTo(); toNode != nil {
-
-	} else if fromNode := request.GetFrom(); fromNode != nil {
-
+		if node != nil {
+			key := string(node.GetKey())
+			if _, ok := index[key]; !ok {
+				pos := len(results)
+				results = append(results, &graphstore.Neighbor{
+					Node:  node,
+					Edges: make([]*graphstore.Edge, 0),
+				})
+				index[key] = pos
+			}
+		} else {
+			pos := index[keyFn(edge)]
+			results[pos].Edges = append(results[pos].Edges, edge)
+		}
 	}
 
-	panic("implement me")
+	return results
+}
+
+// Neighbors ...
+func (s *GraphStoreServer) Neighbors(ctx context.Context, request *graphstore.NeighborsRequest) (*graphstore.NeighborsResponse, error) {
+	node := request.GetNode()
+	toNode := request.GetTo()
+	fromNode := request.GetFrom()
+
+	if node != nil {
+		toNode = node
+		fromNode = node
+	}
+
+	neighbors := make([]*graphstore.Neighbor, 0)
+	if toNode != nil {
+		item := ConvertNode(toNode, EncodingProtocolBuffers)
+
+		neighborData, err := s.Driver.NeighborsTo(ctx, item)
+		if err != nil {
+			return nil, err
+		}
+
+		toNeighbors := processNeighbors(neighborData, func(edge *graphstore.Edge) string {
+			return string(edge.GetFromKey())
+		})
+
+		neighbors = append(neighbors, toNeighbors...)
+	}
+
+	if fromNode != nil {
+		item := ConvertNode(fromNode, EncodingProtocolBuffers)
+
+		neighborData, err := s.Driver.NeighborsFrom(ctx, item)
+		if err != nil {
+			return nil, err
+		}
+
+		fromNeighbors := processNeighbors(neighborData, func(edge *graphstore.Edge) string {
+			return string(edge.GetToKey())
+		})
+
+		neighbors = append(neighbors, fromNeighbors...)
+	}
+
+	return &graphstore.NeighborsResponse{
+		Neighbors: neighbors,
+	}, nil
 }
 
 // Traverse ...
