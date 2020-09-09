@@ -1,4 +1,4 @@
-# Contributing
+# Contributing Guide
 
 When contributing to this repository, please first discuss the change you wish to make via issue, email, or any other method with the owners of this repository before making a change.
 
@@ -32,3 +32,9 @@ We also have a [Slack] channel.
 
 [mailing list]: https://groups.google.com/a/deps.cloud/forum/#!forum/community/join
 [Slack]: https://depscloud.slack.com/join/shared_invite/zt-fd03dm8x-L5Vxh07smWr_vlK9Qg9q5A
+
+## Development
+
+Checkout out our [developers guide] on how to build changes to this project.
+
+[developers guide]: DEVELOPING.md
