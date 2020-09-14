@@ -5,7 +5,7 @@ go 1.14
 require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
 	github.com/depscloud/api v0.1.12
-	github.com/grpc-ecosystem/grpc-gateway v1.14.7
+	github.com/grpc-ecosystem/grpc-gateway v1.14.8
 	github.com/jonboulle/clockwork v0.2.0 // indirect
 	github.com/kr/pretty v0.1.0 // indirect
 	github.com/mjpitz/go-gracefully v0.0.5
