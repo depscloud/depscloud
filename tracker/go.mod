@@ -5,7 +5,7 @@ go 1.14
 require (
 	github.com/cenkalti/backoff/v4 v4.0.2
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
-	github.com/depscloud/api v0.1.12
+	github.com/depscloud/api v0.1.13
 	github.com/ghodss/yaml v1.0.0
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/jackc/pgx/v4 v4.8.1

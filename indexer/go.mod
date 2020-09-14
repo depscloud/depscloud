@@ -6,12 +6,11 @@ require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
 	github.com/davidji99/bitbucket-go v0.2.1
 	github.com/davidji99/simpleresty v0.2.3 // indirect
-	github.com/depscloud/api v0.1.12
+	github.com/depscloud/api v0.1.13
 	github.com/ghodss/yaml v1.0.0
 	github.com/go-resty/resty/v2 v2.3.0 // indirect
 	github.com/gogo/protobuf v1.3.1
 	github.com/google/go-github/v20 v20.0.0
-	github.com/grpc-ecosystem/grpc-gateway v1.14.7 // indirect
 	github.com/hashicorp/go-retryablehttp v0.6.7 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
