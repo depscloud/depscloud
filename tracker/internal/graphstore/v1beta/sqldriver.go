@@ -80,10 +80,23 @@ func (s *sqlDriver) List(ctx context.Context, kind string, offset, limit int) ([
 	return results, rows.Next(), nil
 }
 
-func (s *sqlDriver) neighbors(ctx context.Context, key, statement string) ([]*GraphData, error) {
-	rows, err := s.rodb.NamedQueryContext(ctx, statement, map[string]interface{}{
-		"keys": key,
+func (s *sqlDriver) neighbors(ctx context.Context, statement string, keys []string) ([]*GraphData, error) {
+	query, args, err := sqlx.Named(statement, map[string]interface{}{
+		"keys": keys,
 	})
+	if err != nil {
+		return nil, err
+	}
+
+	query, args, err = sqlx.In(query, args...)
+	if err != nil {
+		return nil, err
+	}
+
+	// use DB specific bindvar type
+	query = s.rodb.Rebind(query)
+
+	rows, err := s.rodb.QueryxContext(ctx, query, args...)
 	if err != nil {
 		return nil, err
 	}
@@ -138,12 +151,12 @@ func (s *sqlDriver) neighbors(ctx context.Context, key, statement string) ([]*Gr
 	return results, nil
 }
 
-func (s *sqlDriver) NeighborsTo(ctx context.Context, to *GraphData) ([]*GraphData, error) {
-	return s.neighbors(ctx, to.K1, s.statements.SelectToNeighbor)
+func (s *sqlDriver) NeighborsTo(ctx context.Context, toKeys []string) ([]*GraphData, error) {
+	return s.neighbors(ctx, s.statements.SelectToNeighbor, toKeys)
 }
 
-func (s *sqlDriver) NeighborsFrom(ctx context.Context, from *GraphData) ([]*GraphData, error) {
-	return s.neighbors(ctx, from.K1, s.statements.SelectFromNeighbor)
+func (s *sqlDriver) NeighborsFrom(ctx context.Context, fromKeys []string) ([]*GraphData, error) {
+	return s.neighbors(ctx, s.statements.SelectFromNeighbor, fromKeys)
 }
 
 var _ Driver = &sqlDriver{}

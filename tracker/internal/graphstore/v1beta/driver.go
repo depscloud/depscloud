@@ -4,14 +4,20 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"gorm.io/driver/postgres"
 
 	"github.com/jmoiron/sqlx"
 
 	"gorm.io/driver/mysql"
-	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
 
 	"gorm.io/gorm"
+)
+
+const (
+	mysqlDriverName = "mysql"
+	sqliteDriverName = "sqlite3"
+	postgresqlDriverName = "postgres"
 )
 
 // Driver represents a generic interface for storing a graph.
@@ -19,8 +25,8 @@ type Driver interface {
 	Put(ctx context.Context, data []*GraphData) error
 	Delete(ctx context.Context, data []*GraphData) error
 	List(ctx context.Context, kind string, offset, limit int) ([]*GraphData, bool, error)
-	NeighborsTo(ctx context.Context, to *GraphData) ([]*GraphData, error)
-	NeighborsFrom(ctx context.Context, from *GraphData) ([]*GraphData, error)
+	NeighborsTo(ctx context.Context, toKeys []string) ([]*GraphData, error)
+	NeighborsFrom(ctx context.Context, fromKeys []string) ([]*GraphData, error)
 }
 
 // Resolve takes in connection criteria and returns the appropriate driver
@@ -31,19 +37,19 @@ func Resolve(driver, storageAddress, storageReadOnlyAddress string) (Driver, err
 
 	switch driver {
 	case "mysql":
-		driver = "mysql"
+		driver = mysqlDriverName
 		statements = MySQLStatements
 		dialectorRW = mysql.Open(storageAddress)
 		dialectorRO = mysql.Open(storageReadOnlyAddress)
 		break
 	case "sqlite", "sqlite3":
-		driver = "sqlite3"
+		driver = sqliteDriverName
 		statements = SQLiteStatements
 		dialectorRW = sqlite.Open(storageAddress)
 		dialectorRO = sqlite.Open(storageReadOnlyAddress)
 		break
 	case "postgres", "postgresql", "pgx":
-		driver = "postgres"
+		driver = postgresqlDriverName
 		statements = PostgreSQLStatements
 		dialectorRW = postgres.Open(storageAddress)
 		dialectorRO = postgres.Open(storageReadOnlyAddress)

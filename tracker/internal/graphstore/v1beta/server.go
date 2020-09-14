@@ -181,7 +181,7 @@ func (s *GraphStoreServer) Neighbors(ctx context.Context, request *graphstore.Ne
 	if toNode != nil {
 		item := ConvertNode(toNode, EncodingProtocolBuffers)
 
-		neighborData, err := s.Driver.NeighborsTo(ctx, item)
+		neighborData, err := s.Driver.NeighborsTo(ctx, []string{item.K1})
 		if err != nil {
 			return nil, err
 		}
@@ -196,7 +196,7 @@ func (s *GraphStoreServer) Neighbors(ctx context.Context, request *graphstore.Ne
 	if fromNode != nil {
 		item := ConvertNode(fromNode, EncodingProtocolBuffers)
 
-		neighborData, err := s.Driver.NeighborsFrom(ctx, item)
+		neighborData, err := s.Driver.NeighborsFrom(ctx, []string{item.K1})
 		if err != nil {
 			return nil, err
 		}
