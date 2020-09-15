@@ -2,16 +2,15 @@
 
 <img alt="logo" width="64" src="https://deps.cloud/favicons/android-chrome-512x512.png"/>
 
-deps.cloud is a tool built to help companies understand how projects relate to one another.
-It does this by detecting dependencies defined in common manifest files.
-Using this information, we’re able to construct a dependency graph.
-As a result we’re able to answer questions like:
+deps.cloud is a tool to help understand how projects relate to one another.
+It works by detecting dependencies defined in common [manifest files] (`pom.xml`, `package.json`, `go.mod`, etc).
+Using this information, we’re able to answer questions about project dependencies.
 
-* Which libraries get produced by a project?
-* Which libraries do I depend on and what version?
-* Which projects depend on library X and what version?
-* Which projects can produce library X?
-* Which projects do our systems use the most?
+* What versions of _k8s.io/client-go_ do we depend on?
+* Which projects use _eslint_ as a non-dev dependency?
+* What open source libraries do we use the most?
+
+[manifest files]: https://deps.cloud/docs/concepts/manifests/
 
 ## To start using deps.cloud
 
