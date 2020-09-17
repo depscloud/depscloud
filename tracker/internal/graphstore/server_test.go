@@ -118,7 +118,7 @@ func TestNewSQLGraphStore_sqlite(t *testing.T) {
 
 	_, err = graphStore.Delete(nil, &store.DeleteRequest{
 		Items: []*store.GraphItem{
-			{ GraphItemType: "edge", K1: k3, K2: k5, K3: k1 },
+			{GraphItemType: "edge", K1: k3, K2: k5, K3: k1},
 		},
 	})
 	require.Nil(t, err)
