@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "@types/cheerio": "0.22.21",
-    "@types/jest": "26.0.10",
+    "@types/jest": "26.0.13",
     "@types/js-yaml": "3.12.5",
     "jest": "26.4.2",
     "ts-jest": "26.3.0",
@@ -24,8 +24,8 @@
     "typescript": "4.0.2"
   },
   "dependencies": {
-    "@depscloud/api": "0.1.12",
-    "@grpc/grpc-js": "1.1.5",
+    "@depscloud/api": "0.1.13",
+    "@grpc/grpc-js": "1.1.6",
     "@grpc/proto-loader": "0.5.5",
     "caporal": "latest",
     "cheerio": "1.0.0-rc.3",
@@ -33,7 +33,7 @@
     "grpc-health-check": "1.8.0",
     "js-yaml": "3.14.0",
     "log4js": "6.3.0",
-    "minimatch": "^3.0.4",
+    "minimatch": "3.0.4",
     "tmp": "0.2.1",
     "toml": "3.0.0"
   }
