@@ -23,6 +23,7 @@ jobs:
           minikube version: 'v1.12.3'
           kubernetes version: 'v1.18.2'
           github token: ${{ secrets.GITHUB_TOKEN }}
+          start args: --registry-mirror=https://mirror.gcr.io
 
       - name: Setup Helm
         run: |
