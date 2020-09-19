@@ -37,7 +37,7 @@ jobs:
       - name: Build Container
         run: |
           eval $(minikube docker-env)
-          make deps
+          make deps/docker
 
       # Deploy the ecosystem using existing the helm chart and force the use
       # of the docker local image.

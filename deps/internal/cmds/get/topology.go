@@ -76,7 +76,7 @@ func topology(ctx context.Context, searchService tracker.SearchServiceClient, re
 			if _, ok := nodes[targets[i]]; !ok {
 				nodes[targets[i]] = &entry{
 					module: dependency.GetModule(),
-					seen: make(map[string]bool),
+					seen:   make(map[string]bool),
 				}
 			}
 
@@ -90,15 +90,15 @@ func topology(ctx context.Context, searchService tracker.SearchServiceClient, re
 
 	if req := request.GetDependentsOf(); req != nil {
 		root = &schema.Module{
-			Language: req.GetLanguage(),
+			Language:     req.GetLanguage(),
 			Organization: req.GetOrganization(),
-			Module: req.GetModule(),
+			Module:       req.GetModule(),
 		}
 	} else if req := request.GetDependenciesOf(); req != nil {
 		root = &schema.Module{
-			Language: req.GetLanguage(),
+			Language:     req.GetLanguage(),
 			Organization: req.GetOrganization(),
-			Module: req.GetModule(),
+			Module:       req.GetModule(),
 		}
 	}
 
@@ -153,9 +153,9 @@ func topologyCommand(
 	tiered := false
 
 	cmd := &cobra.Command{
-		Use:   "topology",
+		Use:     "topology",
 		Aliases: []string{"topo"},
-		Short: "Get the associated topology",
+		Short:   "Get the associated topology",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if req.Language == "" || req.Organization == "" || req.Module == "" {
 				return fmt.Errorf("language, organization, and module must be provided")

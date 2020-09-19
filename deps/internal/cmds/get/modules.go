@@ -17,9 +17,9 @@ func ModulesCommand(
 	source := &schema.Source{}
 
 	cmd := &cobra.Command{
-		Use:   "modules",
+		Use:     "modules",
 		Aliases: []string{"module", "mods", "mod"},
-		Short: "Get a list of modules from the service",
+		Short:   "Get a list of modules from the service",
 		Example: strings.Join([]string{
 			"deps get modules",
 			"deps get modules --url https://github.com/depscloud/api.git",

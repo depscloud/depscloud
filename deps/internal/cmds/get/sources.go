@@ -19,9 +19,9 @@ func SourcesCommand(
 	module := &schema.Module{}
 
 	cmd := &cobra.Command{
-		Use:   "sources",
+		Use:     "sources",
 		Aliases: []string{"source", "srcs", "src"},
-		Short: "Get a list of source repositories from the service",
+		Short:   "Get a list of source repositories from the service",
 		Example: strings.Join([]string{
 			"deps get sources",
 			"deps get sources -l go -o github.com -m depscloud/api",

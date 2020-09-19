@@ -1,14 +1,22 @@
-name: gateway-branch
+name: branch
 
 on:
   pull_request:
     paths:
-      - ".github/workflows/gateway-branch.yaml"
+      - ".github/workflows/branch.yaml"
+      - "deps/**"
+      - "extractor/**"
       - "gateway/**"
+      - "indexer/**"
+      - "tracker/**"
   push:
     paths:
-      - ".github/workflows/gateway-branch.yaml"
+      - ".github/workflows/branch.yaml"
+      - "deps/**"
+      - "extractor/**"
       - "gateway/**"
+      - "indexer/**"
+      - "tracker/**"
 
 jobs:
   build:
@@ -17,15 +25,14 @@ jobs:
       image: golang:1.14-alpine3.12
     steps:
       - name: Prepare
-        run: apk -U upgrade && apk add build-base git ca-certificates bash curl
+        run: apk -U upgrade && apk add build-base git ca-certificates bash curl sqlite
 
       - name: Checkout
         uses: actions/checkout@v2
 
       - name: Build
         run: |
-          cd gateway
-          make build-deps deps test
+          make build-deps deps install test
           make fmt
           if [[ $(git diff --stat) != '' ]]; then
             echo 'run make fmt and commit changes'
@@ -36,5 +43,4 @@ jobs:
         uses: codecov/codecov-action@v1
         if: github.ref == 'refs/heads/main'
         with:
-          file: ./gateway/coverage.txt
-          name: gateway
+          files: ./extractor/coverage/clover.xml,./coverage.txt
