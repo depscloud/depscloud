@@ -5,10 +5,16 @@ on:
     paths:
       - ".github/workflows/gateway-integration.yaml"
       - "gateway/**"
+      - "Dockerfile.dev"
+      - "go.mod"
+      - "go.sum"
   push:
     paths:
       - ".github/workflows/gateway-integration.yaml"
       - "gateway/**"
+      - "Dockerfile.dev"
+      - "go.mod"
+      - "go.sum"
 
 jobs:
   integration:

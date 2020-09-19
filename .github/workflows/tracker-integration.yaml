@@ -5,10 +5,16 @@ on:
     paths:
       - ".github/workflows/tracker-integration.yaml"
       - "tracker/**"
+      - "Dockerfile.dev"
+      - "go.mod"
+      - "go.sum"
   push:
     paths:
       - ".github/workflows/tracker-integration.yaml"
       - "tracker/**"
+      - "Dockerfile.dev"
+      - "go.mod"
+      - "go.sum"
 
 jobs:
   integration:

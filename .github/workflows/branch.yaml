@@ -9,6 +9,8 @@ on:
       - "gateway/**"
       - "indexer/**"
       - "tracker/**"
+      - "go.mod"
+      - "go.sum"
   push:
     paths:
       - ".github/workflows/branch.yaml"
@@ -17,6 +19,8 @@ on:
       - "gateway/**"
       - "indexer/**"
       - "tracker/**"
+      - "go.mod"
+      - "go.sum"
 
 jobs:
   build:
