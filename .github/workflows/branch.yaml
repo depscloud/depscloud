@@ -39,6 +39,8 @@ jobs:
 
       - name: Build
         run: |
+          export GOPATH="/go"
+          export PATH="${GOPATH}/bin:${PATH}"
           VERSION=${GITHUB_REF##*/} make build-deps deps install test
           make fmt
           if [[ $(git diff --stat) != '' ]]; then
