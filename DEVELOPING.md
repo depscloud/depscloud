@@ -37,8 +37,8 @@ A common workflow is to build the changes to your container and redeploy the doc
 
 ```bash
 # in depscloud/depscloud
-# make [name]
-make tracker
+# make [name]/docker
+make tracker/docker
 
 # in depscloud/deploy/docker/sqlite
 docker-compose up
