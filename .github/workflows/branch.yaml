@@ -1,0 +1,55 @@
+name: branch
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/branch.yaml"
+      - "deps/**"
+      - "extractor/**"
+      - "gateway/**"
+      - "indexer/**"
+      - "tracker/**"
+  push:
+    paths:
+      - ".github/workflows/branch.yaml"
+      - "deps/**"
+      - "extractor/**"
+      - "gateway/**"
+      - "indexer/**"
+      - "tracker/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prepare
+        run: sudo apt-get update && sudo apt-get install -y sqlite3 ca-certificates git
+
+      - name: Setup go
+        uses: actions/setup-go@v1
+        with:
+          go-version: '1.14'
+
+      - uses: actions/setup-node@v2-beta
+        with:
+          node-version: '10'
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build
+        run: |
+          export GOPATH="${HOME}/go"
+          export PATH="${GOPATH}/bin:${PATH}"
+          VERSION=${GITHUB_REF##*/} make build-deps deps install test
+          make fmt
+          if [[ $(git diff --stat) != '' ]]; then
+            echo 'run make fmt and commit changes'
+            exit 1
+          fi
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        if: github.ref == 'refs/heads/main'
+        with:
+          files: ./extractor/coverage/clover.xml,./coverage.txt

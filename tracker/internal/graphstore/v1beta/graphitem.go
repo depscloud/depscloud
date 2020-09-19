@@ -23,7 +23,7 @@ const defaultCollectionName = "graph_data"
 
 // GraphData describes how the data is stored
 type GraphData struct {
-	CollectionName string		 `json:"-"`
+	CollectionName string        `json:"-"`
 	K1             string        `json:"k1"           db:"k1"            gorm:"column:k1;type:varchar(64);primaryKey;index:secondary,priority:2"`
 	K2             string        `json:"k2"           db:"k2"            gorm:"column:k2;type:varchar(64);primaryKey;index:secondary,priority:1"`
 	K3             string        `json:"k3"           db:"k3"            gorm:"column:k3;type:varchar(64);primaryKey;index:secondary,priority:3"`

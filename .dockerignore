@@ -1,0 +1,8 @@
+.github/
+.idea/
+dist/
+dockerfiles/
+extractor/
+monorepo/
+Dockerfile
+Dockerfile.dev
