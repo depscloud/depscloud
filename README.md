@@ -45,24 +45,16 @@ We also have a [Slack] channel.
 
 ## Branch Checks
 
+[![branch workflow](https://github.com/depscloud/depscloud/workflows/branch/badge.svg?branch=main)](https://github.com/depscloud/depscloud/actions?query=workflow%3Abranch+branch%3Amain)
+[![coverage](https://img.shields.io/codecov/c/gh/depscloud/depscloud/main)](https://codecov.io/gh/depscloud/depscloud)
 [![dockerfiles workflow](https://github.com/depscloud/depscloud/workflows/dockerfiles/badge.svg?branch=main)](https://github.com/depscloud/depscloud/actions?query=workflow%3Adockerfiles+branch%3Amain)
-
-[![deps branch workflow](https://github.com/depscloud/depscloud/workflows/deps-branch/badge.svg?branch=main)](https://github.com/depscloud/depscloud/actions?query=workflow%3Adeps-branch+branch%3Amain)
-[![deps integration workflow](https://github.com/depscloud/depscloud/workflows/deps-integration/badge.svg?branch=main)](https://github.com/depscloud/depscloud/actions?query=workflow%3Adeps-integration+branch%3Amain)
-
-[![extractor branch workflow](https://github.com/depscloud/depscloud/workflows/extractor-branch/badge.svg?branch=main)](https://github.com/depscloud/depscloud/actions?query=workflow%3Aextractor-branch+branch%3Amain)
-[![extractor integration workflow](https://github.com/depscloud/depscloud/workflows/extractor-integration/badge.svg?branch=main)](https://github.com/depscloud/depscloud/actions?query=workflow%3Aextractor-integration+branch%3Amain)
-
-[![gateway branch workflow](https://github.com/depscloud/depscloud/workflows/gateway-branch/badge.svg?branch=main)](https://github.com/depscloud/depscloud/actions?query=workflow%3Agateway-branch+branch%3Amain)
-[![gateway integration workflow](https://github.com/depscloud/depscloud/workflows/gateway-integration/badge.svg?branch=main)](https://github.com/depscloud/depscloud/actions?query=workflow%3Agateway-integration+branch%3Amain)
-
-[![indexer branch workflow](https://github.com/depscloud/depscloud/workflows/indexer-branch/badge.svg?branch=main)](https://github.com/depscloud/depscloud/actions?query=workflow%3Aindexer-branch+branch%3Amain)
-[![indexer integration workflow](https://github.com/depscloud/depscloud/workflows/indexer-integration/badge.svg?branch=main)](https://github.com/depscloud/depscloud/actions?query=workflow%3Aindexer-integration+branch%3Amain)
-
-[![tracker branch workflow](https://github.com/depscloud/depscloud/workflows/tracker-branch/badge.svg?branch=main)](https://github.com/depscloud/depscloud/actions?query=workflow%3Atracker-branch+branch%3Amain)
-[![tracker integration workflow](https://github.com/depscloud/depscloud/workflows/tracker-integration/badge.svg?branch=main)](https://github.com/depscloud/depscloud/actions?query=workflow%3Atracker-integration+branch%3Amain)
-
 [![goreleaser branch workflow](https://github.com/depscloud/depscloud/workflows/goreleaser-branch/badge.svg?branch=main)](https://github.com/depscloud/depscloud/actions?query=workflow%3Agoreleaser-branch+branch%3Amain)
+
+[![deps integration workflow](https://github.com/depscloud/depscloud/workflows/deps-integration/badge.svg?branch=main)](https://github.com/depscloud/depscloud/actions?query=workflow%3Adeps-integration+branch%3Amain)
+[![extractor integration workflow](https://github.com/depscloud/depscloud/workflows/extractor-integration/badge.svg?branch=main)](https://github.com/depscloud/depscloud/actions?query=workflow%3Aextractor-integration+branch%3Amain)
+[![gateway integration workflow](https://github.com/depscloud/depscloud/workflows/gateway-integration/badge.svg?branch=main)](https://github.com/depscloud/depscloud/actions?query=workflow%3Agateway-integration+branch%3Amain)
+[![indexer integration workflow](https://github.com/depscloud/depscloud/workflows/indexer-integration/badge.svg?branch=main)](https://github.com/depscloud/depscloud/actions?query=workflow%3Aindexer-integration+branch%3Amain)
+[![tracker integration workflow](https://github.com/depscloud/depscloud/workflows/tracker-integration/badge.svg?branch=main)](https://github.com/depscloud/depscloud/actions?query=workflow%3Atracker-integration+branch%3Amain)
 
 ## Release Checks
 
