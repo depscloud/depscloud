@@ -1,5 +1,5 @@
 GIT_SHA ?= $(shell git rev-parse HEAD)
-VERSION ?= $(shell git branch | cut -c 3-)
+VERSION ?= local
 TIMESTAMP ?= $(shell date +%Y-%m-%dT%T)
 LD_FLAGS := -X main.version=${VERSION} -X main.commit=${GIT_SHA} -X main.date=${TIMESTAMP}
 

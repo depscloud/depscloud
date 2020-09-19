@@ -21,18 +21,25 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container:
-      image: golang:1.14-alpine3.12
     steps:
       - name: Prepare
-        run: apk -U upgrade && apk add build-base git ca-certificates bash curl sqlite
+        run: apt-get update && apt-get install -y sqlite3 ca-certificates git
+
+      - name: Setup go
+        uses: actions/setup-go@v1
+        with:
+          go-version: '1.14'
+
+      - uses: actions/setup-node@v2-beta
+        with:
+          node-version: '10'
 
       - name: Checkout
         uses: actions/checkout@v2
 
       - name: Build
         run: |
-          make build-deps deps install test
+          VERSION=${GITHUB_REF##*/} make build-deps deps install test
           make fmt
           if [[ $(git diff --stat) != '' ]]; then
             echo 'run make fmt and commit changes'
