@@ -1,9 +1,11 @@
 package v1beta_test
 
 import (
-	"github.com/depscloud/depscloud/tracker/internal/graphstore/v1beta"
-	"github.com/stretchr/testify/require"
 	"testing"
+
+	"github.com/depscloud/depscloud/tracker/internal/graphstore/v1beta"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestGraphData_TableName(t *testing.T) {

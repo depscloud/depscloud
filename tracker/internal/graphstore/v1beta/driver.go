@@ -4,19 +4,19 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"gorm.io/driver/postgres"
 
 	"github.com/jmoiron/sqlx"
 
 	"gorm.io/driver/mysql"
+	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
 
 	"gorm.io/gorm"
 )
 
 const (
-	mysqlDriverName = "mysql"
-	sqliteDriverName = "sqlite3"
+	mysqlDriverName      = "mysql"
+	sqliteDriverName     = "sqlite3"
 	postgresqlDriverName = "postgres"
 )
 
