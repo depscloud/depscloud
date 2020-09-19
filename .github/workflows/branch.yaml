@@ -39,11 +39,11 @@ jobs:
 
       - name: Build
         run: |
-          export GOPATH="/go"
+          export GOPATH="${HOME}/go"
           export PATH="${GOPATH}/bin:${PATH}"
           VERSION=${GITHUB_REF##*/} make build-deps deps install test
           make fmt
-          if [[ $(git diff --stat) != '' ]]; then
+          if [[ $(git status -s) != '' ]]; then
             echo 'run make fmt and commit changes'
             exit 1
           fi
