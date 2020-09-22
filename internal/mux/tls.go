@@ -9,8 +9,8 @@ import (
 
 type TLSConfig struct {
 	CertPath string
-	KeyPath string
-	CAPath string
+	KeyPath  string
+	CAPath   string
 }
 
 func LoadTLSConfig(cfg *TLSConfig) (*tls.Config, error) {
