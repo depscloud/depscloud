@@ -17,8 +17,8 @@ deps: .deps
 
 fmt: .fmt
 .fmt:
-	go-groups -w ./deps ./gateway ./indexer ./tracker
-	gofmt -s -w ./deps ./gateway ./indexer ./tracker
+	go-groups -w ./deps ./gateway ./indexer ./tracker ./internal
+	gofmt -s -w ./deps ./gateway ./indexer ./tracker ./internal
 
 docker: deps/docker extractor/docker gateway/docker indexer/docker tracker/docker
 
@@ -38,7 +38,7 @@ generate:
 	go test -v -race -coverprofile=coverage.txt -covermode=atomic ${PACKAGES}
 
 test: extractor/test
-	@make .test PACKAGES="./deps/... ./gateway/... ./indexer/... ./tracker/..."
+	@make .test PACKAGES="./deps/... ./gateway/... ./indexer/... ./tracker/... ./internal/..."
 
 ##===
 ## Common

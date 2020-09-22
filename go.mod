@@ -24,6 +24,7 @@ require (
 	github.com/mjpitz/go-gracefully v0.0.5
 	github.com/nytlabs/gojee v0.0.0-20140331152115-5a79a1542dc0
 	github.com/pkg/errors v0.9.1
+	github.com/prometheus/client_golang v0.9.3
 	github.com/rs/cors v1.7.0
 	github.com/sergi/go-diff v1.1.0 // indirect
 	github.com/sirupsen/logrus v1.6.0

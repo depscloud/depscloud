@@ -2,12 +2,13 @@ import {DependencyExtractor} from "@depscloud/api/v1alpha/extractor";
 
 import {Server, ServerCredentials} from "@grpc/grpc-js";
 import {configure, getLogger} from "log4js";
-import { Minimatch } from "minimatch";
 import ExtractorRegistry from "./extractors/ExtractorRegistry";
 import AsyncDependencyExtractor from "./service/AsyncDependencyExtractor";
 import DependencyExtractorImpl from "./service/DependencyExtractorImpl";
 import unasyncify from "./service/unasyncify";
 
+import express = require("express");
+import promClient = require("prom-client");
 import program = require("caporal");
 import fs = require("fs");
 import health = require("grpc-health-check/health");
@@ -20,12 +21,16 @@ const logger = getLogger();
 
 program.name("extractor")
     .option("--bind-address <bindAddress>", "The ip address to bind to.", program.STRING)
+    .option("--http-port <port>", "The port to run http on.", program.INT)
+    .option("--grpc-port <port>", "The port to bind to.", program.INT)
     .option("--port <port>", "The port to bind to.", program.INT)
     .option("--tls-key <key>", "The path to the private key used for TLS", program.STRING)
     .option("--tls-cert <cert>", "The path to the certificate used for TLS", program.STRING)
     .option("--tls-ca <ca>", "The path to the certificate authority used for TLS", program.STRING)
     .option("--disable-manifests <manifest>", "The manifests to disable support for", program.ARRAY)
     .action(async (args: any, options: any) => {
+        promClient.collectDefaultMetrics({ })
+
         configure({
             appenders: {
                 console: { type: "console" },
@@ -86,16 +91,36 @@ program.name("extractor")
         }
 
         const bindAddress = options.bindAddress || "0.0.0.0";
-        const port = options.port || 8090;
+        const httpPort = options.httpPort || 8080;
+        const grpcPort = options.port || options.grpcPort || 8090;
 
-        server.bindAsync(`${bindAddress}:${port}`, credentials, (err) => {
+        server.bindAsync(`${bindAddress}:${grpcPort}`, credentials, (err) => {
             if (err != null) {
                 logger.error(err);
                 return;
             }
 
-            logger.info(`[main] starting gRPC on ${bindAddress}:${port}`);
+            logger.info(`[main] starting grpc on ${bindAddress}:${grpcPort}`);
             server.start();
+        });
+
+        const app = express();
+        app.get("/healthz", (req, resp) => {
+            resp.set('Content-Type', 'application/json');
+            resp.send(JSON.stringify({
+                state: "ok",
+                timestamp: new Date(),
+                results: {},
+            }));
+        });
+
+        app.get("/metrics", (req, resp) => {
+            resp.set('Content-Type', promClient.register.contentType);
+            resp.send(promClient.register.metrics());
+        });
+
+        app.listen(httpPort, () => {
+            logger.info(`[main] starting http on ${bindAddress}:${httpPort}`)
         });
     })
     .parse(process.argv);

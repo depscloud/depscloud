@@ -1,16 +1,13 @@
 package main
 
 import (
-	"context"
-	"crypto/tls"
-	"crypto/x509"
 	"fmt"
-	"io/ioutil"
-	"net"
+	"net/http"
 	"os"
 	"strings"
 
 	"github.com/depscloud/api/v1alpha/store"
+	"github.com/depscloud/depscloud/internal/mux"
 	"github.com/depscloud/depscloud/tracker/internal/checks"
 	"github.com/depscloud/depscloud/tracker/internal/graphstore"
 	"github.com/depscloud/depscloud/tracker/internal/services"
@@ -29,7 +26,6 @@ import (
 	"github.com/urfave/cli/v2"
 
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials"
 )
 
 func registerV1Alpha(graphStoreClient store.GraphStoreClient, server *grpc.Server) {
@@ -41,14 +37,11 @@ func registerV1Alpha(graphStoreClient store.GraphStoreClient, server *grpc.Serve
 }
 
 type trackerConfig struct {
-	port                   int
+	httpPort               int
+	grpcPort               int
 	storageDriver          string
 	storageAddress         string
 	storageReadOnlyAddress string
-
-	tlsKeyPath  string
-	tlsCertPath string
-	tlsCAPath   string
 }
 
 var description = strings.TrimSpace(`
@@ -58,14 +51,14 @@ var description = strings.TrimSpace(`
 
 func main() {
 	cfg := &trackerConfig{
-		port:                   8090,
+		httpPort:               8080,
+		grpcPort:               8090,
 		storageDriver:          "sqlite",
 		storageAddress:         "file::memory:?cache=shared",
 		storageReadOnlyAddress: "",
-		tlsKeyPath:             "",
-		tlsCertPath:            "",
-		tlsCAPath:              "",
 	}
+
+	tlsConfig := &mux.TLSConfig{}
 
 	app := &cli.App{
 		Name:        "tracker",
@@ -73,10 +66,18 @@ func main() {
 		Description: description,
 		Flags: []cli.Flag{
 			&cli.IntFlag{
-				Name:        "port",
-				Usage:       "the port to run on",
-				Value:       cfg.port,
-				Destination: &cfg.port,
+				Name:        "http-port",
+				Usage:       "the port to run http on",
+				Value:       cfg.httpPort,
+				Destination: &cfg.httpPort,
+				EnvVars:     []string{"HTTP_PORT"},
+			},
+			&cli.IntFlag{
+				Name:        "grpc-port",
+				Aliases:     []string{"port"},
+				Usage:       "the port to run grpc on",
+				Value:       cfg.grpcPort,
+				Destination: &cfg.grpcPort,
 				EnvVars:     []string{"GRPC_PORT"},
 			},
 			&cli.StringFlag{
@@ -103,22 +104,22 @@ func main() {
 			&cli.StringFlag{
 				Name:        "tls-key",
 				Usage:       "path to the file containing the TLS private key",
-				Value:       cfg.tlsKeyPath,
-				Destination: &cfg.tlsKeyPath,
+				Value:       tlsConfig.KeyPath,
+				Destination: &tlsConfig.KeyPath,
 				EnvVars:     []string{"TLS_KEY_PATH"},
 			},
 			&cli.StringFlag{
 				Name:        "tls-cert",
 				Usage:       "path to the file containing the TLS certificate",
-				Value:       cfg.tlsCertPath,
-				Destination: &cfg.tlsCertPath,
+				Value:       tlsConfig.CertPath,
+				Destination: &tlsConfig.CertPath,
 				EnvVars:     []string{"TLS_CERT_PATH"},
 			},
 			&cli.StringFlag{
 				Name:        "tls-ca",
 				Usage:       "path to the file containing the TLS certificate authority",
-				Value:       cfg.tlsCAPath,
-				Destination: &cfg.tlsCAPath,
+				Value:       tlsConfig.CAPath,
+				Destination: &tlsConfig.CAPath,
 				EnvVars:     []string{"TLS_CA_PATH"},
 			},
 		},
@@ -155,35 +156,6 @@ func main() {
 				return err
 			}
 
-			options := make([]grpc.ServerOption, 0)
-			if len(cfg.tlsCertPath) > 0 && len(cfg.tlsKeyPath) > 0 && len(cfg.tlsCAPath) > 0 {
-				logrus.Info("[main] configuring tls")
-
-				certificate, err := tls.LoadX509KeyPair(cfg.tlsCertPath, cfg.tlsKeyPath)
-				if err != nil {
-					return err
-				}
-
-				certPool := x509.NewCertPool()
-				bs, err := ioutil.ReadFile(cfg.tlsCAPath)
-				if err != nil {
-					return err
-				}
-
-				ok := certPool.AppendCertsFromPEM(bs)
-				if !ok {
-					return fmt.Errorf("failed to append certs")
-				}
-
-				transportCreds := credentials.NewTLS(&tls.Config{
-					ClientAuth:   tls.RequireAndVerifyClientCert,
-					Certificates: []tls.Certificate{certificate},
-					ClientCAs:    certPool,
-				})
-
-				options = append(options, grpc.Creds(transportCreds))
-			}
-
 			graphStore, err := graphstore.NewSQLGraphStore(rwdb, rodb, statements)
 			if err != nil {
 				return err
@@ -192,25 +164,16 @@ func main() {
 			graphStoreClient := store.NewInProcessGraphStoreClient(graphStore)
 			graphStoreClient = graphstore.Retryable(graphStoreClient, 5)
 
-			grpcServer := grpc.NewServer(options...)
+			grpcServer := grpc.NewServer()
 			registerV1Alpha(graphStoreClient, grpcServer)
 
-			ctx, cancel := context.WithCancel(context.Background())
-			defer cancel()
-
-			allChecks := checks.Checks(graphStoreClient)
-			checks.RegisterHealthCheck(ctx, grpcServer, allChecks)
-
-			// setup server
-			address := fmt.Sprintf(":%d", cfg.port)
-
-			listener, err := net.Listen("tcp", address)
-			if err != nil {
-				return err
-			}
-
-			logrus.Infof("[main] starting gRPC on %s", address)
-			return grpcServer.Serve(listener)
+			return mux.Serve(grpcServer, http.DefaultServeMux, &mux.Config{
+				Context:         c.Context,
+				BindAddressHTTP: fmt.Sprintf("0.0.0.0:%d", cfg.httpPort),
+				BindAddressGRPC: fmt.Sprintf("0.0.0.0:%d", cfg.grpcPort),
+				Checks:          checks.Checks(graphStoreClient),
+				TLSConfig:       tlsConfig,
+			})
 		},
 	}
 

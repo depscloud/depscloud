@@ -29,11 +29,13 @@
     "@grpc/proto-loader": "0.5.5",
     "caporal": "latest",
     "cheerio": "1.0.0-rc.3",
+    "express": "^4.17.1",
     "gradle-to-js": "2.0.0",
     "grpc-health-check": "1.8.0",
     "js-yaml": "3.14.0",
     "log4js": "6.3.0",
     "minimatch": "3.0.4",
+    "prom-client": "^12.0.0",
     "tmp": "0.2.1",
     "toml": "3.0.0"
   }
