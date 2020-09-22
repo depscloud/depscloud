@@ -15,18 +15,15 @@ import (
 	"github.com/depscloud/api/v1alpha/tracker"
 	"github.com/depscloud/depscloud/gateway/internal/checks"
 	"github.com/depscloud/depscloud/gateway/internal/proxies"
+	"github.com/depscloud/depscloud/internal/mux"
 
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
-
-	"github.com/rs/cors"
 
 	"github.com/sirupsen/logrus"
 
 	"github.com/urfave/cli/v2"
 
 	"golang.org/x/net/context"
-	"golang.org/x/net/http2"
-	"golang.org/x/net/http2/h2c"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
@@ -91,7 +88,8 @@ func dialTracker(cfg *gatewayConfig) (*grpc.ClientConn, error) {
 }
 
 type gatewayConfig struct {
-	port int
+	httpPort int
+	grpcPort int
 
 	extractorAddress  string
 	extractorCertPath string
@@ -104,15 +102,12 @@ type gatewayConfig struct {
 	trackerKeyPath  string
 	trackerCAPath   string
 	trackerLBPolicy string
-
-	tlsKeyPath  string
-	tlsCertPath string
-	tlsCAPath   string
 }
 
 func main() {
 	cfg := &gatewayConfig{
-		port: 8080,
+		httpPort: 8080,
+		grpcPort: 8090,
 
 		extractorAddress:  "extractor:8090",
 		extractorCertPath: "",
@@ -125,22 +120,28 @@ func main() {
 		trackerKeyPath:  "",
 		trackerCAPath:   "",
 		trackerLBPolicy: "round_robin",
-
-		tlsCertPath: "",
-		tlsKeyPath:  "",
-		tlsCAPath:   "",
 	}
+
+	tlsConfig := &mux.TLSConfig{}
 
 	app := &cli.App{
 		Name:  "gateway",
 		Usage: "an HTTP/gRPC proxy to backend services",
 		Flags: []cli.Flag{
 			&cli.IntFlag{
-				Name:        "port",
-				Usage:       "the port to run on",
-				Value:       cfg.port,
-				Destination: &cfg.port,
+				Name:        "http-port",
+				Aliases:     []string{"port"},
+				Usage:       "the port to run http on",
+				Value:       cfg.httpPort,
+				Destination: &cfg.httpPort,
 				EnvVars:     []string{"HTTP_PORT"},
+			},
+			&cli.IntFlag{
+				Name:        "grpc-port",
+				Usage:       "the port to run grpc on",
+				Value:       cfg.grpcPort,
+				Destination: &cfg.grpcPort,
+				EnvVars:     []string{"GRPC_PORT"},
 			},
 			&cli.StringFlag{
 				Name:        "extractor-address",
@@ -215,22 +216,22 @@ func main() {
 			&cli.StringFlag{
 				Name:        "tls-key",
 				Usage:       "path to the file containing the TLS private key",
-				Value:       cfg.tlsKeyPath,
-				Destination: &cfg.tlsKeyPath,
+				Value:       tlsConfig.KeyPath,
+				Destination: &tlsConfig.KeyPath,
 				EnvVars:     []string{"TLS_KEY_PATH"},
 			},
 			&cli.StringFlag{
 				Name:        "tls-cert",
 				Usage:       "path to the file containing the TLS certificate",
-				Value:       cfg.tlsCertPath,
-				Destination: &cfg.tlsCertPath,
+				Value:       tlsConfig.CertPath,
+				Destination: &tlsConfig.CertPath,
 				EnvVars:     []string{"TLS_CERT_PATH"},
 			},
 			&cli.StringFlag{
 				Name:        "tls-ca",
 				Usage:       "path to the file containing the TLS certificate authority",
-				Value:       cfg.tlsCAPath,
-				Destination: &cfg.tlsCAPath,
+				Value:       tlsConfig.CAPath,
+				Destination: &tlsConfig.CAPath,
 				EnvVars:     []string{"TLS_CA_PATH"},
 			},
 		},
@@ -296,64 +297,15 @@ func main() {
 				_, _ = writer.Write(asset)
 			})
 
-			// setup /healthz
+			httpMux.Handle("/", gatewayMux)
 
-			ctx, cancel := context.WithCancel(context.Background())
-			defer cancel()
-
-			allChecks := checks.Checks(extractorService, sourceService, moduleService)
-			checks.RegisterHealthCheck(ctx, httpMux, grpcServer, allChecks)
-
-			// set up root
-
-			httpMux.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
-				if request.ProtoMajor == 2 &&
-					strings.HasPrefix(request.Header.Get("Content-Type"), "application/grpc") {
-					grpcServer.ServeHTTP(writer, request)
-				} else {
-					gatewayMux.ServeHTTP(writer, request)
-				}
+			return mux.Serve(grpcServer, httpMux, &mux.Config{
+				Context:         c.Context,
+				BindAddressHTTP: "0.0.0.0:8080",
+				BindAddressGRPC: "0.0.0.0:8090",
+				Checks:          checks.Checks(extractorService, sourceService, moduleService),
+				TLSConfig:       tlsConfig,
 			})
-
-			// set up edge mux
-
-			h2cMux := h2c.NewHandler(httpMux, &http2.Server{})
-
-			apiMux := cors.Default().Handler(h2cMux)
-
-			address := fmt.Sprintf(":%d", cfg.port)
-			if len(cfg.tlsCertPath) > 0 && len(cfg.tlsKeyPath) > 0 && len(cfg.tlsCAPath) > 0 {
-				certificate, err := tls.LoadX509KeyPair(cfg.tlsCertPath, cfg.tlsKeyPath)
-				if err != nil {
-					return err
-				}
-
-				certPool := x509.NewCertPool()
-				bs, err := ioutil.ReadFile(cfg.tlsCAPath)
-				if err != nil {
-					return err
-				}
-
-				ok := certPool.AppendCertsFromPEM(bs)
-				if !ok {
-					return fmt.Errorf("failed to append certs")
-				}
-
-				listener, err := tls.Listen("tcp", address, &tls.Config{
-					Certificates: []tls.Certificate{certificate},
-					ClientAuth:   tls.RequireAndVerifyClientCert,
-					ClientCAs:    certPool,
-				})
-				if err != nil {
-					return err
-				}
-
-				logrus.Infof("[main] starting TLS server on %s", address)
-				return http.Serve(listener, apiMux)
-			}
-
-			logrus.Infof("[main] starting plaintext server on %s", address)
-			return http.ListenAndServe(address, apiMux)
 		},
 	}
 
