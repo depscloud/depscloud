@@ -169,8 +169,8 @@ func main() {
 
 			return mux.Serve(grpcServer, http.DefaultServeMux, &mux.Config{
 				Context:         c.Context,
-				BindAddressHTTP: "0.0.0.0:8080",
-				BindAddressGRPC: "0.0.0.0:8090",
+				BindAddressHTTP: fmt.Sprintf("0.0.0.0:%d", cfg.httpPort),
+				BindAddressGRPC: fmt.Sprintf("0.0.0.0:%d", cfg.grpcPort),
 				Checks:          checks.Checks(graphStoreClient),
 				TLSConfig:       tlsConfig,
 			})
