@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-readonly version="${VERSION:-"next"}"
+readonly version="${VERSION:-"0.0.0"}"
 readonly sha="${GITHUB_SHA:-"$(git rev-parse HEAD)"}"
 
 # Set metadata in package.json
