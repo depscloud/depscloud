@@ -2,6 +2,7 @@
   "name": "@depscloud/extractor",
   "version": "0.2.20",
   "scripts": {
+    "prepackage": "bash scripts/prepackage.sh",
     "package": "tar -czvf extractor-${VERSION:-next}.tar.gz lib/ ../LICENSE package.json package-lock.json",
     "build": "tsc",
     "lint": "tslint --fix src/**/*.ts",

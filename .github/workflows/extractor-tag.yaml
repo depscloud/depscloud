@@ -12,7 +12,7 @@ jobs:
       image: node:12-alpine3.12
     steps:
       - name: Prepare
-        run: apk -U upgrade && apk add build-base git ca-certificates python2 python3
+        run: apk -U upgrade && apk add build-base git ca-certificates python2 python3 jq
 
       - name: Checkout
         uses: actions/checkout@v2
