@@ -236,7 +236,7 @@ func main() {
 			},
 		},
 		Action: func(c *cli.Context) error {
-			grpcServer := grpc.NewServer()
+			grpcServer, httpServer := mux.DefaultServers()
 			gatewayMux := runtime.NewServeMux()
 
 			ctx := context.Background()
@@ -272,9 +272,7 @@ func main() {
 			searchService := tracker.NewSearchServiceClient(trackerConn)
 			tracker.RegisterSearchServiceServer(grpcServer, proxies.NewSearchServiceProxy(searchService))
 
-			httpMux := http.NewServeMux()
-
-			httpMux.HandleFunc("/swagger/", func(writer http.ResponseWriter, request *http.Request) {
+			httpServer.HandleFunc("/swagger/", func(writer http.ResponseWriter, request *http.Request) {
 				assetPath := strings.TrimPrefix(request.URL.Path, "/swagger/")
 
 				if len(assetPath) == 0 {
@@ -297,9 +295,9 @@ func main() {
 				_, _ = writer.Write(asset)
 			})
 
-			httpMux.Handle("/", gatewayMux)
+			httpServer.Handle("/", gatewayMux)
 
-			return mux.Serve(grpcServer, httpMux, &mux.Config{
+			return mux.Serve(grpcServer, httpServer, &mux.Config{
 				Context:         c.Context,
 				BindAddressHTTP: fmt.Sprintf("0.0.0.0:%d", cfg.httpPort),
 				BindAddressGRPC: fmt.Sprintf("0.0.0.0:%d", cfg.grpcPort),
