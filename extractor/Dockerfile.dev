@@ -7,6 +7,7 @@ RUN install-grpc-probe ${HEALTH_PROBE_VERSION}
 FROM node:10 AS builder
 
 WORKDIR /home/depscloud
+RUN apt-get update && apt-get install -y jq
 
 COPY package.json .
 COPY package-lock.json .
@@ -15,7 +16,8 @@ RUN npm install
 COPY . .
 RUN npm run build && \
     npm run lint && \
-    npm run test
+    npm run test && \
+    npm run prepackage
 
 FROM node:10
 
