@@ -258,7 +258,7 @@ func (s *searchService) DepthFirstSearch(server tracker.SearchService_DepthFirst
 
 		// Pop
 		node := stack[length-1]
-		stack = stack[0:length]
+		stack = stack[0:(length - 1)]
 
 		// Explore Node
 		var response *tracker.SearchResponse
@@ -290,8 +290,6 @@ func (s *searchService) DepthFirstSearch(server tracker.SearchService_DepthFirst
 		case <-done:
 			return nil
 
-		// TODO: What this case is for?
-		// Is it to handle some unexpected request from cmd line when the original request is being processed?
 		case req := <-stream:
 			if req.GetCancel() {
 				return nil
