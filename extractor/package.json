@@ -16,7 +16,7 @@
     "url": "git@github.com:depscloud/extractor.git"
   },
   "devDependencies": {
-    "@types/cheerio": "0.22.21",
+    "@types/cheerio": "0.22.22",
     "@types/jest": "26.0.14",
     "@types/js-yaml": "3.12.5",
     "jest": "26.4.2",
