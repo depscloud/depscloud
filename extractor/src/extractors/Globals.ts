@@ -1,5 +1,5 @@
 const Globals = {
-    get ORGANIZATION() {
+    get ORGANIZATION() : string {
         return "_";
     },
 };

@@ -71,7 +71,7 @@ export default class VendorConfExtractor implements Extractor {
         }
 
         if (id[organizationString] === null || id[moduleString] === null) {
-            throw new Error(`parse error: no module present`);
+            throw new Error("parse error: no module present");
         }
 
         return {

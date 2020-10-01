@@ -1,0 +1,18 @@
+{
+    "parser": "@typescript-eslint/parser",
+    "plugins": ["@typescript-eslint"],
+    "extends": [
+        "plugin:@typescript-eslint/recommended"
+    ],
+    "rules": {
+        "@typescript-eslint/no-empty-interface": "error",
+        "quotes": ["error", "double"],
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/explicit-module-boundary-types": "off"
+
+
+        // "max-classes-per-file": ["error", 0],
+        // "interface-name": false,
+        // "member-ordering": [ false, {} ]
+      }
+}

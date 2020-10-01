@@ -98,7 +98,7 @@ export default class GoModExtractor implements Extractor {
         }
 
         if (id == null) {
-            throw new Error(`parse error: no module present`);
+            throw new Error("parse error: no module present");
         }
 
         return {
