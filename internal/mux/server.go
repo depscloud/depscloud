@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/grpc-ecosystem/go-grpc-prometheus"
+
 	"github.com/mjpitz/go-gracefully/check"
 	"github.com/mjpitz/go-gracefully/health"
 	"github.com/mjpitz/go-gracefully/state"
@@ -34,6 +36,17 @@ type Config struct {
 	Checks []check.Check
 
 	TLSConfig *TLSConfig
+}
+
+func DefaultServers() (*grpc.Server, *http.ServeMux) {
+	grpcOpts := []grpc.ServerOption{
+		grpc.StreamInterceptor(grpc_prometheus.StreamServerInterceptor),
+		grpc.UnaryInterceptor(grpc_prometheus.UnaryServerInterceptor),
+	}
+
+	grpc_prometheus.EnableHandlingTimeHistogram()
+
+	return grpc.NewServer(grpcOpts...), http.NewServeMux()
 }
 
 func registerHealth(grpcServer *grpc.Server, httpServer *http.ServeMux, config *Config) {
@@ -86,6 +99,8 @@ func Serve(grpcServer *grpc.Server, httpServer http.Handler, config *Config) err
 
 	registerHealth(grpcServer, httpMux, config)
 	registerMetrics(httpMux)
+
+	grpc_prometheus.Register(grpcServer)
 
 	corsMux := cors.Default().Handler(httpMux)
 	h2cMux := h2c.NewHandler(corsMux, &http2.Server{})

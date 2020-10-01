@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"net/http"
 	"os"
 	"strings"
 
@@ -164,10 +163,10 @@ func main() {
 			graphStoreClient := store.NewInProcessGraphStoreClient(graphStore)
 			graphStoreClient = graphstore.Retryable(graphStoreClient, 5)
 
-			grpcServer := grpc.NewServer()
+			grpcServer, httpServer := mux.DefaultServers()
 			registerV1Alpha(graphStoreClient, grpcServer)
 
-			return mux.Serve(grpcServer, http.DefaultServeMux, &mux.Config{
+			return mux.Serve(grpcServer, httpServer, &mux.Config{
 				Context:         c.Context,
 				BindAddressHTTP: fmt.Sprintf("0.0.0.0:%d", cfg.httpPort),
 				BindAddressGRPC: fmt.Sprintf("0.0.0.0:%d", cfg.grpcPort),
