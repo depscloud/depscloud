@@ -59,7 +59,7 @@ export default class PackageJsonExtractor implements Extractor {
             dependencies,
             devDependencies,
             peerDependencies,
-            bundledDependencies,
+            // bundledDependencies,
             optionalDependencies,
         } = files["package.json"].json();
 

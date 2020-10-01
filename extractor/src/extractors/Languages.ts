@@ -1,25 +1,25 @@
 const Languages = {
-    get JAVA() {
+    get JAVA() : string {
         return "java";
     },
 
-    get RUST() {
+    get RUST() : string {
         return "rust";
     },
 
-    get PHP() {
+    get PHP() : string {
         return "php";
     },
 
-    get GO() {
+    get GO() : string {
         return "go";
     },
 
-    get NODE() {
+    get NODE() : string {
         return "node";
     },
 
-    get JAVASCRIPT() {
+    get JAVASCRIPT() : string {
         return "js";
     }
 };
