@@ -75,7 +75,10 @@ func registerHealth(grpcServer *grpc.Server, httpServer *http.ServeMux, config *
 		}
 	}()
 
-	httpServer.HandleFunc("/healthz", health.HandlerFunc(monitor))
+	handler := health.HandlerFunc(monitor)
+	httpServer.HandleFunc("/healthz", handler)
+	httpServer.HandleFunc("/health", handler)
+
 	healthpb.RegisterHealthServer(grpcServer, healthCheck)
 	_ = monitor.Start(config.Context)
 }
