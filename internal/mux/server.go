@@ -21,11 +21,18 @@ import (
 
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
+	"encoding/json"
 
 	"google.golang.org/grpc"
 	grpchealth "google.golang.org/grpc/health"
 	healthpb "google.golang.org/grpc/health/grpc_health_v1"
 )
+
+type Version struct {
+	Version string `json:"version"`
+	Commit string `json:"commit"`
+	Date string `json:"date"`
+}
 
 type Config struct {
 	context.Context
@@ -36,6 +43,8 @@ type Config struct {
 	Checks []check.Check
 
 	TLSConfig *TLSConfig
+
+	Version *Version
 }
 
 func DefaultServers() (*grpc.Server, *http.ServeMux) {
@@ -84,6 +93,20 @@ func registerMetrics(httpServer *http.ServeMux) {
 	httpServer.Handle("/metrics", promhttp.Handler())
 }
 
+func registerVersion(httpServer *http.ServeMux, config *Config) {
+	httpServer.HandleFunc("/version", func(writer http.ResponseWriter, request *http.Request) {
+		version, err := json.Marshal(config.Version)
+		if err == nil {
+			writer.Header().Set("Content-Type", "application/json")
+			writer.WriteHeader(http.StatusOK)
+			writer.Write(version)
+		} else {
+			http.Error(writer, err.Error(), 500)
+		}
+
+	})
+}
+
 func Serve(grpcServer *grpc.Server, httpServer http.Handler, config *Config) error {
 	// TODO setup proper shutdown handlers
 
@@ -99,6 +122,7 @@ func Serve(grpcServer *grpc.Server, httpServer http.Handler, config *Config) err
 
 	registerHealth(grpcServer, httpMux, config)
 	registerMetrics(httpMux)
+	registerVersion(httpMux, config)
 
 	grpc_prometheus.Register(grpcServer)
 

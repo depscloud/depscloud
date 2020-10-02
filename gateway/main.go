@@ -30,6 +30,10 @@ import (
 	_ "google.golang.org/grpc/health"
 )
 
+var version string
+var commit string
+var date string
+
 // https://github.com/grpc/grpc/blob/master/doc/service_config.md
 const serviceConfigTemplate = `{
 	"loadBalancingPolicy": "%s",
@@ -302,6 +306,7 @@ func main() {
 				BindAddressHTTP: fmt.Sprintf("0.0.0.0:%d", cfg.httpPort),
 				BindAddressGRPC: fmt.Sprintf("0.0.0.0:%d", cfg.grpcPort),
 				Checks:          checks.Checks(extractorService, sourceService, moduleService),
+				Version:	 &mux.Version{Version:version, Commit:commit, Date:date},
 				TLSConfig:       tlsConfig,
 			})
 		},

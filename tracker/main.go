@@ -27,6 +27,10 @@ import (
 	"google.golang.org/grpc"
 )
 
+var version string
+var commit string
+var date string
+
 func registerV1Alpha(graphStoreClient store.GraphStoreClient, server *grpc.Server) {
 	// v1alpha
 	services.RegisterDependencyService(server, graphStoreClient)
@@ -171,6 +175,7 @@ func main() {
 				BindAddressHTTP: fmt.Sprintf("0.0.0.0:%d", cfg.httpPort),
 				BindAddressGRPC: fmt.Sprintf("0.0.0.0:%d", cfg.grpcPort),
 				Checks:          checks.Checks(graphStoreClient),
+				Version:	 &mux.Version{Version: version, Commit: commit, Date: date},
 				TLSConfig:       tlsConfig,
 			})
 		},
