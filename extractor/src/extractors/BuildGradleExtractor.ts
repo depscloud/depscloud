@@ -46,7 +46,7 @@ export default class BuildGradleExtractor implements Extractor {
                 module = settingsGradle.rootProject.name;
             }
 
-            if (settingsGradle.rootProject.parent && settingsGradle.rootProject.parent) {
+            if (settingsGradle.rootProject.parent) {
                 const key = settingsGradle.rootProject.parent.name;
                 const [ parentOrganization, parentModule, parentVersion ] = key.split(":");
 
