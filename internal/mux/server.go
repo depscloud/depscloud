@@ -101,7 +101,8 @@ func registerVersion(httpServer *http.ServeMux, config *Config) {
 			writer.WriteHeader(http.StatusOK)
 			writer.Write(version)
 		} else {
-			http.Error(writer, err.Error(), 500)
+			logrus.Error(err.Error())
+			http.Error(writer, "Something went a bit wrong here!", 500)
 		}
 
 	})
