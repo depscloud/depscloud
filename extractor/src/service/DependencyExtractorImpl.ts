@@ -33,7 +33,7 @@ function constructTree(separator: string, paths: string[]): any {
 function normalizePaths(separator: string, paths: string[]): string[] {
     return paths.map((p) => {
         if (separator === path.win32.sep) {
-            return path.posix.join(path.win32.parse(p))
+            return p.split(separator).join(path.posix.sep);
         }
         return p
     })
