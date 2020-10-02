@@ -48,7 +48,8 @@ jobs:
           VERSION=${GITHUB_REF##*/} make build-deps deps install test
           make fmt
           if [[ $(git diff --stat) != '' ]]; then
-            echo 'run make fmt and commit changes'
+            echo 'run make fmt and commit changes:'
+            git diff --stat
             exit 1
           fi
 
