@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/grpc-ecosystem/go-grpc-middleware"
+	grpc_recovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
 	"github.com/grpc-ecosystem/go-grpc-prometheus"
 
 	"github.com/mjpitz/go-gracefully/check"
@@ -19,6 +21,10 @@ import (
 
 	"github.com/sirupsen/logrus"
 
+	metrics "github.com/slok/go-http-metrics/metrics/prometheus"
+	"github.com/slok/go-http-metrics/middleware"
+	std "github.com/slok/go-http-metrics/middleware/std"
+
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 	"encoding/json"
@@ -26,6 +32,7 @@ import (
 	"google.golang.org/grpc"
 	grpchealth "google.golang.org/grpc/health"
 	healthpb "google.golang.org/grpc/health/grpc_health_v1"
+	"google.golang.org/grpc/reflection"
 )
 
 type Version struct {
@@ -49,8 +56,14 @@ type Config struct {
 
 func DefaultServers() (*grpc.Server, *http.ServeMux) {
 	grpcOpts := []grpc.ServerOption{
-		grpc.StreamInterceptor(grpc_prometheus.StreamServerInterceptor),
-		grpc.UnaryInterceptor(grpc_prometheus.UnaryServerInterceptor),
+		grpc.StreamInterceptor(grpc_middleware.ChainStreamServer(
+			grpc_prometheus.StreamServerInterceptor,
+			grpc_recovery.StreamServerInterceptor(),
+		)),
+		grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(
+			grpc_prometheus.UnaryServerInterceptor,
+			grpc_recovery.UnaryServerInterceptor(),
+		)),
 	}
 
 	grpc_prometheus.EnableHandlingTimeHistogram()
@@ -84,7 +97,10 @@ func registerHealth(grpcServer *grpc.Server, httpServer *http.ServeMux, config *
 		}
 	}()
 
-	httpServer.HandleFunc("/healthz", health.HandlerFunc(monitor))
+	handler := health.HandlerFunc(monitor)
+	httpServer.HandleFunc("/healthz", handler)
+	httpServer.HandleFunc("/health", handler)
+
 	healthpb.RegisterHealthServer(grpcServer, healthCheck)
 	_ = monitor.Start(config.Context)
 }
@@ -108,6 +124,13 @@ func registerVersion(httpServer *http.ServeMux, config *Config) {
 	})
 }
 
+func monitorHandler(httpServer http.Handler) http.Handler {
+	mdlw := middleware.New(middleware.Config{
+		Recorder: metrics.NewRecorder(metrics.Config{}),
+	})
+	return std.Handler("", mdlw, httpServer)
+}
+
 func Serve(grpcServer *grpc.Server, httpServer http.Handler, config *Config) error {
 	// TODO setup proper shutdown handlers
 
@@ -121,6 +144,7 @@ func Serve(grpcServer *grpc.Server, httpServer http.Handler, config *Config) err
 		}
 	})
 
+	reflection.Register(grpcServer)
 	registerHealth(grpcServer, httpMux, config)
 	registerMetrics(httpMux)
 	registerVersion(httpMux, config)
@@ -157,7 +181,7 @@ func Serve(grpcServer *grpc.Server, httpServer http.Handler, config *Config) err
 	}
 
 	logrus.Infof("[runtime] starting http on %s", config.BindAddressHTTP)
-	go http.Serve(httpListener, h2cMux)
+	go http.Serve(httpListener, monitorHandler(h2cMux))
 
 	logrus.Infof("[runtime] starting grpc on %s", config.BindAddressGRPC)
 	return grpcServer.Serve(grpcListener)

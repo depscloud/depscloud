@@ -16,6 +16,7 @@ require (
 	github.com/golang/protobuf v1.4.2
 	github.com/google/go-github/v20 v20.0.0
 	github.com/google/uuid v1.1.2 // indirect
+	github.com/grpc-ecosystem/go-grpc-middleware v1.0.0
 	github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0
 	github.com/grpc-ecosystem/grpc-gateway v1.15.0
 	github.com/hashicorp/go-retryablehttp v0.6.7 // indirect
@@ -27,10 +28,11 @@ require (
 	github.com/mjpitz/go-gracefully v0.0.5
 	github.com/nytlabs/gojee v0.0.0-20140331152115-5a79a1542dc0
 	github.com/pkg/errors v0.9.1
-	github.com/prometheus/client_golang v0.9.3
+	github.com/prometheus/client_golang v1.6.0
 	github.com/rs/cors v1.7.0
 	github.com/sergi/go-diff v1.1.0 // indirect
 	github.com/sirupsen/logrus v1.6.0
+	github.com/slok/go-http-metrics v0.8.0
 	github.com/spf13/cobra v1.0.0
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/stretchr/testify v1.6.1

@@ -17,6 +17,7 @@ deps: .deps
 
 fmt: .fmt
 .fmt:
+	cd extractor && npm run lint
 	go-groups -w ./deps ./gateway ./indexer ./tracker ./internal
 	gofmt -s -w ./deps ./gateway ./indexer ./tracker ./internal
 
