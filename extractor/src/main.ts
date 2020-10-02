@@ -8,12 +8,12 @@ import DependencyExtractorImpl from "./service/DependencyExtractorImpl";
 import unasyncify from "./service/unasyncify";
 
 import express = require("express");
-import promClient = require("prom-client");
 import program = require("caporal");
 import fs = require("fs");
 import health = require("grpc-health-check/health");
 import healthv1 = require("grpc-health-check/v1/health_pb");
 import Matcher from "./matcher/Matcher";
+import promMiddleware = require('express-prometheus-middleware');
 
 const asyncFs = fs.promises;
 
@@ -29,8 +29,6 @@ program.name("extractor")
     .option("--tls-ca <ca>", "The path to the certificate authority used for TLS", program.STRING)
     .option("--disable-manifests <manifest>", "The manifests to disable support for", program.ARRAY)
     .action(async (args: any, options: any) => {
-        promClient.collectDefaultMetrics({ })
-
         configure({
             appenders: {
                 console: { type: "console" },
@@ -105,19 +103,22 @@ program.name("extractor")
         });
 
         const app = express();
-        app.get("/healthz", (req, resp) => {
-            resp.set('Content-Type', 'application/json');
-            resp.send(JSON.stringify({
+
+        app.use(promMiddleware({
+            metricsPath: "/metrics",
+            collectDefaultMetrics: true,
+        }))
+
+        const healthHandle = (req, resp) => {
+            resp.json({
                 state: "ok",
                 timestamp: new Date(),
                 results: {},
-            }));
-        });
+            });
+        };
 
-        app.get("/metrics", (req, resp) => {
-            resp.set('Content-Type', promClient.register.contentType);
-            resp.send(promClient.register.metrics());
-        });
+        app.get("/healthz", healthHandle);
+        app.get("/health", healthHandle);
 
         app.listen(httpPort, () => {
             logger.info(`[main] starting http on ${bindAddress}:${httpPort}`)

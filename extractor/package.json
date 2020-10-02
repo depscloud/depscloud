@@ -33,6 +33,7 @@
     "caporal": "latest",
     "cheerio": "1.0.0-rc.3",
     "express": "^4.17.1",
+    "express-prometheus-middleware": "^0.9.6",
     "gradle-to-js": "2.0.0",
     "grpc-health-check": "1.8.0",
     "js-yaml": "3.14.0",
