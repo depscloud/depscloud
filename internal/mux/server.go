@@ -3,6 +3,7 @@ package mux
 import (
 	"context"
 	"crypto/tls"
+	"encoding/json"
 	"net"
 	"net/http"
 	"strings"
@@ -25,7 +26,6 @@ import (
 	"github.com/slok/go-http-metrics/middleware"
 	std "github.com/slok/go-http-metrics/middleware/std"
 
-	"encoding/json"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 
