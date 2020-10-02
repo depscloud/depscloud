@@ -29,6 +29,7 @@ import (
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 
+	"fmt"
 	"google.golang.org/grpc"
 	grpchealth "google.golang.org/grpc/health"
 	healthpb "google.golang.org/grpc/health/grpc_health_v1"
@@ -39,6 +40,10 @@ type Version struct {
 	Version string `json:"version"`
 	Commit  string `json:"commit"`
 	Date    string `json:"date"`
+}
+
+func (v Version) String() string {
+	return fmt.Sprintf("{version: %s, commit: %s, date: %s}", v.Version, v.Commit, v.Date)
 }
 
 type Config struct {
@@ -112,15 +117,13 @@ func registerMetrics(httpServer *http.ServeMux) {
 func registerVersion(httpServer *http.ServeMux, config *Config) {
 	httpServer.HandleFunc("/version", func(writer http.ResponseWriter, request *http.Request) {
 		version, err := json.Marshal(config.Version)
-		if err == nil {
-			writer.Header().Set("Content-Type", "application/json")
-			writer.WriteHeader(http.StatusOK)
-			writer.Write(version)
-		} else {
-			logrus.Error(err.Error())
-			http.Error(writer, "Something went a bit wrong here!", 500)
+		if err != nil {
+			writer.WriteHeader(http.StatusInternalServerError)
+			return
 		}
-
+		writer.Header().Set("Content-Type", "application/json")
+		writer.WriteHeader(http.StatusOK)
+		writer.Write(version)
 	})
 }
 

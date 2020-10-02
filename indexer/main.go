@@ -14,6 +14,7 @@ import (
 	"github.com/depscloud/depscloud/indexer/internal/config"
 	"github.com/depscloud/depscloud/indexer/internal/consumer"
 	"github.com/depscloud/depscloud/indexer/internal/remotes"
+	"github.com/depscloud/depscloud/internal/mux"
 
 	"github.com/sirupsen/logrus"
 
@@ -149,7 +150,7 @@ func main() {
 				Name:  "version",
 				Usage: "Output version information",
 				Action: func(c *cli.Context) error {
-					versionString := fmt.Sprintf("{version: %s, commit: %s, date: %s}", version, commit, date)
+					versionString := fmt.Sprintf("%s %s", c.Command.Name, mux.Version{Version: version, Commit: commit, Date: date})
 					fmt.Println(versionString)
 					return nil
 

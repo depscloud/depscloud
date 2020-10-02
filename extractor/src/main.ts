@@ -123,8 +123,7 @@ program.name("extractor")
         app.get("/health", healthHandle);
 
         app.get("/version", (req, resp) => {
-            resp.set('Content-Type', 'application/json');
-            resp.send(packageMeta.meta);
+		resp.json(packageMeta.meta);
         });
 
         app.listen(httpPort, () => {

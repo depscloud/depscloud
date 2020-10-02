@@ -7,6 +7,7 @@ import (
 	"github.com/depscloud/depscloud/deps/internal/cmds/completion"
 	"github.com/depscloud/depscloud/deps/internal/cmds/get"
 	"github.com/depscloud/depscloud/deps/internal/writer"
+	"github.com/depscloud/depscloud/internal/mux"
 
 	"github.com/sirupsen/logrus"
 
@@ -53,8 +54,7 @@ func main() {
 		Use:   "version",
 		Short: "Output version information",
 		RunE: func(_ *cobra.Command, args []string) error {
-			versionString := fmt.Sprintf("%s {version: %s, commit: %s, date: %s}",
-				cmd.Use, version, commit, date)
+			versionString := fmt.Sprintf("%s %s", cmd.Use, mux.Version{Version: version, Commit: commit, Date: date})
 
 			fmt.Println(versionString)
 			return nil
