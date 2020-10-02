@@ -25,9 +25,9 @@ import (
 	"github.com/slok/go-http-metrics/middleware"
 	std "github.com/slok/go-http-metrics/middleware/std"
 
+	"encoding/json"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
-	"encoding/json"
 
 	"google.golang.org/grpc"
 	grpchealth "google.golang.org/grpc/health"
@@ -37,8 +37,8 @@ import (
 
 type Version struct {
 	Version string `json:"version"`
-	Commit string `json:"commit"`
-	Date string `json:"date"`
+	Commit  string `json:"commit"`
+	Date    string `json:"date"`
 }
 
 type Config struct {

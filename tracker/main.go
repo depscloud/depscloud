@@ -70,13 +70,12 @@ func main() {
 		Description: description,
 		Commands: []*cli.Command{
 			{
-				Name: "version",
+				Name:  "version",
 				Usage: "Output version information",
 				Action: func(c *cli.Context) error {
 					versionString := fmt.Sprintf("{version: %s, commit: %s, date: %s}", version, commit, date)
 					fmt.Println(versionString)
 					return nil
-
 
 				},
 			},
@@ -189,7 +188,7 @@ func main() {
 				BindAddressHTTP: fmt.Sprintf("0.0.0.0:%d", cfg.httpPort),
 				BindAddressGRPC: fmt.Sprintf("0.0.0.0:%d", cfg.grpcPort),
 				Checks:          checks.Checks(graphStoreClient),
-				Version:	 &mux.Version{Version: version, Commit: commit, Date: date},
+				Version:         &mux.Version{Version: version, Commit: commit, Date: date},
 				TLSConfig:       tlsConfig,
 			})
 		},

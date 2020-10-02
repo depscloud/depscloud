@@ -146,13 +146,12 @@ func main() {
 		Description: description,
 		Commands: []*cli.Command{
 			{
-				Name: "version",
+				Name:  "version",
 				Usage: "Output version information",
 				Action: func(c *cli.Context) error {
 					versionString := fmt.Sprintf("{version: %s, commit: %s, date: %s}", version, commit, date)
 					fmt.Println(versionString)
 					return nil
-
 
 				},
 			},
