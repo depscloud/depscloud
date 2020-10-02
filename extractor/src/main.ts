@@ -15,6 +15,8 @@ import health = require("grpc-health-check/health");
 import healthv1 = require("grpc-health-check/v1/health_pb");
 import Matcher from "./matcher/Matcher";
 
+const packageMeta = require('../package.json');
+
 const asyncFs = fs.promises;
 
 const logger = getLogger();
@@ -117,6 +119,11 @@ program.name("extractor")
         app.get("/metrics", (req, resp) => {
             resp.set('Content-Type', promClient.register.contentType);
             resp.send(promClient.register.metrics());
+        });
+
+        app.get("/version", (req, resp) => {
+            resp.set('Content-Type', 'application/json');
+            resp.send(packageMeta.meta);
         });
 
         app.listen(httpPort, () => {
