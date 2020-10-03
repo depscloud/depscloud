@@ -54,6 +54,7 @@ var description = strings.TrimSpace(`
 `)
 
 func main() {
+	version := mux.Version{Version: version, Commit: commit, Date: date}
 	cfg := &trackerConfig{
 		httpPort:               8080,
 		grpcPort:               8090,
@@ -73,7 +74,7 @@ func main() {
 				Name:  "version",
 				Usage: "Output version information",
 				Action: func(c *cli.Context) error {
-					versionString := fmt.Sprintf("%s %s", c.Command.Name, mux.Version{Version: version, Commit: commit, Date: date})
+					versionString := fmt.Sprintf("%s %s", c.Command.Name, version)
 					fmt.Println(versionString)
 					return nil
 
@@ -188,7 +189,7 @@ func main() {
 				BindAddressHTTP: fmt.Sprintf("0.0.0.0:%d", cfg.httpPort),
 				BindAddressGRPC: fmt.Sprintf("0.0.0.0:%d", cfg.grpcPort),
 				Checks:          checks.Checks(graphStoreClient),
-				Version:         &mux.Version{Version: version, Commit: commit, Date: date},
+				Version:         &version,
 				TLSConfig:       tlsConfig,
 			})
 		},
