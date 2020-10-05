@@ -30,6 +30,11 @@ import (
 	_ "google.golang.org/grpc/health"
 )
 
+// variables set during build using -X ldflag
+var version string
+var commit string
+var date string
+
 // https://github.com/grpc/grpc/blob/master/doc/service_config.md
 const serviceConfigTemplate = `{
 	"loadBalancingPolicy": "%s",
@@ -105,6 +110,7 @@ type gatewayConfig struct {
 }
 
 func main() {
+	version := mux.Version{Version: version, Commit: commit, Date: date}
 	cfg := &gatewayConfig{
 		httpPort: 8080,
 		grpcPort: 8090,
@@ -127,6 +133,19 @@ func main() {
 	app := &cli.App{
 		Name:  "gateway",
 		Usage: "an HTTP/gRPC proxy to backend services",
+		Commands: []*cli.Command{
+			{
+				Name:  "version",
+				Usage: "Output version information",
+				Action: func(c *cli.Context) error {
+					versionString := fmt.Sprintf("%s %s", c.Command.Name, version)
+
+					fmt.Println(versionString)
+					return nil
+
+				},
+			},
+		},
 		Flags: []cli.Flag{
 			&cli.IntFlag{
 				Name:        "http-port",
@@ -302,6 +321,7 @@ func main() {
 				BindAddressHTTP: fmt.Sprintf("0.0.0.0:%d", cfg.httpPort),
 				BindAddressGRPC: fmt.Sprintf("0.0.0.0:%d", cfg.grpcPort),
 				Checks:          checks.Checks(extractorService, sourceService, moduleService),
+				Version:         &version,
 				TLSConfig:       tlsConfig,
 			})
 		},

@@ -3,6 +3,8 @@ package mux
 import (
 	"context"
 	"crypto/tls"
+	"encoding/json"
+	"fmt"
 	"net"
 	"net/http"
 	"strings"
@@ -34,6 +36,16 @@ import (
 	"google.golang.org/grpc/reflection"
 )
 
+type Version struct {
+	Version string `json:"version"`
+	Commit  string `json:"commit"`
+	Date    string `json:"date"`
+}
+
+func (v Version) String() string {
+	return fmt.Sprintf("{version: %s, commit: %s, date: %s}", v.Version, v.Commit, v.Date)
+}
+
 type Config struct {
 	context.Context
 
@@ -43,6 +55,8 @@ type Config struct {
 	Checks []check.Check
 
 	TLSConfig *TLSConfig
+
+	Version *Version
 }
 
 func DefaultServers() (*grpc.Server, *http.ServeMux) {
@@ -100,6 +114,19 @@ func registerMetrics(httpServer *http.ServeMux) {
 	httpServer.Handle("/metrics", promhttp.Handler())
 }
 
+func registerVersion(httpServer *http.ServeMux, config *Config) {
+	httpServer.HandleFunc("/version", func(writer http.ResponseWriter, request *http.Request) {
+		version, err := json.Marshal(config.Version)
+		if err != nil {
+			writer.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		writer.Header().Set("Content-Type", "application/json")
+		writer.WriteHeader(http.StatusOK)
+		writer.Write(version)
+	})
+}
+
 func monitorHandler(httpServer http.Handler) http.Handler {
 	mdlw := middleware.New(middleware.Config{
 		Recorder: metrics.NewRecorder(metrics.Config{}),
@@ -123,6 +150,7 @@ func Serve(grpcServer *grpc.Server, httpServer http.Handler, config *Config) err
 	reflection.Register(grpcServer)
 	registerHealth(grpcServer, httpMux, config)
 	registerMetrics(httpMux)
+	registerVersion(httpMux, config)
 
 	grpc_prometheus.Register(grpcServer)
 

@@ -15,6 +15,8 @@ import healthv1 = require("grpc-health-check/v1/health_pb");
 import Matcher from "./matcher/Matcher";
 import promMiddleware = require('express-prometheus-middleware');
 
+const packageMeta = require('../package.json');
+
 const asyncFs = fs.promises;
 
 const logger = getLogger();
@@ -119,6 +121,10 @@ program.name("extractor")
 
         app.get("/healthz", healthHandle);
         app.get("/health", healthHandle);
+
+        app.get("/version", (req, resp) => {
+		resp.json(packageMeta.meta);
+        });
 
         app.listen(httpPort, () => {
             logger.info(`[main] starting http on ${bindAddress}:${httpPort}`)

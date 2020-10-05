@@ -14,6 +14,7 @@ import (
 	"github.com/depscloud/depscloud/indexer/internal/config"
 	"github.com/depscloud/depscloud/indexer/internal/consumer"
 	"github.com/depscloud/depscloud/indexer/internal/remotes"
+	"github.com/depscloud/depscloud/internal/mux"
 
 	"github.com/sirupsen/logrus"
 
@@ -26,6 +27,11 @@ import (
 	"gopkg.in/src-d/go-git.v4/plumbing/transport"
 	"gopkg.in/src-d/go-git.v4/plumbing/transport/ssh"
 )
+
+// variables set during build using -X ldflag by goreleaser
+var version string
+var commit string
+var date string
 
 // https://github.com/grpc/grpc/blob/master/doc/service_config.md
 const serviceConfigTemplate = `{
@@ -139,6 +145,18 @@ func main() {
 		Name:        "indexer",
 		Usage:       "crawl sources and store extracted content",
 		Description: description,
+		Commands: []*cli.Command{
+			{
+				Name:  "version",
+				Usage: "Output version information",
+				Action: func(c *cli.Context) error {
+					versionString := fmt.Sprintf("%s %s", c.Command.Name, mux.Version{Version: version, Commit: commit, Date: date})
+					fmt.Println(versionString)
+					return nil
+
+				},
+			},
+		},
 		Flags: []cli.Flag{
 			&cli.IntFlag{
 				Name:        "workers",

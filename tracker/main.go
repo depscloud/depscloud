@@ -27,6 +27,11 @@ import (
 	"google.golang.org/grpc"
 )
 
+// variables set during build using -X ldflag
+var version string
+var commit string
+var date string
+
 func registerV1Alpha(graphStoreClient store.GraphStoreClient, server *grpc.Server) {
 	// v1alpha
 	services.RegisterDependencyService(server, graphStoreClient)
@@ -49,6 +54,7 @@ var description = strings.TrimSpace(`
 `)
 
 func main() {
+	version := mux.Version{Version: version, Commit: commit, Date: date}
 	cfg := &trackerConfig{
 		httpPort:               8080,
 		grpcPort:               8090,
@@ -63,6 +69,18 @@ func main() {
 		Name:        "tracker",
 		Usage:       "tracks dependencies between systems",
 		Description: description,
+		Commands: []*cli.Command{
+			{
+				Name:  "version",
+				Usage: "Output version information",
+				Action: func(c *cli.Context) error {
+					versionString := fmt.Sprintf("%s %s", c.Command.Name, version)
+					fmt.Println(versionString)
+					return nil
+
+				},
+			},
+		},
 		Flags: []cli.Flag{
 			&cli.IntFlag{
 				Name:        "http-port",
@@ -171,6 +189,7 @@ func main() {
 				BindAddressHTTP: fmt.Sprintf("0.0.0.0:%d", cfg.httpPort),
 				BindAddressGRPC: fmt.Sprintf("0.0.0.0:%d", cfg.grpcPort),
 				Checks:          checks.Checks(graphStoreClient),
+				Version:         &version,
 				TLSConfig:       tlsConfig,
 			})
 		},
