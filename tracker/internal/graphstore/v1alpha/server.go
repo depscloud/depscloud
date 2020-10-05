@@ -1,4 +1,4 @@
-package graphstore
+package v1alpha
 
 import (
 	"context"
@@ -34,6 +34,41 @@ func ResolveDriverName(dbmsName string) (string, error) {
 	}
 
 	return "", fmt.Errorf("%s not supported, specify one of the supported systems; mysql/postgres/sqlite", dbmsName)
+}
+
+func NewGraphStoreFor(storageDriver, storageAddress, storageReadOnlyAddress string) (server store.GraphStoreServer, err error) {
+	storageDriver, err = ResolveDriverName(storageDriver)
+	if err != nil {
+		return nil, err
+	}
+
+	var rwdb *sqlx.DB
+
+	if len(storageAddress) > 0 {
+		rwdb, err = sqlx.Open(storageDriver, storageAddress)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	rodb := rwdb
+	if len(storageReadOnlyAddress) > 0 {
+		rodb, err = sqlx.Open(storageDriver, storageReadOnlyAddress)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	if rodb == nil && rwdb == nil {
+		return nil, fmt.Errorf("either a storage-address or storage-readonly-address must be provided")
+	}
+
+	statements, err := DefaultStatementsFor(storageDriver)
+	if err != nil {
+		return nil, err
+	}
+
+	return NewSQLGraphStore(rwdb, rodb, statements)
 }
 
 // NewSQLGraphStore constructs a new GraphStore with a sql driven backend. Current

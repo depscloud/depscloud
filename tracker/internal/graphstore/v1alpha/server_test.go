@@ -1,11 +1,11 @@
-package graphstore_test
+package v1alpha_test
 
 import (
 	"testing"
 
 	"github.com/depscloud/api"
 	"github.com/depscloud/api/v1alpha/store"
-	"github.com/depscloud/depscloud/tracker/internal/graphstore"
+	graphstore "github.com/depscloud/depscloud/tracker/internal/graphstore/v1alpha"
 
 	"github.com/jmoiron/sqlx"
 

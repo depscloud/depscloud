@@ -21,7 +21,7 @@ func encode(data []byte, encoding Encoding) string {
 func decode(data string, encoding Encoding) ([]byte, error) {
 	switch encoding {
 	case EncodingProtocolBuffers:
-		return base64.StdEncoding.DecodeString(string(data))
+		return base64.StdEncoding.DecodeString(data)
 	default:
 		return []byte(data), nil
 	}

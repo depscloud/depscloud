@@ -5,18 +5,18 @@ import (
 	"os"
 	"strings"
 
-	"github.com/depscloud/api/v1alpha/store"
+	apiv1alpha "github.com/depscloud/api/v1alpha/store"
+	apiv1beta "github.com/depscloud/api/v1beta/graphstore"
 	"github.com/depscloud/depscloud/internal/mux"
 	"github.com/depscloud/depscloud/tracker/internal/checks"
-	"github.com/depscloud/depscloud/tracker/internal/graphstore"
+	"github.com/depscloud/depscloud/tracker/internal/graphstore/v1alpha"
+	"github.com/depscloud/depscloud/tracker/internal/graphstore/v1beta"
 	"github.com/depscloud/depscloud/tracker/internal/services"
 
 	_ "github.com/go-sql-driver/mysql"
 
 	_ "github.com/jackc/pgx/v4"
 	_ "github.com/jackc/pgx/v4/stdlib"
-
-	"github.com/jmoiron/sqlx"
 
 	_ "github.com/mattn/go-sqlite3"
 
@@ -32,7 +32,7 @@ var version string
 var commit string
 var date string
 
-func registerV1Alpha(graphStoreClient store.GraphStoreClient, server *grpc.Server) {
+func registerV1Alpha(graphStoreClient apiv1alpha.GraphStoreClient, server *grpc.Server) {
 	// v1alpha
 	services.RegisterDependencyService(server, graphStoreClient)
 	services.RegisterModuleService(server, graphStoreClient)
@@ -141,54 +141,34 @@ func main() {
 			},
 		},
 		Action: func(c *cli.Context) error {
-			var rwdb *sqlx.DB
-			var err error
-
-			cfg.storageDriver, err = graphstore.ResolveDriverName(cfg.storageDriver)
-			if err != nil {
-				return err
-			}
-
-			if len(cfg.storageAddress) > 0 {
-				rwdb, err = sqlx.Open(cfg.storageDriver, cfg.storageAddress)
-				if err != nil {
-					return err
-				}
-			}
-
-			rodb := rwdb
-			if len(cfg.storageReadOnlyAddress) > 0 {
-				rodb, err = sqlx.Open(cfg.storageDriver, cfg.storageReadOnlyAddress)
-				if err != nil {
-					return err
-				}
-			}
-
-			if rodb == nil && rwdb == nil {
-				return fmt.Errorf("either --storage-address or --storage-readonly-address must be provided")
-			}
-
-			statements, err := graphstore.DefaultStatementsFor(cfg.storageDriver)
-			if err != nil {
-				return err
-			}
-
-			graphStore, err := graphstore.NewSQLGraphStore(rwdb, rodb, statements)
-			if err != nil {
-				return err
-			}
-
-			graphStoreClient := store.NewInProcessGraphStoreClient(graphStore)
-			graphStoreClient = graphstore.Retryable(graphStoreClient, 5)
-
 			grpcServer, httpServer := mux.DefaultServers()
+
+			// v1beta
+			v1betaDriver, err := v1beta.Resolve(cfg.storageDriver, cfg.storageAddress, cfg.storageReadOnlyAddress)
+			if err != nil {
+				return err
+			}
+
+			v1betaGraphStore := &v1beta.GraphStoreServer{
+				Driver: v1betaDriver,
+			}
+			apiv1beta.RegisterGraphStoreServer(grpcServer, v1betaGraphStore)
+
+			// v1alpha
+			v1alphaGraphStore, err := v1alpha.NewGraphStoreFor(cfg.storageDriver, cfg.storageAddress, cfg.storageReadOnlyAddress)
+			if err != nil {
+				return err
+			}
+			graphStoreClient := apiv1alpha.NewInProcessGraphStoreClient(v1alphaGraphStore)
+			graphStoreClient = v1alpha.Retryable(graphStoreClient, 5)
+
 			registerV1Alpha(graphStoreClient, grpcServer)
 
 			return mux.Serve(grpcServer, httpServer, &mux.Config{
 				Context:         c.Context,
 				BindAddressHTTP: fmt.Sprintf("0.0.0.0:%d", cfg.httpPort),
 				BindAddressGRPC: fmt.Sprintf("0.0.0.0:%d", cfg.grpcPort),
-				Checks:          checks.Checks(graphStoreClient),
+				Checks:          checks.Checks(v1betaGraphStore, graphStoreClient),
 				Version:         &version,
 				TLSConfig:       tlsConfig,
 			})

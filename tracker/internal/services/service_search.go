@@ -6,7 +6,7 @@ import (
 	"github.com/depscloud/api"
 	"github.com/depscloud/api/v1alpha/store"
 	"github.com/depscloud/api/v1alpha/tracker"
-	"github.com/depscloud/depscloud/tracker/internal/graphstore"
+	graphstore "github.com/depscloud/depscloud/tracker/internal/graphstore/v1alpha"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"

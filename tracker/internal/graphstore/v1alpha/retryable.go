@@ -1,4 +1,4 @@
-package graphstore
+package v1alpha
 
 import (
 	"context"
