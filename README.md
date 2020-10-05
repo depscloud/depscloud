@@ -1,6 +1,9 @@
 # deps.cloud
+[![deps.cloud website](https://img.shields.io/badge/docs-deps.cloud.io-blue.svg)](https://deps.cloud/docs/)
+<a href="https://depscloud.slack.com/join/shared_invite/zt-fd03dm8x-L5Vxh07smWr_vlK9Qg9q5A"><img src="https://img.shields.io/badge/chat-slack-brightgreen.svg?&style=flat"></a>
+[![Open Source Love svg1](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
 
-<img alt="logo" width="64" src="https://deps.cloud/favicons/android-chrome-512x512.png"/>
+<img alt="logo" height="244" width="244" src="https://deps.cloud/favicons/android-chrome-512x512.png"/>
 
 deps.cloud is a tool to help understand how projects relate to one another.
 It works by detecting dependencies defined in common [manifest files] (`pom.xml`, `package.json`, `go.mod`, etc).
