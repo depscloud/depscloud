@@ -239,7 +239,69 @@ func (s *searchService) BreadthFirstSearch(server tracker.SearchService_BreadthF
 }
 
 func (s *searchService) DepthFirstSearch(server tracker.SearchService_DepthFirstSearchServer) error {
-	return api.ErrUnimplemented
+	ctx, cancel := context.WithCancel(server.Context())
+	defer cancel()
+
+	done := ctx.Done()
+	stream := consumeStream(ctx, server)
+
+	root := <-stream
+	stack := []*tracker.SearchRequest{
+		root,
+	}
+	seen := map[string]bool{
+		keyFor(root): true,
+	}
+
+	for length := len(stack); length > 0; length = len(stack) {
+		next := make([]*tracker.SearchRequest, 0)
+
+		// Pop
+		node := stack[length-1]
+		stack = stack[0:(length - 1)]
+
+		// Explore Node
+		var response *tracker.SearchResponse
+		response, err := s.processRequest(ctx, node)
+		if err != nil {
+			return err
+		}
+
+		// Get adjacent nodes
+		nextBatch, err := transformResponse(response)
+		if err != nil {
+			return err
+		}
+
+		for _, item := range nextBatch {
+			key := keyFor(item)
+			if _, ok := seen[key]; !ok {
+				seen[key] = true
+				next = append(next, item)
+			}
+		}
+
+		// send response to client
+		if err := server.Send(response); err != nil {
+			return err
+		}
+
+		select {
+		case <-done:
+			return nil
+
+		case req := <-stream:
+			if req.GetCancel() {
+				return nil
+			}
+
+			return status.Error(codes.InvalidArgument, "unexpected request body")
+		default:
+			stack = next
+		}
+	}
+
+	return nil
 }
 
 var _ tracker.SearchServiceServer = &searchService{}
