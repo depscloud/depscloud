@@ -20,8 +20,7 @@ require (
 	github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0
 	github.com/grpc-ecosystem/grpc-gateway v1.15.0
 	github.com/hashicorp/go-retryablehttp v0.6.7 // indirect
-	github.com/jackc/pgproto3/v2 v2.0.4 // indirect
-	github.com/jackc/pgx/v4 v4.8.1
+	github.com/jackc/pgx/v4 v4.9.0
 	github.com/jmoiron/sqlx v1.2.0
 	github.com/jonboulle/clockwork v0.2.1 // indirect
 	github.com/mattn/go-sqlite3 v2.0.3+incompatible
@@ -51,7 +50,7 @@ require (
 	gopkg.in/src-d/go-git.v4 v4.13.1
 	gopkg.in/yaml.v2 v2.3.0 // indirect
 	gorm.io/driver/mysql v1.0.1
-	gorm.io/driver/postgres v1.0.1
+	gorm.io/driver/postgres v1.0.2
 	gorm.io/driver/sqlite v1.1.3
 	gorm.io/gorm v1.20.2
 )
