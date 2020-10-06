@@ -2,13 +2,13 @@ package client
 
 import "net/http"
 
-func httpClient(baseURL string) Client {
-	httpClient := http.DefaultClient
+func httpDefaltClient(baseURL string) Client {
+	client := http.DefaultClient
 
-	return &client{
-		dependencies: &dependencyService{httpClient, baseURL},
-		modules:      &moduleClient{httpClient, baseURL},
-		sources:      &sourceClient{httpClient, baseURL},
+	return &httpClient{
+		dependencies: &httpDependencyService{client, baseURL},
+		modules:      &httpModuleClient{client, baseURL},
+		sources:      &httpSourceClient{client, baseURL},
 		search:       nil,
 	}
 }

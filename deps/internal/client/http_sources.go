@@ -14,12 +14,12 @@ import (
 	"google.golang.org/grpc"
 )
 
-type sourceClient struct {
+type httpSourceClient struct {
 	client  *http.Client
 	baseURL string
 }
 
-func (s *sourceClient) List(ctx context.Context, in *tracker.ListRequest, opts ...grpc.CallOption) (*tracker.ListSourceResponse, error) {
+func (s *httpSourceClient) List(ctx context.Context, in *tracker.ListRequest, opts ...grpc.CallOption) (*tracker.ListSourceResponse, error) {
 	uri := fmt.Sprintf("%s/v1alpha/sources?page=%d&count=%d",
 		s.baseURL,
 		in.Page,
@@ -38,7 +38,7 @@ func (s *sourceClient) List(ctx context.Context, in *tracker.ListRequest, opts .
 	return resp, nil
 }
 
-func (s *sourceClient) Track(ctx context.Context, in *tracker.SourceRequest, opts ...grpc.CallOption) (*tracker.TrackResponse, error) {
+func (s *httpSourceClient) Track(ctx context.Context, in *tracker.SourceRequest, opts ...grpc.CallOption) (*tracker.TrackResponse, error) {
 	uri := fmt.Sprintf("%s/v1alpha/sources/track",
 		s.baseURL)
 
@@ -60,4 +60,4 @@ func (s *sourceClient) Track(ctx context.Context, in *tracker.SourceRequest, opt
 	return resp, nil
 }
 
-var _ tracker.SourceServiceClient = &sourceClient{}
+var _ tracker.SourceServiceClient = &httpSourceClient{}

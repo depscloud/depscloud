@@ -13,12 +13,12 @@ import (
 	"google.golang.org/grpc"
 )
 
-type dependencyService struct {
+type httpDependencyService struct {
 	client  *http.Client
 	baseURL string
 }
 
-func (d *dependencyService) ListDependents(ctx context.Context, in *tracker.DependencyRequest, opts ...grpc.CallOption) (*tracker.ListDependentsResponse, error) {
+func (d *httpDependencyService) ListDependents(ctx context.Context, in *tracker.DependencyRequest, opts ...grpc.CallOption) (*tracker.ListDependentsResponse, error) {
 	uri := fmt.Sprintf("%s/v1alpha/graph/%s/dependents?organization=%s&module=%s",
 		d.baseURL,
 		url.QueryEscape(in.Language),
@@ -38,7 +38,7 @@ func (d *dependencyService) ListDependents(ctx context.Context, in *tracker.Depe
 	return resp, nil
 }
 
-func (d *dependencyService) ListDependencies(ctx context.Context, in *tracker.DependencyRequest, opts ...grpc.CallOption) (*tracker.ListDependenciesResponse, error) {
+func (d *httpDependencyService) ListDependencies(ctx context.Context, in *tracker.DependencyRequest, opts ...grpc.CallOption) (*tracker.ListDependenciesResponse, error) {
 	uri := fmt.Sprintf("%s/v1alpha/graph/%s/dependencies?organization=%s&module=%s",
 		d.baseURL,
 		url.QueryEscape(in.Language),
@@ -58,4 +58,4 @@ func (d *dependencyService) ListDependencies(ctx context.Context, in *tracker.De
 	return resp, nil
 }
 
-var _ tracker.DependencyServiceClient = &dependencyService{}
+var _ tracker.DependencyServiceClient = &httpDependencyService{}

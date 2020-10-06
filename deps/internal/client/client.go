@@ -4,6 +4,8 @@ import (
 	"os"
 
 	"github.com/depscloud/api/v1alpha/tracker"
+
+	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -28,10 +30,11 @@ func or(read, def string) string {
 
 func DefaultClient() Client {
 	if protocol == "grpc" {
-		return grpcClient(baseURL)
+		return grpcDefaultClient(baseURL)
 	}
 
-	return httpClient(baseURL)
+	logrus.Warnf("the HTTP api is deprecated, please migrate to gRPC")
+	return httpDefaltClient(baseURL)
 }
 
 type Client interface {
@@ -40,28 +43,3 @@ type Client interface {
 	Sources() tracker.SourceServiceClient
 	Search() tracker.SearchServiceClient
 }
-
-type client struct {
-	dependencies tracker.DependencyServiceClient
-	modules      tracker.ModuleServiceClient
-	sources      tracker.SourceServiceClient
-	search       tracker.SearchServiceClient
-}
-
-func (c *client) Dependencies() tracker.DependencyServiceClient {
-	return c.dependencies
-}
-
-func (c *client) Modules() tracker.ModuleServiceClient {
-	return c.modules
-}
-
-func (c *client) Sources() tracker.SourceServiceClient {
-	return c.sources
-}
-
-func (c *client) Search() tracker.SearchServiceClient {
-	return c.search
-}
-
-var _ Client = &client{}

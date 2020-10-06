@@ -20,13 +20,13 @@ func Test_translateBaseURL(t *testing.T) {
 	}
 
 	{
-		tls, translated := translateBaseURL("client://api.deps.cloud")
+		tls, translated := translateBaseURL("http://api.deps.cloud")
 		require.False(t, tls)
 		require.Equal(t, "api.deps.cloud:80", translated)
 	}
 
 	{
-		tls, translated := translateBaseURL("client://api.deps.cloud:1234")
+		tls, translated := translateBaseURL("http://api.deps.cloud:1234")
 		require.False(t, tls)
 		require.Equal(t, "api.deps.cloud:1234", translated)
 	}

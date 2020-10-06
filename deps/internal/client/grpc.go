@@ -1,14 +1,11 @@
 package client
 
 import (
-	"crypto/tls"
 	"net/url"
 	"strings"
 
 	"github.com/depscloud/api/v1alpha/tracker"
-
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials"
+	"github.com/depscloud/depscloud/internal/client"
 )
 
 func translateBaseURL(baseURL string) (bool, string) {
@@ -31,25 +28,21 @@ func translateBaseURL(baseURL string) (bool, string) {
 	return tls, host
 }
 
-func grpcClient(baseURL string) Client {
+func grpcDefaultClient(baseURL string) Client {
 	isSecure, hostPort := translateBaseURL(baseURL)
 
-	var credentialOption grpc.DialOption
-	if isSecure {
-		// TODO: eventually add support for mutual TLS certs
-		tlsConfig := &tls.Config{}
-		creds := credentials.NewTLS(tlsConfig)
-		credentialOption = grpc.WithTransportCredentials(creds)
-	} else {
-		credentialOption = grpc.WithInsecure()
-	}
-
-	conn, err := grpc.Dial(hostPort, credentialOption)
+	conn, err := client.Connect(&client.Config{
+		Address:       hostPort,
+		ServiceConfig: client.DefaultServiceConfig,
+		LoadBalancer:  client.DefaultLoadBalancer,
+		TLS:           isSecure,
+		TLSConfig:     &client.TLSConfig{},
+	})
 	if err != nil {
 		panic(err)
 	}
 
-	return &client{
+	return &httpClient{
 		dependencies: tracker.NewDependencyServiceClient(conn),
 		modules:      tracker.NewModuleServiceClient(conn),
 		sources:      tracker.NewSourceServiceClient(conn),

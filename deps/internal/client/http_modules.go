@@ -14,12 +14,12 @@ import (
 	"google.golang.org/grpc"
 )
 
-type moduleClient struct {
+type httpModuleClient struct {
 	client  *http.Client
 	baseURL string
 }
 
-func (m *moduleClient) List(ctx context.Context, in *tracker.ListRequest, opts ...grpc.CallOption) (*tracker.ListModuleResponse, error) {
+func (m *httpModuleClient) List(ctx context.Context, in *tracker.ListRequest, opts ...grpc.CallOption) (*tracker.ListModuleResponse, error) {
 	uri := fmt.Sprintf("%s/v1alpha/modules?page=%d&count=%d",
 		m.baseURL,
 		in.Page,
@@ -38,7 +38,7 @@ func (m *moduleClient) List(ctx context.Context, in *tracker.ListRequest, opts .
 	return resp, nil
 }
 
-func (m *moduleClient) ListSources(ctx context.Context, in *schema.Module, opts ...grpc.CallOption) (*tracker.ListSourcesResponse, error) {
+func (m *httpModuleClient) ListSources(ctx context.Context, in *schema.Module, opts ...grpc.CallOption) (*tracker.ListSourcesResponse, error) {
 	uri := fmt.Sprintf("%s/v1alpha/modules/source?language=%s&organization=%s&module=%s",
 		m.baseURL,
 		url.QueryEscape(in.Language),
@@ -58,7 +58,7 @@ func (m *moduleClient) ListSources(ctx context.Context, in *schema.Module, opts 
 	return resp, nil
 }
 
-func (m *moduleClient) ListManaged(ctx context.Context, in *schema.Source, opts ...grpc.CallOption) (*tracker.ListManagedResponse, error) {
+func (m *httpModuleClient) ListManaged(ctx context.Context, in *schema.Source, opts ...grpc.CallOption) (*tracker.ListManagedResponse, error) {
 	uri := fmt.Sprintf("%s/v1alpha/modules/managed?url=%s",
 		m.baseURL,
 		url.QueryEscape(in.Url))
@@ -76,4 +76,4 @@ func (m *moduleClient) ListManaged(ctx context.Context, in *schema.Source, opts 
 	return resp, nil
 }
 
-var _ tracker.ModuleServiceClient = &moduleClient{}
+var _ tracker.ModuleServiceClient = &httpModuleClient{}
