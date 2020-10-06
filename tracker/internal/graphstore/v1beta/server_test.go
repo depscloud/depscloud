@@ -2,6 +2,7 @@ package v1beta_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/depscloud/api/v1beta/graphstore"
@@ -10,6 +11,9 @@ import (
 	"github.com/golang/protobuf/ptypes/any"
 
 	"github.com/stretchr/testify/require"
+
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
 )
 
 func newNode(id string) *graphstore.Node {
@@ -33,6 +37,47 @@ func newEdge(from, to, key string) *graphstore.Edge {
 		},
 	}
 }
+
+type mockServerStream struct {
+	incoming chan interface{}
+	outgoing chan interface{}
+}
+
+func (m *mockServerStream) Send(response *graphstore.TraverseResponse) error {
+	return m.SendMsg(response)
+}
+
+func (m *mockServerStream) Recv() (*graphstore.TraverseRequest, error) {
+	req := <-m.incoming
+	return req.(*graphstore.TraverseRequest), nil
+}
+
+func (m *mockServerStream) SetHeader(md metadata.MD) error {
+	return nil
+}
+
+func (m *mockServerStream) SendHeader(md metadata.MD) error {
+	return nil
+}
+
+func (m *mockServerStream) SetTrailer(md metadata.MD) {}
+
+func (m *mockServerStream) Context() context.Context {
+	return context.TODO()
+}
+
+func (m *mockServerStream) SendMsg(send interface{}) error {
+	m.outgoing <- send
+	return nil
+}
+
+func (m *mockServerStream) RecvMsg(_ interface{}) error {
+	return fmt.Errorf("unsupported")
+}
+
+// TODO: break into more modular components work
+var _ grpc.ServerStream = &mockServerStream{}
+var _ graphstore.GraphStore_TraverseServer = &mockServerStream{}
 
 func testServer(t *testing.T, storageDriver v1beta.Driver) {
 	ctx := context.Background()
@@ -125,6 +170,38 @@ func testServer(t *testing.T, storageDriver v1beta.Driver) {
 		require.Nil(t, err)
 
 		neighbors := resp.GetNeighbors()
+		require.Len(t, neighbors, 2)
+		require.Equal(t, "a", string(neighbors[0].Node.Key))
+		require.Equal(t, "d", string(neighbors[1].Node.Key))
+	}
+
+	// Traverse
+	{
+		stream := &mockServerStream{
+			incoming: make(chan interface{}, 1),
+			outgoing: make(chan interface{}, 1),
+		}
+
+		go func() {
+			err := store.Traverse(stream)
+			require.Nil(t, err)
+		}()
+
+		stream.incoming <- &graphstore.TraverseRequest{
+			Request: &graphstore.NeighborsRequest{
+				Node: newNode("b"),
+			},
+		}
+
+		response := <-stream.outgoing
+		resp := response.(*graphstore.TraverseResponse)
+
+		// gracefully shutdown
+		stream.incoming <- &graphstore.TraverseRequest{
+			Cancel: true,
+		}
+
+		neighbors := resp.GetResponse().GetNeighbors()
 		require.Len(t, neighbors, 2)
 		require.Equal(t, "a", string(neighbors[0].Node.Key))
 		require.Equal(t, "d", string(neighbors[1].Node.Key))
