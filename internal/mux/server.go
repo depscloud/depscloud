@@ -137,13 +137,16 @@ func monitorHandler(httpServer http.Handler) http.Handler {
 func Serve(grpcServer *grpc.Server, httpServer http.Handler, config *Config) error {
 	// TODO setup proper shutdown handlers
 
+	// don't double report gRPC metrics, it has it's own
+	monitoredServer := monitorHandler(httpServer)
+
 	httpMux := http.NewServeMux()
 	httpMux.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
 		if request.ProtoMajor == 2 &&
 			strings.HasPrefix(request.Header.Get("Content-Type"), "application/grpc") {
 			grpcServer.ServeHTTP(writer, request)
 		} else {
-			httpServer.ServeHTTP(writer, request)
+			monitoredServer.ServeHTTP(writer, request)
 		}
 	})
 
@@ -184,7 +187,7 @@ func Serve(grpcServer *grpc.Server, httpServer http.Handler, config *Config) err
 	}
 
 	logrus.Infof("[runtime] starting http on %s", config.BindAddressHTTP)
-	go http.Serve(httpListener, monitorHandler(h2cMux))
+	go http.Serve(httpListener, h2cMux)
 
 	logrus.Infof("[runtime] starting grpc on %s", config.BindAddressGRPC)
 	return grpcServer.Serve(grpcListener)
