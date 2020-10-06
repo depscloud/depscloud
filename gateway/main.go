@@ -1,11 +1,8 @@
 package main
 
 import (
-	"crypto/tls"
-	"crypto/x509"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"strings"
@@ -15,6 +12,7 @@ import (
 	"github.com/depscloud/api/v1alpha/tracker"
 	"github.com/depscloud/depscloud/gateway/internal/checks"
 	"github.com/depscloud/depscloud/gateway/internal/proxies"
+	"github.com/depscloud/depscloud/internal/client"
 	"github.com/depscloud/depscloud/internal/mux"
 
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
@@ -25,8 +23,6 @@ import (
 
 	"golang.org/x/net/context"
 
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials"
 	_ "google.golang.org/grpc/health"
 )
 
@@ -35,78 +31,9 @@ var version string
 var commit string
 var date string
 
-// https://github.com/grpc/grpc/blob/master/doc/service_config.md
-const serviceConfigTemplate = `{
-	"loadBalancingPolicy": "%s",
-	"healthCheckConfig": {
-		"serviceName": ""
-	}
-}`
-
-func dial(target, certFile, keyFile, caFile, lbPolicy string) (*grpc.ClientConn, error) {
-	serviceConfig := fmt.Sprintf(serviceConfigTemplate, lbPolicy)
-
-	dialOptions := []grpc.DialOption{
-		grpc.WithDefaultServiceConfig(serviceConfig),
-	}
-
-	if len(certFile) > 0 {
-		certificate, err := tls.LoadX509KeyPair(certFile, keyFile)
-		if err != nil {
-			return nil, err
-		}
-
-		certPool := x509.NewCertPool()
-		bs, err := ioutil.ReadFile(caFile)
-		if err != nil {
-			return nil, err
-		}
-
-		ok := certPool.AppendCertsFromPEM(bs)
-		if !ok {
-			return nil, fmt.Errorf("failed to append certs")
-		}
-
-		transportCreds := credentials.NewTLS(&tls.Config{
-			Certificates: []tls.Certificate{certificate},
-			RootCAs:      certPool,
-		})
-
-		dialOptions = append(dialOptions, grpc.WithTransportCredentials(transportCreds))
-	} else {
-		dialOptions = append(dialOptions, grpc.WithInsecure())
-	}
-
-	return grpc.Dial(target, dialOptions...)
-}
-
-func dialExtractor(cfg *gatewayConfig) (*grpc.ClientConn, error) {
-	return dial(cfg.extractorAddress,
-		cfg.extractorCertPath, cfg.extractorKeyPath, cfg.extractorCAPath,
-		cfg.extractorLBPolicy)
-}
-
-func dialTracker(cfg *gatewayConfig) (*grpc.ClientConn, error) {
-	return dial(cfg.trackerAddress,
-		cfg.trackerCertPath, cfg.trackerKeyPath, cfg.trackerCAPath,
-		cfg.trackerLBPolicy)
-}
-
 type gatewayConfig struct {
 	httpPort int
 	grpcPort int
-
-	extractorAddress  string
-	extractorCertPath string
-	extractorKeyPath  string
-	extractorCAPath   string
-	extractorLBPolicy string
-
-	trackerAddress  string
-	trackerCertPath string
-	trackerKeyPath  string
-	trackerCAPath   string
-	trackerLBPolicy string
 }
 
 func main() {
@@ -114,21 +41,67 @@ func main() {
 	cfg := &gatewayConfig{
 		httpPort: 8080,
 		grpcPort: 8090,
-
-		extractorAddress:  "extractor:8090",
-		extractorCertPath: "",
-		extractorKeyPath:  "",
-		extractorCAPath:   "",
-		extractorLBPolicy: "round_robin",
-
-		trackerAddress:  "tracker:8090",
-		trackerCertPath: "",
-		trackerKeyPath:  "",
-		trackerCAPath:   "",
-		trackerLBPolicy: "round_robin",
 	}
 
 	tlsConfig := &mux.TLSConfig{}
+
+	extractorConfig, extractorFlags := client.WithFlags("extractor", &client.Config{
+		Address:       "extractor:8090",
+		ServiceConfig: client.DefaultServiceConfig,
+		LoadBalancer:  client.DefaultLoadBalancer,
+		TLS:           false,
+		TLSConfig:     &client.TLSConfig{},
+	})
+
+	trackerConfig, trackerFlags := client.WithFlags("tracker", &client.Config{
+		Address:       "tracker:8090",
+		ServiceConfig: client.DefaultServiceConfig,
+		LoadBalancer:  client.DefaultLoadBalancer,
+		TLS:           false,
+		TLSConfig:     &client.TLSConfig{},
+	})
+
+	flags := []cli.Flag{
+		&cli.IntFlag{
+			Name:        "http-port",
+			Aliases:     []string{"port"},
+			Usage:       "the port to run http on",
+			Value:       cfg.httpPort,
+			Destination: &cfg.httpPort,
+			EnvVars:     []string{"HTTP_PORT"},
+		},
+		&cli.IntFlag{
+			Name:        "grpc-port",
+			Usage:       "the port to run grpc on",
+			Value:       cfg.grpcPort,
+			Destination: &cfg.grpcPort,
+			EnvVars:     []string{"GRPC_PORT"},
+		},
+		&cli.StringFlag{
+			Name:        "tls-key",
+			Usage:       "path to the file containing the TLS private key",
+			Value:       tlsConfig.KeyPath,
+			Destination: &tlsConfig.KeyPath,
+			EnvVars:     []string{"TLS_KEY_PATH"},
+		},
+		&cli.StringFlag{
+			Name:        "tls-cert",
+			Usage:       "path to the file containing the TLS certificate",
+			Value:       tlsConfig.CertPath,
+			Destination: &tlsConfig.CertPath,
+			EnvVars:     []string{"TLS_CERT_PATH"},
+		},
+		&cli.StringFlag{
+			Name:        "tls-ca",
+			Usage:       "path to the file containing the TLS certificate authority",
+			Value:       tlsConfig.CAPath,
+			Destination: &tlsConfig.CAPath,
+			EnvVars:     []string{"TLS_CA_PATH"},
+		},
+	}
+
+	flags = append(flags, extractorFlags...)
+	flags = append(flags, trackerFlags...)
 
 	app := &cli.App{
 		Name:  "gateway",
@@ -138,135 +111,25 @@ func main() {
 				Name:  "version",
 				Usage: "Output version information",
 				Action: func(c *cli.Context) error {
-					versionString := fmt.Sprintf("%s %s", c.Command.Name, version)
-
-					fmt.Println(versionString)
+					fmt.Println(fmt.Sprintf("%s %s", c.Command.Name, version))
 					return nil
-
 				},
 			},
 		},
-		Flags: []cli.Flag{
-			&cli.IntFlag{
-				Name:        "http-port",
-				Aliases:     []string{"port"},
-				Usage:       "the port to run http on",
-				Value:       cfg.httpPort,
-				Destination: &cfg.httpPort,
-				EnvVars:     []string{"HTTP_PORT"},
-			},
-			&cli.IntFlag{
-				Name:        "grpc-port",
-				Usage:       "the port to run grpc on",
-				Value:       cfg.grpcPort,
-				Destination: &cfg.grpcPort,
-				EnvVars:     []string{"GRPC_PORT"},
-			},
-			&cli.StringFlag{
-				Name:        "extractor-address",
-				Usage:       "address to the extractor service",
-				Value:       cfg.extractorAddress,
-				Destination: &cfg.extractorAddress,
-				EnvVars:     []string{"EXTRACTOR_ADDRESS"},
-			},
-			&cli.StringFlag{
-				Name:        "extractor-cert",
-				Usage:       "certificate used to enable TLS for the extractor",
-				Value:       cfg.extractorCertPath,
-				Destination: &cfg.extractorCertPath,
-				EnvVars:     []string{"EXTRACTOR_CERT_PATH"},
-			},
-			&cli.StringFlag{
-				Name:        "extractor-key",
-				Usage:       "key used to enable TLS for the extractor",
-				Value:       cfg.extractorKeyPath,
-				Destination: &cfg.extractorKeyPath,
-				EnvVars:     []string{"EXTRACTOR_KEY_PATH"},
-			},
-			&cli.StringFlag{
-				Name:        "extractor-ca",
-				Usage:       "ca used to enable TLS for the extractor",
-				Value:       cfg.extractorCAPath,
-				Destination: &cfg.extractorCAPath,
-				EnvVars:     []string{"EXTRACTOR_CA_PATH"},
-			},
-			&cli.StringFlag{
-				Name:        "extractor-lb",
-				Usage:       "the load balancer policy to use for the extractor",
-				Value:       cfg.extractorLBPolicy,
-				Destination: &cfg.extractorLBPolicy,
-				EnvVars:     []string{"EXTRACTOR_LBPOLICY"},
-			},
-			&cli.StringFlag{
-				Name:        "tracker-address",
-				Usage:       "address to the tracker service",
-				Value:       cfg.trackerAddress,
-				Destination: &cfg.trackerAddress,
-				EnvVars:     []string{"TRACKER_ADDRESS"},
-			},
-			&cli.StringFlag{
-				Name:        "tracker-cert",
-				Usage:       "certificate used to enable TLS for the tracker",
-				Value:       cfg.trackerCertPath,
-				Destination: &cfg.trackerCertPath,
-				EnvVars:     []string{"TRACKER_CERT_PATH"},
-			},
-			&cli.StringFlag{
-				Name:        "tracker-key",
-				Usage:       "key used to enable TLS for the tracker",
-				Value:       cfg.trackerKeyPath,
-				Destination: &cfg.trackerKeyPath,
-				EnvVars:     []string{"TRACKER_KEY_PATH"},
-			},
-			&cli.StringFlag{
-				Name:        "tracker-ca",
-				Usage:       "ca used to enable TLS for the tracker",
-				Value:       cfg.trackerCAPath,
-				Destination: &cfg.trackerCAPath,
-				EnvVars:     []string{"TRACKER_CA_PATH"},
-			},
-			&cli.StringFlag{
-				Name:        "tracker-lb",
-				Usage:       "the load balancer policy to use for the tracker",
-				Value:       cfg.trackerLBPolicy,
-				Destination: &cfg.trackerLBPolicy,
-				EnvVars:     []string{"TRACKER_LBPOLICY"},
-			},
-			&cli.StringFlag{
-				Name:        "tls-key",
-				Usage:       "path to the file containing the TLS private key",
-				Value:       tlsConfig.KeyPath,
-				Destination: &tlsConfig.KeyPath,
-				EnvVars:     []string{"TLS_KEY_PATH"},
-			},
-			&cli.StringFlag{
-				Name:        "tls-cert",
-				Usage:       "path to the file containing the TLS certificate",
-				Value:       tlsConfig.CertPath,
-				Destination: &tlsConfig.CertPath,
-				EnvVars:     []string{"TLS_CERT_PATH"},
-			},
-			&cli.StringFlag{
-				Name:        "tls-ca",
-				Usage:       "path to the file containing the TLS certificate authority",
-				Value:       tlsConfig.CAPath,
-				Destination: &tlsConfig.CAPath,
-				EnvVars:     []string{"TLS_CA_PATH"},
-			},
-		},
+		Flags: flags,
 		Action: func(c *cli.Context) error {
 			grpcServer, httpServer := mux.DefaultServers()
 			gatewayMux := runtime.NewServeMux()
 
 			ctx := context.Background()
 
-			extractorConn, err := dialExtractor(cfg)
+			extractorConn, err := client.Connect(extractorConfig)
 			if err != nil {
 				return err
 			}
 			defer extractorConn.Close()
 
-			trackerConn, err := dialTracker(cfg)
+			trackerConn, err := client.Connect(trackerConfig)
 			if err != nil {
 				return err
 			}

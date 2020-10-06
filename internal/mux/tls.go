@@ -14,7 +14,7 @@ type TLSConfig struct {
 }
 
 func LoadTLSConfig(cfg *TLSConfig) (*tls.Config, error) {
-	if cfg.CertPath == "" || cfg.KeyPath == "" {
+	if cfg == nil || cfg.CertPath == "" || cfg.KeyPath == "" {
 		return nil, nil
 	}
 
