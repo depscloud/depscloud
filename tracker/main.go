@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"net"
 	"os"
 	"strings"
 
@@ -14,6 +15,9 @@ import (
 	"github.com/depscloud/depscloud/tracker/internal/services"
 
 	_ "github.com/go-sql-driver/mysql"
+
+	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
+	grpc_retry "github.com/grpc-ecosystem/go-grpc-middleware/retry"
 
 	_ "github.com/jackc/pgx/v4"
 	_ "github.com/jackc/pgx/v4/stdlib"
@@ -32,12 +36,45 @@ var version string
 var commit string
 var date string
 
-func registerV1Alpha(graphStoreClient apiv1alpha.GraphStoreClient, server *grpc.Server) {
+const sockAddr = "localhost:47274"
+
+func startGraphStore(driver, address, readOnlyAddress string) error {
+	grpcServer := grpc.NewServer()
+
+	// v1beta
+	v1betaDriver, err := v1beta.Resolve(driver, address, readOnlyAddress)
+	if err != nil {
+		return err
+	}
+	apiv1beta.RegisterGraphStoreServer(grpcServer, &v1beta.GraphStoreServer{Driver: v1betaDriver})
+
 	// v1alpha
-	services.RegisterDependencyService(server, graphStoreClient)
-	services.RegisterModuleService(server, graphStoreClient)
-	services.RegisterSourceService(server, graphStoreClient)
-	services.RegisterSearchService(server, graphStoreClient)
+	v1alphaGraphStore, err := v1alpha.NewGraphStoreFor(driver, address, readOnlyAddress)
+	if err != nil {
+		return err
+	}
+	apiv1alpha.RegisterGraphStoreServer(grpcServer, v1alphaGraphStore)
+
+	// listen and serve
+	logrus.Infof("[graphstore] starting grpc on %s", sockAddr)
+	listener, err := net.Listen("tcp", sockAddr)
+	if err != nil {
+		return err
+	}
+
+	go grpcServer.Serve(listener)
+	return nil
+}
+
+func registerV1Alpha(v1alphaClient apiv1alpha.GraphStoreClient, server *grpc.Server) {
+	services.RegisterDependencyService(server, v1alphaClient)
+	services.RegisterModuleService(server, v1alphaClient)
+	services.RegisterSourceService(server, v1alphaClient)
+	services.RegisterSearchService(server, v1alphaClient)
+}
+
+func registerV1Beta(v1betaClient apiv1beta.GraphStoreClient, server *grpc.Server) {
+	// TODO: fill in with gh-50 to gh-57
 }
 
 type trackerConfig struct {
@@ -141,34 +178,35 @@ func main() {
 			},
 		},
 		Action: func(c *cli.Context) error {
+			err := startGraphStore(cfg.storageDriver, cfg.storageAddress, cfg.storageReadOnlyAddress)
+			if err != nil {
+				return err
+			}
+
+			cc, err := grpc.Dial(sockAddr,
+				grpc.WithInsecure(),
+				grpc.WithUnaryInterceptor(grpc_middleware.ChainUnaryClient(
+					grpc_retry.UnaryClientInterceptor(grpc_retry.WithMax(5)),
+				)),
+				grpc.WithStreamInterceptor(grpc_middleware.ChainStreamClient()),
+			)
+			if err != nil {
+				return err
+			}
+
 			grpcServer, httpServer := mux.DefaultServers()
 
-			// v1beta
-			v1betaDriver, err := v1beta.Resolve(cfg.storageDriver, cfg.storageAddress, cfg.storageReadOnlyAddress)
-			if err != nil {
-				return err
-			}
+			v1betaClient := apiv1beta.NewGraphStoreClient(cc)
+			registerV1Beta(v1betaClient, grpcServer)
 
-			v1betaGraphStore := &v1beta.GraphStoreServer{
-				Driver: v1betaDriver,
-			}
-			apiv1beta.RegisterGraphStoreServer(grpcServer, v1betaGraphStore)
-
-			// v1alpha
-			v1alphaGraphStore, err := v1alpha.NewGraphStoreFor(cfg.storageDriver, cfg.storageAddress, cfg.storageReadOnlyAddress)
-			if err != nil {
-				return err
-			}
-			graphStoreClient := apiv1alpha.NewInProcessGraphStoreClient(v1alphaGraphStore)
-			graphStoreClient = v1alpha.Retryable(graphStoreClient, 5)
-
-			registerV1Alpha(graphStoreClient, grpcServer)
+			v1alphaClient := apiv1alpha.NewGraphStoreClient(cc)
+			registerV1Alpha(v1alphaClient, grpcServer)
 
 			return mux.Serve(grpcServer, httpServer, &mux.Config{
 				Context:         c.Context,
 				BindAddressHTTP: fmt.Sprintf("0.0.0.0:%d", cfg.httpPort),
 				BindAddressGRPC: fmt.Sprintf("0.0.0.0:%d", cfg.grpcPort),
-				Checks:          checks.Checks(v1betaGraphStore, graphStoreClient),
+				Checks:          checks.Checks(v1betaClient, v1alphaClient),
 				Version:         &version,
 				TLSConfig:       tlsConfig,
 			})

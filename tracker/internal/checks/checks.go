@@ -14,7 +14,7 @@ import (
 
 // Checks returns an array of all health checks for the system.
 func Checks(
-	v1betaGraphStore apiv1beta.GraphStoreServer,
+	v1betaGraphStore apiv1beta.GraphStoreClient,
 	graphStore apiv1alpha.GraphStoreClient,
 ) []check.Check {
 	return []check.Check{

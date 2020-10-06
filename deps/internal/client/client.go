@@ -12,6 +12,13 @@ const (
 	VariableProtocol = "DEPSCLOUD_PROTOCOL"
 	VariableBaseURL  = "DEPSCLOUD_BASE_URL"
 
+	VariableAddress       = "DEPSCLOUD_ADDRESS"
+	VariableServiceConfig = "DEPSCLOUD_SERVICE_CONFIG"
+	VariableTLS           = "DEPSCLOUD_TLS"
+	VariableCAPath        = "DEPSCLOUD_CA_PATH"
+	VariableCertPath      = "DEPSCLOUD_CERT_PATH"
+	VariableKeyPath       = "DEPSCLOUD_KEY_PATH"
+
 	DefaultProtocol = "grpc"
 	DefaultBaseURL  = "https://api.deps.cloud"
 )
