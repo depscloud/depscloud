@@ -84,7 +84,8 @@ export default class GoModExtractor implements Extractor {
                         }
                     }
                     break;
-
+                
+                case "retract":
                 case "exclude":
                     i++;    // exclude on subsequent lines
                     for (; i < lines.length && lines[i] !== ")"; i++) {
