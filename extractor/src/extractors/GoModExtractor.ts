@@ -48,7 +48,7 @@ export default class GoModExtractor implements Extractor {
                 case "require":
                     i++;    // requires on subsequent lines
                     for (; i < lines.length && lines[i] !== ")"; i++) {
-                        let line = lines[i];
+                        const line = lines[i];
                         if (line.length === 0) {
                             continue; // empty line
                         }
