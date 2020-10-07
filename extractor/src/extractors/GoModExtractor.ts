@@ -24,18 +24,17 @@ export default class GoModExtractor implements Extractor {
     public async extract(_: string, files: { [p: string]: ExtractorFile }): Promise<DependencyManagementFile> {
         const content = files["go.mod"].raw();
 
-        const lines = content.split(/\n+/g);
+        const lines = content.split(/\n+/g).map(i => i.trim());
 
         let id = null;
         const dependencies = [];
 
         for (let i = 0; i < lines.length; i++) {
-            let line = lines[i].trim();
-            if (line.length === 0) {
+            if (lines[i].length === 0) {
                 continue; // empty line
             }
 
-            const parts = line.split(/\s+/);
+            const parts = lines[i].split(/\s+/);
             const directive = parts[0];
 
             switch (directive) {
@@ -48,8 +47,8 @@ export default class GoModExtractor implements Extractor {
 
                 case "require":
                     i++;    // requires on subsequent lines
-                    for (; i < lines.length && lines[i].trim() !== ")"; i++) {
-                        line = lines[i].trim();
+                    for (; i < lines.length && lines[i] !== ")"; i++) {
+                        let line = lines[i];
                         if (line.length === 0) {
                             continue; // empty line
                         }
@@ -79,7 +78,7 @@ export default class GoModExtractor implements Extractor {
                         // inline replace, intentionally empty
                     } else {
                         i++;    // replace on subsequent lines
-                        for (; i < lines.length && lines[i].trim() !== ")"; i++) {
+                        for (; i < lines.length && lines[i] !== ")"; i++) {
                             // intentionally empty
                         }
                     }
@@ -87,7 +86,7 @@ export default class GoModExtractor implements Extractor {
 
                 case "exclude":
                     i++;    // exclude on subsequent lines
-                    for (; i < lines.length && lines[i].trim() !== ")"; i++) {
+                    for (; i < lines.length && lines[i] !== ")"; i++) {
                         // intentionally empty
                     }
                     break;
