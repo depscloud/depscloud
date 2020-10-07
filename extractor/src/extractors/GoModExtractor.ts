@@ -48,7 +48,7 @@ export default class GoModExtractor implements Extractor {
 
                 case "require":
                     i++;    // requires on subsequent lines
-                    for (; i < lines.length && lines[i] !== ")"; i++) {
+                    for (; i < lines.length && lines[i].trim() !== ")"; i++) {
                         line = lines[i].trim();
                         if (line.length === 0) {
                             continue; // empty line
@@ -79,7 +79,7 @@ export default class GoModExtractor implements Extractor {
                         // inline replace, intentionally empty
                     } else {
                         i++;    // replace on subsequent lines
-                        for (; i < lines.length && lines[i] !== ")"; i++) {
+                        for (; i < lines.length && lines[i].trim() !== ")"; i++) {
                             // intentionally empty
                         }
                     }
@@ -87,7 +87,7 @@ export default class GoModExtractor implements Extractor {
 
                 case "exclude":
                     i++;    // exclude on subsequent lines
-                    for (; i < lines.length && lines[i] !== ")"; i++) {
+                    for (; i < lines.length && lines[i].trim() !== ")"; i++) {
                         // intentionally empty
                     }
                     break;
