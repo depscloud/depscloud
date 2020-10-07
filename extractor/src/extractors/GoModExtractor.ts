@@ -24,18 +24,17 @@ export default class GoModExtractor implements Extractor {
     public async extract(_: string, files: { [p: string]: ExtractorFile }): Promise<DependencyManagementFile> {
         const content = files["go.mod"].raw();
 
-        const lines = content.split(/\n+/g);
+        const lines = content.split(/\n+/g).map(i => i.trim());
 
         let id = null;
         const dependencies = [];
 
         for (let i = 0; i < lines.length; i++) {
-            let line = lines[i].trim();
-            if (line.length === 0) {
+            if (lines[i].length === 0) {
                 continue; // empty line
             }
 
-            const parts = line.split(/\s+/);
+            const parts = lines[i].split(/\s+/);
             const directive = parts[0];
 
             switch (directive) {
@@ -49,7 +48,7 @@ export default class GoModExtractor implements Extractor {
                 case "require":
                     i++;    // requires on subsequent lines
                     for (; i < lines.length && lines[i] !== ")"; i++) {
-                        line = lines[i].trim();
+                        const line = lines[i];
                         if (line.length === 0) {
                             continue; // empty line
                         }
