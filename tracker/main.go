@@ -18,6 +18,7 @@ import (
 
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	grpc_retry "github.com/grpc-ecosystem/go-grpc-middleware/retry"
+	grpc_prometheus "github.com/grpc-ecosystem/go-grpc-prometheus"
 
 	_ "github.com/jackc/pgx/v4"
 	_ "github.com/jackc/pgx/v4/stdlib"
@@ -187,8 +188,11 @@ func main() {
 				grpc.WithInsecure(),
 				grpc.WithUnaryInterceptor(grpc_middleware.ChainUnaryClient(
 					grpc_retry.UnaryClientInterceptor(grpc_retry.WithMax(5)),
+					grpc_prometheus.UnaryClientInterceptor,
 				)),
-				grpc.WithStreamInterceptor(grpc_middleware.ChainStreamClient()),
+				grpc.WithStreamInterceptor(grpc_middleware.ChainStreamClient(
+					grpc_prometheus.StreamClientInterceptor,
+				)),
 			)
 			if err != nil {
 				return err
