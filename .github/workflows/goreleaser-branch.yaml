@@ -8,7 +8,10 @@ on:
       - "deps/**"
       - "gateway/**"
       - "indexer/**"
+      - "internal/**"
       - "tracker/**"
+      - "go.mod"
+      - "go.sum"
   push:
     paths:
       - ".goreleaser.yml"
@@ -17,6 +20,8 @@ on:
       - "gateway/**"
       - "indexer/**"
       - "tracker/**"
+      - "go.mod"
+      - "go.sum"
 
 jobs:
   goreleaser:
