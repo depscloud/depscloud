@@ -7,7 +7,7 @@ require (
 	github.com/coreos/go-systemd v0.0.0-20190719114852-fd7a80b32e1f // indirect
 	github.com/davidji99/bitbucket-go v0.2.1
 	github.com/davidji99/simpleresty v0.2.3 // indirect
-	github.com/depscloud/api v0.1.13
+	github.com/depscloud/api v0.1.15
 	github.com/ghodss/yaml v1.0.0
 	github.com/go-resty/resty/v2 v2.3.0 // indirect
 	github.com/go-sql-driver/mysql v1.5.0
@@ -47,7 +47,6 @@ require (
 	golang.org/x/oauth2 v0.0.0-20200902213428-5d25da1a8d43
 	golang.org/x/sys v0.0.0-20201005065044-765f4ea38db3 // indirect
 	golang.org/x/time v0.0.0-20200630173020-3af7569d3a1e // indirect
-	google.golang.org/genproto v0.0.0-20201002142447-3860012362da // indirect
 	google.golang.org/grpc v1.32.0
 	google.golang.org/protobuf v1.25.0 // indirect
 	gopkg.in/src-d/go-billy.v4 v4.3.2
