@@ -97,7 +97,7 @@ export default class GoModExtractor implements Extractor {
                     break;
                 
                 default:
-                    throw new Error(`parse error: unsupported directive: ${directive}`);
+                    console.debug(`parse error: unsupported directive: ${directive}`);
             }
         }
 
