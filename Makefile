@@ -12,7 +12,7 @@ build-deps: .build-deps
 
 deps: .deps
 .deps:
-	@cd extractor && npm install
+	@if [ -d extractor ]; then cd extractor && npm install; fi
 	go mod download
 	go mod verify
 
