@@ -27,6 +27,10 @@ retract (
 	// ending in a parentheses
 )
 
+// This is a comment that will read as a directive, skip and log it
+
+skipme // Unknown directive, skip and log it
+
 require (
 	github.com/gogo/protobuf v1.2.1
 	github.com/depscloud/rds v0.0.2
