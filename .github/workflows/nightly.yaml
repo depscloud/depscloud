@@ -1,0 +1,38 @@
+name: nightly
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # run at 12 AM UTC
+
+jobs:
+  nightly:
+    runs-on: ubuntu-latest
+    name: Build and push nightly
+    strategy:
+      matrix:
+        component:
+          - deps
+          - extractor
+          - gateway
+          - indexer
+          - tracker
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      
+      - name: Login to GitHub Docker Registry
+        run: echo "${REGISTRY_PASSWORD}" | docker login -u "${REGISTRY_USERNAME}" --password-stdin
+        env:
+          REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+          REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: Build
+        env:
+          VERSION: nightly
+        run: |
+          make ${{ matrix.component }}/docker
+        
+      - name: Retag and Push
+        run: | 
+          docker tag depscloud/${{ matrix.component }}:latest depscloud/${{ matrix.component }}:nightly
+          docker push depscloud/${{ matrix.component }}:nightly 
