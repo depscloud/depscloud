@@ -7,7 +7,10 @@ import (
 	"fmt"
 	"net"
 	"net/http"
+	"os"
+	"os/signal"
 	"strings"
+	"syscall"
 
 	"github.com/grpc-ecosystem/go-grpc-middleware"
 	grpc_recovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
@@ -135,7 +138,20 @@ func monitorHandler(httpServer http.Handler) http.Handler {
 }
 
 func Serve(grpcServer *grpc.Server, httpServer http.Handler, config *Config) error {
-	// TODO setup proper shutdown handlers
+	stop := make(chan os.Signal)
+	signal.Notify(stop, syscall.SIGTERM, syscall.SIGINT)
+
+	go func() {
+		defer signal.Stop(stop)
+
+		<-stop
+		logrus.Infof("[runtime] received shutdown signal, gracefully shutting down")
+		go grpcServer.GracefulStop()
+
+		<-stop
+		logrus.Infof("[runtime] shutdown re-notified, forcing termination")
+		grpcServer.Stop()
+	}()
 
 	// don't double report gRPC metrics, it has it's own
 	monitoredServer := monitorHandler(httpServer)
@@ -185,6 +201,9 @@ func Serve(grpcServer *grpc.Server, httpServer http.Handler, config *Config) err
 	if grpcErr != nil {
 		return grpcErr
 	}
+
+	defer httpListener.Close()
+	defer grpcListener.Close()
 
 	logrus.Infof("[runtime] starting http on %s", config.BindAddressHTTP)
 	go http.Serve(httpListener, h2cMux)
