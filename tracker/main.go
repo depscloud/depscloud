@@ -12,7 +12,7 @@ import (
 	"github.com/depscloud/depscloud/tracker/internal/checks"
 	"github.com/depscloud/depscloud/tracker/internal/graphstore/v1alpha"
 	"github.com/depscloud/depscloud/tracker/internal/graphstore/v1beta"
-	"github.com/depscloud/depscloud/tracker/internal/services"
+	svcsv1alpha "github.com/depscloud/depscloud/tracker/internal/services/v1alpha"
 
 	_ "github.com/go-sql-driver/mysql"
 
@@ -68,10 +68,10 @@ func startGraphStore(driver, address, readOnlyAddress string) error {
 }
 
 func registerV1Alpha(v1alphaClient apiv1alpha.GraphStoreClient, server *grpc.Server) {
-	services.RegisterDependencyService(server, v1alphaClient)
-	services.RegisterModuleService(server, v1alphaClient)
-	services.RegisterSourceService(server, v1alphaClient)
-	services.RegisterSearchService(server, v1alphaClient)
+	svcsv1alpha.RegisterDependencyService(server, v1alphaClient)
+	svcsv1alpha.RegisterModuleService(server, v1alphaClient)
+	svcsv1alpha.RegisterSourceService(server, v1alphaClient)
+	svcsv1alpha.RegisterSearchService(server, v1alphaClient)
 }
 
 func registerV1Beta(v1betaClient apiv1beta.GraphStoreClient, server *grpc.Server) {

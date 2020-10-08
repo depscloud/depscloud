@@ -1,4 +1,4 @@
-package services
+package v1alpha
 
 import (
 	"crypto/sha256"

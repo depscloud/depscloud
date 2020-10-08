@@ -12,6 +12,7 @@ build-deps: .build-deps
 
 deps: .deps
 .deps:
+	@cd extractor && npm install
 	go mod download
 	go mod verify
 
@@ -72,7 +73,7 @@ extractor/docker:
 	@cd extractor && npm run docker
 
 extractor/install:
-	@cd extractor && npm install && npm run build
+	@cd extractor && npm run build
 
 extractor/test:
 	@cd extractor && npm run test
