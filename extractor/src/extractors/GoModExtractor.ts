@@ -1,9 +1,12 @@
 import {Dependency, DependencyManagementFile} from "@depscloud/api/v1alpha/deps";
+import {getLogger} from "log4js";
 import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
 import parseImportPath from "./goutils/parseImportPath";
 import Languages from "./Languages";
 import MatchConfig from "../matcher/MatchConfig";
+
+const logger = getLogger();
 
 export default class GoModExtractor implements Extractor {
     public matchConfig(): MatchConfig {
@@ -97,7 +100,7 @@ export default class GoModExtractor implements Extractor {
                     break;
                 
                 default:
-                    console.debug(`parse error: unsupported directive: ${directive}`);
+                    logger.debug(`parse error: unsupported directive: ${directive}`);
             }
         }
 
