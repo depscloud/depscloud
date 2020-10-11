@@ -39,6 +39,8 @@ var commit string
 var date string
 
 func main() {
+	version := mux.Version{Version: version, Commit: commit, Date: date}
+	systemInfo := client.GetSystemInfo()
 	client := client.DefaultClient()
 	writer := writer.Default
 
@@ -54,9 +56,19 @@ func main() {
 		Use:   "version",
 		Short: "Output version information",
 		RunE: func(_ *cobra.Command, args []string) error {
-			versionString := fmt.Sprintf("%s %s", cmd.Use, mux.Version{Version: version, Commit: commit, Date: date})
-
+			versionString := fmt.Sprintf("%s %s", cmd.Use, version)
 			fmt.Println(versionString)
+			return nil
+		},
+	})
+
+	cmd.AddCommand(&cobra.Command{
+		Use:   "troubleshoot",
+		Short: "Output information helpful for troubleshooting",
+		RunE: func(_ *cobra.Command, args []string) error {
+			versionString := fmt.Sprintf("Client Version: %s", version)
+			fmt.Println(versionString)
+			fmt.Println(systemInfo.String())
 			return nil
 		},
 	})
