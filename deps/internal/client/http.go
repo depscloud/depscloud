@@ -9,6 +9,7 @@ func httpDefaltClient(baseURL string) Client {
 		dependencies: &httpDependencyService{client, baseURL},
 		modules:      &httpModuleClient{client, baseURL},
 		sources:      &httpSourceClient{client, baseURL},
+		troubleshoot: &httpTroubleshootClient{client, baseURL},
 		search:       nil,
 	}
 }

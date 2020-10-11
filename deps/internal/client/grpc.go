@@ -1,6 +1,7 @@
 package client
 
 import (
+	"net/http"
 	"net/url"
 	"strings"
 
@@ -47,5 +48,7 @@ func grpcDefaultClient(baseURL string) Client {
 		modules:      tracker.NewModuleServiceClient(conn),
 		sources:      tracker.NewSourceServiceClient(conn),
 		search:       tracker.NewSearchServiceClient(conn),
+		// TODO: handle this properly
+		troubleshoot: &httpTroubleshootClient{http.DefaultClient, hostPort},
 	}
 }

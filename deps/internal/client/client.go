@@ -41,7 +41,7 @@ type SystemInfo struct {
 }
 
 func (s SystemInfo) String() string {
-	return fmt.Sprintf("{ Protocol: %v, BaseURL: %v, OS: %v, Arch: %v}", s.Protocol, s.BaseURL, s.Os, s.Arch)
+	return fmt.Sprintf("{Protocol: %v, BaseURL: %v, OS: %v, Arch: %v}", s.Protocol, s.BaseURL, s.Os, s.Arch)
 }
 
 func or(read, def string) string {
@@ -69,4 +69,5 @@ type Client interface {
 	Modules() tracker.ModuleServiceClient
 	Sources() tracker.SourceServiceClient
 	Search() tracker.SearchServiceClient
+	Troubleshoot() *httpTroubleshootClient
 }

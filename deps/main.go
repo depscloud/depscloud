@@ -69,6 +69,18 @@ func main() {
 			versionString := fmt.Sprintf("Client Version: %s", version)
 			fmt.Println(versionString)
 			fmt.Println(systemInfo.String())
+			serverVersion, err := client.Troubleshoot().GetServerVersion()
+			if err != nil {
+				fmt.Println(fmt.Sprintf("Error While retrieving server version"))
+			} else {
+				fmt.Println(fmt.Sprintf("Server Version: %s", serverVersion))
+			}
+			healthString, err := client.Troubleshoot().GetHealth()
+			if err != nil {
+				fmt.Println(fmt.Sprintf("Error While retrieving server health"))
+			} else {
+				fmt.Println(fmt.Sprintf("Server Health: %s", healthString))
+			}
 			return nil
 		},
 	})
