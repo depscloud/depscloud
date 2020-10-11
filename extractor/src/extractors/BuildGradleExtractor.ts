@@ -55,6 +55,7 @@ export default class BuildGradleExtractor implements Extractor {
                     module: parentModule,
                     versionConstraint: parentVersion,
                     scopes: [ "parent" ],
+                    name: [ parentOrganization, parentModule ].join(":"),
                 };
             }
         }
@@ -74,6 +75,7 @@ export default class BuildGradleExtractor implements Extractor {
                     module: dep.name,
                     versionConstraint: dep.version,
                     scopes: [ dep.type ],
+                    name: [ dep.group, dep.name ].join(":"),
                 };
             }
         });
@@ -87,6 +89,7 @@ export default class BuildGradleExtractor implements Extractor {
             version: buildGradle.version,
             dependencies: Object.keys(dependencies)
                 .map((k) => dependencies[k]),
+            name: [ organization, module ].join(":"),
         };
     }
 }

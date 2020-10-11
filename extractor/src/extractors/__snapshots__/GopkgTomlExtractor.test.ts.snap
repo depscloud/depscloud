@@ -5,6 +5,7 @@ Object {
   "dependencies": Array [
     Object {
       "module": "go",
+      "name": "cloud.google.com/go",
       "organization": "cloud.google.com",
       "scopes": Array [
         "constraint",
@@ -13,6 +14,7 @@ Object {
     },
     Object {
       "module": "go.opencensus.io",
+      "name": "go.opencensus.io",
       "organization": "",
       "scopes": Array [
         "constraint",
@@ -21,6 +23,7 @@ Object {
     },
     Object {
       "module": "exporter/stackdriver",
+      "name": "contrib.go.opencensus.io/exporter/stackdriver",
       "organization": "contrib.go.opencensus.io",
       "scopes": Array [
         "constraint",
@@ -29,6 +32,7 @@ Object {
     },
     Object {
       "module": "copilot",
+      "name": "code.cloudfoundry.org/copilot",
       "organization": "code.cloudfoundry.org",
       "scopes": Array [
         "constraint",
@@ -37,6 +41,7 @@ Object {
     },
     Object {
       "module": "DataDog/datadog-go",
+      "name": "github.com/DataDog/datadog-go",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -45,6 +50,7 @@ Object {
     },
     Object {
       "module": "alicebob/miniredis",
+      "name": "github.com/alicebob/miniredis",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -53,6 +59,7 @@ Object {
     },
     Object {
       "module": "aws/aws-sdk-go",
+      "name": "github.com/aws/aws-sdk-go",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -61,6 +68,7 @@ Object {
     },
     Object {
       "module": "cactus/go-statsd-client",
+      "name": "github.com/cactus/go-statsd-client",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -69,6 +77,7 @@ Object {
     },
     Object {
       "module": "cenkalti/backoff",
+      "name": "github.com/cenkalti/backoff",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -77,6 +86,7 @@ Object {
     },
     Object {
       "module": "circonus-labs/circonus-gometrics",
+      "name": "github.com/circonus-labs/circonus-gometrics",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -85,6 +95,7 @@ Object {
     },
     Object {
       "module": "coreos/go-oidc",
+      "name": "github.com/coreos/go-oidc",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -93,6 +104,7 @@ Object {
     },
     Object {
       "module": "davecgh/go-spew",
+      "name": "github.com/davecgh/go-spew",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -101,6 +113,7 @@ Object {
     },
     Object {
       "module": "envoyproxy/go-control-plane",
+      "name": "github.com/envoyproxy/go-control-plane",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -109,6 +122,7 @@ Object {
     },
     Object {
       "module": "fluent/fluent-logger-golang",
+      "name": "github.com/fluent/fluent-logger-golang",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -117,6 +131,7 @@ Object {
     },
     Object {
       "module": "ghodss/yaml",
+      "name": "github.com/ghodss/yaml",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -125,6 +140,7 @@ Object {
     },
     Object {
       "module": "go-redis/redis",
+      "name": "github.com/go-redis/redis",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -133,6 +149,7 @@ Object {
     },
     Object {
       "module": "gogo/googleapis",
+      "name": "github.com/gogo/googleapis",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -141,6 +158,7 @@ Object {
     },
     Object {
       "module": "gogo/protobuf",
+      "name": "github.com/gogo/protobuf",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -149,6 +167,7 @@ Object {
     },
     Object {
       "module": "golang/protobuf",
+      "name": "github.com/golang/protobuf",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -157,6 +176,7 @@ Object {
     },
     Object {
       "module": "golang/sync",
+      "name": "github.com/golang/sync",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -165,6 +185,7 @@ Object {
     },
     Object {
       "module": "google/go-github",
+      "name": "github.com/google/go-github",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -173,6 +194,7 @@ Object {
     },
     Object {
       "module": "google/uuid",
+      "name": "github.com/google/uuid",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -181,6 +203,7 @@ Object {
     },
     Object {
       "module": "googleapis/gax-go",
+      "name": "github.com/googleapis/gax-go",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -189,6 +212,7 @@ Object {
     },
     Object {
       "module": "gorilla/mux",
+      "name": "github.com/gorilla/mux",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -197,6 +221,7 @@ Object {
     },
     Object {
       "module": "gorilla/websocket",
+      "name": "github.com/gorilla/websocket",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -205,6 +230,7 @@ Object {
     },
     Object {
       "module": "grpc-ecosystem/go-grpc-middleware",
+      "name": "github.com/grpc-ecosystem/go-grpc-middleware",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -213,6 +239,7 @@ Object {
     },
     Object {
       "module": "grpc-ecosystem/go-grpc-prometheus",
+      "name": "github.com/grpc-ecosystem/go-grpc-prometheus",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -221,6 +248,7 @@ Object {
     },
     Object {
       "module": "grpc-ecosystem/grpc-opentracing",
+      "name": "github.com/grpc-ecosystem/grpc-opentracing",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -229,6 +257,7 @@ Object {
     },
     Object {
       "module": "hashicorp/consul",
+      "name": "github.com/hashicorp/consul",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -237,6 +266,7 @@ Object {
     },
     Object {
       "module": "hashicorp/go-multierror",
+      "name": "github.com/hashicorp/go-multierror",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -245,6 +275,7 @@ Object {
     },
     Object {
       "module": "hashicorp/vault",
+      "name": "github.com/hashicorp/vault",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -253,6 +284,7 @@ Object {
     },
     Object {
       "module": "howeyc/fsnotify",
+      "name": "github.com/howeyc/fsnotify",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -261,6 +293,7 @@ Object {
     },
     Object {
       "module": "natefinch/lumberjack",
+      "name": "github.com/natefinch/lumberjack",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -269,6 +302,7 @@ Object {
     },
     Object {
       "module": "onsi/gomega",
+      "name": "github.com/onsi/gomega",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -277,6 +311,7 @@ Object {
     },
     Object {
       "module": "open-policy-agent/opa",
+      "name": "github.com/open-policy-agent/opa",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -285,6 +320,7 @@ Object {
     },
     Object {
       "module": "openshift/api",
+      "name": "github.com/openshift/api",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -293,6 +329,7 @@ Object {
     },
     Object {
       "module": "opentracing/opentracing-go",
+      "name": "github.com/opentracing/opentracing-go",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -301,6 +338,7 @@ Object {
     },
     Object {
       "module": "pmezard/go-difflib",
+      "name": "github.com/pmezard/go-difflib",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -309,6 +347,7 @@ Object {
     },
     Object {
       "module": "prometheus/client_golang",
+      "name": "github.com/prometheus/client_golang",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -317,6 +356,7 @@ Object {
     },
     Object {
       "module": "prometheus/client_model",
+      "name": "github.com/prometheus/client_model",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -325,6 +365,7 @@ Object {
     },
     Object {
       "module": "prometheus/common",
+      "name": "github.com/prometheus/common",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -333,6 +374,7 @@ Object {
     },
     Object {
       "module": "prometheus/prom2json",
+      "name": "github.com/prometheus/prom2json",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -341,6 +383,7 @@ Object {
     },
     Object {
       "module": "satori/go.uuid",
+      "name": "github.com/satori/go.uuid",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -349,6 +392,7 @@ Object {
     },
     Object {
       "module": "spf13/cobra",
+      "name": "github.com/spf13/cobra",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -357,6 +401,7 @@ Object {
     },
     Object {
       "module": "stretchr/testify",
+      "name": "github.com/stretchr/testify",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -365,6 +410,7 @@ Object {
     },
     Object {
       "module": "uber/jaeger-client-go",
+      "name": "github.com/uber/jaeger-client-go",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -373,6 +419,7 @@ Object {
     },
     Object {
       "module": "atomic",
+      "name": "go.uber.org/atomic",
       "organization": "go.uber.org",
       "scopes": Array [
         "constraint",
@@ -381,6 +428,7 @@ Object {
     },
     Object {
       "module": "multierr",
+      "name": "go.uber.org/multierr",
       "organization": "go.uber.org",
       "scopes": Array [
         "constraint",
@@ -389,6 +437,7 @@ Object {
     },
     Object {
       "module": "zap",
+      "name": "go.uber.org/zap",
       "organization": "go.uber.org",
       "scopes": Array [
         "constraint",
@@ -397,6 +446,7 @@ Object {
     },
     Object {
       "module": "x/net",
+      "name": "golang.org/x/net",
       "organization": "golang.org",
       "scopes": Array [
         "constraint",
@@ -405,6 +455,7 @@ Object {
     },
     Object {
       "module": "x/oauth2",
+      "name": "golang.org/x/oauth2",
       "organization": "golang.org",
       "scopes": Array [
         "constraint",
@@ -413,6 +464,7 @@ Object {
     },
     Object {
       "module": "x/time",
+      "name": "golang.org/x/time",
       "organization": "golang.org",
       "scopes": Array [
         "constraint",
@@ -421,6 +473,7 @@ Object {
     },
     Object {
       "module": "x/tools",
+      "name": "golang.org/x/tools",
       "organization": "golang.org",
       "scopes": Array [
         "constraint",
@@ -429,6 +482,7 @@ Object {
     },
     Object {
       "module": "api",
+      "name": "google.golang.org/api",
       "organization": "google.golang.org",
       "scopes": Array [
         "constraint",
@@ -437,6 +491,7 @@ Object {
     },
     Object {
       "module": "genproto",
+      "name": "google.golang.org/genproto",
       "organization": "google.golang.org",
       "scopes": Array [
         "constraint",
@@ -445,6 +500,7 @@ Object {
     },
     Object {
       "module": "grpc",
+      "name": "google.golang.org/grpc",
       "organization": "google.golang.org",
       "scopes": Array [
         "constraint",
@@ -453,6 +509,7 @@ Object {
     },
     Object {
       "module": "yaml.v2",
+      "name": "gopkg.in/yaml.v2",
       "organization": "gopkg.in",
       "scopes": Array [
         "constraint",
@@ -461,6 +518,7 @@ Object {
     },
     Object {
       "module": "api",
+      "name": "istio.io/api",
       "organization": "istio.io",
       "scopes": Array [
         "constraint",
@@ -469,6 +527,7 @@ Object {
     },
     Object {
       "module": "api",
+      "name": "k8s.io/api",
       "organization": "k8s.io",
       "scopes": Array [
         "constraint",
@@ -477,6 +536,7 @@ Object {
     },
     Object {
       "module": "apimachinery",
+      "name": "k8s.io/apimachinery",
       "organization": "k8s.io",
       "scopes": Array [
         "constraint",
@@ -485,6 +545,7 @@ Object {
     },
     Object {
       "module": "apiextensions-apiserver",
+      "name": "k8s.io/apiextensions-apiserver",
       "organization": "k8s.io",
       "scopes": Array [
         "constraint",
@@ -493,6 +554,7 @@ Object {
     },
     Object {
       "module": "helm",
+      "name": "k8s.io/helm",
       "organization": "k8s.io",
       "scopes": Array [
         "constraint",
@@ -501,6 +563,7 @@ Object {
     },
     Object {
       "module": "kubernetes",
+      "name": "k8s.io/kubernetes",
       "organization": "k8s.io",
       "scopes": Array [
         "constraint",
@@ -509,6 +572,7 @@ Object {
     },
     Object {
       "module": "gogo/status",
+      "name": "github.com/gogo/status",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -517,6 +581,7 @@ Object {
     },
     Object {
       "module": "google/go-cmp",
+      "name": "github.com/google/go-cmp",
       "organization": "github.com",
       "scopes": Array [
         "constraint",
@@ -525,6 +590,7 @@ Object {
     },
     Object {
       "module": "docker/distribution",
+      "name": "github.com/docker/distribution",
       "organization": "github.com",
       "scopes": Array [
         "override",
@@ -533,6 +599,7 @@ Object {
     },
     Object {
       "module": "client-go",
+      "name": "k8s.io/client-go",
       "organization": "k8s.io",
       "scopes": Array [
         "override",
@@ -541,6 +608,7 @@ Object {
     },
     Object {
       "module": "Azure/go-autorest",
+      "name": "github.com/Azure/go-autorest",
       "organization": "github.com",
       "scopes": Array [
         "override",
@@ -549,6 +617,7 @@ Object {
     },
     Object {
       "module": "golang/glog",
+      "name": "github.com/golang/glog",
       "organization": "github.com",
       "scopes": Array [
         "override",
@@ -557,6 +626,7 @@ Object {
     },
     Object {
       "module": "imdario/mergo",
+      "name": "github.com/imdario/mergo",
       "organization": "github.com",
       "scopes": Array [
         "override",
@@ -565,6 +635,7 @@ Object {
     },
     Object {
       "module": "istio/mixer/adapter/stackdriver/contextgraph",
+      "name": "istio.io/istio/mixer/adapter/stackdriver/contextgraph",
       "organization": "istio.io",
       "scopes": Array [
         "ignored",
@@ -573,6 +644,7 @@ Object {
     },
     Object {
       "module": "client9/misspell",
+      "name": "github.com/client9/misspell",
       "organization": "github.com",
       "scopes": Array [
         "required",
@@ -581,6 +653,7 @@ Object {
     },
     Object {
       "module": "istio/tools/protoc-gen-docs",
+      "name": "github.com/istio/tools/protoc-gen-docs",
       "organization": "github.com",
       "scopes": Array [
         "required",
@@ -589,6 +662,7 @@ Object {
     },
     Object {
       "module": "fortio",
+      "name": "fortio.org/fortio",
       "organization": "fortio.org",
       "scopes": Array [
         "required",
@@ -598,6 +672,7 @@ Object {
   ],
   "language": "go",
   "module": "depscloud/extractor",
+  "name": "github.com/depscloud/extractor",
   "organization": "github.com",
   "sourceUrl": "",
   "system": "gopkg",
@@ -620,7 +695,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\">=0.20.0, <1.0.0\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"cloud.google.com/go\\"
     },
     {
       \\"organization\\": \\"\\",
@@ -628,7 +704,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\">=0.15.0\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"go.opencensus.io\\"
     },
     {
       \\"organization\\": \\"contrib.go.opencensus.io\\",
@@ -636,7 +713,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\">=0.2.0\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"contrib.go.opencensus.io/exporter/stackdriver\\"
     },
     {
       \\"organization\\": \\"code.cloudfoundry.org\\",
@@ -644,7 +722,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"master\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"code.cloudfoundry.org/copilot\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -652,7 +731,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"2.0.0\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/DataDog/datadog-go\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -660,7 +740,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"2.3.2\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/alicebob/miniredis\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -668,7 +749,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"1.13.24\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/aws/aws-sdk-go\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -676,7 +758,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"3.1.1\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/cactus/go-statsd-client\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -684,7 +767,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"2.0.0\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/cenkalti/backoff\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -692,7 +776,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"2.1.0\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/circonus-labs/circonus-gometrics\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -700,7 +785,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"v2\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/coreos/go-oidc\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -708,7 +794,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"1.1.0\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/davecgh/go-spew\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -716,7 +803,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"^0.6.7\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/envoyproxy/go-control-plane\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -724,7 +812,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"1.3.0\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/fluent/fluent-logger-golang\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -732,7 +821,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"1.0.0\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/ghodss/yaml\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -740,7 +830,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"6.10.2\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/go-redis/redis\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -748,7 +839,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"master\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/gogo/googleapis\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -756,7 +848,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"^1.1.1\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/gogo/protobuf\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -764,7 +857,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"1.1.0\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/golang/protobuf\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -772,7 +866,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"master\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/golang/sync\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -780,7 +875,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"15.0.0\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/google/go-github\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -788,7 +884,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"0.2.0\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/google/uuid\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -796,7 +893,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"2.0.0\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/googleapis/gax-go\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -804,7 +902,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"1.6.1\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/gorilla/mux\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -812,7 +911,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"1.2.0\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/gorilla/websocket\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -820,7 +920,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"master\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/grpc-ecosystem/go-grpc-middleware\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -828,7 +929,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"1.1.0\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/grpc-ecosystem/go-grpc-prometheus\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -836,7 +938,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"master\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/grpc-ecosystem/grpc-opentracing\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -844,7 +947,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"1.3.0\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/hashicorp/consul\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -852,7 +956,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"master\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/hashicorp/go-multierror\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -860,7 +965,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"0.10.0\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/hashicorp/vault\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -868,7 +974,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"0.9.0\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/howeyc/fsnotify\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -876,7 +983,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"2.1.0\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/natefinch/lumberjack\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -884,7 +992,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"1.3.0\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/onsi/gomega\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -892,7 +1001,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"0.8.2\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/open-policy-agent/opa\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -900,7 +1010,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"master\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/openshift/api\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -908,7 +1019,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"1.0.2\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/opentracing/opentracing-go\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -916,7 +1028,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"1.0.0\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/pmezard/go-difflib\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -924,7 +1037,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"0.9.2\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/prometheus/client_golang\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -932,7 +1046,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"master\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/prometheus/client_model\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -940,7 +1055,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"master\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/prometheus/common\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -948,7 +1064,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"master\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/prometheus/prom2json\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -956,7 +1073,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"1.2.0\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/satori/go.uuid\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -964,7 +1082,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"0.0.2\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/spf13/cobra\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -972,7 +1091,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"1.2.1\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/stretchr/testify\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -980,7 +1100,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"master\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/uber/jaeger-client-go\\"
     },
     {
       \\"organization\\": \\"go.uber.org\\",
@@ -988,7 +1109,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"1.2.0\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"go.uber.org/atomic\\"
     },
     {
       \\"organization\\": \\"go.uber.org\\",
@@ -996,7 +1118,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"1.1.0\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"go.uber.org/multierr\\"
     },
     {
       \\"organization\\": \\"go.uber.org\\",
@@ -1004,7 +1127,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"1.7.1\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"go.uber.org/zap\\"
     },
     {
       \\"organization\\": \\"golang.org\\",
@@ -1012,7 +1136,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"master\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"golang.org/x/net\\"
     },
     {
       \\"organization\\": \\"golang.org\\",
@@ -1020,7 +1145,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"master\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"golang.org/x/oauth2\\"
     },
     {
       \\"organization\\": \\"golang.org\\",
@@ -1028,7 +1154,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"master\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"golang.org/x/time\\"
     },
     {
       \\"organization\\": \\"golang.org\\",
@@ -1036,7 +1163,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"master\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"golang.org/x/tools\\"
     },
     {
       \\"organization\\": \\"google.golang.org\\",
@@ -1044,7 +1172,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"master\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"google.golang.org/api\\"
     },
     {
       \\"organization\\": \\"google.golang.org\\",
@@ -1052,7 +1181,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"master\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"google.golang.org/genproto\\"
     },
     {
       \\"organization\\": \\"google.golang.org\\",
@@ -1060,7 +1190,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"^1.13.0\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"google.golang.org/grpc\\"
     },
     {
       \\"organization\\": \\"gopkg.in\\",
@@ -1068,7 +1199,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"2.2.1\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"gopkg.in/yaml.v2\\"
     },
     {
       \\"organization\\": \\"istio.io\\",
@@ -1076,7 +1208,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"master\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"istio.io/api\\"
     },
     {
       \\"organization\\": \\"k8s.io\\",
@@ -1084,7 +1217,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"release-1.11\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"k8s.io/api\\"
     },
     {
       \\"organization\\": \\"k8s.io\\",
@@ -1092,7 +1226,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"release-1.11\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"k8s.io/apimachinery\\"
     },
     {
       \\"organization\\": \\"k8s.io\\",
@@ -1100,7 +1235,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"release-1.11\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"k8s.io/apiextensions-apiserver\\"
     },
     {
       \\"organization\\": \\"k8s.io\\",
@@ -1108,7 +1244,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"2.9.1\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"k8s.io/helm\\"
     },
     {
       \\"organization\\": \\"k8s.io\\",
@@ -1116,7 +1253,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"release-1.11\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"k8s.io/kubernetes\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -1124,7 +1262,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"d60b5acac426cb52f7e28124c6aaa862d9f339f5\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/gogo/status\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -1132,7 +1271,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"0.2.0\\",
       \\"scopes\\": [
         \\"constraint\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/google/go-cmp\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -1140,7 +1280,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"master\\",
       \\"scopes\\": [
         \\"override\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/docker/distribution\\"
     },
     {
       \\"organization\\": \\"k8s.io\\",
@@ -1148,7 +1289,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"release-8.0\\",
       \\"scopes\\": [
         \\"override\\"
-      ]
+      ],
+      \\"name\\": \\"k8s.io/client-go\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -1156,14 +1298,16 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"bca49d5b51a50dc5bb17bbf6204c711c6dbded06\\",
       \\"scopes\\": [
         \\"override\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/Azure/go-autorest\\"
     },
     {
       \\"organization\\": \\"github.com\\",
       \\"module\\": \\"golang/glog\\",
       \\"scopes\\": [
         \\"override\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/golang/glog\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -1171,7 +1315,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"6633656539c1639d9d78127b7d47c622b5d7b6dc\\",
       \\"scopes\\": [
         \\"override\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/imdario/mergo\\"
     },
     {
       \\"organization\\": \\"istio.io\\",
@@ -1179,7 +1324,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"*\\",
       \\"scopes\\": [
         \\"ignored\\"
-      ]
+      ],
+      \\"name\\": \\"istio.io/istio/mixer/adapter/stackdriver/contextgraph\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -1187,7 +1333,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"*\\",
       \\"scopes\\": [
         \\"required\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/client9/misspell\\"
     },
     {
       \\"organization\\": \\"github.com\\",
@@ -1195,7 +1342,8 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"*\\",
       \\"scopes\\": [
         \\"required\\"
-      ]
+      ],
+      \\"name\\": \\"github.com/istio/tools/protoc-gen-docs\\"
     },
     {
       \\"organization\\": \\"fortio.org\\",
@@ -1203,8 +1351,10 @@ exports[`GopkgTomlExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"*\\",
       \\"scopes\\": [
         \\"required\\"
-      ]
+      ],
+      \\"name\\": \\"fortio.org/fortio\\"
     }
-  ]
+  ],
+  \\"name\\": \\"github.com/depscloud/extractor\\"
 }"
 `;

@@ -37,6 +37,7 @@ export default class CargoTomlExtractor implements Extractor {
                         module: name,
                         versionConstraint: val,
                         scopes,
+                        name,
                     };
                 } else {
                     return {
@@ -44,6 +45,7 @@ export default class CargoTomlExtractor implements Extractor {
                         module: name,
                         versionConstraint: val.branch,
                         scopes,
+                        name,
                     };
                 }
             });
@@ -56,6 +58,7 @@ export default class CargoTomlExtractor implements Extractor {
             module: toml.package.name,
             version: toml.package.version,
             dependencies,
+            name: toml.package.name,
         };
     }
 }

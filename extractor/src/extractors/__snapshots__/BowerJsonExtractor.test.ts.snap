@@ -5,6 +5,7 @@ Object {
   "dependencies": Array [
     Object {
       "module": "dependency",
+      "name": "dependency",
       "organization": "_",
       "scopes": Array [
         "",
@@ -13,6 +14,7 @@ Object {
     },
     Object {
       "module": "Depedency",
+      "name": "@second/Depedency",
       "organization": "second",
       "scopes": Array [
         "",
@@ -21,6 +23,7 @@ Object {
     },
     Object {
       "module": "devDependency",
+      "name": "devDependency",
       "organization": "_",
       "scopes": Array [
         "dev",
@@ -29,6 +32,7 @@ Object {
     },
     Object {
       "module": "@annotationDevDependency",
+      "name": "@annotationDevDependency",
       "organization": "",
       "scopes": Array [
         "dev",
@@ -37,6 +41,7 @@ Object {
     },
     Object {
       "module": "DevDependency",
+      "name": "@annotationAndSlash/DevDependency",
       "organization": "annotationAndSlash",
       "scopes": Array [
         "dev",
@@ -45,6 +50,7 @@ Object {
     },
     Object {
       "module": "0",
+      "name": "0",
       "organization": "_",
       "scopes": Array [
         "bundled",
@@ -54,6 +60,7 @@ Object {
   ],
   "language": "js",
   "module": "testName",
+  "name": "testName",
   "organization": "_",
   "sourceUrl": "git@github.com:group/project.git",
   "system": "bower",
@@ -76,7 +83,8 @@ exports[`BowerJsonExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"1.0.0\\",
       \\"scopes\\": [
         \\"\\"
-      ]
+      ],
+      \\"name\\": \\"dependency\\"
     },
     {
       \\"organization\\": \\"second\\",
@@ -84,7 +92,8 @@ exports[`BowerJsonExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"1.0.0\\",
       \\"scopes\\": [
         \\"\\"
-      ]
+      ],
+      \\"name\\": \\"@second/Depedency\\"
     },
     {
       \\"organization\\": \\"_\\",
@@ -92,7 +101,8 @@ exports[`BowerJsonExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"1.0.0\\",
       \\"scopes\\": [
         \\"dev\\"
-      ]
+      ],
+      \\"name\\": \\"devDependency\\"
     },
     {
       \\"organization\\": \\"\\",
@@ -100,7 +110,8 @@ exports[`BowerJsonExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"1.0.0\\",
       \\"scopes\\": [
         \\"dev\\"
-      ]
+      ],
+      \\"name\\": \\"@annotationDevDependency\\"
     },
     {
       \\"organization\\": \\"annotationAndSlash\\",
@@ -108,7 +119,8 @@ exports[`BowerJsonExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"1.0.0\\",
       \\"scopes\\": [
         \\"dev\\"
-      ]
+      ],
+      \\"name\\": \\"@annotationAndSlash/DevDependency\\"
     },
     {
       \\"organization\\": \\"_\\",
@@ -116,8 +128,10 @@ exports[`BowerJsonExtractor fullParse 2`] = `
       \\"versionConstraint\\": \\"bundledDependency\\",
       \\"scopes\\": [
         \\"bundled\\"
-      ]
+      ],
+      \\"name\\": \\"0\\"
     }
-  ]
+  ],
+  \\"name\\": \\"testName\\"
 }"
 `;

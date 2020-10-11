@@ -31,6 +31,7 @@ function extract(dependencyHash: any, scope: string): Dependency[] {
                 module,
                 versionConstraint,
                 scopes: [ scope ],
+                name: dependency,
             };
         });
 }
@@ -82,6 +83,7 @@ export default class PackageJsonExtractor implements Extractor {
             sourceUrl,
             organization, module, version,
             dependencies: allDependencies,
+            name,
         };
     }
 }

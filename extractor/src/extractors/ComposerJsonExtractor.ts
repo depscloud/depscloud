@@ -74,6 +74,7 @@ export default class ComposerJsonExtractor implements Extractor {
                     organization: dependencyOrganization,
                     module: dependencyModule,
                     versionConstraint: repo.package.version,
+                    name: repo.package.name,
                 };
             });
 
@@ -88,6 +89,7 @@ export default class ComposerJsonExtractor implements Extractor {
             module,
             version,
             dependencies,
+            name,
         };
     }
 }

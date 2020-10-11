@@ -35,6 +35,8 @@ export default class VendorConfExtractor implements Extractor {
         id[moduleString] = null;
         let idFlag = true;
         const dependencies = [];
+        let name = null;
+
         for (const line of lines) {
             const trimmedLine = line.trim();
             if (trimmedLine.length === 0) {
@@ -48,6 +50,7 @@ export default class VendorConfExtractor implements Extractor {
             }
             if (idFlag) {
                 id = parseImportPath(directive);
+                name = trimmedLine;
                 idFlag = false;
                 continue;
             }
@@ -65,6 +68,7 @@ export default class VendorConfExtractor implements Extractor {
                 module,
                 versionConstraint: version,
                 scopes,
+                name: directive,
             };
 
             dependencies.push(dependencyMap);
@@ -82,6 +86,7 @@ export default class VendorConfExtractor implements Extractor {
             module: id[moduleString],
             version: "latest",
             dependencies,
+            name,
         };
     }
 }

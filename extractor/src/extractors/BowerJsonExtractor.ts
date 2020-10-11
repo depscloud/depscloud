@@ -31,6 +31,7 @@ function extract(dependencyHash: any, scope: string): Dependency[] {
                 module,
                 versionConstraint,
                 scopes: [ scope ],
+                name: dependency,
             };
         });
 }
@@ -80,6 +81,7 @@ export default class BowerJsonExtractor implements Extractor {
             module,
             version,
             dependencies: allDependencies,
+            name,
         };
     }
 }
