@@ -114,6 +114,7 @@ github.com/davidji99/simpleresty v0.2.3 h1:oUHimRSFUgGgJjd+65q3L9alzPF3vFBiXHKxV
 github.com/davidji99/simpleresty v0.2.3/go.mod h1:v1honpRzBWA0G2Ivpz3ozeaB4zRiYxvu8CAAAtAlHqY=
 github.com/depscloud/api v0.1.13 h1:KF5BTPgG/QVRPc5/J23Qw0tSt8wVRNIBLp+i4DqpRAc=
 github.com/depscloud/api v0.1.13/go.mod h1:yB0gOl3bQ0Jhrpmif3E4rKeYnpMa4YSfD60FQqLX+iM=
+github.com/depscloud/api v0.1.15/go.mod h1:YJ4itomuPUZHqyWJNr00SROAYW8oiL0q1Jz9XzRHlT0=
 github.com/dgrijalva/jwt-go v3.2.0+incompatible/go.mod h1:E3ru+11k8xSBh+hMPgOLZmtrrCbhqsmaPHjLKYnJCaQ=
 github.com/dgryski/go-sip13 v0.0.0-20181026042036-e10d5fee7954/go.mod h1:vAd38F8PWV+bWy6jNmig1y/TA+kYO4g3RSRF0IAv0no=
 github.com/dustin/go-humanize v0.0.0-20171111073723-bb3d318650d4/go.mod h1:HtrtbFcZ19U5GC7JDqmcUSB87Iq5E25KnS6fMYU6eOk=
@@ -911,6 +912,7 @@ google.golang.org/genproto v0.0.0-20200904004341-0bd0a958aa1d h1:92D1fum1bJLKSdr
 google.golang.org/genproto v0.0.0-20200904004341-0bd0a958aa1d/go.mod h1:FWY/as6DDZQgahTzZj3fqbO1CbirC29ZNUFHwi0/+no=
 google.golang.org/genproto v0.0.0-20201002142447-3860012362da h1:DTQYk4u7nICKkkVZsBv0/0po0ChISxAJ5CTAfUhO0PQ=
 google.golang.org/genproto v0.0.0-20201002142447-3860012362da/go.mod h1:FWY/as6DDZQgahTzZj3fqbO1CbirC29ZNUFHwi0/+no=
+google.golang.org/genproto v0.0.0-20201007142714-5c0e72c5e71e/go.mod h1:FWY/as6DDZQgahTzZj3fqbO1CbirC29ZNUFHwi0/+no=
 google.golang.org/grpc v1.17.0/go.mod h1:6QZJwpn2B+Zp71q/5VxRsJ6NXXVCE5NRUHRo+f3cWCs=
 google.golang.org/grpc v1.19.0/go.mod h1:mqu4LbDTu4XGKhr4mRzUsmM4RtVoemTSY81AxZiDr8c=
 google.golang.org/grpc v1.20.0/go.mod h1:chYK+tFQF0nDUGJgXMSgLCQk3phJEuONr2DCgLDdAQM=

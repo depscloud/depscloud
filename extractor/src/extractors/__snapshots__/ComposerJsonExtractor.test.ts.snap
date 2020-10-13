@@ -5,6 +5,7 @@ Object {
   "dependencies": Array [
     Object {
       "module": "repoModule",
+      "name": "repoOrganization/repoModule",
       "organization": "repoOrganization",
       "versionConstraint": "repoVersion",
     },
@@ -21,6 +22,7 @@ Object {
   ],
   "language": "php",
   "module": "module",
+  "name": "organization/module",
   "organization": "organization",
   "sourceUrl": "",
   "system": "composer",
@@ -40,7 +42,8 @@ exports[`ComposerJsonExtractor fullParse 2`] = `
     {
       \\"organization\\": \\"repoOrganization\\",
       \\"module\\": \\"repoModule\\",
-      \\"versionConstraint\\": \\"repoVersion\\"
+      \\"versionConstraint\\": \\"repoVersion\\",
+      \\"name\\": \\"repoOrganization/repoModule\\"
     },
     {
       \\"organization\\": \\"requireOrganization\\",
@@ -52,6 +55,7 @@ exports[`ComposerJsonExtractor fullParse 2`] = `
       \\"module\\": \\"requireDevModule\\",
       \\"versionConstraint\\": \\"requireDevVersionConstraint\\"
     }
-  ]
+  ],
+  \\"name\\": \\"organization/module\\"
 }"
 `;

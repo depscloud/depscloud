@@ -29,6 +29,7 @@ function transformConstraints(data: Constraint[], scope: string): Dependency[] {
             module,
             versionConstraint,
             scopes: [ scope ],
+            name,
         };
     });
 }
@@ -42,6 +43,7 @@ function transformSimple(data: string[], versionConstraint: string, scope: strin
             module,
             versionConstraint,
             scopes: [ scope ],
+            name,
         };
     });
 }
@@ -63,7 +65,8 @@ export default class GopkgTomlExtractor implements Extractor {
     }
 
     public async extract(url: string, files: { [p: string]: ExtractorFile }): Promise<DependencyManagementFile> {
-        const { organization, module } = parseImportPath(inferImportPath(url));
+        const name = inferImportPath(url);
+        const { organization, module } = parseImportPath(name);
 
         const toml = files["Gopkg.toml"].toml();
 
@@ -81,6 +84,7 @@ export default class GopkgTomlExtractor implements Extractor {
             module,
             version: "latest",
             dependencies,
+            name: name,
         };
     }
 }

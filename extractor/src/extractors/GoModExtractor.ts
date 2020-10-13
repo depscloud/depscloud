@@ -31,6 +31,7 @@ export default class GoModExtractor implements Extractor {
 
         let id = null;
         const dependencies = [];
+        let name = null;
 
         for (let i = 0; i < lines.length; i++) {
             if (lines[i].length === 0) {
@@ -45,7 +46,8 @@ export default class GoModExtractor implements Extractor {
                     break;
 
                 case "module":
-                    id = parseImportPath(parts[1]);
+                    name = parts[1];
+                    id = parseImportPath(name);
                     break;
 
                 case "require":
@@ -70,6 +72,7 @@ export default class GoModExtractor implements Extractor {
                             module,
                             versionConstraint: requireParts[1],
                             scopes,
+                            name: requireParts[0],
                         };
 
                         dependencies.push(dep);
@@ -115,6 +118,7 @@ export default class GoModExtractor implements Extractor {
             module: id.module,
             version: "latest",
             dependencies,
+            name,
         };
     }
 }

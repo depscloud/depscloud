@@ -5,7 +5,7 @@ import ExtractorFile from "./ExtractorFile";
 
 const readFileAsync = promisify(readFile);
 
-describe("CargoTomlExtractor", () => {
+describe("BuildGradleExtractor", () => {
     test("fullParse", async () => {
         const buildGradle = require.resolve("./testdata/build.gradle");
         const settingsGradle = require.resolve("./testdata/settings.gradle");
