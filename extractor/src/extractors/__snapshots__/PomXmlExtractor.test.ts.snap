@@ -5,7 +5,7 @@ Object {
   "dependencies": Array [
     Object {
       "module": "parentArtifactId",
-      "name": "parentGroupId;parentArtifactId",
+      "name": "parentGroupId:parentArtifactId",
       "organization": "parentGroupId",
       "scopes": Array [
         "parent",
@@ -14,7 +14,7 @@ Object {
     },
     Object {
       "module": "compileArtifactId",
-      "name": "groupId;artifactId",
+      "name": "groupId:artifactId",
       "organization": "compileGroupId",
       "scopes": Array [
         "compile",
@@ -23,7 +23,7 @@ Object {
     },
     Object {
       "module": "runtimeArtifactId",
-      "name": "groupId;artifactId",
+      "name": "groupId:artifactId",
       "organization": "runtimeGroupId",
       "scopes": Array [
         "runtime",
@@ -32,7 +32,7 @@ Object {
     },
     Object {
       "module": "testArtifactId",
-      "name": "groupId;artifactId",
+      "name": "groupId:artifactId",
       "organization": "testGroupId",
       "scopes": Array [
         "test",
@@ -41,7 +41,7 @@ Object {
     },
     Object {
       "module": "systemArtifactId",
-      "name": "groupId;artifactId",
+      "name": "groupId:artifactId",
       "organization": "systemGroupId",
       "scopes": Array [
         "system",
@@ -50,7 +50,7 @@ Object {
     },
     Object {
       "module": "providedArtifactId",
-      "name": "groupId;artifactId",
+      "name": "groupId:artifactId",
       "organization": "providedGroupId",
       "scopes": Array [
         "provided",
@@ -60,7 +60,7 @@ Object {
   ],
   "language": "java",
   "module": "artifactId",
-  "name": "groupId;artifactId",
+  "name": "groupId:artifactId",
   "organization": "groupId",
   "sourceUrl": "git@github.com:group/project.git",
   "system": "maven",
@@ -84,7 +84,7 @@ exports[`PomXmlExtractor fullParse 2`] = `
       \\"scopes\\": [
         \\"parent\\"
       ],
-      \\"name\\": \\"parentGroupId;parentArtifactId\\"
+      \\"name\\": \\"parentGroupId:parentArtifactId\\"
     },
     {
       \\"organization\\": \\"compileGroupId\\",
@@ -93,7 +93,7 @@ exports[`PomXmlExtractor fullParse 2`] = `
       \\"scopes\\": [
         \\"compile\\"
       ],
-      \\"name\\": \\"groupId;artifactId\\"
+      \\"name\\": \\"groupId:artifactId\\"
     },
     {
       \\"organization\\": \\"runtimeGroupId\\",
@@ -102,7 +102,7 @@ exports[`PomXmlExtractor fullParse 2`] = `
       \\"scopes\\": [
         \\"runtime\\"
       ],
-      \\"name\\": \\"groupId;artifactId\\"
+      \\"name\\": \\"groupId:artifactId\\"
     },
     {
       \\"organization\\": \\"testGroupId\\",
@@ -111,7 +111,7 @@ exports[`PomXmlExtractor fullParse 2`] = `
       \\"scopes\\": [
         \\"test\\"
       ],
-      \\"name\\": \\"groupId;artifactId\\"
+      \\"name\\": \\"groupId:artifactId\\"
     },
     {
       \\"organization\\": \\"systemGroupId\\",
@@ -120,7 +120,7 @@ exports[`PomXmlExtractor fullParse 2`] = `
       \\"scopes\\": [
         \\"system\\"
       ],
-      \\"name\\": \\"groupId;artifactId\\"
+      \\"name\\": \\"groupId:artifactId\\"
     },
     {
       \\"organization\\": \\"providedGroupId\\",
@@ -129,9 +129,9 @@ exports[`PomXmlExtractor fullParse 2`] = `
       \\"scopes\\": [
         \\"provided\\"
       ],
-      \\"name\\": \\"groupId;artifactId\\"
+      \\"name\\": \\"groupId:artifactId\\"
     }
   ],
-  \\"name\\": \\"groupId;artifactId\\"
+  \\"name\\": \\"groupId:artifactId\\"
 }"
 `;

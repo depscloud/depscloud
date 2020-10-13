@@ -40,7 +40,7 @@ export default class PomXmlExtractor implements Extractor {
                 module: parentArtifactId,
                 versionConstraint: parentVersion,
                 scopes: [ "parent" ],
-                name: [parentGroupId, parentArtifactId].join(";"),
+                name: [parentGroupId, parentArtifactId].join(":"),
             });
         }
 
@@ -53,7 +53,7 @@ export default class PomXmlExtractor implements Extractor {
 
             const scopes = [scope || "compile"];
 
-            dependencies.push({organization, module, versionConstraint, scopes, name: [groupId, artifactId].join(";")});
+            dependencies.push({organization, module, versionConstraint, scopes, name: [groupId, artifactId].join(":")});
         });
 
         return {
@@ -64,7 +64,7 @@ export default class PomXmlExtractor implements Extractor {
             module: artifactId,
             version,
             dependencies,
-            name: [groupId, artifactId].join(";"),
+            name: [groupId, artifactId].join(":"),
         };
     }
 }

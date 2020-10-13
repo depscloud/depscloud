@@ -1115,7 +1115,7 @@ Array [
     "dependencies": Array [
       Object {
         "module": "jcommander",
-        "name": "com.beust;jcommander",
+        "name": "com.beust:jcommander",
         "organization": "com.beust",
         "scopes": Array [
           "default",
@@ -1124,7 +1124,7 @@ Array [
       },
       Object {
         "module": "lombok",
-        "name": "org.projectlombok;lombok",
+        "name": "org.projectlombok:lombok",
         "organization": "org.projectlombok",
         "scopes": Array [
           "build->default",
@@ -1133,7 +1133,7 @@ Array [
       },
       Object {
         "module": "junit",
-        "name": "junit;junit",
+        "name": "junit:junit",
         "organization": "junit",
         "scopes": Array [
           "test->default",
@@ -1142,7 +1142,7 @@ Array [
       },
       Object {
         "module": "cobertura",
-        "name": "net.sourceforge.cobertura;cobertura",
+        "name": "net.sourceforge.cobertura:cobertura",
         "organization": "net.sourceforge.cobertura",
         "scopes": Array [
           "test->default",
@@ -1151,7 +1151,7 @@ Array [
       },
       Object {
         "module": "checkstyle",
-        "name": "com.puppycrawl.tools;checkstyle",
+        "name": "com.puppycrawl.tools:checkstyle",
         "organization": "com.puppycrawl.tools",
         "scopes": Array [
           "analysis->default",
@@ -1160,7 +1160,7 @@ Array [
       },
       Object {
         "module": "findbugs",
-        "name": "com.google.code.findbugs;findbugs",
+        "name": "com.google.code.findbugs:findbugs",
         "organization": "com.google.code.findbugs",
         "scopes": Array [
           "analysis->default",
@@ -1169,7 +1169,7 @@ Array [
       },
       Object {
         "module": "pmd",
-        "name": "net.sourceforge.pmd;pmd",
+        "name": "net.sourceforge.pmd:pmd",
         "organization": "net.sourceforge.pmd",
         "scopes": Array [
           "analysis->default",
@@ -1179,7 +1179,7 @@ Array [
     ],
     "language": "java",
     "module": "sample-java-project",
-    "name": "com.nullprogram;sample-java-project",
+    "name": "com.nullprogram:sample-java-project",
     "organization": "com.nullprogram",
     "sourceUrl": "",
     "system": "ivy",
@@ -1236,7 +1236,7 @@ Array [
     "dependencies": Array [
       Object {
         "module": "parentArtifactId",
-        "name": "parentGroupId;parentArtifactId",
+        "name": "parentGroupId:parentArtifactId",
         "organization": "parentGroupId",
         "scopes": Array [
           "parent",
@@ -1245,7 +1245,7 @@ Array [
       },
       Object {
         "module": "compileArtifactId",
-        "name": "groupId;artifactId",
+        "name": "groupId:artifactId",
         "organization": "compileGroupId",
         "scopes": Array [
           "compile",
@@ -1254,7 +1254,7 @@ Array [
       },
       Object {
         "module": "runtimeArtifactId",
-        "name": "groupId;artifactId",
+        "name": "groupId:artifactId",
         "organization": "runtimeGroupId",
         "scopes": Array [
           "runtime",
@@ -1263,7 +1263,7 @@ Array [
       },
       Object {
         "module": "testArtifactId",
-        "name": "groupId;artifactId",
+        "name": "groupId:artifactId",
         "organization": "testGroupId",
         "scopes": Array [
           "test",
@@ -1272,7 +1272,7 @@ Array [
       },
       Object {
         "module": "systemArtifactId",
-        "name": "groupId;artifactId",
+        "name": "groupId:artifactId",
         "organization": "systemGroupId",
         "scopes": Array [
           "system",
@@ -1281,7 +1281,7 @@ Array [
       },
       Object {
         "module": "providedArtifactId",
-        "name": "groupId;artifactId",
+        "name": "groupId:artifactId",
         "organization": "providedGroupId",
         "scopes": Array [
           "provided",
@@ -1291,7 +1291,7 @@ Array [
     ],
     "language": "java",
     "module": "artifactId",
-    "name": "groupId;artifactId",
+    "name": "groupId:artifactId",
     "organization": "groupId",
     "sourceUrl": "git@github.com:group/project.git",
     "system": "maven",

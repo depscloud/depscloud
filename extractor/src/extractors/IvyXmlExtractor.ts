@@ -39,7 +39,7 @@ export default class IvyXmlExtractor implements Extractor {
                 scopes = confs.split(";");
             }
 
-            dependencies.push({ organization, module, versionConstraint, scopes, name: [ organization , module ].join(";")});
+            dependencies.push({ organization, module, versionConstraint, scopes, name: [ organization , module ].join(":") });
         });
 
         return {
@@ -50,7 +50,7 @@ export default class IvyXmlExtractor implements Extractor {
             module: infoNode.attr("module"),
             version: infoNode.attr("revision") || null,
             dependencies,
-            name: [ infoNode.attr("organisation"), infoNode.attr("module") ].filter(Boolean).join(";"),
+            name: [ infoNode.attr("organisation"), infoNode.attr("module") ].filter(Boolean).join(":"),
         };
     }
 }

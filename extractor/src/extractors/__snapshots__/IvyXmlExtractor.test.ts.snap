@@ -5,7 +5,7 @@ Object {
   "dependencies": Array [
     Object {
       "module": "jcommander",
-      "name": "com.beust;jcommander",
+      "name": "com.beust:jcommander",
       "organization": "com.beust",
       "scopes": Array [
         "default",
@@ -14,7 +14,7 @@ Object {
     },
     Object {
       "module": "lombok",
-      "name": "org.projectlombok;lombok",
+      "name": "org.projectlombok:lombok",
       "organization": "org.projectlombok",
       "scopes": Array [
         "build->default",
@@ -23,7 +23,7 @@ Object {
     },
     Object {
       "module": "junit",
-      "name": "junit;junit",
+      "name": "junit:junit",
       "organization": "junit",
       "scopes": Array [
         "test->default",
@@ -32,7 +32,7 @@ Object {
     },
     Object {
       "module": "cobertura",
-      "name": "net.sourceforge.cobertura;cobertura",
+      "name": "net.sourceforge.cobertura:cobertura",
       "organization": "net.sourceforge.cobertura",
       "scopes": Array [
         "test->default",
@@ -41,7 +41,7 @@ Object {
     },
     Object {
       "module": "checkstyle",
-      "name": "com.puppycrawl.tools;checkstyle",
+      "name": "com.puppycrawl.tools:checkstyle",
       "organization": "com.puppycrawl.tools",
       "scopes": Array [
         "analysis->default",
@@ -50,7 +50,7 @@ Object {
     },
     Object {
       "module": "findbugs",
-      "name": "com.google.code.findbugs;findbugs",
+      "name": "com.google.code.findbugs:findbugs",
       "organization": "com.google.code.findbugs",
       "scopes": Array [
         "analysis->default",
@@ -59,7 +59,7 @@ Object {
     },
     Object {
       "module": "pmd",
-      "name": "net.sourceforge.pmd;pmd",
+      "name": "net.sourceforge.pmd:pmd",
       "organization": "net.sourceforge.pmd",
       "scopes": Array [
         "analysis->default",
@@ -69,7 +69,7 @@ Object {
   ],
   "language": "java",
   "module": "sample-java-project",
-  "name": "com.nullprogram;sample-java-project",
+  "name": "com.nullprogram:sample-java-project",
   "organization": "com.nullprogram",
   "sourceUrl": "",
   "system": "ivy",
@@ -93,7 +93,7 @@ exports[`IvyXmlExtractor fullParse 2`] = `
       \\"scopes\\": [
         \\"default\\"
       ],
-      \\"name\\": \\"com.beust;jcommander\\"
+      \\"name\\": \\"com.beust:jcommander\\"
     },
     {
       \\"organization\\": \\"org.projectlombok\\",
@@ -102,7 +102,7 @@ exports[`IvyXmlExtractor fullParse 2`] = `
       \\"scopes\\": [
         \\"build->default\\"
       ],
-      \\"name\\": \\"org.projectlombok;lombok\\"
+      \\"name\\": \\"org.projectlombok:lombok\\"
     },
     {
       \\"organization\\": \\"junit\\",
@@ -111,7 +111,7 @@ exports[`IvyXmlExtractor fullParse 2`] = `
       \\"scopes\\": [
         \\"test->default\\"
       ],
-      \\"name\\": \\"junit;junit\\"
+      \\"name\\": \\"junit:junit\\"
     },
     {
       \\"organization\\": \\"net.sourceforge.cobertura\\",
@@ -120,7 +120,7 @@ exports[`IvyXmlExtractor fullParse 2`] = `
       \\"scopes\\": [
         \\"test->default\\"
       ],
-      \\"name\\": \\"net.sourceforge.cobertura;cobertura\\"
+      \\"name\\": \\"net.sourceforge.cobertura:cobertura\\"
     },
     {
       \\"organization\\": \\"com.puppycrawl.tools\\",
@@ -129,7 +129,7 @@ exports[`IvyXmlExtractor fullParse 2`] = `
       \\"scopes\\": [
         \\"analysis->default\\"
       ],
-      \\"name\\": \\"com.puppycrawl.tools;checkstyle\\"
+      \\"name\\": \\"com.puppycrawl.tools:checkstyle\\"
     },
     {
       \\"organization\\": \\"com.google.code.findbugs\\",
@@ -138,7 +138,7 @@ exports[`IvyXmlExtractor fullParse 2`] = `
       \\"scopes\\": [
         \\"analysis->default\\"
       ],
-      \\"name\\": \\"com.google.code.findbugs;findbugs\\"
+      \\"name\\": \\"com.google.code.findbugs:findbugs\\"
     },
     {
       \\"organization\\": \\"net.sourceforge.pmd\\",
@@ -147,9 +147,9 @@ exports[`IvyXmlExtractor fullParse 2`] = `
       \\"scopes\\": [
         \\"analysis->default\\"
       ],
-      \\"name\\": \\"net.sourceforge.pmd;pmd\\"
+      \\"name\\": \\"net.sourceforge.pmd:pmd\\"
     }
   ],
-  \\"name\\": \\"com.nullprogram;sample-java-project\\"
+  \\"name\\": \\"com.nullprogram:sample-java-project\\"
 }"
 `;
