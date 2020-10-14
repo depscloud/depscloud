@@ -2,9 +2,7 @@ package client
 
 import (
 	"context"
-	"fmt"
 	"net/http"
-	"net/url"
 
 	"github.com/depscloud/api/v1alpha/tracker"
 
@@ -19,11 +17,12 @@ type httpDependencyService struct {
 }
 
 func (d *httpDependencyService) ListDependents(ctx context.Context, in *tracker.DependencyRequest, opts ...grpc.CallOption) (*tracker.ListDependentsResponse, error) {
-	uri := fmt.Sprintf("%s/v1alpha/graph/%s/dependents?organization=%s&module=%s",
+	uri := getUri("%s/v1alpha/graph/%s/dependents?organization=%s&module=%s",
 		d.baseURL,
-		url.QueryEscape(in.Language),
-		url.QueryEscape(in.Organization),
-		url.QueryEscape(in.Module))
+		in.Language,
+		in.Organization,
+		in.Module,
+		in.Name)
 
 	r, err := d.client.Get(uri)
 	if err != nil {
@@ -39,11 +38,12 @@ func (d *httpDependencyService) ListDependents(ctx context.Context, in *tracker.
 }
 
 func (d *httpDependencyService) ListDependencies(ctx context.Context, in *tracker.DependencyRequest, opts ...grpc.CallOption) (*tracker.ListDependenciesResponse, error) {
-	uri := fmt.Sprintf("%s/v1alpha/graph/%s/dependencies?organization=%s&module=%s",
+	uri := getUri("%s/v1alpha/graph/%s/dependencies?organization=%s&module=%s",
 		d.baseURL,
-		url.QueryEscape(in.Language),
-		url.QueryEscape(in.Organization),
-		url.QueryEscape(in.Module))
+		in.Language,
+		in.Organization,
+		in.Module,
+		in.Name)
 
 	r, err := d.client.Get(uri)
 	if err != nil {

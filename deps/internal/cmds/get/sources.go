@@ -25,11 +25,12 @@ func SourcesCommand(
 		Example: strings.Join([]string{
 			"deps get sources",
 			"deps get sources -l go -o github.com -m depscloud/api",
+			"deps get sources -l go -n github.com/depscloud/api",
 		}, "\n"),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx := cmd.Context()
 
-			if module.Language != "" && module.Organization != "" && module.Module != "" {
+			if module.Language != "" && ((module.Organization != "" && module.Module != "") || module.Name != "") {
 				response, err := modulesClient.ListSources(ctx, module)
 				if err != nil {
 					return err
@@ -40,8 +41,8 @@ func SourcesCommand(
 				}
 
 				return nil
-			} else if module.Language != "" || module.Organization != "" || module.Module != "" {
-				return fmt.Errorf("language, organization, and module must be provided")
+			} else if module.Language != "" || module.Organization != "" || module.Module != "" && module.Name != "" {
+				return fmt.Errorf("language + name or language + organization + module must be provided")
 			}
 
 			pageSize := 100

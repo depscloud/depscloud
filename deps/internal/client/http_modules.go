@@ -39,11 +39,12 @@ func (m *httpModuleClient) List(ctx context.Context, in *tracker.ListRequest, op
 }
 
 func (m *httpModuleClient) ListSources(ctx context.Context, in *schema.Module, opts ...grpc.CallOption) (*tracker.ListSourcesResponse, error) {
-	uri := fmt.Sprintf("%s/v1alpha/modules/source?language=%s&organization=%s&module=%s",
+	uri := getUri("%s/v1alpha/modules/source?language=%s&organization=%s&module=%s",
 		m.baseURL,
-		url.QueryEscape(in.Language),
-		url.QueryEscape(in.Organization),
-		url.QueryEscape(in.Module))
+		in.Language,
+		in.Organization,
+		in.Module,
+		in.Name)
 
 	r, err := m.client.Get(uri)
 	if err != nil {

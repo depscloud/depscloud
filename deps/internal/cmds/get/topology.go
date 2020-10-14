@@ -13,17 +13,19 @@ import (
 )
 
 func key(module *schema.Module) string {
-	return fmt.Sprintf("%s|%s|%s",
+	return fmt.Sprintf("%s|%s|%s|%s",
 		module.Language,
 		module.Organization,
-		module.Module)
+		module.Module,
+		module.Name)
 }
 
 func keyForRequest(req *tracker.DependencyRequest) string {
-	return fmt.Sprintf("%s|%s|%s",
+	return fmt.Sprintf("%s|%s|%s|%s",
 		req.Language,
 		req.Organization,
-		req.Module)
+		req.Module,
+		req.Name)
 }
 
 type entry struct {
@@ -93,12 +95,14 @@ func topology(ctx context.Context, searchService tracker.SearchServiceClient, re
 			Language:     req.GetLanguage(),
 			Organization: req.GetOrganization(),
 			Module:       req.GetModule(),
+			Name:         req.GetName(),
 		}
 	} else if req := request.GetDependenciesOf(); req != nil {
 		root = &schema.Module{
 			Language:     req.GetLanguage(),
 			Organization: req.GetOrganization(),
 			Module:       req.GetModule(),
+			Name:         req.GetName(),
 		}
 	}
 
@@ -157,8 +161,8 @@ func topologyCommand(
 		Aliases: []string{"topo"},
 		Short:   "Get the associated topology",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			if req.Language == "" || req.Organization == "" || req.Module == "" {
-				return fmt.Errorf("language, organization, and module must be provided")
+			if req.Language == "" && ((req.Organization == "" || req.Module == "") || req.Name == "") {
+				return fmt.Errorf("language + name or language + organization + module must be provided")
 			}
 
 			results, err := topology(cmd.Context(), searchService, requestConverter(req))
