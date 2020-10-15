@@ -1,9 +1,10 @@
 package get
 
 import (
+	"strings"
+
 	"github.com/depscloud/api/v1alpha/schema"
 	"github.com/depscloud/api/v1alpha/tracker"
-	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -34,7 +35,7 @@ func addModuleFlags(cmd *cobra.Command, module *schema.Module) {
 
 func setModuleFields(module *schema.Module) *schema.Module {
 	if module.Name == "" {
-		return module;
+		return module
 	}
 
 	orgAndModule := parseName(module.Language, module.Name)
@@ -42,12 +43,12 @@ func setModuleFields(module *schema.Module) *schema.Module {
 	module.Organization = orgAndModule[0]
 	module.Module = orgAndModule[1]
 
-	return module;
+	return module
 }
 
 func setRequestFields(req *tracker.DependencyRequest) *tracker.DependencyRequest {
 	if req.Name == "" {
-		return req;
+		return req
 	}
 
 	orgAndModule := parseName(req.Language, req.Name)
@@ -55,7 +56,7 @@ func setRequestFields(req *tracker.DependencyRequest) *tracker.DependencyRequest
 	req.Organization = orgAndModule[0]
 	req.Module = orgAndModule[1]
 
-	return req;
+	return req
 }
 
 func parseName(language string, name string) []string {
@@ -72,7 +73,7 @@ func parseName(language string, name string) []string {
 	}
 
 	if len(split) == 1 {
-		return []string{"_", split[1]}
+		return []string{"_", split[0]}
 	} else {
 		return split
 	}
