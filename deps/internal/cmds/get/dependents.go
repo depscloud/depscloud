@@ -32,7 +32,7 @@ func DependentsCommand(
 
 			ctx := cmd.Context()
 
-			response, err := dependencyClient.ListDependents(ctx, req)
+			response, err := dependencyClient.ListDependents(ctx, setRequestFields(req))
 			if err != nil {
 				return err
 			}

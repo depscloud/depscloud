@@ -31,7 +31,7 @@ func SourcesCommand(
 			ctx := cmd.Context()
 
 			if module.Language != "" && ((module.Organization != "" && module.Module != "") || module.Name != "") {
-				response, err := modulesClient.ListSources(ctx, module)
+				response, err := modulesClient.ListSources(ctx, setModuleFields(module))
 				if err != nil {
 					return err
 				}
