@@ -161,7 +161,7 @@ func topologyCommand(
 				return fmt.Errorf("language, organization, and module must be provided")
 			}
 
-			results, err := topology(cmd.Context(), searchService, requestConverter(req))
+			results, err := topology(cmd.Context(), searchService, requestConverter(setRequestFields(req)))
 
 			if err != nil {
 				return err
