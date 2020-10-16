@@ -27,7 +27,7 @@ jobs:
   goreleaser:
     runs-on: ubuntu-latest
     container:
-      image: golang:1.14-alpine3.12
+      image: golang:1.15-alpine3.12
     steps:
       - name: Prepare
         run: apk -U upgrade && apk add build-base git ca-certificates curl
