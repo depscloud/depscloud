@@ -21,13 +21,13 @@
     "@types/js-yaml": "3.12.5",
     "@typescript-eslint/eslint-plugin": "4.3.0",
     "@typescript-eslint/parser": "4.3.0",
-    "eslint": "7.10.0",
-    "jest": "26.4.2",
+    "eslint": "7.11.0",
+    "jest": "26.5.3",
     "ts-jest": "26.4.1",
     "typescript": "4.0.3"
   },
   "dependencies": {
-    "@depscloud/api": "0.1.13",
+    "@depscloud/api": "0.1.16",
     "@grpc/grpc-js": "1.1.7",
     "@grpc/proto-loader": "0.5.5",
     "caporal": "latest",

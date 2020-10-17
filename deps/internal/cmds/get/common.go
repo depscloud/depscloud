@@ -1,6 +1,8 @@
 package get
 
 import (
+	"strings"
+
 	"github.com/depscloud/api/v1alpha/schema"
 	"github.com/depscloud/api/v1alpha/tracker"
 
@@ -13,6 +15,7 @@ func addDependencyRequestFlags(cmd *cobra.Command, req *tracker.DependencyReques
 	flags.StringVarP(&(req.Language), "language", "l", req.Language, "The language of the module")
 	flags.StringVarP(&(req.Organization), "organization", "o", req.Organization, "The organization of the module")
 	flags.StringVarP(&(req.Module), "module", "m", req.Module, "The name of the module")
+	flags.StringVarP(&(req.Name), "name", "n", req.Name, "The name of the module")
 }
 
 func addSourceFlags(cmd *cobra.Command, source *schema.Source) {
@@ -27,4 +30,51 @@ func addModuleFlags(cmd *cobra.Command, module *schema.Module) {
 	flags.StringVarP(&(module.Language), "language", "l", module.Language, "The language of the module")
 	flags.StringVarP(&(module.Organization), "organization", "o", module.Organization, "The organization of the module")
 	flags.StringVarP(&(module.Module), "module", "m", module.Module, "The name of the module")
+	flags.StringVarP(&(module.Name), "name", "n", module.Name, "The name of the module")
+}
+
+func setModuleFields(module *schema.Module) *schema.Module {
+	if module.Name == "" {
+		return module
+	}
+
+	orgAndModule := parseName(module.Language, module.Name)
+
+	module.Organization = orgAndModule[0]
+	module.Module = orgAndModule[1]
+
+	return module
+}
+
+func setRequestFields(req *tracker.DependencyRequest) *tracker.DependencyRequest {
+	if req.Name == "" {
+		return req
+	}
+
+	orgAndModule := parseName(req.Language, req.Name)
+
+	req.Organization = orgAndModule[0]
+	req.Module = orgAndModule[1]
+
+	return req
+}
+
+func parseName(language string, name string) []string {
+	var split []string
+
+	if strings.EqualFold(language, "java") {
+		split = strings.Split(name, ":")
+	} else {
+		if strings.EqualFold(language, "node") {
+			name = strings.Replace(name, "@", "", 1)
+		}
+
+		split = strings.SplitN(name, "/", 2)
+	}
+
+	if len(split) == 1 {
+		return []string{"_", split[0]}
+	} else {
+		return split
+	}
 }

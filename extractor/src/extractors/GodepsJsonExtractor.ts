@@ -42,6 +42,7 @@ export default class GodepsJsonExtractor implements Extractor {
                 organization: dependencyOrganization,
                 module: dependencyModule,
                 versionConstraint: version,
+                name: dependencyImportPath,
             };
         });
 
@@ -53,6 +54,7 @@ export default class GodepsJsonExtractor implements Extractor {
             module,
             version: "",
             dependencies,
+            name: ImportPath,
         };
     }
 }

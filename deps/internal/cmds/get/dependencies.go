@@ -2,6 +2,7 @@ package get
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/depscloud/api/v1alpha/tracker"
 	"github.com/depscloud/depscloud/deps/internal/writer"
@@ -20,14 +21,17 @@ func DependenciesCommand(
 		Use:     "dependencies",
 		Aliases: []string{"dependency"},
 		Short:   "Get the list of modules the given module depends on",
-		Example: "deps get dependencies -l go -o github.com -m depscloud/api",
+		Example: strings.Join([]string{
+			"deps get dependencies -l go -o github.com -m depscloud/api",
+			"deps get dependencies -l go -n github.com/depscloud/api",
+		}, "\n"),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			if req.Language == "" || req.Organization == "" || req.Module == "" {
-				return fmt.Errorf("language, organization, and module must be provided")
+			if req.Language == "" && ((req.Organization == "" || req.Module == "") || req.Name == "") {
+				return fmt.Errorf("language + name or language + organization + module must be provided")
 			}
 
 			ctx := cmd.Context()
-			response, err := dependencyClient.ListDependencies(ctx, req)
+			response, err := dependencyClient.ListDependencies(ctx, setRequestFields(req))
 			if err != nil {
 				return err
 			}
