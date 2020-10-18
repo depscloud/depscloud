@@ -3,12 +3,11 @@ package client
 import (
 	"fmt"
 	"os"
+	"runtime"
 
 	"github.com/depscloud/api/v1alpha/tracker"
 
 	"github.com/sirupsen/logrus"
-
-	"runtime"
 )
 
 const (
@@ -69,5 +68,4 @@ type Client interface {
 	Modules() tracker.ModuleServiceClient
 	Sources() tracker.SourceServiceClient
 	Search() tracker.SearchServiceClient
-	Troubleshoot() *httpTroubleshootClient
 }

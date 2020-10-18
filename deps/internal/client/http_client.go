@@ -7,7 +7,6 @@ type httpClient struct {
 	modules      tracker.ModuleServiceClient
 	sources      tracker.SourceServiceClient
 	search       tracker.SearchServiceClient
-	troubleshoot *httpTroubleshootClient
 }
 
 func (c *httpClient) Dependencies() tracker.DependencyServiceClient {
@@ -24,10 +23,6 @@ func (c *httpClient) Sources() tracker.SourceServiceClient {
 
 func (c *httpClient) Search() tracker.SearchServiceClient {
 	return c.search
-}
-
-func (c *httpClient) Troubleshoot() *httpTroubleshootClient {
-	return c.troubleshoot
 }
 
 var _ Client = &httpClient{}

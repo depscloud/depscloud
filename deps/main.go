@@ -5,6 +5,7 @@ import (
 
 	"github.com/depscloud/depscloud/deps/internal/client"
 	"github.com/depscloud/depscloud/deps/internal/cmds/completion"
+	"github.com/depscloud/depscloud/deps/internal/cmds/debug"
 	"github.com/depscloud/depscloud/deps/internal/cmds/get"
 	"github.com/depscloud/depscloud/deps/internal/writer"
 	"github.com/depscloud/depscloud/internal/mux"
@@ -40,7 +41,6 @@ var date string
 
 func main() {
 	version := mux.Version{Version: version, Commit: commit, Date: date}
-	systemInfo := client.GetSystemInfo()
 	client := client.DefaultClient()
 	writer := writer.Default
 
@@ -62,28 +62,7 @@ func main() {
 		},
 	})
 
-	cmd.AddCommand(&cobra.Command{
-		Use:   "troubleshoot",
-		Short: "Output information helpful for troubleshooting",
-		RunE: func(_ *cobra.Command, args []string) error {
-			versionString := fmt.Sprintf("Client Version: %s", version)
-			fmt.Println(versionString)
-			fmt.Println(systemInfo.String())
-			serverVersion, err := client.Troubleshoot().GetServerVersion()
-			if err != nil {
-				fmt.Println(fmt.Sprintf("Error While retrieving server version"))
-			} else {
-				fmt.Println(fmt.Sprintf("Server Version: %s", serverVersion))
-			}
-			healthString, err := client.Troubleshoot().GetHealth()
-			if err != nil {
-				fmt.Println(fmt.Sprintf("Error While retrieving server health"))
-			} else {
-				fmt.Println(fmt.Sprintf("Server Health: %s", healthString))
-			}
-			return nil
-		},
-	})
+	cmd.AddCommand(debug.Command(version))
 
 	if err := cmd.Execute(); err != nil {
 		logrus.Fatal(err)
