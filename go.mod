@@ -43,7 +43,7 @@ require (
 	github.com/xanzy/go-gitlab v0.38.1
 	go.uber.org/multierr v1.5.0 // indirect
 	golang.org/x/crypto v0.0.0-20201002170205-7f63de1d35b0 // indirect
-	golang.org/x/net v0.0.0-20201010224723-4f7140c49acb
+	golang.org/x/net 7b1cca2348c0
 	golang.org/x/oauth2 v0.0.0-20200902213428-5d25da1a8d43
 	golang.org/x/sys v0.0.0-20201005065044-765f4ea38db3 // indirect
 	golang.org/x/time v0.0.0-20200630173020-3af7569d3a1e // indirect
