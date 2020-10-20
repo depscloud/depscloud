@@ -8,6 +8,7 @@ import (
 	"github.com/depscloud/api/v1beta"
 	"github.com/depscloud/api/v1beta/graphstore"
 
+	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -20,6 +21,12 @@ const (
 	RepositoryDefaultKind DefaultKind = "repository"
 	ArtifactDefaultKind   DefaultKind = "artifact"
 )
+
+func RegisterManifestStorageServiceServer(server *grpc.Server, graphStore graphstore.GraphStoreClient) {
+	v1beta.RegisterManifestStorageServiceServer(server, &manifestStorageService{
+		graphStore: graphStore,
+	})
+}
 
 type manifestStorageService struct {
 	graphStore graphstore.GraphStoreClient
