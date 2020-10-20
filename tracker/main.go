@@ -13,6 +13,7 @@ import (
 	"github.com/depscloud/depscloud/tracker/internal/graphstore/v1alpha"
 	"github.com/depscloud/depscloud/tracker/internal/graphstore/v1beta"
 	svcsv1alpha "github.com/depscloud/depscloud/tracker/internal/services/v1alpha"
+	svcsv1beta "github.com/depscloud/depscloud/tracker/internal/services/v1beta"
 
 	_ "github.com/go-sql-driver/mysql"
 
@@ -75,7 +76,8 @@ func registerV1Alpha(v1alphaClient apiv1alpha.GraphStoreClient, server *grpc.Ser
 }
 
 func registerV1Beta(v1betaClient apiv1beta.GraphStoreClient, server *grpc.Server) {
-	// TODO: fill in with gh-50 to gh-57
+	svcsv1beta.RegisterManifestStorageServiceServer(server, v1betaClient)
+	// more eventually
 }
 
 type trackerConfig struct {
