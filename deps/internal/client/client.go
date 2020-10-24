@@ -28,8 +28,6 @@ const (
 var (
 	protocol = or(os.Getenv(VariableProtocol), DefaultProtocol)
 	baseURL  = or(os.Getenv(VariableBaseURL), DefaultBaseURL)
-	systemOS = runtime.GOOS
-	arch     = runtime.GOARCH
 )
 
 type SystemInfo struct {
@@ -40,7 +38,7 @@ type SystemInfo struct {
 }
 
 func (s SystemInfo) String() string {
-	return fmt.Sprintf("{Protocol: %v, BaseURL: %v, OS: %v, Arch: %v}", s.Protocol, s.BaseURL, s.Os, s.Arch)
+	return fmt.Sprintf("{protocol: %v, baseURL: %v, os: %v, arch: %v}", s.Protocol, s.BaseURL, s.Os, s.Arch)
 }
 
 func or(read, def string) string {
@@ -60,7 +58,7 @@ func DefaultClient() Client {
 }
 
 func GetSystemInfo() SystemInfo {
-	return SystemInfo{Protocol: protocol, BaseURL: baseURL, Os: systemOS, Arch: arch}
+	return SystemInfo{Protocol: protocol, BaseURL: baseURL, Os: runtime.GOOS, Arch: runtime.GOARCH}
 }
 
 type Client interface {

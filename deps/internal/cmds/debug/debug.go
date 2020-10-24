@@ -17,15 +17,13 @@ func Command(version mux.Version) *cobra.Command {
 		Use:   "debug",
 		Short: "Output information helpful for debugging",
 		RunE: func(_ *cobra.Command, args []string) error {
-			// Printing Client environment variables
 			systemInfo := client.GetSystemInfo()
-			fmt.Println(systemInfo.String())
-
-			// Printing Client version information
-			versionString := fmt.Sprintf("Client Version: %s", version)
-			fmt.Println(versionString)
-
 			debugClient := httpDebugClient{client: http.DefaultClient, baseURL: systemInfo.BaseURL}
+
+			// Printing Client environment variables
+			fmt.Println(systemInfo)
+			// Printing Client version information
+			fmt.Println(fmt.Sprintf("Client Version: %s", version))
 
 			// Printing Server version information
 			serverVersion, err := debugClient.GetServerVersion()
