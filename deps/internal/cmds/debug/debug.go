@@ -17,8 +17,11 @@ func Command(version mux.Version) *cobra.Command {
 		Use:   "debug",
 		Short: "Output information helpful for debugging",
 		RunE: func(_ *cobra.Command, args []string) error {
+
 			systemInfo := client.GetSystemInfo()
 			debugClient := httpDebugClient{client: http.DefaultClient, baseURL: systemInfo.BaseURL}
+			serverVersion, versionErr := debugClient.GetServerVersion()
+			healthString, healthErr := debugClient.GetHealth()
 
 			// Printing Client environment variables
 			fmt.Println(fmt.Sprintf("System Info: %s", systemInfo))
@@ -26,15 +29,14 @@ func Command(version mux.Version) *cobra.Command {
 			fmt.Println(fmt.Sprintf("Client Version: %s", version))
 
 			// Printing Server version information
-			serverVersion, err := debugClient.GetServerVersion()
-			if err != nil {
+			if versionErr != nil {
 				fmt.Println(fmt.Sprintf("Error While retrieving server version"))
 			} else {
 				fmt.Println(fmt.Sprintf("Server Version: %s", serverVersion))
 			}
+
 			// Printing Server Health information
-			healthString, err := debugClient.GetHealth()
-			if err != nil {
+			if healthErr != nil {
 				fmt.Println(fmt.Sprintf("Error While retrieving server health"))
 			} else {
 				fmt.Println(fmt.Sprintf("Server Health: %s", healthString))
