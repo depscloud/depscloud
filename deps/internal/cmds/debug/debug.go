@@ -21,7 +21,7 @@ func Command(version mux.Version) *cobra.Command {
 			debugClient := httpDebugClient{client: http.DefaultClient, baseURL: systemInfo.BaseURL}
 
 			// Printing Client environment variables
-			fmt.Println(systemInfo)
+			fmt.Println(fmt.Sprintf("System Info: %s", systemInfo))
 			// Printing Client version information
 			fmt.Println(fmt.Sprintf("Client Version: %s", version))
 
