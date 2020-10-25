@@ -1,7 +1,9 @@
 package client
 
 import (
+	"fmt"
 	"os"
+	"runtime"
 
 	"github.com/depscloud/api/v1alpha/tracker"
 
@@ -28,6 +30,17 @@ var (
 	baseURL  = or(os.Getenv(VariableBaseURL), DefaultBaseURL)
 )
 
+type SystemInfo struct {
+	Protocol string
+	BaseURL  string
+	Os       string
+	Arch     string
+}
+
+func (s SystemInfo) String() string {
+	return fmt.Sprintf("{protocol: %v, baseURL: %v, os: %v, arch: %v}", s.Protocol, s.BaseURL, s.Os, s.Arch)
+}
+
 func or(read, def string) string {
 	if read == "" {
 		return def
@@ -42,6 +55,10 @@ func DefaultClient() Client {
 
 	logrus.Warnf("the HTTP api is deprecated, please migrate to gRPC")
 	return httpDefaltClient(baseURL)
+}
+
+func GetSystemInfo() SystemInfo {
+	return SystemInfo{Protocol: protocol, BaseURL: baseURL, Os: runtime.GOOS, Arch: runtime.GOARCH}
 }
 
 type Client interface {

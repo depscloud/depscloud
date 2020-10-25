@@ -5,6 +5,7 @@ import (
 
 	"github.com/depscloud/depscloud/deps/internal/client"
 	"github.com/depscloud/depscloud/deps/internal/cmds/completion"
+	"github.com/depscloud/depscloud/deps/internal/cmds/debug"
 	"github.com/depscloud/depscloud/deps/internal/cmds/get"
 	"github.com/depscloud/depscloud/deps/internal/writer"
 	"github.com/depscloud/depscloud/internal/mux"
@@ -43,6 +44,7 @@ var commit string
 var date string
 
 func main() {
+	version := mux.Version{Version: version, Commit: commit, Date: date}
 	client := client.DefaultClient()
 	writer := writer.Default
 
@@ -58,12 +60,13 @@ func main() {
 		Use:   "version",
 		Short: "Output version information",
 		RunE: func(_ *cobra.Command, args []string) error {
-			versionString := fmt.Sprintf("%s %s", cmd.Use, mux.Version{Version: version, Commit: commit, Date: date})
-
+			versionString := fmt.Sprintf("%s %s", cmd.Use, version)
 			fmt.Println(versionString)
 			return nil
 		},
 	})
+
+	cmd.AddCommand(debug.Command(version))
 
 	if err := cmd.Execute(); err != nil {
 		logrus.Fatal(err)
