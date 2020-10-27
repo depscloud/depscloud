@@ -19,7 +19,9 @@ export default class BuildGradleExtractor implements Extractor {
                 "**/build.gradle",
                 "**/settings.gradle",
             ],
-            excludes: [],
+            excludes: [
+                "**/testdata/**",
+            ],
         };
     }
 

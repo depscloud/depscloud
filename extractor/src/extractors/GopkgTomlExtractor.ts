@@ -55,7 +55,8 @@ export default class GopkgTomlExtractor implements Extractor {
                 "**/Gopkg.toml",
             ],
             excludes: [
-                "**/vendor/**"
+                "**/vendor/**",
+                "**/testdata/**",
             ],
         };
     }

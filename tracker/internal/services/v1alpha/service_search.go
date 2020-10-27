@@ -132,6 +132,7 @@ func transformResponse(response *tracker.SearchResponse) (requests []*tracker.Se
 					Language:     dependency.Module.GetLanguage(),
 					Organization: dependency.Module.GetOrganization(),
 					Module:       dependency.Module.GetModule(),
+					Name:         dependency.Module.GetName(),
 				},
 			}
 		}
@@ -145,6 +146,7 @@ func transformResponse(response *tracker.SearchResponse) (requests []*tracker.Se
 					Language:     dependency.Module.GetLanguage(),
 					Organization: dependency.Module.GetOrganization(),
 					Module:       dependency.Module.GetModule(),
+					Name:         dependency.Module.GetName(),
 				},
 			}
 		}

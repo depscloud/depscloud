@@ -12,7 +12,8 @@ export default class GodepsJsonExtractor implements Extractor {
                 "**/Godeps.json",
             ],
             excludes: [
-                "**/vendor/**"
+                "**/vendor/**",
+                "**/testdata/**",
             ],
         };
     }

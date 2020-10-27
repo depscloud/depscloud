@@ -12,7 +12,9 @@ export default class IvyXmlExtractor implements Extractor {
             includes: [
                 "**/ivy.xml",
             ],
-            excludes: [],
+            excludes: [
+                "**/testdata/**",
+            ],
         };
     }
 

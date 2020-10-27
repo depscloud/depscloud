@@ -43,7 +43,8 @@ export default class PackageJsonExtractor implements Extractor {
                 "**/package.json",
             ],
             excludes: [
-                "**/node_modules/**"
+                "**/node_modules/**",
+                "**/testdata/**",
             ],
         };
     }

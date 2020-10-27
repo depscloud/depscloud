@@ -16,7 +16,8 @@ export default class VendorConfExtractor implements Extractor {
                 "**/vendor.conf",
             ],
             excludes: [
-                "**/vendor/**"
+                "**/vendor/**",
+                "**/testdata/**",
             ],
         };
     }

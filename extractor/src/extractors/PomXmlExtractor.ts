@@ -12,7 +12,9 @@ export default class PomXmlExtractor implements Extractor {
                 "**/pom.xml",
                 "**/*.pom",
             ],
-            excludes: [],
+            excludes: [
+                "**/testdata/**",
+            ],
         };
     }
 

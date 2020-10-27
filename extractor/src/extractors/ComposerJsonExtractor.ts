@@ -42,7 +42,8 @@ export default class ComposerJsonExtractor implements Extractor {
                 "**/composer.json",
             ],
             excludes: [
-                "**/vendor/**"
+                "**/vendor/**",
+                "**/testdata/**",
             ],
         };
     }

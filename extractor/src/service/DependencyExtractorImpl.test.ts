@@ -28,17 +28,17 @@ const files = [
     "PackageJsonExtractor.ts",
     "PomXmlExtractor.test.ts",
     "PomXmlExtractor.ts",
-    "testdata/Cargo.toml",
-    "testdata/Godeps.json",
-    "testdata/Gopkg.toml",
-    "testdata/build.gradle",
-    "testdata/composer.json",
-    "testdata/go.mod",
-    "testdata/go.sum",
-    "testdata/ivy.xml",
-    "testdata/package.json",
-    "testdata/pom.xml",
-    "testdata/settings.gradle",
+    "Cargo.toml",
+    "Godeps.json",
+    "Gopkg.toml",
+    "build.gradle",
+    "composer.json",
+    "go.mod",
+    "go.sum",
+    "ivy.xml",
+    "package.json",
+    "pom.xml",
+    "settings.gradle",
 ];
 
 describe("DependencyExtractorImpl", () => {
@@ -61,7 +61,7 @@ describe("DependencyExtractorImpl", () => {
 
         expect(matched.sort()).toMatchSnapshot();
 
-        const extractorsDir = path.resolve(__dirname, "../extractors");
+        const extractorsDir = path.resolve(__dirname, "../extractors/testdata");
 
         const fileContents = {};
         const promises = matched.map((match) =>
