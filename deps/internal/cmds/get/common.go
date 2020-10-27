@@ -62,14 +62,21 @@ func setRequestFields(req *tracker.DependencyRequest) *tracker.DependencyRequest
 func parseName(language string, name string) []string {
 	var split []string
 
-	if strings.EqualFold(language, "java") {
+	switch language {
+	case "java":
 		split = strings.Split(name, ":")
-	} else {
-		if strings.EqualFold(language, "node") {
-			name = strings.Replace(name, "@", "", 1)
-		}
-
+		break
+	case "node":
+		name = strings.Replace(name, "@", "", 1)
 		split = strings.SplitN(name, "/", 2)
+		break
+	case "js":
+		name = strings.Replace(name, "@", "", 1)
+		split = strings.SplitN(name, "/", 2)
+		break
+	default:
+		split = strings.SplitN(name, "/", 2)
+		break
 	}
 
 	if len(split) == 1 {

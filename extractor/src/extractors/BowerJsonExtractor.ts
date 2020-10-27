@@ -43,7 +43,8 @@ export default class BowerJsonExtractor implements Extractor {
                 "**/bower.json",
             ],
             excludes: [
-                "**/public/**"
+                "**/public/**",
+                "**/testdata/**",
             ],
         };
     }

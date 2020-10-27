@@ -15,7 +15,8 @@ export default class GoModExtractor implements Extractor {
                 "**/go.mod",
             ],
             excludes: [
-                "**/vendor/**"
+                "**/vendor/**",
+                "**/testdata/**",
             ],
         };
     }
@@ -89,7 +90,7 @@ export default class GoModExtractor implements Extractor {
                         }
                     }
                     break;
-                
+
                 case "retract":
                 case "exclude":
                     i++;    // exclude on subsequent lines
@@ -97,10 +98,10 @@ export default class GoModExtractor implements Extractor {
                         // intentionally empty
                     }
                     break;
-                
+
                 case "//":
                     break;
-                
+
                 default:
                     logger.debug(`parse error: unsupported directive: ${directive}`);
             }

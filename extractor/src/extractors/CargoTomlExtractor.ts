@@ -15,7 +15,8 @@ export default class CargoTomlExtractor implements Extractor {
                 "**/Cargo.toml",
             ],
             excludes: [
-                "**/vendor/**"
+                "**/vendor/**",
+                "**/testdata/**",
             ],
         };
     }

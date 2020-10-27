@@ -2,16 +2,16 @@
 
 exports[`DependencyExtractorImpl fullParse 1`] = `
 Array [
-  "testdata/Cargo.toml",
-  "testdata/Godeps.json",
-  "testdata/Gopkg.toml",
-  "testdata/build.gradle",
-  "testdata/composer.json",
-  "testdata/go.mod",
-  "testdata/ivy.xml",
-  "testdata/package.json",
-  "testdata/pom.xml",
-  "testdata/settings.gradle",
+  "Cargo.toml",
+  "Godeps.json",
+  "Gopkg.toml",
+  "build.gradle",
+  "composer.json",
+  "go.mod",
+  "ivy.xml",
+  "package.json",
+  "pom.xml",
+  "settings.gradle",
 ]
 `;
 

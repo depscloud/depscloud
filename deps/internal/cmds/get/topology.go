@@ -12,26 +12,27 @@ import (
 	"github.com/spf13/cobra"
 )
 
+func requestToModule(req *tracker.DependencyRequest) *schema.Module {
+	return &schema.Module{
+		Language:     req.Language,
+		Organization: req.Organization,
+		Module:       req.Module,
+		Name:         req.Name,
+	}
+}
+
 func key(module *schema.Module) string {
-	return fmt.Sprintf("%s|%s|%s|%s",
+	return fmt.Sprintf("%s|%s|%s",
 		module.Language,
 		module.Organization,
-		module.Module,
-		module.Name)
+		module.Module)
 }
 
 func keyForRequest(req *tracker.DependencyRequest) string {
-	return fmt.Sprintf("%s|%s|%s|%s",
+	return fmt.Sprintf("%s|%s|%s",
 		req.Language,
 		req.Organization,
-		req.Module,
-		req.Name)
-}
-
-type entry struct {
-	req    *tracker.DependencyRequest
-	module *schema.Module
-	seen   map[string]bool
+		req.Module)
 }
 
 type convertRequest func(request *tracker.DependencyRequest) *tracker.SearchRequest
@@ -46,8 +47,9 @@ func topology(ctx context.Context, searchService tracker.SearchServiceClient, re
 		return nil, err
 	}
 
+	counter := make(map[string]map[string]bool)
+	nodes := make(map[string]*schema.Module)
 	edges := make(map[string][]string)
-	nodes := make(map[string]*entry)
 
 	for resp, err := call.Recv(); true; resp, err = call.Recv() {
 		if err == io.EOF {
@@ -69,72 +71,69 @@ func topology(ctx context.Context, searchService tracker.SearchServiceClient, re
 			return nil, fmt.Errorf("source module not included")
 		}
 
-		sourceKey := keyForRequest(source)
-		targets := make([]string, len(items))
+		module := requestToModule(source)
+		moduleKey := key(module)
+		if _, ok := nodes[moduleKey]; !ok {
+			nodes[moduleKey] = module
+			counter[moduleKey] = make(map[string]bool)
+		}
+
+		dependencyKeys := make([]string, len(items))
 
 		for i, dependency := range items {
-			targets[i] = key(dependency.Module)
+			dependencyKey := key(dependency.Module)
 
-			if _, ok := nodes[targets[i]]; !ok {
-				nodes[targets[i]] = &entry{
-					module: dependency.GetModule(),
-					seen:   make(map[string]bool),
-				}
+			if _, ok := nodes[dependencyKey]; !ok {
+				nodes[dependencyKey] = dependency.Module
+				counter[dependencyKey] = make(map[string]bool)
 			}
 
-			nodes[targets[i]].seen[sourceKey] = true
+			dependencyKeys[i] = dependencyKey
+			counter[dependencyKey][moduleKey] = true
 		}
 
-		edges[sourceKey] = targets
+		edges[moduleKey] = dependencyKeys
 	}
 
-	var root *schema.Module
+	var rootKey string
 
 	if req := request.GetDependentsOf(); req != nil {
-		root = &schema.Module{
-			Language:     req.GetLanguage(),
-			Organization: req.GetOrganization(),
-			Module:       req.GetModule(),
-			Name:         req.GetName(),
-		}
+		rootKey = keyForRequest(req)
 	} else if req := request.GetDependenciesOf(); req != nil {
-		root = &schema.Module{
-			Language:     req.GetLanguage(),
-			Organization: req.GetOrganization(),
-			Module:       req.GetModule(),
-			Name:         req.GetName(),
-		}
-	}
-
-	if root == nil {
+		rootKey = keyForRequest(req)
+	} else {
 		return nil, fmt.Errorf("failed to determine root key for topological sort")
 	}
 
-	modules := []string{key(root)}
-	result := [][]*schema.Module{{root}}
+	modules := []string{rootKey}
+	result := [][]*schema.Module{{nodes[rootKey]}}
+	delete(nodes, rootKey)
+	delete(counter, rootKey)
 
 	for length := len(modules); length > 0; length = len(modules) {
 		next := make([]string, 0)
 		tier := make([]*schema.Module, 0)
 
 		for i := 0; i < length; i++ {
-			k := modules[i]
+			key := modules[i]
 
-			results := edges[k]
-			delete(edges, k)
+			dependencyKeys := edges[key]
+			delete(edges, key)
 
-			for _, dependencyKey := range results {
+			for _, dependencyKey := range dependencyKeys {
 				// cycle in the graph, dependencyKey no longer exists
-				if _, ok := nodes[dependencyKey]; !ok {
+				if _, ok := counter[dependencyKey]; !ok {
 					continue
 				}
 
-				delete(nodes[dependencyKey].seen, k)
+				delete(counter[dependencyKey], key)
 
-				if len(nodes[dependencyKey].seen) == 0 {
+				if len(counter[dependencyKey]) == 0 {
 					next = append(next, dependencyKey)
-					tier = append(tier, nodes[dependencyKey].module)
+					tier = append(tier, nodes[dependencyKey])
+
 					delete(nodes, dependencyKey)
+					delete(counter, dependencyKey)
 				}
 			}
 		}
@@ -161,11 +160,12 @@ func topologyCommand(
 		Aliases: []string{"topo"},
 		Short:   "Get the associated topology",
 		RunE: func(cmd *cobra.Command, args []string) error {
+			req = setRequestFields(req)
 			if req.Language == "" && ((req.Organization == "" || req.Module == "") || req.Name == "") {
 				return fmt.Errorf("language + name or language + organization + module must be provided")
 			}
 
-			results, err := topology(cmd.Context(), searchService, requestConverter(setRequestFields(req)))
+			results, err := topology(cmd.Context(), searchService, requestConverter(req))
 
 			if err != nil {
 				return err

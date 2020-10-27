@@ -52,7 +52,8 @@ jobs:
       - name: Deploy Ecosystem
         run: |
           helm repo add depscloud https://depscloud.github.io/deploy/charts
-          helm upgrade -i depscloud depscloud/depscloud
+          helm upgrade -i depscloud depscloud/depscloud \
+            --set beacon.enabled=false
 
           kubectl rollout status -w --timeout 120s deployment/depscloud-extractor
           kubectl rollout status -w --timeout 120s deployment/depscloud-tracker
