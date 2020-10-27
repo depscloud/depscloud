@@ -53,6 +53,7 @@ jobs:
         run: |
           helm repo add depscloud https://depscloud.github.io/deploy/charts
           helm upgrade -i depscloud depscloud/depscloud \
+            --set beacon.enabled=false \
             --set indexer.image.pullPolicy=Never \
             --set indexer.image.tag=latest
 

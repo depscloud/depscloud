@@ -62,6 +62,7 @@ jobs:
         run: |
           helm repo add depscloud https://depscloud.github.io/deploy/charts
           helm upgrade -i depscloud depscloud/depscloud \
+            --set beacon.enabled=false \
             --set tracker.image.pullPolicy=Never \
             --set tracker.image.tag=latest \
             --set ${{ matrix.database.driver }}.enabled=true \

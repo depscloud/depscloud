@@ -45,6 +45,7 @@ jobs:
         run: |
           helm repo add depscloud https://depscloud.github.io/deploy/charts
           helm upgrade -i depscloud depscloud/depscloud \
+            --set beacon.enabled=false \
             --set extractor.image.pullPolicy=Never \
             --set extractor.image.tag=latest
 
