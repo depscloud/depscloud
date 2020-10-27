@@ -13,19 +13,17 @@ import (
 )
 
 func key(module *schema.Module) string {
-	return fmt.Sprintf("%s|%s|%s|%s",
+	return fmt.Sprintf("%s|%s|%s",
 		module.Language,
 		module.Organization,
-		module.Module,
-		module.Name)
+		module.Module)
 }
 
 func keyForRequest(req *tracker.DependencyRequest) string {
-	return fmt.Sprintf("%s|%s|%s|%s",
+	return fmt.Sprintf("%s|%s|%s",
 		req.Language,
 		req.Organization,
-		req.Module,
-		req.Name)
+		req.Module)
 }
 
 type entry struct {
@@ -161,11 +159,12 @@ func topologyCommand(
 		Aliases: []string{"topo"},
 		Short:   "Get the associated topology",
 		RunE: func(cmd *cobra.Command, args []string) error {
+			req = setRequestFields(req)
 			if req.Language == "" && ((req.Organization == "" || req.Module == "") || req.Name == "") {
 				return fmt.Errorf("language + name or language + organization + module must be provided")
 			}
 
-			results, err := topology(cmd.Context(), searchService, requestConverter(setRequestFields(req)))
+			results, err := topology(cmd.Context(), searchService, requestConverter(req))
 
 			if err != nil {
 				return err
