@@ -7,7 +7,7 @@ require (
 	github.com/coreos/go-systemd v0.0.0-20190719114852-fd7a80b32e1f // indirect
 	github.com/davidji99/bitbucket-go v0.2.1
 	github.com/davidji99/simpleresty v0.2.3 // indirect
-	github.com/depscloud/api v0.1.16
+	github.com/depscloud/api v0.1.17
 	github.com/ghodss/yaml v1.0.0
 	github.com/go-resty/resty/v2 v2.3.0 // indirect
 	github.com/go-sql-driver/mysql v1.5.0
