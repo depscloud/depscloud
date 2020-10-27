@@ -4,18 +4,19 @@ import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
 import Languages from "./Languages";
 
-const extract = (dependency: any, scope: string) => {
+const extract = (dependency: any,scopes:any):Dependency => {
     return {
-        name: parseName(dependency),
         organization:"",
-        module,
+        module:"",
         versionConstraint: dependency.version,
-        scopes: [ scope ],
+        scopes:[scopes],
+        name: parseName(dependency),
     };
 }
 
+//The name should be formatted as {{ remote }}[#{{ subdir }}] where subdir
 const parseName = (dependency) => {
-    return dependency.source.git.remote +"["+"#"+ dependency.source.git.subdir+"]";
+    return `${dependency.source.git.remote}[#${dependency.source.git.subdir}]`;
 }
 
     
@@ -34,23 +35,25 @@ class JsonnetJsonExtractor implements Extractor {
     }
     public async extract(url: string, files: { [key: string]: ExtractorFile }): Promise<DependencyManagementFile> {
         const {
+            name,
             version,
+            organization,
             dependencies,
-            legacyImports,
+
         } = files["jsonnetfile.json"].json();
 
-        const deps = dependencies.map(dependence => extract(dependence,""));
+        const deps = dependencies.map(dependence => extract(dependence , "dependencies"));
 
 
         return {
             language: Languages.JAVASCRIPT,
-            system: "npm",
+            system:"",
             sourceUrl: "",
-            organization: "",
-            module: "string",
+            organization,
+            module: "",
             version,
             dependencies: deps,
-            name: "",
+            name,
         }
     }
 }
