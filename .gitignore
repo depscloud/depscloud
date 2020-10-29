@@ -2,3 +2,5 @@
 /dist/
 /vendor/
 coverage.txt
+/indexer/hack
+/extractor/src/extractors/testdata
