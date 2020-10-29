@@ -21,6 +21,10 @@ const Languages = {
 
     get JAVASCRIPT() : string {
         return "js";
+    },
+
+    get JSONNET() : string {
+        return "jsonnet";
     }
 };
 
