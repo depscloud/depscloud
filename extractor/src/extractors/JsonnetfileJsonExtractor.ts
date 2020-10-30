@@ -1,4 +1,3 @@
-import {Dependency} from "@depscloud/api/v1alpha/deps";
 import MatchConfig from "../matcher/MatchConfig";
 import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";

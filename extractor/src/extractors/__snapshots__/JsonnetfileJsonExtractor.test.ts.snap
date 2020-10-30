@@ -4,27 +4,22 @@ exports[`JsonnetfileJsonExtractor fullParse 1`] = `
 Object {
   "dependencies": Array [
     Object {
-      "module": "",
-      "name": "https://github.com/grafana/grafonnet-lib.git#grafonnet",
-      "organization": "",
+      "name": "https://github.com/grafana/grafonnet-lib.git",
       "scopes": Array [
         "direct",
+        "grafonnet",
       ],
-      "versionConstraint": "master",
     },
     Object {
-      "module": "",
-      "name": "https://github.com/grafana/jsonnet-libs.git#grafana-builder",
-      "organization": "",
+      "name": "https://github.com/grafana/jsonnet-libs.git",
       "scopes": Array [
         "direct",
+        "grafana-builder",
       ],
-      "versionConstraint": "master",
     },
   ],
-  "language": "jsonnet-bundler",
-  "name": undefined,
-  "system": "",
-  "version": 1,
+  "language": "jsonnet",
+  "name": "",
+  "system": "jsonnet-bundler",
 }
 `;
