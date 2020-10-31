@@ -13,9 +13,9 @@ import fs = require("fs");
 import health = require("grpc-health-check/health");
 import healthv1 = require("grpc-health-check/v1/health_pb");
 import Matcher from "./matcher/Matcher";
-import promMiddleware = require('express-prometheus-middleware');
+import promMiddleware = require("express-prometheus-middleware");
 
-const packageMeta = require('../package.json');
+const packageMeta = require("../package.json");
 
 const asyncFs = fs.promises;
 

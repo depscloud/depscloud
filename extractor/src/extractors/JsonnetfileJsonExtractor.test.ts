@@ -9,6 +9,7 @@ describe("JsonnetfileJsonExtractor", () => {
     test("fullParse", async () => {
         const jsonPath = require.resolve("./testdata/jsonnetfile.json");
         const buffer = await readFileAsync(jsonPath);
+        
         const content = buffer.toString();
 
         const parser = new JsonnetfileJsonExtractor();

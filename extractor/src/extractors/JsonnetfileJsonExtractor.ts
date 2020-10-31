@@ -3,10 +3,11 @@ import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
 import Languages from "./Languages";
 
-const extract = (dependency: any,scopes:any) => {
+const extract = (dependency: any) => {
+    const { subdir , name } = dependency.source.git
     return {
-        scopes:[scopes, dependency.source.git.subdir ],
-        name: dependency.source.git.remote,
+        subdir,
+        name,
     };
 }
 
@@ -27,14 +28,14 @@ export default class JsonnetfileJsonExtractor implements Extractor {
            dependencies,
         } = files["jsonnetfile.json"].json();
 
-        const deps = dependencies.map(dependency => extract(dependency , "direct"));
+        const deps = dependencies.map(dependency => extract(dependency));
 
 
         return {
             language: Languages.JSONNET,
             system:"jsonnet-bundler",
             dependencies: deps,
-            name,
+            name: url,
         }
     }
 }
