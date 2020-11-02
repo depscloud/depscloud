@@ -52,8 +52,8 @@ require (
 	google.golang.org/protobuf v1.25.0 // indirect
 	gopkg.in/src-d/go-billy.v4 v4.3.2
 	gopkg.in/src-d/go-git.v4 v4.13.1
-	gorm.io/driver/mysql v1.0.2
+	gorm.io/driver/mysql v1.0.3
 	gorm.io/driver/postgres v1.0.2
 	gorm.io/driver/sqlite v1.1.3
-	gorm.io/gorm v1.20.2
+	gorm.io/gorm v1.20.4
 )
