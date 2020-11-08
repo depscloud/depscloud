@@ -1,29 +1,32 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`JsonnetfileJsonExtractor fullParse 1`] = `
+exports[`JsonnetJsonExtractor fullParse 1`] = `
 Object {
   "dependencies": Array [
     Object {
       "module": "",
-      "name": "https://github.com/grafana/grafonnet-lib.git#grafonnet",
+      "name": "https://github.com/grafana/grafonnet-lib.git[#grafonnet]",
       "organization": "",
       "scopes": Array [
-        "direct",
+        "dependencies",
       ],
       "versionConstraint": "master",
     },
     Object {
       "module": "",
-      "name": "https://github.com/grafana/jsonnet-libs.git#grafana-builder",
+      "name": "https://github.com/grafana/jsonnet-libs.git[#grafana-builder]",
       "organization": "",
       "scopes": Array [
-        "direct",
+        "dependencies",
       ],
       "versionConstraint": "master",
     },
   ],
-  "language": "jsonnet-bundler",
+  "language": "js",
+  "module": "",
   "name": undefined,
+  "organization": undefined,
+  "sourceUrl": "",
   "system": "",
   "version": 1,
 }
