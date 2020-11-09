@@ -5,26 +5,29 @@ Object {
   "dependencies": Array [
     Object {
       "module": "",
-      "name": "https://github.com/grafana/grafonnet-lib.git#grafonnet",
+      "name": undefined,
       "organization": "",
       "scopes": Array [
-        "direct",
+        "grafonnet",
       ],
       "versionConstraint": "master",
     },
     Object {
       "module": "",
-      "name": "https://github.com/grafana/jsonnet-libs.git#grafana-builder",
+      "name": undefined,
       "organization": "",
       "scopes": Array [
-        "direct",
+        "grafana-builder",
       ],
       "versionConstraint": "master",
     },
   ],
-  "language": "jsonnet-bundler",
-  "name": undefined,
-  "system": "",
+  "language": "jsonnet",
+  "module": "",
+  "name": "",
+  "organization": "",
+  "sourceUrl": "",
+  "system": "jsonnet-bundler",
   "version": 1,
 }
 `;
