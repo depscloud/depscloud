@@ -11,6 +11,7 @@ import IvyXmlExtractor from "./IvyXmlExtractor";
 import PackageJsonExtractor from "./PackageJsonExtractor";
 import PomXmlExtractor from "./PomXmlExtractor";
 import VendorConfExtractor from "./VendorConfExtractor";
+import JsonnetfileJsonExtractor from "./JsonnetfileJsonExtractor";
 
 const ExtractorRegistry = new Registry<Extractor>("Extractor");
 
@@ -26,6 +27,7 @@ ExtractorRegistry.registerAll({
     "pom.xml": async () => new PomXmlExtractor(),
     "bower.json": async () => new BowerJsonExtractor(),
     "vendor.conf": async () => new VendorConfExtractor(),
+    "jsonnetfile.json": async() => new JsonnetfileJsonExtractor(),
 });
 
 export default ExtractorRegistry;

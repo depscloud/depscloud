@@ -20,7 +20,7 @@ function parseName(module: string): ID {
     return { organization, module };
 }
 
-function extract(dependencyHash: any, scope: string): Dependency[] {
+function extract(dependencyHash: any, scope: string): Dependency[] {    
     return Object.keys(dependencyHash)
         .map((dependency) => {
             const { organization, module } = parseName(dependency);
