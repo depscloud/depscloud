@@ -48,12 +48,6 @@ jobs:
           export GOPATH="${HOME}/go"
           export PATH="${GOPATH}/bin:${PATH}"
           VERSION=${GITHUB_REF##*/} make build-deps deps install test
-          make fmt
-          if [[ $(git status --short | grep -v package-lock) != '' ]]; then
-            echo 'run make fmt and commit changes:'
-            git diff --stat
-            exit 1
-          fi
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
