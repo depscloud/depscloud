@@ -9,6 +9,7 @@ build-deps: .build-deps
 .build-deps:
 	GO111MODULE=off go get -u golang.org/x/lint/golint
 	GO111MODULE=off go get -u oss.indeed.com/go/go-groups
+#	GO111MODULE=off go get -u github.com/google/addlicense
 
 deps: .deps
 .deps:
@@ -21,6 +22,7 @@ fmt: .fmt
 	cd extractor && npm run lint
 	go-groups -w ./deps ./gateway ./indexer ./tracker ./internal
 	gofmt -s -w ./deps ./gateway ./indexer ./tracker ./internal
+#	addlicense -c deps.cloud -l mit ./deps/**/*.go ./extractor/src/**/*.ts ./gateway/**/*.go ./indexer/**/*.go ./tracker/**/*.go ./internal/**/*.go
 
 docker: deps/docker extractor/docker gateway/docker indexer/docker tracker/docker
 

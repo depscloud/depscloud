@@ -1,6 +1,6 @@
 ARG BINARY=""
 
-FROM depscloud/download:latest AS BUILDER
+FROM ocr.sh/depscloud/download:latest AS BUILDER
 
 ARG BINARY
 ARG VERSION=0.0.1
@@ -10,7 +10,7 @@ ENV RELEASE_CHAIN=goreleaser
 RUN install-grpc-probe ${HEALTH_PROBE_VERSION}
 RUN install-depscloud-binary depscloud ${VERSION} ${BINARY}
 
-FROM depscloud/base:latest
+FROM ocr.sh/depscloud/base:latest
 
 ARG BINARY
 

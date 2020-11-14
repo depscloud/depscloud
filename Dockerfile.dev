@@ -1,6 +1,6 @@
 ARG BINARY=""
 
-FROM depscloud/devbase:latest AS builder
+FROM ocr.sh/depscloud/devbase:latest AS builder
 
 WORKDIR /go/src/depscloud
 
@@ -16,7 +16,7 @@ ARG GIT_SHA=""
 ARG BINARY
 RUN make ${BINARY}/install VERSION="${VERSION}" GIT_SHA="${GIT_SHA}"
 
-FROM depscloud/base:latest
+FROM ocr.sh/depscloud/base:latest
 ARG BINARY
 
 COPY --from=builder /go/bin/grpc-health-probe /usr/bin/grpc_health_probe
