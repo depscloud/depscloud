@@ -1,10 +1,9 @@
-import {Dependency, DependencyManagementFile} from "@depscloud/api/v1alpha/deps";
 import {getLogger} from "log4js";
 import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
-import parseImportPath from "./goutils/parseImportPath";
 import Languages from "./Languages";
 import MatchConfig from "../matcher/MatchConfig";
+import {ManifestDependency, ManifestFile} from "@depscloud/api/v1beta";
 
 const logger = getLogger();
 
@@ -25,13 +24,12 @@ export default class GoModExtractor implements Extractor {
         return [ "go.mod" ];
     }
 
-    public async extract(_: string, files: { [p: string]: ExtractorFile }): Promise<DependencyManagementFile> {
+    public async extract(_: string, files: { [p: string]: ExtractorFile }): Promise<ManifestFile> {
         const content = files["go.mod"].raw();
 
         const lines = content.split(/\n+/g).map(i => i.trim());
 
-        let id = null;
-        const dependencies = [];
+        const dependencies: Array<ManifestDependency> = [];
         let name = null;
 
         for (let i = 0; i < lines.length; i++) {
@@ -48,7 +46,6 @@ export default class GoModExtractor implements Extractor {
 
                 case "module":
                     name = parts[1];
-                    id = parseImportPath(name);
                     break;
 
                 case "require":
@@ -67,13 +64,10 @@ export default class GoModExtractor implements Extractor {
                             scopes.push("direct");
                         }
 
-                        const { organization, module } = parseImportPath(requireParts[0]);
-                        const dep: Dependency = {
-                            organization,
-                            module,
+                        const dep: ManifestDependency = {
+                            name: requireParts[0],
                             versionConstraint: requireParts[1],
                             scopes,
-                            name: requireParts[0],
                         };
 
                         dependencies.push(dep);
@@ -107,19 +101,13 @@ export default class GoModExtractor implements Extractor {
             }
         }
 
-        if (id == null) {
-            throw new Error("parse error: no module present");
-        }
-
         return {
             language: Languages.GO,
             system: "vgo",
             sourceUrl: "",
-            organization: id.organization,
-            module: id.module,
+            name,
             version: "latest",
             dependencies,
-            name,
         };
     }
 }

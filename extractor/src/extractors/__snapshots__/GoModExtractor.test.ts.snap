@@ -4,45 +4,35 @@ exports[`GoModExtractor fullParse 1`] = `
 Object {
   "dependencies": Array [
     Object {
-      "module": "gogo/protobuf",
       "name": "github.com/gogo/protobuf",
-      "organization": "github.com",
       "scopes": Array [
         "direct",
       ],
       "versionConstraint": "v1.2.1",
     },
     Object {
-      "module": "depscloud/rds",
       "name": "github.com/depscloud/rds",
-      "organization": "github.com",
       "scopes": Array [
         "direct",
       ],
       "versionConstraint": "v0.0.2",
     },
     Object {
-      "module": "sirupsen/logrus",
       "name": "github.com/sirupsen/logrus",
-      "organization": "github.com",
       "scopes": Array [
         "direct",
       ],
       "versionConstraint": "v1.3.0",
     },
     Object {
-      "module": "x/net",
       "name": "golang.org/x/net",
-      "organization": "golang.org",
       "scopes": Array [
         "direct",
       ],
       "versionConstraint": "v0.0.0-20190213061140-3a22650c66bd",
     },
     Object {
-      "module": "grpc",
       "name": "google.golang.org/grpc",
-      "organization": "google.golang.org",
       "scopes": Array [
         "direct",
       ],
@@ -50,9 +40,7 @@ Object {
     },
   ],
   "language": "go",
-  "module": "depscloud/finch",
   "name": "github.com/depscloud/finch",
-  "organization": "github.com",
   "sourceUrl": "",
   "system": "vgo",
   "version": "latest",
@@ -64,56 +52,44 @@ exports[`GoModExtractor fullParse 2`] = `
   \\"language\\": \\"go\\",
   \\"system\\": \\"vgo\\",
   \\"sourceUrl\\": \\"\\",
-  \\"organization\\": \\"github.com\\",
-  \\"module\\": \\"depscloud/finch\\",
+  \\"name\\": \\"github.com/depscloud/finch\\",
   \\"version\\": \\"latest\\",
   \\"dependencies\\": [
     {
-      \\"organization\\": \\"github.com\\",
-      \\"module\\": \\"gogo/protobuf\\",
+      \\"name\\": \\"github.com/gogo/protobuf\\",
       \\"versionConstraint\\": \\"v1.2.1\\",
       \\"scopes\\": [
         \\"direct\\"
-      ],
-      \\"name\\": \\"github.com/gogo/protobuf\\"
+      ]
     },
     {
-      \\"organization\\": \\"github.com\\",
-      \\"module\\": \\"depscloud/rds\\",
+      \\"name\\": \\"github.com/depscloud/rds\\",
       \\"versionConstraint\\": \\"v0.0.2\\",
       \\"scopes\\": [
         \\"direct\\"
-      ],
-      \\"name\\": \\"github.com/depscloud/rds\\"
+      ]
     },
     {
-      \\"organization\\": \\"github.com\\",
-      \\"module\\": \\"sirupsen/logrus\\",
+      \\"name\\": \\"github.com/sirupsen/logrus\\",
       \\"versionConstraint\\": \\"v1.3.0\\",
       \\"scopes\\": [
         \\"direct\\"
-      ],
-      \\"name\\": \\"github.com/sirupsen/logrus\\"
+      ]
     },
     {
-      \\"organization\\": \\"golang.org\\",
-      \\"module\\": \\"x/net\\",
+      \\"name\\": \\"golang.org/x/net\\",
       \\"versionConstraint\\": \\"v0.0.0-20190213061140-3a22650c66bd\\",
       \\"scopes\\": [
         \\"direct\\"
-      ],
-      \\"name\\": \\"golang.org/x/net\\"
+      ]
     },
     {
-      \\"organization\\": \\"google.golang.org\\",
-      \\"module\\": \\"grpc\\",
+      \\"name\\": \\"google.golang.org/grpc\\",
       \\"versionConstraint\\": \\"v1.18.0\\",
       \\"scopes\\": [
         \\"direct\\"
-      ],
-      \\"name\\": \\"google.golang.org/grpc\\"
+      ]
     }
-  ],
-  \\"name\\": \\"github.com/depscloud/finch\\"
+  ]
 }"
 `;

@@ -1,4 +1,4 @@
-package get
+package v1alpha
 
 import (
 	"testing"

@@ -8,6 +8,7 @@ import AsyncDependencyExtractor from "./AsyncDependencyExtractor";
 import MatcherAndExtractor from "./MatcherAndExtractor";
 
 import path = require("path")
+import {ManifestFile} from "@depscloud/api/v1beta";
 
 function constructTree(separator: string, paths: string[]): any {
     const root: any = {};
@@ -72,14 +73,14 @@ export default class DependencyExtractorImpl implements AsyncDependencyExtractor
         url: string,
         separator: string,
         fileContents: { [key: string]: string },
-    ): Promise<DependencyManagementFile[]> {
+    ): Promise<ManifestFile[]> {
         const paths = Object.keys(fileContents);
         const matchedPaths = this.matchInternal(separator, paths);
 
         const root = constructTree(separator, matchedPaths);
 
         let level = [ root ];
-        let managementFilePromises: Promise<DependencyManagementFile>[] = [];
+        let manifestFilePromises: Promise<ManifestFile>[] = [];
 
         while (level.length > 0) {
             const size = level.length;
@@ -87,7 +88,7 @@ export default class DependencyExtractorImpl implements AsyncDependencyExtractor
             for (let i = 0; i < size; i++) {
                 const dir = level.shift();
 
-                const nextManagementFilePromises = this.matcherAndExtractors
+                const nextManifestFilePromises = this.matcherAndExtractors
                     .filter((me) =>
                         me.extractor.requires()
                             .map((req) => dir[req] && typeof dir[req] === "string")
@@ -101,7 +102,7 @@ export default class DependencyExtractorImpl implements AsyncDependencyExtractor
                         return me.extractor.extract(url, files);
                     });
 
-                managementFilePromises = managementFilePromises.concat(nextManagementFilePromises);
+                manifestFilePromises = manifestFilePromises.concat(nextManifestFilePromises);
 
                 const nextLevel = Object.keys(dir)
                     .map((name) => dir[name])
@@ -111,21 +112,27 @@ export default class DependencyExtractorImpl implements AsyncDependencyExtractor
             }
         }
 
-        let managementFiles = await Promise.all(managementFilePromises);
-        managementFiles = managementFiles
-            .filter((f) => !!f)         // ensure no nulls returned
-            .filter((f) => !!f.module); // ensure a module is returned
+        let manifestFiles = await Promise.all(manifestFilePromises);
+        manifestFiles = manifestFiles
+            .filter((f) => !!f)            // ensure no nulls returned
+            .filter((f) => !!f.language)   // ensure a language is returned
+            .filter((f) => !!f.name);      // ensure a name is returned
 
-        return managementFiles;
+        return manifestFiles;
     }
 
     public async extract(call: ServerUnaryCall<ExtractRequest, ExtractResponse>): Promise<ExtractResponse> {
         const { url, separator, fileContents } = call.request;
 
-        const managementFiles = await this.extractInternal(url, separator, fileContents);
+        const manifestFiles = await this.extractInternal(url, separator, fileContents);
 
         return {
-            managementFiles,
+            managementFiles: manifestFiles.map((manifestFile) => {
+                const managementFile = manifestFile as DependencyManagementFile;
+                managementFile.organization = "";
+                managementFile.module = "";
+                return managementFile;
+            }),
         };
     }
 }

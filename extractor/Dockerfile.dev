@@ -1,4 +1,4 @@
-FROM depscloud/download:latest AS installer
+FROM ocr.sh/depscloud/download:latest AS installer
 
 ARG HEALTH_PROBE_VERSION=0.3.1
 

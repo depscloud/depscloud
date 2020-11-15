@@ -1,7 +1,7 @@
 package get
 
 import (
-	"strings"
+	"fmt"
 
 	"github.com/depscloud/api/v1alpha/schema"
 	"github.com/depscloud/api/v1alpha/tracker"
@@ -33,55 +33,31 @@ func addModuleFlags(cmd *cobra.Command, module *schema.Module) {
 	flags.StringVarP(&(module.Name), "name", "n", module.Name, "The name of the module")
 }
 
-func setModuleFields(module *schema.Module) *schema.Module {
-	if module.Name == "" {
-		return module
+func validateDependencyRequest(req *tracker.DependencyRequest) error {
+	if req.GetLanguage() == "" {
+		return fmt.Errorf("a language must be provided")
+	} else if req.GetOrganization() == "" && req.GetModule() == "" && req.GetName() == "" {
+		return fmt.Errorf("a name must be provided")
+	} else if req.GetName() == "" && (req.GetOrganization() == "" || req.GetModule() == "") {
+		return fmt.Errorf("both an organization and module must be provided. [deprecated, please use name]")
 	}
-
-	orgAndModule := parseName(module.Language, module.Name)
-
-	module.Organization = orgAndModule[0]
-	module.Module = orgAndModule[1]
-
-	return module
+	return nil
 }
 
-func setRequestFields(req *tracker.DependencyRequest) *tracker.DependencyRequest {
-	if req.Name == "" {
-		return req
-	}
-
-	orgAndModule := parseName(req.Language, req.Name)
-
-	req.Organization = orgAndModule[0]
-	req.Module = orgAndModule[1]
-
-	return req
+func isEmpty(req *schema.Module) bool {
+	return req.GetLanguage() == "" &&
+		req.GetOrganization() == "" &&
+		req.GetModule() == "" &&
+		req.GetName() == ""
 }
 
-func parseName(language string, name string) []string {
-	var split []string
-
-	switch language {
-	case "java":
-		split = strings.Split(name, ":")
-		break
-	case "node":
-		name = strings.Replace(name, "@", "", 1)
-		split = strings.SplitN(name, "/", 2)
-		break
-	case "js":
-		name = strings.Replace(name, "@", "", 1)
-		split = strings.SplitN(name, "/", 2)
-		break
-	default:
-		split = strings.SplitN(name, "/", 2)
-		break
+func validateModule(req *schema.Module) error {
+	if req.GetLanguage() == "" {
+		return fmt.Errorf("a language must be provided")
+	} else if req.GetOrganization() == "" && req.GetModule() == "" && req.GetName() == "" {
+		return fmt.Errorf("a name must be provided")
+	} else if req.GetName() == "" && (req.GetOrganization() == "" || req.GetModule() == "") {
+		return fmt.Errorf("both an organization and module must be provided. [deprecated, please use name]")
 	}
-
-	if len(split) == 1 {
-		return []string{"_", split[0]}
-	} else {
-		return split
-	}
+	return nil
 }

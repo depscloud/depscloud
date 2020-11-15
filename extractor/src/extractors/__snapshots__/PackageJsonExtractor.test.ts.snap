@@ -4,36 +4,26 @@ exports[`PackageJsonExtractor fullParse 1`] = `
 Object {
   "dependencies": Array [
     Object {
-      "module": "runtimeDependency",
       "name": "@scoped/runtimeDependency",
-      "organization": "scoped",
-      "scopes": Array [
-        "",
-      ],
+      "scopes": Array [],
       "versionConstraint": "1.0.0",
     },
     Object {
-      "module": "devDependency",
       "name": "devDependency",
-      "organization": "_",
       "scopes": Array [
         "dev",
       ],
       "versionConstraint": "1.0.0",
     },
     Object {
-      "module": "peerDependency",
       "name": "@scoped/peerDependency",
-      "organization": "scoped",
       "scopes": Array [
         "peer",
       ],
       "versionConstraint": "1.0.0",
     },
     Object {
-      "module": "optionalDependency",
       "name": "optionalDependency",
-      "organization": "_",
       "scopes": Array [
         "optional",
       ],
@@ -41,9 +31,7 @@ Object {
     },
   ],
   "language": "node",
-  "module": "module",
   "name": "@organization/module",
-  "organization": "organization",
   "sourceUrl": "git@github.com:group/project.git",
   "system": "npm",
   "version": "9.9.9",
@@ -55,47 +43,35 @@ exports[`PackageJsonExtractor fullParse 2`] = `
   \\"language\\": \\"node\\",
   \\"system\\": \\"npm\\",
   \\"sourceUrl\\": \\"git@github.com:group/project.git\\",
-  \\"organization\\": \\"organization\\",
-  \\"module\\": \\"module\\",
+  \\"name\\": \\"@organization/module\\",
   \\"version\\": \\"9.9.9\\",
   \\"dependencies\\": [
     {
-      \\"organization\\": \\"scoped\\",
-      \\"module\\": \\"runtimeDependency\\",
+      \\"name\\": \\"@scoped/runtimeDependency\\",
       \\"versionConstraint\\": \\"1.0.0\\",
-      \\"scopes\\": [
-        \\"\\"
-      ],
-      \\"name\\": \\"@scoped/runtimeDependency\\"
+      \\"scopes\\": []
     },
     {
-      \\"organization\\": \\"_\\",
-      \\"module\\": \\"devDependency\\",
+      \\"name\\": \\"devDependency\\",
       \\"versionConstraint\\": \\"1.0.0\\",
       \\"scopes\\": [
         \\"dev\\"
-      ],
-      \\"name\\": \\"devDependency\\"
+      ]
     },
     {
-      \\"organization\\": \\"scoped\\",
-      \\"module\\": \\"peerDependency\\",
+      \\"name\\": \\"@scoped/peerDependency\\",
       \\"versionConstraint\\": \\"1.0.0\\",
       \\"scopes\\": [
         \\"peer\\"
-      ],
-      \\"name\\": \\"@scoped/peerDependency\\"
+      ]
     },
     {
-      \\"organization\\": \\"_\\",
-      \\"module\\": \\"optionalDependency\\",
+      \\"name\\": \\"optionalDependency\\",
       \\"versionConstraint\\": \\"1.0.0\\",
       \\"scopes\\": [
         \\"optional\\"
-      ],
-      \\"name\\": \\"optionalDependency\\"
+      ]
     }
-  ],
-  \\"name\\": \\"@organization/module\\"
+  ]
 }"
 `;

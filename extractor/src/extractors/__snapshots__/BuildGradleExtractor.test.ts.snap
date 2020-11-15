@@ -4,18 +4,14 @@ exports[`BuildGradleExtractor fullParse 1`] = `
 Object {
   "dependencies": Array [
     Object {
-      "module": "parent_module",
       "name": "parent_organization:parent_module",
-      "organization": "parent_organization",
       "scopes": Array [
         "parent",
       ],
       "versionConstraint": undefined,
     },
     Object {
-      "module": "kubernetes-client",
       "name": "io.fabric8:kubernetes-client",
-      "organization": "io.fabric8",
       "scopes": Array [
         "compile",
         "annotationProcessor",
@@ -23,81 +19,63 @@ Object {
       "versionConstraint": "4.1.3",
     },
     Object {
-      "module": "commons-collections4",
       "name": "org.apache.commons:commons-collections4",
-      "organization": "org.apache.commons",
       "scopes": Array [
         "compile",
       ],
       "versionConstraint": "4.2",
     },
     Object {
-      "module": "commons-text",
       "name": "org.apache.commons:commons-text",
-      "organization": "org.apache.commons",
       "scopes": Array [
         "compile",
       ],
       "versionConstraint": "1.6",
     },
     Object {
-      "module": "jackson-core",
       "name": "com.fasterxml.jackson.core:jackson-core",
-      "organization": "com.fasterxml.jackson.core",
       "scopes": Array [
         "compile",
       ],
       "versionConstraint": "2.9.7",
     },
     Object {
-      "module": "spring-boot-starter",
       "name": "org.springframework.boot:spring-boot-starter",
-      "organization": "org.springframework.boot",
       "scopes": Array [
         "compile",
       ],
       "versionConstraint": "2.1.1.RELEASE",
     },
     Object {
-      "module": "spring-boot-starter-log4j2",
       "name": "org.springframework.boot:spring-boot-starter-log4j2",
-      "organization": "org.springframework.boot",
       "scopes": Array [
         "compile",
       ],
       "versionConstraint": "2.1.1.RELEASE",
     },
     Object {
-      "module": "builder-annotations",
       "name": "io.sundr:builder-annotations",
-      "organization": "io.sundr",
       "scopes": Array [
         "compileOnly",
       ],
       "versionConstraint": "0.14.7",
     },
     Object {
-      "module": "mockito-core",
       "name": "org.mockito:mockito-core",
-      "organization": "org.mockito",
       "scopes": Array [
         "testCompile",
       ],
       "versionConstraint": "2.24.0",
     },
     Object {
-      "module": "junit-jupiter-api",
       "name": "org.junit.jupiter:junit-jupiter-api",
-      "organization": "org.junit.jupiter",
       "scopes": Array [
         "testCompile",
       ],
       "versionConstraint": "5.4.0",
     },
     Object {
-      "module": "junit-jupiter-engine",
       "name": "org.junit.jupiter:junit-jupiter-engine",
-      "organization": "org.junit.jupiter",
       "scopes": Array [
         "testRuntime",
       ],
@@ -105,9 +83,7 @@ Object {
     },
   ],
   "language": "java",
-  "module": "module",
   "name": "organization:module",
-  "organization": "organization",
   "sourceUrl": "",
   "system": "gradle",
   "version": "1.2",
@@ -119,21 +95,16 @@ exports[`BuildGradleExtractor fullParse 2`] = `
   \\"language\\": \\"java\\",
   \\"system\\": \\"gradle\\",
   \\"sourceUrl\\": \\"\\",
-  \\"organization\\": \\"organization\\",
-  \\"module\\": \\"module\\",
+  \\"name\\": \\"organization:module\\",
   \\"version\\": \\"1.2\\",
   \\"dependencies\\": [
     {
-      \\"organization\\": \\"parent_organization\\",
-      \\"module\\": \\"parent_module\\",
+      \\"name\\": \\"parent_organization:parent_module\\",
       \\"scopes\\": [
         \\"parent\\"
-      ],
-      \\"name\\": \\"parent_organization:parent_module\\"
+      ]
     },
     {
-      \\"organization\\": \\"io.fabric8\\",
-      \\"module\\": \\"kubernetes-client\\",
       \\"versionConstraint\\": \\"4.1.3\\",
       \\"scopes\\": [
         \\"compile\\",
@@ -142,8 +113,6 @@ exports[`BuildGradleExtractor fullParse 2`] = `
       \\"name\\": \\"io.fabric8:kubernetes-client\\"
     },
     {
-      \\"organization\\": \\"org.apache.commons\\",
-      \\"module\\": \\"commons-collections4\\",
       \\"versionConstraint\\": \\"4.2\\",
       \\"scopes\\": [
         \\"compile\\"
@@ -151,8 +120,6 @@ exports[`BuildGradleExtractor fullParse 2`] = `
       \\"name\\": \\"org.apache.commons:commons-collections4\\"
     },
     {
-      \\"organization\\": \\"org.apache.commons\\",
-      \\"module\\": \\"commons-text\\",
       \\"versionConstraint\\": \\"1.6\\",
       \\"scopes\\": [
         \\"compile\\"
@@ -160,8 +127,6 @@ exports[`BuildGradleExtractor fullParse 2`] = `
       \\"name\\": \\"org.apache.commons:commons-text\\"
     },
     {
-      \\"organization\\": \\"com.fasterxml.jackson.core\\",
-      \\"module\\": \\"jackson-core\\",
       \\"versionConstraint\\": \\"2.9.7\\",
       \\"scopes\\": [
         \\"compile\\"
@@ -169,8 +134,6 @@ exports[`BuildGradleExtractor fullParse 2`] = `
       \\"name\\": \\"com.fasterxml.jackson.core:jackson-core\\"
     },
     {
-      \\"organization\\": \\"org.springframework.boot\\",
-      \\"module\\": \\"spring-boot-starter\\",
       \\"versionConstraint\\": \\"2.1.1.RELEASE\\",
       \\"scopes\\": [
         \\"compile\\"
@@ -178,8 +141,6 @@ exports[`BuildGradleExtractor fullParse 2`] = `
       \\"name\\": \\"org.springframework.boot:spring-boot-starter\\"
     },
     {
-      \\"organization\\": \\"org.springframework.boot\\",
-      \\"module\\": \\"spring-boot-starter-log4j2\\",
       \\"versionConstraint\\": \\"2.1.1.RELEASE\\",
       \\"scopes\\": [
         \\"compile\\"
@@ -187,8 +148,6 @@ exports[`BuildGradleExtractor fullParse 2`] = `
       \\"name\\": \\"org.springframework.boot:spring-boot-starter-log4j2\\"
     },
     {
-      \\"organization\\": \\"io.sundr\\",
-      \\"module\\": \\"builder-annotations\\",
       \\"versionConstraint\\": \\"0.14.7\\",
       \\"scopes\\": [
         \\"compileOnly\\"
@@ -196,8 +155,6 @@ exports[`BuildGradleExtractor fullParse 2`] = `
       \\"name\\": \\"io.sundr:builder-annotations\\"
     },
     {
-      \\"organization\\": \\"org.mockito\\",
-      \\"module\\": \\"mockito-core\\",
       \\"versionConstraint\\": \\"2.24.0\\",
       \\"scopes\\": [
         \\"testCompile\\"
@@ -205,8 +162,6 @@ exports[`BuildGradleExtractor fullParse 2`] = `
       \\"name\\": \\"org.mockito:mockito-core\\"
     },
     {
-      \\"organization\\": \\"org.junit.jupiter\\",
-      \\"module\\": \\"junit-jupiter-api\\",
       \\"versionConstraint\\": \\"5.4.0\\",
       \\"scopes\\": [
         \\"testCompile\\"
@@ -214,15 +169,12 @@ exports[`BuildGradleExtractor fullParse 2`] = `
       \\"name\\": \\"org.junit.jupiter:junit-jupiter-api\\"
     },
     {
-      \\"organization\\": \\"org.junit.jupiter\\",
-      \\"module\\": \\"junit-jupiter-engine\\",
       \\"versionConstraint\\": \\"5.4.0\\",
       \\"scopes\\": [
         \\"testRuntime\\"
       ],
       \\"name\\": \\"org.junit.jupiter:junit-jupiter-engine\\"
     }
-  ],
-  \\"name\\": \\"organization:module\\"
+  ]
 }"
 `;

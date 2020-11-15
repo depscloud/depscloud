@@ -1,7 +1,6 @@
 package get
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/depscloud/api/v1alpha/tracker"
@@ -26,13 +25,13 @@ func DependentsCommand(
 			"deps get dependents -l go -n github.com/depscloud/api",
 		}, "\n"),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			if req.Language == "" && ((req.Organization == "" || req.Module == "") || req.Name == "") {
-				return fmt.Errorf("language + name or language + organization + module must be provided")
+			if err := validateDependencyRequest(req); err != nil {
+				return err
 			}
 
 			ctx := cmd.Context()
 
-			response, err := dependencyClient.ListDependents(ctx, setRequestFields(req))
+			response, err := dependencyClient.ListDependents(ctx, req)
 			if err != nil {
 				return err
 			}

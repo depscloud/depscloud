@@ -5,7 +5,7 @@ Object {
   "dependencies": Array [
     Object {
       "module": "",
-      "name": undefined,
+      "name": "https://github.com/grafana/grafonnet-lib.git",
       "organization": "",
       "scopes": Array [
         "grafonnet",
@@ -14,7 +14,7 @@ Object {
     },
     Object {
       "module": "",
-      "name": undefined,
+      "name": "https://github.com/grafana/jsonnet-libs.git",
       "organization": "",
       "scopes": Array [
         "grafana-builder",

@@ -6,16 +6,16 @@ import Languages from "./Languages";
 
 const extract = (dependency: any):Dependency => {
     const { source, version } = dependency;
-  const { git } = (source || {});
-  const { subdir, name } = (git || {});
+    const { git } = (source || {});
+    const { subdir, remote } = (git || {});
 
-  return {
-    name,
-    versionConstraint: version,
-    scopes: subdir ? [ subdir ] : [],
-    organization: "", // deprecated
-    module: "", // deprecated
-  };
+    return {
+        name: remote,
+        versionConstraint: version,
+        scopes: subdir ? [ subdir ] : [],
+        organization: "", // deprecated
+        module: "", // deprecated
+    };
 }
 
 export default class JsonnetfileJsonExtractor implements Extractor {
