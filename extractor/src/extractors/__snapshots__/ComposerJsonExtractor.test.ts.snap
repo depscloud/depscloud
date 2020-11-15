@@ -4,26 +4,27 @@ exports[`ComposerJsonExtractor fullParse 1`] = `
 Object {
   "dependencies": Array [
     Object {
-      "module": "repoModule",
       "name": "repoOrganization/repoModule",
-      "organization": "repoOrganization",
+      "scopes": Array [
+        "repositories",
+      ],
       "versionConstraint": "repoVersion",
     },
     Object {
-      "module": "requireModule",
-      "organization": "requireOrganization",
+      "name": "requireOrganization/requireModule",
+      "scopes": Array [],
       "versionConstraint": "requireVersionConstraint",
     },
     Object {
-      "module": "requireDevModule",
-      "organization": "requireDevOrganization",
+      "name": "requireDevOrganization/requireDevModule",
+      "scopes": Array [
+        "dev",
+      ],
       "versionConstraint": "requireDevVersionConstraint",
     },
   ],
   "language": "php",
-  "module": "module",
   "name": "organization/module",
-  "organization": "organization",
   "sourceUrl": "",
   "system": "composer",
   "version": "version",
@@ -35,27 +36,28 @@ exports[`ComposerJsonExtractor fullParse 2`] = `
   \\"language\\": \\"php\\",
   \\"system\\": \\"composer\\",
   \\"sourceUrl\\": \\"\\",
-  \\"organization\\": \\"organization\\",
-  \\"module\\": \\"module\\",
+  \\"name\\": \\"organization/module\\",
   \\"version\\": \\"version\\",
   \\"dependencies\\": [
     {
-      \\"organization\\": \\"repoOrganization\\",
-      \\"module\\": \\"repoModule\\",
+      \\"name\\": \\"repoOrganization/repoModule\\",
       \\"versionConstraint\\": \\"repoVersion\\",
-      \\"name\\": \\"repoOrganization/repoModule\\"
+      \\"scopes\\": [
+        \\"repositories\\"
+      ]
     },
     {
-      \\"organization\\": \\"requireOrganization\\",
-      \\"module\\": \\"requireModule\\",
-      \\"versionConstraint\\": \\"requireVersionConstraint\\"
+      \\"name\\": \\"requireOrganization/requireModule\\",
+      \\"versionConstraint\\": \\"requireVersionConstraint\\",
+      \\"scopes\\": []
     },
     {
-      \\"organization\\": \\"requireDevOrganization\\",
-      \\"module\\": \\"requireDevModule\\",
-      \\"versionConstraint\\": \\"requireDevVersionConstraint\\"
+      \\"name\\": \\"requireDevOrganization/requireDevModule\\",
+      \\"versionConstraint\\": \\"requireDevVersionConstraint\\",
+      \\"scopes\\": [
+        \\"dev\\"
+      ]
     }
-  ],
-  \\"name\\": \\"organization/module\\"
+  ]
 }"
 `;

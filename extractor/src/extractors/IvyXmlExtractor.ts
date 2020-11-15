@@ -1,10 +1,9 @@
-import {Dependency, DependencyManagementFile} from "@depscloud/api/v1alpha/deps";
-import cheerio = require("cheerio");
 import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
-import Globals from "./Globals";
 import Languages from "./Languages";
 import MatchConfig from "../matcher/MatchConfig";
+import {ManifestDependency, ManifestFile} from "@depscloud/api/v1beta";
+import cheerio = require("cheerio");
 
 export default class IvyXmlExtractor implements Extractor {
     public matchConfig(): MatchConfig {
@@ -22,13 +21,13 @@ export default class IvyXmlExtractor implements Extractor {
         return [ "ivy.xml" ];
     }
 
-    public async extract(_: string, files: { [p: string]: ExtractorFile }): Promise<DependencyManagementFile> {
+    public async extract(_: string, files: { [p: string]: ExtractorFile }): Promise<ManifestFile> {
         const xml = files["ivy.xml"].xml();
 
         const infoNode: Cheerio = xml.find("ivy-module info");
         const dependencyNodes: Cheerio = xml.find("ivy-module dependencies dependency");
 
-        const dependencies: Dependency[] = [];
+        const dependencies: ManifestDependency[] = [];
         dependencyNodes.map((i, dependencyNode: CheerioElement) => {
             const dep = cheerio(dependencyNode);
             const confs = dep.attr("conf");
@@ -41,18 +40,20 @@ export default class IvyXmlExtractor implements Extractor {
                 scopes = confs.split(";");
             }
 
-            dependencies.push({ organization, module, versionConstraint, scopes, name: [ organization , module ].join(":") });
+            dependencies.push({
+                name: [ organization , module ].join(":"),
+                versionConstraint,
+                scopes,
+            });
         });
 
         return {
             language: Languages.JAVA,
             system: "ivy",
             sourceUrl: "",
-            organization: infoNode.attr("organisation") || Globals.ORGANIZATION,
-            module: infoNode.attr("module"),
+            name: [ infoNode.attr("organisation"), infoNode.attr("module") ].filter(Boolean).join(":"),
             version: infoNode.attr("revision") || null,
             dependencies,
-            name: [ infoNode.attr("organisation"), infoNode.attr("module") ].filter(Boolean).join(":"),
         };
     }
 }

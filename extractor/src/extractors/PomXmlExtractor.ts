@@ -1,9 +1,9 @@
-import {Dependency, DependencyManagementFile} from "@depscloud/api/v1alpha/deps";
-import cheerio = require("cheerio");
 import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
 import Languages from "./Languages";
 import MatchConfig from "../matcher/MatchConfig";
+import {ManifestDependency, ManifestFile} from "@depscloud/api/v1beta";
+import cheerio = require("cheerio");
 
 export default class PomXmlExtractor implements Extractor {
     public matchConfig(): MatchConfig {
@@ -22,7 +22,7 @@ export default class PomXmlExtractor implements Extractor {
         return [ "pom.xml" ];
     }
 
-    public async extract(_: string, files: { [p: string]: ExtractorFile }): Promise<DependencyManagementFile> {
+    public async extract(_: string, files: { [p: string]: ExtractorFile }): Promise<ManifestFile> {
         const xml = files["pom.xml"].xml();
 
         const parentGroupId = xml.find("project > parent > groupId").text();
@@ -35,38 +35,38 @@ export default class PomXmlExtractor implements Extractor {
 
         const sourceUrl = xml.find("project > scm > url").text();
 
-        const dependencies: Dependency[] = [];
+        const dependencies: ManifestDependency[] = [];
         if (parentGroupId && parentArtifactId && parentVersion) {
             dependencies.push({
-                organization: parentGroupId,
-                module: parentArtifactId,
+                name: [parentGroupId, parentArtifactId].join(":"),
                 versionConstraint: parentVersion,
                 scopes: [ "parent" ],
-                name: [parentGroupId, parentArtifactId].join(":"),
             });
         }
 
         const matched: Cheerio = xml.find("project > dependencies > dependency");
         matched.map((i, match: CheerioElement) => {
-            const organization = cheerio(match).find("> groupId").text();
-            const module = cheerio(match).find("> artifactId").text();
+            const depGroupId = cheerio(match).find("> groupId").text();
+            const depArtifactId = cheerio(match).find("> artifactId").text();
             const versionConstraint = cheerio(match).find("> version").text();
             const scope = cheerio(match).find("> scope").text();
 
             const scopes = [scope || "compile"];
 
-            dependencies.push({organization, module, versionConstraint, scopes, name: [groupId, artifactId].join(":")});
+            dependencies.push({
+                name: [depGroupId, depArtifactId].join(":"),
+                versionConstraint,
+                scopes,
+            });
         });
 
         return {
             language: Languages.JAVA,
             system: "maven",
             sourceUrl,
-            organization: groupId,
-            module: artifactId,
+            name: [groupId, artifactId].join(":"),
             version,
             dependencies,
-            name: [groupId, artifactId].join(":"),
         };
     }
 }

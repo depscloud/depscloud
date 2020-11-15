@@ -1,37 +1,18 @@
-import {Dependency, DependencyManagementFile} from "@depscloud/api/v1alpha/deps";
 import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
-import Globals from "./Globals";
 import Languages from "./Languages";
 import MatchConfig from "../matcher/MatchConfig";
+import {ManifestDependency, ManifestFile} from "@depscloud/api/v1beta";
 
-interface ID {
-    organization: string;
-    module: string;
-}
-
-function parseName(name: string): ID {
-    const pos = name.indexOf("/");
-    if (pos === -1) {
-        return { organization: Globals.ORGANIZATION, module: name };
-    }
-
-    const organization = name.substr(0, pos);
-    const module = name.substr(pos + 1);
-    return { organization, module };
-}
-
-function processRequires(require: { [key: string]: string }): Dependency[] {
+function processRequires(require: { [key: string]: string }, scope?: string): ManifestDependency[] {
     return Object.keys(require)
         .map((key) => ({ key, value: require[key] }))
         .map(({ key, value }) => {
-            const { organization, module } = parseName(key);
-
             return {
-                organization,
-                module,
+                name: key,
                 versionConstraint: value,
-            } as Dependency;
+                scopes: scope ? [ scope ] : [],
+            };
         });
 }
 
@@ -52,7 +33,7 @@ export default class ComposerJsonExtractor implements Extractor {
         return [ "composer.json" ];
     }
 
-    public async extract(_: string, files: { [p: string]: ExtractorFile }): Promise<DependencyManagementFile> {
+    public async extract(_: string, files: { [p: string]: ExtractorFile }): Promise<ManifestFile> {
         const {
             name,
             version,
@@ -61,36 +42,26 @@ export default class ComposerJsonExtractor implements Extractor {
             "require-dev": requireDev,
         } = files["composer.json"].json();
 
-        const { organization, module } = parseName(name);
-
         let dependencies = (repositories || [])
             .filter((repo) => repo.type === "package")
             .map((repo) => {
-                const {
-                    organization: dependencyOrganization,
-                    module: dependencyModule,
-                } = parseName(repo.package.name);
-
                 return {
-                    organization: dependencyOrganization,
-                    module: dependencyModule,
-                    versionConstraint: repo.package.version,
                     name: repo.package.name,
+                    versionConstraint: repo.package.version,
+                    scopes: ["repositories"],
                 };
             });
 
         dependencies = dependencies.concat(processRequires(require || {}));
-        dependencies = dependencies.concat(processRequires(requireDev || {}));
+        dependencies = dependencies.concat(processRequires(requireDev || {}, "dev"));
 
         return {
             language: Languages.PHP,
             system: "composer",
             sourceUrl: "",
-            organization,
-            module,
+            name,
             version,
             dependencies,
-            name,
         };
     }
 }

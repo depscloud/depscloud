@@ -28,6 +28,7 @@ func keyForDependencyRequest(req *tracker.DependencyRequest) []byte {
 		Language:     req.GetLanguage(),
 		Organization: req.GetOrganization(),
 		Module:       req.GetModule(),
+		Name:         req.GetName(),
 	})
 }
 

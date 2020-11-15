@@ -1,13 +1,8 @@
-import {Dependency, DependencyManagementFile} from "@depscloud/api/v1alpha/deps";
 import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
-import parseImportPath from "./goutils/parseImportPath";
 import Languages from "./Languages";
 import MatchConfig from "../matcher/MatchConfig";
-
-const fileName = "vendor.conf";
-const organizationString = "organization";
-const moduleString = "module";
+import {ManifestDependency, ManifestFile} from "@depscloud/api/v1beta";
 
 export default class VendorConfExtractor implements Extractor {
     public matchConfig(): MatchConfig {
@@ -23,17 +18,14 @@ export default class VendorConfExtractor implements Extractor {
     }
 
     public requires(): string[] {
-        return [ fileName ];
+        return [ "vendor.conf" ];
     }
 
-    public async extract(_: string, files: { [p: string]: ExtractorFile }): Promise<DependencyManagementFile> {
-        const content = files[fileName].raw();
+    public async extract(_: string, files: { [p: string]: ExtractorFile }): Promise<ManifestFile> {
+        const content = files["vendor.conf"].raw();
 
         const lines = content.split(/\n+/g);
 
-        let id = {};
-        id[organizationString] = null;
-        id[moduleString] = null;
         let idFlag = true;
         const dependencies = [];
         let name = null;
@@ -50,44 +42,34 @@ export default class VendorConfExtractor implements Extractor {
                 continue;
             }
             if (idFlag) {
-                id = parseImportPath(directive);
                 name = trimmedLine;
                 idFlag = false;
                 continue;
             }
 
             const version = parts[1];
-            const { organization, module } = parseImportPath(directive);
 
             const scopes = [];
             if (parts[2] != null) {
                 scopes.push(parts[2]);
             }
 
-            const dependencyMap: Dependency = {
-                organization,
-                module,
+            const dependencyMap: ManifestDependency = {
+                name: directive,
                 versionConstraint: version,
                 scopes,
-                name: directive,
             };
 
             dependencies.push(dependencyMap);
-        }
-
-        if (id[organizationString] === null || id[moduleString] === null) {
-            throw new Error("parse error: no module present");
         }
 
         return {
             language: Languages.GO,
             system: "vendor",
             sourceUrl: "",
-            organization: id[organizationString],
-            module: id[moduleString],
+            name,
             version: "latest",
             dependencies,
-            name,
         };
     }
 }

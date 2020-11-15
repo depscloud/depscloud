@@ -4,54 +4,42 @@ exports[`PomXmlExtractor fullParse 1`] = `
 Object {
   "dependencies": Array [
     Object {
-      "module": "parentArtifactId",
       "name": "parentGroupId:parentArtifactId",
-      "organization": "parentGroupId",
       "scopes": Array [
         "parent",
       ],
       "versionConstraint": "1.0",
     },
     Object {
-      "module": "compileArtifactId",
-      "name": "groupId:artifactId",
-      "organization": "compileGroupId",
+      "name": "compileGroupId:compileArtifactId",
       "scopes": Array [
         "compile",
       ],
       "versionConstraint": "1.0.0",
     },
     Object {
-      "module": "runtimeArtifactId",
-      "name": "groupId:artifactId",
-      "organization": "runtimeGroupId",
+      "name": "runtimeGroupId:runtimeArtifactId",
       "scopes": Array [
         "runtime",
       ],
       "versionConstraint": "1.0.0",
     },
     Object {
-      "module": "testArtifactId",
-      "name": "groupId:artifactId",
-      "organization": "testGroupId",
+      "name": "testGroupId:testArtifactId",
       "scopes": Array [
         "test",
       ],
       "versionConstraint": "1.0.0",
     },
     Object {
-      "module": "systemArtifactId",
-      "name": "groupId:artifactId",
-      "organization": "systemGroupId",
+      "name": "systemGroupId:systemArtifactId",
       "scopes": Array [
         "system",
       ],
       "versionConstraint": "1.0.0",
     },
     Object {
-      "module": "providedArtifactId",
-      "name": "groupId:artifactId",
-      "organization": "providedGroupId",
+      "name": "providedGroupId:providedArtifactId",
       "scopes": Array [
         "provided",
       ],
@@ -59,9 +47,7 @@ Object {
     },
   ],
   "language": "java",
-  "module": "artifactId",
   "name": "groupId:artifactId",
-  "organization": "groupId",
   "sourceUrl": "git@github.com:group/project.git",
   "system": "maven",
   "version": "9.9.9",
@@ -73,65 +59,51 @@ exports[`PomXmlExtractor fullParse 2`] = `
   \\"language\\": \\"java\\",
   \\"system\\": \\"maven\\",
   \\"sourceUrl\\": \\"git@github.com:group/project.git\\",
-  \\"organization\\": \\"groupId\\",
-  \\"module\\": \\"artifactId\\",
+  \\"name\\": \\"groupId:artifactId\\",
   \\"version\\": \\"9.9.9\\",
   \\"dependencies\\": [
     {
-      \\"organization\\": \\"parentGroupId\\",
-      \\"module\\": \\"parentArtifactId\\",
+      \\"name\\": \\"parentGroupId:parentArtifactId\\",
       \\"versionConstraint\\": \\"1.0\\",
       \\"scopes\\": [
         \\"parent\\"
-      ],
-      \\"name\\": \\"parentGroupId:parentArtifactId\\"
+      ]
     },
     {
-      \\"organization\\": \\"compileGroupId\\",
-      \\"module\\": \\"compileArtifactId\\",
+      \\"name\\": \\"compileGroupId:compileArtifactId\\",
       \\"versionConstraint\\": \\"1.0.0\\",
       \\"scopes\\": [
         \\"compile\\"
-      ],
-      \\"name\\": \\"groupId:artifactId\\"
+      ]
     },
     {
-      \\"organization\\": \\"runtimeGroupId\\",
-      \\"module\\": \\"runtimeArtifactId\\",
+      \\"name\\": \\"runtimeGroupId:runtimeArtifactId\\",
       \\"versionConstraint\\": \\"1.0.0\\",
       \\"scopes\\": [
         \\"runtime\\"
-      ],
-      \\"name\\": \\"groupId:artifactId\\"
+      ]
     },
     {
-      \\"organization\\": \\"testGroupId\\",
-      \\"module\\": \\"testArtifactId\\",
+      \\"name\\": \\"testGroupId:testArtifactId\\",
       \\"versionConstraint\\": \\"1.0.0\\",
       \\"scopes\\": [
         \\"test\\"
-      ],
-      \\"name\\": \\"groupId:artifactId\\"
+      ]
     },
     {
-      \\"organization\\": \\"systemGroupId\\",
-      \\"module\\": \\"systemArtifactId\\",
+      \\"name\\": \\"systemGroupId:systemArtifactId\\",
       \\"versionConstraint\\": \\"1.0.0\\",
       \\"scopes\\": [
         \\"system\\"
-      ],
-      \\"name\\": \\"groupId:artifactId\\"
+      ]
     },
     {
-      \\"organization\\": \\"providedGroupId\\",
-      \\"module\\": \\"providedArtifactId\\",
+      \\"name\\": \\"providedGroupId:providedArtifactId\\",
       \\"versionConstraint\\": \\"1.0.0\\",
       \\"scopes\\": [
         \\"provided\\"
-      ],
-      \\"name\\": \\"groupId:artifactId\\"
+      ]
     }
-  ],
-  \\"name\\": \\"groupId:artifactId\\"
+  ]
 }"
 `;

@@ -1,10 +1,9 @@
-import {Dependency, DependencyManagementFile} from "@depscloud/api/v1alpha/deps";
 import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
 import inferImportPath from "./goutils/inferImportPath";
-import parseImportPath from "./goutils/parseImportPath";
 import Languages from "./Languages";
 import MatchConfig from "../matcher/MatchConfig";
+import {ManifestDependency, ManifestFile} from "@depscloud/api/v1beta";
 
 interface Constraint {
     name: string;
@@ -13,10 +12,8 @@ interface Constraint {
     revision: string;
 }
 
-function transformConstraints(data: Constraint[], scope: string): Dependency[] {
+function transformConstraints(data: Constraint[], scope: string): ManifestDependency[] {
     return (data || []).map(({ name, version, branch, revision }) => {
-        const { organization, module } = parseImportPath(name);
-
         let versionConstraint = version;
         if (branch) {
             versionConstraint = branch;
@@ -25,25 +22,19 @@ function transformConstraints(data: Constraint[], scope: string): Dependency[] {
         }
 
         return {
-            organization,
-            module,
+            name,
             versionConstraint,
             scopes: [ scope ],
-            name,
         };
     });
 }
 
-function transformSimple(data: string[], versionConstraint: string, scope: string): Dependency[] {
+function transformSimple(data: string[], versionConstraint: string, scope: string): ManifestDependency[] {
     return (data || []).map((name) => {
-        const { organization, module } = parseImportPath(name);
-
         return {
-            organization,
-            module,
+            name,
             versionConstraint,
             scopes: [ scope ],
-            name,
         };
     });
 }
@@ -65,13 +56,12 @@ export default class GopkgTomlExtractor implements Extractor {
         return [ "Gopkg.toml" ];
     }
 
-    public async extract(url: string, files: { [p: string]: ExtractorFile }): Promise<DependencyManagementFile> {
+    public async extract(url: string, files: { [p: string]: ExtractorFile }): Promise<ManifestFile> {
         const name = inferImportPath(url);
-        const { organization, module } = parseImportPath(name);
 
         const toml = files["Gopkg.toml"].toml();
 
-        const dependencies: Dependency[] = [];
+        const dependencies: ManifestDependency[] = [];
         dependencies.push(...transformConstraints(toml.constraint, "constraint"));
         dependencies.push(...transformConstraints(toml.override, "override"));
         dependencies.push(...transformSimple(toml.ignored, "*", "ignored"));
@@ -81,11 +71,9 @@ export default class GopkgTomlExtractor implements Extractor {
             language: Languages.GO,
             system: "gopkg",
             sourceUrl: "",
-            organization,
-            module,
+            name: name,
             version: "latest",
             dependencies,
-            name: name,
         };
     }
 }

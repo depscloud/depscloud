@@ -34,6 +34,7 @@ func keyForSource(source *schema.Source) []byte {
 }
 
 func keyForModule(module *schema.Module) []byte {
+	module = setModuleFields(module)
 	return key(module.GetLanguage(), module.GetOrganization(), module.GetModule())
 }
 

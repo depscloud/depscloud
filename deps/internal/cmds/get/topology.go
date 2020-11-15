@@ -160,9 +160,8 @@ func topologyCommand(
 		Aliases: []string{"topo"},
 		Short:   "Get the associated topology",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			req = setRequestFields(req)
-			if req.Language == "" && ((req.Organization == "" || req.Module == "") || req.Name == "") {
-				return fmt.Errorf("language + name or language + organization + module must be provided")
+			if err := validateDependencyRequest(req); err != nil {
+				return err
 			}
 
 			results, err := topology(cmd.Context(), searchService, requestConverter(req))

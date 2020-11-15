@@ -4,171 +4,133 @@ exports[`CargoTomlExtractor fullParse 1`] = `
 Object {
   "dependencies": Array [
     Object {
-      "module": "bytes",
       "name": "bytes",
-      "organization": "_",
       "scopes": Array [
         "direct",
       ],
       "versionConstraint": undefined,
     },
     Object {
-      "module": "clap",
       "name": "clap",
-      "organization": "_",
       "scopes": Array [
         "direct",
       ],
       "versionConstraint": undefined,
     },
     Object {
-      "module": "futures",
       "name": "futures",
-      "organization": "_",
       "scopes": Array [
         "direct",
       ],
       "versionConstraint": undefined,
     },
     Object {
-      "module": "hyper",
       "name": "hyper",
-      "organization": "_",
       "scopes": Array [
         "direct",
       ],
       "versionConstraint": undefined,
     },
     Object {
-      "module": "log",
       "name": "log",
-      "organization": "_",
       "scopes": Array [
         "direct",
       ],
       "versionConstraint": undefined,
     },
     Object {
-      "module": "ordermap",
       "name": "ordermap",
-      "organization": "_",
       "scopes": Array [
         "direct",
       ],
       "versionConstraint": undefined,
     },
     Object {
-      "module": "pretty_env_logger",
       "name": "pretty_env_logger",
-      "organization": "_",
       "scopes": Array [
         "direct",
       ],
       "versionConstraint": undefined,
     },
     Object {
-      "module": "rand",
       "name": "rand",
-      "organization": "_",
       "scopes": Array [
         "direct",
       ],
       "versionConstraint": undefined,
     },
     Object {
-      "module": "rustls",
       "name": "rustls",
-      "organization": "_",
       "scopes": Array [
         "direct",
       ],
       "versionConstraint": "make_server_sni_public",
     },
     Object {
-      "module": "serde",
       "name": "serde",
-      "organization": "_",
       "scopes": Array [
         "direct",
       ],
       "versionConstraint": undefined,
     },
     Object {
-      "module": "serde_derive",
       "name": "serde_derive",
-      "organization": "_",
       "scopes": Array [
         "direct",
       ],
       "versionConstraint": undefined,
     },
     Object {
-      "module": "serde_json",
       "name": "serde_json",
-      "organization": "_",
       "scopes": Array [
         "direct",
       ],
       "versionConstraint": undefined,
     },
     Object {
-      "module": "serde_yaml",
       "name": "serde_yaml",
-      "organization": "_",
       "scopes": Array [
         "direct",
       ],
       "versionConstraint": undefined,
     },
     Object {
-      "module": "tacho",
       "name": "tacho",
-      "organization": "_",
       "scopes": Array [
         "direct",
       ],
       "versionConstraint": undefined,
     },
     Object {
-      "module": "tokio-core",
       "name": "tokio-core",
-      "organization": "_",
       "scopes": Array [
         "direct",
       ],
       "versionConstraint": undefined,
     },
     Object {
-      "module": "tokio-io",
       "name": "tokio-io",
-      "organization": "_",
       "scopes": Array [
         "direct",
       ],
       "versionConstraint": undefined,
     },
     Object {
-      "module": "tokio-service",
       "name": "tokio-service",
-      "organization": "_",
       "scopes": Array [
         "direct",
       ],
       "versionConstraint": undefined,
     },
     Object {
-      "module": "tokio-timer",
       "name": "tokio-timer",
-      "organization": "_",
       "scopes": Array [
         "direct",
       ],
       "versionConstraint": undefined,
     },
     Object {
-      "module": "url",
       "name": "url",
-      "organization": "_",
       "scopes": Array [
         "direct",
       ],
@@ -176,9 +138,7 @@ Object {
     },
   ],
   "language": "rust",
-  "module": "linkerd-tcp",
   "name": "linkerd-tcp",
-  "organization": "_",
   "sourceUrl": "",
   "system": "cargo",
   "version": "0.1.1",
@@ -190,164 +150,124 @@ exports[`CargoTomlExtractor fullParse 2`] = `
   \\"language\\": \\"rust\\",
   \\"system\\": \\"cargo\\",
   \\"sourceUrl\\": \\"\\",
-  \\"organization\\": \\"_\\",
-  \\"module\\": \\"linkerd-tcp\\",
+  \\"name\\": \\"linkerd-tcp\\",
   \\"version\\": \\"0.1.1\\",
   \\"dependencies\\": [
     {
-      \\"organization\\": \\"_\\",
-      \\"module\\": \\"bytes\\",
+      \\"name\\": \\"bytes\\",
       \\"scopes\\": [
         \\"direct\\"
-      ],
-      \\"name\\": \\"bytes\\"
+      ]
     },
     {
-      \\"organization\\": \\"_\\",
-      \\"module\\": \\"clap\\",
+      \\"name\\": \\"clap\\",
       \\"scopes\\": [
         \\"direct\\"
-      ],
-      \\"name\\": \\"clap\\"
+      ]
     },
     {
-      \\"organization\\": \\"_\\",
-      \\"module\\": \\"futures\\",
+      \\"name\\": \\"futures\\",
       \\"scopes\\": [
         \\"direct\\"
-      ],
-      \\"name\\": \\"futures\\"
+      ]
     },
     {
-      \\"organization\\": \\"_\\",
-      \\"module\\": \\"hyper\\",
+      \\"name\\": \\"hyper\\",
       \\"scopes\\": [
         \\"direct\\"
-      ],
-      \\"name\\": \\"hyper\\"
+      ]
     },
     {
-      \\"organization\\": \\"_\\",
-      \\"module\\": \\"log\\",
+      \\"name\\": \\"log\\",
       \\"scopes\\": [
         \\"direct\\"
-      ],
-      \\"name\\": \\"log\\"
+      ]
     },
     {
-      \\"organization\\": \\"_\\",
-      \\"module\\": \\"ordermap\\",
+      \\"name\\": \\"ordermap\\",
       \\"scopes\\": [
         \\"direct\\"
-      ],
-      \\"name\\": \\"ordermap\\"
+      ]
     },
     {
-      \\"organization\\": \\"_\\",
-      \\"module\\": \\"pretty_env_logger\\",
+      \\"name\\": \\"pretty_env_logger\\",
       \\"scopes\\": [
         \\"direct\\"
-      ],
-      \\"name\\": \\"pretty_env_logger\\"
+      ]
     },
     {
-      \\"organization\\": \\"_\\",
-      \\"module\\": \\"rand\\",
+      \\"name\\": \\"rand\\",
       \\"scopes\\": [
         \\"direct\\"
-      ],
-      \\"name\\": \\"rand\\"
+      ]
     },
     {
-      \\"organization\\": \\"_\\",
-      \\"module\\": \\"rustls\\",
+      \\"name\\": \\"rustls\\",
       \\"versionConstraint\\": \\"make_server_sni_public\\",
       \\"scopes\\": [
         \\"direct\\"
-      ],
-      \\"name\\": \\"rustls\\"
+      ]
     },
     {
-      \\"organization\\": \\"_\\",
-      \\"module\\": \\"serde\\",
+      \\"name\\": \\"serde\\",
       \\"scopes\\": [
         \\"direct\\"
-      ],
-      \\"name\\": \\"serde\\"
+      ]
     },
     {
-      \\"organization\\": \\"_\\",
-      \\"module\\": \\"serde_derive\\",
+      \\"name\\": \\"serde_derive\\",
       \\"scopes\\": [
         \\"direct\\"
-      ],
-      \\"name\\": \\"serde_derive\\"
+      ]
     },
     {
-      \\"organization\\": \\"_\\",
-      \\"module\\": \\"serde_json\\",
+      \\"name\\": \\"serde_json\\",
       \\"scopes\\": [
         \\"direct\\"
-      ],
-      \\"name\\": \\"serde_json\\"
+      ]
     },
     {
-      \\"organization\\": \\"_\\",
-      \\"module\\": \\"serde_yaml\\",
+      \\"name\\": \\"serde_yaml\\",
       \\"scopes\\": [
         \\"direct\\"
-      ],
-      \\"name\\": \\"serde_yaml\\"
+      ]
     },
     {
-      \\"organization\\": \\"_\\",
-      \\"module\\": \\"tacho\\",
+      \\"name\\": \\"tacho\\",
       \\"scopes\\": [
         \\"direct\\"
-      ],
-      \\"name\\": \\"tacho\\"
+      ]
     },
     {
-      \\"organization\\": \\"_\\",
-      \\"module\\": \\"tokio-core\\",
+      \\"name\\": \\"tokio-core\\",
       \\"scopes\\": [
         \\"direct\\"
-      ],
-      \\"name\\": \\"tokio-core\\"
+      ]
     },
     {
-      \\"organization\\": \\"_\\",
-      \\"module\\": \\"tokio-io\\",
+      \\"name\\": \\"tokio-io\\",
       \\"scopes\\": [
         \\"direct\\"
-      ],
-      \\"name\\": \\"tokio-io\\"
+      ]
     },
     {
-      \\"organization\\": \\"_\\",
-      \\"module\\": \\"tokio-service\\",
+      \\"name\\": \\"tokio-service\\",
       \\"scopes\\": [
         \\"direct\\"
-      ],
-      \\"name\\": \\"tokio-service\\"
+      ]
     },
     {
-      \\"organization\\": \\"_\\",
-      \\"module\\": \\"tokio-timer\\",
+      \\"name\\": \\"tokio-timer\\",
       \\"scopes\\": [
         \\"direct\\"
-      ],
-      \\"name\\": \\"tokio-timer\\"
+      ]
     },
     {
-      \\"organization\\": \\"_\\",
-      \\"module\\": \\"url\\",
+      \\"name\\": \\"url\\",
       \\"scopes\\": [
         \\"direct\\"
-      ],
-      \\"name\\": \\"url\\"
+      ]
     }
-  ],
-  \\"name\\": \\"linkerd-tcp\\"
+  ]
 }"
 `;

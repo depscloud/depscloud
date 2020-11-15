@@ -1,37 +1,16 @@
-import {Dependency, DependencyManagementFile} from "@depscloud/api/v1alpha/deps";
+import {ManifestDependency, ManifestFile} from "@depscloud/api/v1beta";
 import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
-import Globals from "./Globals";
 import Languages from "./Languages";
 import MatchConfig from "../matcher/MatchConfig";
 
-interface ID {
-    organization: string;
-    module: string;
-}
-
-function parseName(module: string): ID {
-    let organization = Globals.ORGANIZATION;
-    if (module.charAt(0) === "@") {
-        const index = module.indexOf("/");
-        organization = module.substr(1,  index - 1);
-        module = module.substr(index + 1);
-    }
-    return { organization, module };
-}
-
-function extract(dependencyHash: any, scope: string): Dependency[] {
+function extract(dependencyHash: any, scope: string): ManifestDependency[] {
     return Object.keys(dependencyHash)
         .map((dependency) => {
-            const { organization, module } = parseName(dependency);
-            const versionConstraint = dependencyHash[dependency];
-
             return {
-                organization,
-                module,
-                versionConstraint,
-                scopes: [ scope ],
                 name: dependency,
+                versionConstraint: dependencyHash[dependency],
+                scopes: scope ? [ scope ] : [],
             };
         });
 }
@@ -53,7 +32,7 @@ export default class BowerJsonExtractor implements Extractor {
         return [ "bower.json" ];
     }
 
-    public async extract(_: string, files: { [p: string]: ExtractorFile }): Promise<DependencyManagementFile> {
+    public async extract(_: string, files: { [p: string]: ExtractorFile }): Promise<ManifestFile> {
         const {
             name,
             version,
@@ -62,8 +41,6 @@ export default class BowerJsonExtractor implements Extractor {
             devDependencies,
             bundledDependencies,
         } = files["bower.json"].json();
-
-        const { organization, module } = parseName(name);
 
         let allDependencies = extract((dependencies || {}), "");
         allDependencies = allDependencies.concat(extract((devDependencies || {}), "dev"));
@@ -78,8 +55,6 @@ export default class BowerJsonExtractor implements Extractor {
             language: Languages.JAVASCRIPT,
             system: "bower",
             sourceUrl,
-            organization,
-            module,
             version,
             dependencies: allDependencies,
             name,

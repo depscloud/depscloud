@@ -1,7 +1,6 @@
 package get
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/depscloud/api/v1alpha/schema"
@@ -30,8 +29,11 @@ func SourcesCommand(
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx := cmd.Context()
 
-			if module.Language != "" && ((module.Organization != "" && module.Module != "") || module.Name != "") {
-				response, err := modulesClient.ListSources(ctx, setModuleFields(module))
+			// at least one field was provided
+			if err := validateModule(module); !isEmpty(module) && err != nil {
+				return err
+			} else if err == nil {
+				response, err := modulesClient.ListSources(ctx, module)
 				if err != nil {
 					return err
 				}
@@ -41,8 +43,6 @@ func SourcesCommand(
 				}
 
 				return nil
-			} else if module.Language != "" || module.Organization != "" || module.Module != "" && module.Name != "" {
-				return fmt.Errorf("language + name or language + organization + module must be provided")
 			}
 
 			pageSize := 100
