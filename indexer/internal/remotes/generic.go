@@ -8,7 +8,7 @@ import (
 
 	"github.com/depscloud/depscloud/indexer/internal/config"
 
-	"github.com/nytlabs/gojee"
+	jee "github.com/nytlabs/gojee"
 
 	"github.com/pkg/errors"
 
