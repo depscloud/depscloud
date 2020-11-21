@@ -10,6 +10,8 @@ on:
       - "indexer/**"
       - "internal/**"
       - "tracker/**"
+      - ".goreleaser.yml"
+      - "codecov.yml"
       - "go.mod"
       - "go.sum"
   push:
@@ -21,6 +23,8 @@ on:
       - "indexer/**"
       - "internal/**"
       - "tracker/**"
+      - ".goreleaser.yml"
+      - "codecov.yml"
       - "go.mod"
       - "go.sum"
 
