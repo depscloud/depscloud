@@ -23,16 +23,23 @@ func LoadTLSConfig(cfg *TLSConfig) (*tls.Config, error) {
 		return nil, err
 	}
 
-	certPool := x509.NewCertPool()
+	var certPool *x509.CertPool
+
 	if cfg.CAPath != "" {
-		bs, err := ioutil.ReadFile(cfg.CAPath)
+		caPEM, err := ioutil.ReadFile(cfg.CAPath)
 		if err != nil {
 			return nil, err
 		}
 
-		ok := certPool.AppendCertsFromPEM(bs)
+		certPool = x509.NewCertPool()
+		ok := certPool.AppendCertsFromPEM(caPEM)
 		if !ok {
 			return nil, fmt.Errorf("failed to append certs")
+		}
+	} else {
+		certPool, err = x509.SystemCertPool()
+		if err != nil {
+			return nil, err
 		}
 	}
 

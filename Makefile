@@ -43,7 +43,19 @@ generate:
 	#golint -set_exit_status ${PACKAGES}
 	go test -v -race -coverprofile=coverage.txt -covermode=atomic ${PACKAGES}
 
-test: extractor/test
+internal/hack/:
+	mkdir -p internal/hack/
+	openssl req -x509 -sha256 -newkey rsa:4096 \
+		-keyout internal/hack/ca.key -out internal/hack/ca.crt \
+		-nodes -subj '/CN=localhost'
+	openssl req -new -newkey rsa:4096 \
+		-keyout internal/hack/test.key -out internal/hack/test.csr \
+		-nodes -subj "/CN=test"
+	openssl x509 -req -sha256 -days 365 -in internal/hack/test.csr \
+            -CA internal/hack/ca.crt -CAkey internal/hack/ca.key \
+            -set_serial 01 -out internal/hack/test.crt
+
+test: internal/hack/ extractor/test
 	@make .test PACKAGES="./deps/... ./gateway/... ./indexer/... ./tracker/... ./internal/..."
 
 ##===
