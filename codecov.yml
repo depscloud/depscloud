@@ -1,0 +1,24 @@
+ignore:
+  - ".github"
+  # extractor
+  - "**/coverage/**"
+  - "**/lib/**"
+  - "**/node_modules/**"
+  - ".dockerignore"
+  - ".eslintrc.json"
+  - ".gitignore"
+  - "jest.config.js"
+  - "package.json"
+  - "package-lock.json"
+  - "tsconfig.json"
+  # golang
+  - "**/hack/**"
+  - "**/*.pb.go"
+  - "**/*.proto"
+  #
+  - ".goreleaser.yml"
+  - "*.md"
+  - "DCO"
+  - "LICENSE"
+  - "Makefile"
+  - "renovate.json"
