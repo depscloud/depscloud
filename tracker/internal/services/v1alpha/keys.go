@@ -34,8 +34,17 @@ func keyForSource(source *schema.Source) []byte {
 }
 
 func keyForModule(module *schema.Module) []byte {
-	module = setModuleFields(module)
-	return key(module.GetLanguage(), module.GetOrganization(), module.GetModule())
+	o := module.GetOrganization()
+	m := module.GetModule()
+
+	// don't store the organization and module
+	if n := module.GetName(); n != "" {
+		orgModPair := parseName(module.GetLanguage(), n)
+		o = orgModPair[0]
+		m = orgModPair[1]
+	}
+
+	return key(module.GetLanguage(), o, m)
 }
 
 func readableKey(item *store.GraphItem) string {
