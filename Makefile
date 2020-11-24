@@ -68,7 +68,7 @@ test: internal/hack/ extractor/test
 		--build-arg VERSION=${VERSION} \
 		--build-arg GIT_SHA=${GIT_SHA} \
 		-t depscloud/${BINARY}:latest \
-		-f Dockerfile.dev
+		-f dockerfiles/go-branch/Dockerfile
 
 .install:
 	go install -ldflags="${LD_FLAGS}" ./${BINARY}/

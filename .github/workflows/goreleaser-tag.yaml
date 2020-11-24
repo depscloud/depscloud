@@ -67,5 +67,5 @@ jobs:
             --build-arg VERSION=${GITHUB_REF##*/v} \
             --tag depscloud/${{ matrix.binary }}:latest \
             --tag depscloud/${{ matrix.binary }}:${GITHUB_REF##*/v} \
-            -f Dockerfile \
+            -f dockerfiles/go-tag/Dockerfile \
             --push
