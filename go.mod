@@ -22,7 +22,7 @@ require (
 	github.com/jackc/pgx/v4 v4.9.0
 	github.com/jmoiron/sqlx v1.2.0
 	github.com/jonboulle/clockwork v0.2.2 // indirect
-	github.com/mattn/go-sqlite3 v1.14.4
+	github.com/mattn/go-sqlite3 v1.14.5
 	github.com/mjpitz/go-gracefully v0.0.5
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/nytlabs/gojee v0.0.0-20140331152115-5a79a1542dc0
