@@ -48,12 +48,10 @@ program.name("extractor")
                 agg[item] = true;
                 return agg;
             }, {});
-        
+
         const extractorReqs = ExtractorRegistry.known()
             .filter((e) => !disabledManifests[e])
             .map((extractor) => ExtractorRegistry.resolve(extractor, null));
-
-        
 
         const extractors = await Promise.all(extractorReqs);
 
@@ -119,7 +117,6 @@ program.name("extractor")
                 timestamp: new Date(),
                 results: {},
             });
-            
         };
 
         app.get("/healthz", healthHandle);

@@ -9,6 +9,7 @@ import (
 	apiv1alpha "github.com/depscloud/api/v1alpha/store"
 	apiv1beta "github.com/depscloud/api/v1beta/graphstore"
 	"github.com/depscloud/depscloud/internal/mux"
+	"github.com/depscloud/depscloud/internal/v"
 	"github.com/depscloud/depscloud/tracker/internal/checks"
 	"github.com/depscloud/depscloud/tracker/internal/graphstore/v1alpha"
 	"github.com/depscloud/depscloud/tracker/internal/graphstore/v1beta"
@@ -94,7 +95,8 @@ var description = strings.TrimSpace(`
 `)
 
 func main() {
-	version := mux.Version{Version: version, Commit: commit, Date: date}
+	version := v.Info{Version: version, Commit: commit, Date: date}
+
 	cfg := &trackerConfig{
 		httpPort:               8080,
 		grpcPort:               8090,
@@ -114,8 +116,7 @@ func main() {
 				Name:  "version",
 				Usage: "Output version information",
 				Action: func(c *cli.Context) error {
-					versionString := fmt.Sprintf("%s %s", c.Command.Name, version)
-					fmt.Println(versionString)
+					fmt.Println(fmt.Sprintf("%s %s", c.Command.Name, version))
 					return nil
 
 				},
@@ -213,7 +214,7 @@ func main() {
 				BindAddressHTTP: fmt.Sprintf("0.0.0.0:%d", cfg.httpPort),
 				BindAddressGRPC: fmt.Sprintf("0.0.0.0:%d", cfg.grpcPort),
 				Checks:          checks.Checks(v1betaClient, v1alphaClient),
-				Version:         &version,
+				Version:         version,
 				TLSConfig:       tlsConfig,
 			})
 		},

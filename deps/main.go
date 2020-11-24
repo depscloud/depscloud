@@ -8,7 +8,7 @@ import (
 	"github.com/depscloud/depscloud/deps/internal/cmds/debug"
 	"github.com/depscloud/depscloud/deps/internal/cmds/get"
 	"github.com/depscloud/depscloud/deps/internal/writer"
-	"github.com/depscloud/depscloud/internal/mux"
+	"github.com/depscloud/depscloud/internal/v"
 
 	"github.com/sirupsen/logrus"
 
@@ -44,9 +44,10 @@ var commit string
 var date string
 
 func main() {
-	version := mux.Version{Version: version, Commit: commit, Date: date}
-	client := client.DefaultClient()
-	writer := writer.Default
+	version := v.Info{Version: version, Commit: commit, Date: date}
+
+	c := client.DefaultClient()
+	w := writer.Default
 
 	cmd := &cobra.Command{
 		Use:  "deps",
@@ -54,7 +55,7 @@ func main() {
 	}
 
 	cmd.AddCommand(completion.Command())
-	cmd.AddCommand(get.Command(client, writer))
+	cmd.AddCommand(get.Command(c, w))
 
 	cmd.AddCommand(&cobra.Command{
 		Use:   "version",

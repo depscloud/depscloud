@@ -4,13 +4,14 @@ import (
 	"context"
 	"crypto/tls"
 	"encoding/json"
-	"fmt"
 	"net"
 	"net/http"
 	"os"
 	"os/signal"
 	"strings"
 	"syscall"
+
+	"github.com/depscloud/depscloud/internal/v"
 
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	grpc_recovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
@@ -39,16 +40,6 @@ import (
 	"google.golang.org/grpc/reflection"
 )
 
-type Version struct {
-	Version string `json:"version"`
-	Commit  string `json:"commit"`
-	Date    string `json:"date"`
-}
-
-func (v Version) String() string {
-	return fmt.Sprintf("{version: %s, commit: %s, date: %s}", v.Version, v.Commit, v.Date)
-}
-
 type Config struct {
 	context.Context
 
@@ -59,7 +50,7 @@ type Config struct {
 
 	TLSConfig *TLSConfig
 
-	Version *Version
+	Version v.Info
 }
 
 func DefaultServers() (*grpc.Server, *http.ServeMux) {

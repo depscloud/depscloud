@@ -12,7 +12,7 @@ import (
 	"github.com/depscloud/depscloud/indexer/internal/consumer"
 	"github.com/depscloud/depscloud/indexer/internal/remotes"
 	"github.com/depscloud/depscloud/internal/client"
-	"github.com/depscloud/depscloud/internal/mux"
+	"github.com/depscloud/depscloud/internal/v"
 
 	"github.com/sirupsen/logrus"
 
@@ -50,6 +50,8 @@ var description = strings.TrimSpace(`
 `)
 
 func main() {
+	version := v.Info{Version: version, Commit: commit, Date: date}
+
 	cfg := &indexerConfig{
 		workers:    5,
 		configPath: "",
@@ -115,7 +117,7 @@ func main() {
 				Name:  "version",
 				Usage: "Output version information",
 				Action: func(c *cli.Context) error {
-					versionString := fmt.Sprintf("%s %s", c.Command.Name, mux.Version{Version: version, Commit: commit, Date: date})
+					versionString := fmt.Sprintf("%s %s", c.Command.Name, version)
 					fmt.Println(versionString)
 					return nil
 

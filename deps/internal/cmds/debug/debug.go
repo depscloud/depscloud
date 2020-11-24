@@ -3,16 +3,17 @@ package debug
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 
 	"github.com/depscloud/depscloud/deps/internal/client"
-	"github.com/depscloud/depscloud/internal/mux"
+	"github.com/depscloud/depscloud/internal/v"
+
+	"github.com/mjpitz/go-gracefully/report"
 
 	"github.com/spf13/cobra"
 )
 
-func Command(version mux.Version) *cobra.Command {
+func Command(version v.Info) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "debug",
 		Short: "Output information helpful for debugging",
@@ -52,31 +53,38 @@ type httpDebugClient struct {
 	baseURL string
 }
 
-func (s *httpDebugClient) GetServerVersion() (*mux.Version, error) {
+func (s *httpDebugClient) GetServerVersion() (version v.Info, err error) {
 	uri := fmt.Sprintf("%s/version", s.baseURL)
 
 	r, err := s.client.Get(uri)
 	if err != nil {
-		return nil, err
+		return version, err
 	}
 
-	version := &mux.Version{}
-	if err := json.NewDecoder(r.Body).Decode(version); err != nil {
-		return nil, err
+	if err := json.NewDecoder(r.Body).Decode(&version); err != nil {
+		return version, err
 	}
 
-	return version, nil
+	return version, err
 }
 
 func (s *httpDebugClient) GetHealth() (string, error) {
 	uri := fmt.Sprintf("%s/health", s.baseURL)
 
-	r, err := s.client.Get(uri)
+	resp, err := s.client.Get(uri)
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+
+	r := report.Report{}
+	err = json.NewDecoder(resp.Body).Decode(&r)
 	if err != nil {
 		return "", err
 	}
 
-	healthString, err := ioutil.ReadAll(r.Body)
+	r.Results = nil
+	healthString, err := json.Marshal(r)
 	if err != nil {
 		return "", err
 	}

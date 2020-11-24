@@ -14,6 +14,7 @@ import (
 	"github.com/depscloud/depscloud/gateway/internal/proxies"
 	"github.com/depscloud/depscloud/internal/client"
 	"github.com/depscloud/depscloud/internal/mux"
+	"github.com/depscloud/depscloud/internal/v"
 
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 
@@ -37,7 +38,8 @@ type gatewayConfig struct {
 }
 
 func main() {
-	version := mux.Version{Version: version, Commit: commit, Date: date}
+	version := v.Info{Version: version, Commit: commit, Date: date}
+
 	cfg := &gatewayConfig{
 		httpPort: 8080,
 		grpcPort: 8090,
@@ -184,7 +186,7 @@ func main() {
 				BindAddressHTTP: fmt.Sprintf("0.0.0.0:%d", cfg.httpPort),
 				BindAddressGRPC: fmt.Sprintf("0.0.0.0:%d", cfg.grpcPort),
 				Checks:          checks.Checks(extractorService, sourceService, moduleService),
-				Version:         &version,
+				Version:         version,
 				TLSConfig:       tlsConfig,
 			})
 		},
