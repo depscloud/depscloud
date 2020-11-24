@@ -19,7 +19,7 @@ require (
 	github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0
 	github.com/grpc-ecosystem/grpc-gateway v1.15.2
 	github.com/hashicorp/go-retryablehttp v0.6.7 // indirect
-	github.com/jackc/pgx/v4 v4.9.0
+	github.com/jackc/pgx/v4 v4.9.2
 	github.com/jmoiron/sqlx v1.2.0
 	github.com/jonboulle/clockwork v0.2.2 // indirect
 	github.com/mattn/go-sqlite3 v1.14.5
