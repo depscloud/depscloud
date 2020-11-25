@@ -11,6 +11,7 @@ import (
 	"github.com/depscloud/depscloud/internal/mux"
 	"github.com/depscloud/depscloud/internal/v"
 	"github.com/depscloud/depscloud/tracker/internal/checks"
+	"github.com/depscloud/depscloud/tracker/internal/cleanup"
 	"github.com/depscloud/depscloud/tracker/internal/graphstore/v1alpha"
 	"github.com/depscloud/depscloud/tracker/internal/graphstore/v1beta"
 	svcsv1alpha "github.com/depscloud/depscloud/tracker/internal/services/v1alpha"
@@ -41,21 +42,31 @@ var date string
 
 const sockAddr = "localhost:47274"
 
-func startGraphStore(driver, address, readOnlyAddress string) error {
-	grpcServer := grpc.NewServer()
-
+func graphStoreServers(driver, address, readOnlyAddress string) (apiv1alpha.GraphStoreServer, apiv1beta.GraphStoreServer, error) {
 	// v1beta
 	v1betaDriver, err := v1beta.Resolve(driver, address, readOnlyAddress)
 	if err != nil {
-		return err
+		return nil, nil, err
 	}
-	apiv1beta.RegisterGraphStoreServer(grpcServer, &v1beta.GraphStoreServer{Driver: v1betaDriver})
 
 	// v1alpha
 	v1alphaGraphStore, err := v1alpha.NewGraphStoreFor(driver, address, readOnlyAddress)
 	if err != nil {
+		return nil, nil, err
+	}
+
+	return v1alphaGraphStore, &v1beta.GraphStoreServer{Driver: v1betaDriver}, nil
+}
+
+func startGraphStore(driver, address, readOnlyAddress string) error {
+	grpcServer := grpc.NewServer()
+
+	v1alphaGraphStore, v1betaGraphStore, err := graphStoreServers(driver, address, readOnlyAddress)
+	if err != nil {
 		return err
 	}
+
+	apiv1beta.RegisterGraphStoreServer(grpcServer, v1betaGraphStore)
 	apiv1alpha.RegisterGraphStoreServer(grpcServer, v1alphaGraphStore)
 
 	// listen and serve
@@ -97,6 +108,7 @@ var description = strings.TrimSpace(`
 func main() {
 	version := v.Info{Version: version, Commit: commit, Date: date}
 
+	tlsConfig := &mux.TLSConfig{}
 	cfg := &trackerConfig{
 		httpPort:               8080,
 		grpcPort:               8090,
@@ -105,13 +117,51 @@ func main() {
 		storageReadOnlyAddress: "",
 	}
 
-	tlsConfig := &mux.TLSConfig{}
+	flags := []cli.Flag{
+		&cli.StringFlag{
+			Name:        "storage-driver",
+			Usage:       "the driver used to configure the storage tier",
+			Value:       cfg.storageDriver,
+			Destination: &cfg.storageDriver,
+			EnvVars:     []string{"STORAGE_DRIVER"},
+		},
+		&cli.StringFlag{
+			Name:        "storage-address",
+			Usage:       "the address of the storage tier",
+			Value:       cfg.storageAddress,
+			Destination: &cfg.storageAddress,
+			EnvVars:     []string{"STORAGE_ADDRESS"},
+		},
+		&cli.StringFlag{
+			Name:        "storage-readonly-address",
+			Usage:       "the readonly address of the storage tier",
+			Value:       cfg.storageReadOnlyAddress,
+			Destination: &cfg.storageReadOnlyAddress,
+			EnvVars:     []string{"STORAGE_READ_ONLY_ADDRESS"},
+		},
+	}
 
 	app := &cli.App{
 		Name:        "tracker",
 		Usage:       "tracks dependencies between systems",
 		Description: description,
 		Commands: []*cli.Command{
+			{
+				Name:  "cleanup",
+				Usage: "Cleanup data in the database",
+				Flags: flags,
+				Action: func(context *cli.Context) error {
+					v1alphaGraphStore, v1betaGraphStore, err := graphStoreServers(
+						cfg.storageDriver, cfg.storageAddress, cfg.storageReadOnlyAddress)
+
+					if err != nil {
+						return err
+					}
+
+					servers := cleanup.NewServers(v1alphaGraphStore, v1betaGraphStore)
+					return cleanup.Run(servers)
+				},
+			},
 			{
 				Name:  "version",
 				Usage: "Output version information",
@@ -122,7 +172,7 @@ func main() {
 				},
 			},
 		},
-		Flags: []cli.Flag{
+		Flags: append(flags, []cli.Flag{
 			&cli.IntFlag{
 				Name:        "http-port",
 				Usage:       "the port to run http on",
@@ -137,27 +187,6 @@ func main() {
 				Value:       cfg.grpcPort,
 				Destination: &cfg.grpcPort,
 				EnvVars:     []string{"GRPC_PORT"},
-			},
-			&cli.StringFlag{
-				Name:        "storage-driver",
-				Usage:       "the driver used to configure the storage tier",
-				Value:       cfg.storageDriver,
-				Destination: &cfg.storageDriver,
-				EnvVars:     []string{"STORAGE_DRIVER"},
-			},
-			&cli.StringFlag{
-				Name:        "storage-address",
-				Usage:       "the address of the storage tier",
-				Value:       cfg.storageAddress,
-				Destination: &cfg.storageAddress,
-				EnvVars:     []string{"STORAGE_ADDRESS"},
-			},
-			&cli.StringFlag{
-				Name:        "storage-readonly-address",
-				Usage:       "the readonly address of the storage tier",
-				Value:       cfg.storageReadOnlyAddress,
-				Destination: &cfg.storageReadOnlyAddress,
-				EnvVars:     []string{"STORAGE_READ_ONLY_ADDRESS"},
 			},
 			&cli.StringFlag{
 				Name:        "tls-key",
@@ -180,7 +209,7 @@ func main() {
 				Destination: &tlsConfig.CAPath,
 				EnvVars:     []string{"TLS_CA_PATH"},
 			},
-		},
+		}...),
 		Action: func(c *cli.Context) error {
 			err := startGraphStore(cfg.storageDriver, cfg.storageAddress, cfg.storageReadOnlyAddress)
 			if err != nil {

@@ -3,8 +3,6 @@ module github.com/depscloud/depscloud
 go 1.15
 
 require (
-	github.com/cenkalti/backoff/v4 v4.1.0
-	github.com/coreos/go-systemd v0.0.0-20190719114852-fd7a80b32e1f // indirect
 	github.com/davidji99/bitbucket-go v0.2.1
 	github.com/davidji99/simpleresty v0.2.3 // indirect
 	github.com/depscloud/api v0.1.18
@@ -12,7 +10,6 @@ require (
 	github.com/go-resty/resty/v2 v2.3.0 // indirect
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/gogo/protobuf v1.3.1
-	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e // indirect
 	github.com/golang/protobuf v1.4.2
 	github.com/google/go-github/v20 v20.0.0
 	github.com/grpc-ecosystem/go-grpc-middleware v1.2.2
@@ -24,9 +21,7 @@ require (
 	github.com/jonboulle/clockwork v0.2.2 // indirect
 	github.com/mattn/go-sqlite3 v1.14.5
 	github.com/mjpitz/go-gracefully v0.0.5
-	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/nytlabs/gojee v0.0.0-20140331152115-5a79a1542dc0
-	github.com/pierrec/lz4 v2.0.5+incompatible // indirect
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.7.1
 	github.com/prometheus/common v0.14.0 // indirect
@@ -40,7 +35,6 @@ require (
 	github.com/stretchr/testify v1.6.1
 	github.com/urfave/cli/v2 v2.3.0
 	github.com/xanzy/go-gitlab v0.39.0
-	go.uber.org/multierr v1.5.0 // indirect
 	golang.org/x/crypto v0.0.0-20201002170205-7f63de1d35b0 // indirect
 	golang.org/x/net v0.0.0-20201010224723-4f7140c49acb
 	golang.org/x/oauth2 v0.0.0-20201109201403-9fd604954f58
