@@ -54,6 +54,7 @@ jobs:
           helm repo add depscloud https://depscloud.github.io/deploy/charts
           helm upgrade -i depscloud depscloud/depscloud \
             --set beacon.enabled=false \
+            --set gateway.image.repository=depscloud/gateway \
             --set gateway.image.pullPolicy=Never \
             --set gateway.image.tag=latest
 
