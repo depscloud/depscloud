@@ -10,13 +10,16 @@ import (
 
 func Connect(cfg *Config) (*grpc.ClientConn, error) {
 	options := []grpc.DialOption{
-		grpc.WithDefaultServiceConfig(cfg.ServiceConfig),
 		grpc.WithStreamInterceptor(grpc_middleware.ChainStreamClient(
 			grpc_prometheus.StreamClientInterceptor,
 		)),
 		grpc.WithUnaryInterceptor(grpc_middleware.ChainUnaryClient(
 			grpc_prometheus.UnaryClientInterceptor,
 		)),
+	}
+
+	if cfg.ServiceConfig != "" {
+		grpc.WithDefaultServiceConfig(cfg.ServiceConfig)
 	}
 
 	if cfg.TLS || cfg.TLSConfig.CertPath != "" {

@@ -7,7 +7,12 @@ import (
 )
 
 // https://github.com/grpc/grpc/blob/master/doc/service_config.md
-const DefaultServiceConfig = `{"loadBalancingPolicy":"round_robin","healthCheckConfig":{"serviceName":""}}`
+const DefaultServiceConfig = `{
+  "loadBalancingPolicy": "round_robin",
+  "healthCheckConfig": {
+    "serviceName": ""
+  }
+}`
 
 const DefaultLoadBalancer = "round_robin"
 
