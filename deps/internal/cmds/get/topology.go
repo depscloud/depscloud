@@ -7,6 +7,7 @@ import (
 
 	"github.com/depscloud/api/v1alpha/schema"
 	"github.com/depscloud/api/v1alpha/tracker"
+	"github.com/depscloud/depscloud/deps/internal/util"
 	"github.com/depscloud/depscloud/deps/internal/writer"
 
 	"github.com/spf13/cobra"
@@ -288,13 +289,11 @@ func topologyCommand(
 			}
 
 			if !(destinationModuleName == "") {
-				orgAndModule := parseName(req.GetLanguage(), destinationModuleName)
-				destinationModuleKey := key(&schema.Module{
-					Language:     req.GetLanguage(),
-					Organization: orgAndModule[0],
-					Module:       orgAndModule[1],
-					Name:         destinationModuleName,
+				module := util.SetModuleFields(&schema.Module{
+					Language: req.GetLanguage(),
+					Name:     destinationModuleName,
 				})
+				destinationModuleKey := key(module)
 
 				results, err := getAllPaths(cmd.Context(), searchService, requestConverter(req), destinationModuleKey)
 				if err != nil {
