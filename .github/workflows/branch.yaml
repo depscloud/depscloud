@@ -42,7 +42,7 @@ jobs:
 
       - uses: actions/setup-node@v2-beta
         with:
-          node-version: '10'
+          node-version: '12'
 
       - name: Checkout
         uses: actions/checkout@v2
