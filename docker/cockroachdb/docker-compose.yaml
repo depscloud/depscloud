@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+  cockroachdb:
+    image: cockroachdb/cockroach:v20.2.1
+    hostname: cockroachdb
+    ports:
+      - 26257:26257
+      - 8081:8080
+    command:
+      - start-single-node
+      - --insecure
+
+  tracker:
+    restart: on-failure
+    image: depscloud/tracker:${TRACKER_VERSION:-latest}
+    hostname: tracker
+    depends_on:
+      - cockroachdb
+    command:
+      - --storage-driver=postgres
+      - --storage-address=postgres://root:@cockroachdb:26257/defaultdb
+
+  extractor:
+    image: depscloud/extractor:${EXTRACTOR_VERSION:-latest}
+    hostname: extractor
+
+  indexer:
+    restart: on-failure
+    image: depscloud/indexer:${INDEXER_VERSION:-latest}
+    hostname: indexer
+    depends_on:
+      - extractor
+      - tracker
+    volumes:
+      - ./config.yaml:/etc/indexer/config.yaml
+    command:
+      - --config=/etc/indexer/config.yaml
+      - --workers=1
+
+  gateway:
+    image: depscloud/gateway:${GATEWAY_VERSION:-latest}
+    hostname: gateway
+    depends_on:
+      - extractor
+      - tracker
+    ports:
+      - 8080:8080

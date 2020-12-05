@@ -1,5 +1,7 @@
 ignore:
   - ".github"
+  # docker
+  - "docker/**"
   # extractor
   - "**/coverage/**"
   - "**/lib/**"
@@ -15,8 +17,8 @@ ignore:
   - "**/hack/**"
   - "**/*.pb.go"
   - "**/*.proto"
-  #
   - ".goreleaser.yml"
+  # root
   - "*.md"
   - "DCO"
   - "LICENSE"

@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:12.5
+    hostname: postgres
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: depscloud
+    ports:
+    - 5432:5432
+
+  tracker:
+    restart: on-failure
+    image: depscloud/tracker:${TRACKER_VERSION:-latest}
+    hostname: tracker
+    depends_on:
+    - postgres
+    command:
+    - --storage-driver=postgres
+    - --storage-address=postgres://user:password@postgres:5432/depscloud
+
+  extractor:
+    image: depscloud/extractor:${EXTRACTOR_VERSION:-latest}
+    hostname: extractor
+
+  indexer:
+    restart: on-failure
+    image: depscloud/indexer:${INDEXER_VERSION:-latest}
+    hostname: indexer
+    depends_on:
+    - extractor
+    - tracker
+    volumes:
+    - ./config.yaml:/etc/indexer/config.yaml
+    command:
+    - --config=/etc/indexer/config.yaml
+    - --workers=1
+
+  gateway:
+    image: depscloud/gateway:${GATEWAY_VERSION:-latest}
+    hostname: gateway
+    depends_on:
+    - extractor
+    - tracker
+    ports:
+    - 8080:8080

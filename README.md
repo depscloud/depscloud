@@ -24,11 +24,8 @@ Take a look at our [contributing guidelines] and [project board].
 # setup a workspace for all depscloud
 mkdir depscloud && cd $_
 
-# clone necessary repositories
-#   - the first is for the source code
-#   - the second is for the deployment configuration
+# clone repository
 git clone git@github.com:depscloud/depscloud.git
-git clone git@github.com:depscloud/deploy.git
 ```
 
 [contributing guidelines]: https://deps.cloud/docs/contrib/
