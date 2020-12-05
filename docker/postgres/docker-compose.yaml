@@ -1,9 +1,14 @@
 version: "3.8"
 
+networks:
+  depscloud:
+
 services:
   postgres:
     image: postgres:12.5
     hostname: postgres
+    networks:
+      - depscloud
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
@@ -15,6 +20,8 @@ services:
     restart: on-failure
     image: depscloud/tracker:${TRACKER_VERSION:-latest}
     hostname: tracker
+    networks:
+      - depscloud
     depends_on:
     - postgres
     command:
@@ -24,11 +31,15 @@ services:
   extractor:
     image: depscloud/extractor:${EXTRACTOR_VERSION:-latest}
     hostname: extractor
+    networks:
+      - depscloud
 
   indexer:
     restart: on-failure
     image: depscloud/indexer:${INDEXER_VERSION:-latest}
     hostname: indexer
+    networks:
+      - depscloud
     depends_on:
     - extractor
     - tracker
@@ -41,6 +52,8 @@ services:
   gateway:
     image: depscloud/gateway:${GATEWAY_VERSION:-latest}
     hostname: gateway
+    networks:
+      - depscloud
     depends_on:
     - extractor
     - tracker

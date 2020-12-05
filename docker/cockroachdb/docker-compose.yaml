@@ -1,9 +1,14 @@
 version: "3.8"
 
+networks:
+  depscloud:
+
 services:
   cockroachdb:
     image: cockroachdb/cockroach:v20.2.1
     hostname: cockroachdb
+    networks:
+      - depscloud
     ports:
       - 26257:26257
       - 8081:8080
@@ -15,6 +20,8 @@ services:
     restart: on-failure
     image: depscloud/tracker:${TRACKER_VERSION:-latest}
     hostname: tracker
+    networks:
+      - depscloud
     depends_on:
       - cockroachdb
     command:
@@ -24,11 +31,15 @@ services:
   extractor:
     image: depscloud/extractor:${EXTRACTOR_VERSION:-latest}
     hostname: extractor
+    networks:
+      - depscloud
 
   indexer:
     restart: on-failure
     image: depscloud/indexer:${INDEXER_VERSION:-latest}
     hostname: indexer
+    networks:
+      - depscloud
     depends_on:
       - extractor
       - tracker
@@ -41,6 +52,8 @@ services:
   gateway:
     image: depscloud/gateway:${GATEWAY_VERSION:-latest}
     hostname: gateway
+    networks:
+      - depscloud
     depends_on:
       - extractor
       - tracker

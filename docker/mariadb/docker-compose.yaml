@@ -1,10 +1,15 @@
 version: "3.8"
 
+networks:
+  depscloud:
+
 services:
   mariadb:
     restart: always
     image: mariadb:10
     hostname: mariadb
+    networks:
+      - depscloud
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
       MYSQL_USER: user
@@ -17,6 +22,8 @@ services:
     restart: always
     image: depscloud/tracker:${TRACKER_VERSION:-latest}
     hostname: tracker
+    networks:
+      - depscloud
     depends_on:
       - mariadb
     command:
@@ -27,11 +34,15 @@ services:
     restart: always
     image: depscloud/extractor:${EXTRACTOR_VERSION:-latest}
     hostname: extractor
+    networks:
+      - depscloud
 
   indexer:
     restart: on-failure
     image: depscloud/indexer:${INDEXER_VERSION:-latest}
     hostname: indexer
+    networks:
+      - depscloud
     depends_on:
       - extractor
       - tracker
@@ -45,6 +56,8 @@ services:
     restart: always
     image: depscloud/gateway:${GATEWAY_VERSION:-latest}
     hostname: gateway
+    networks:
+      - depscloud
     depends_on:
       - extractor
       - tracker
