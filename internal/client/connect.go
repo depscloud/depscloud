@@ -19,7 +19,7 @@ func Connect(cfg *Config) (*grpc.ClientConn, error) {
 	}
 
 	if cfg.ServiceConfig != "" {
-		grpc.WithDefaultServiceConfig(cfg.ServiceConfig)
+		options = append(options, grpc.WithDefaultServiceConfig(cfg.ServiceConfig))
 	}
 
 	if cfg.TLS || cfg.TLSConfig.CertPath != "" {
