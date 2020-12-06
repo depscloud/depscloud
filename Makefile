@@ -126,3 +126,25 @@ tracker/install:
 
 tracker/test:
 	@make .test PACKAGES="./tracker/..."
+
+## helper docker-compose configurations
+
+.run:
+	@cd docker/$(PLATFORM) && docker-compose up
+
+run/docker/cockroachdb:
+	@make .run PLATFORM=cockroachdb
+
+run/docker/mariadb:
+	@make .run PLATFORM=mariadb
+
+run/docker/mysql:
+	@make .run PLATFORM=mysql
+
+run/docker/postgres:
+	@make .run PLATFORM=postgres
+
+run/docker/sqlite:
+	@make .run PLATFORM=sqlite
+
+run/docker: run/docker/sqlite

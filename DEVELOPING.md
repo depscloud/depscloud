@@ -13,19 +13,14 @@ This monorepo contains several independent processes.
 
 ## Cloning projects
 
-For most development on this project, you will need two repositories.
-The first is this repository (depscloud) which contains all the source code.
-The second is for the deployment configuration.
+For most development on this project, you will need one repositories.
 
 ```bash
 # setup a workspace for all depscloud
 mkdir depscloud && cd $_
 
 # clone necessary repositories
-#   - the first is for the source code
-#   - the second is for the deployment configuration
 git clone git@github.com:depscloud/depscloud.git
-git clone git@github.com:depscloud/deploy.git
 ```
 
 ## Building changes
@@ -36,12 +31,14 @@ This allows it to be deployed using our [docker] configuration.
 A common workflow is to build the changes to your container and redeploy the docker stack.
 
 ```bash
-# in depscloud/depscloud
 # make [name]/docker
 make tracker/docker
 
-# in depscloud/deploy/docker/sqlite
-docker-compose up
+# make run/docker[/platform]
+make run/docker
 ```
+
+By default, we run with a SQLite configuration.
+You can run other platforms like CockroachDB, MariaDB, PostgreSQL, and MySQL as well.
 
 [docker]: https://deps.cloud/docs/deploy/docker/
