@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/depscloud/depscloud/deps/internal/client"
 	"github.com/depscloud/depscloud/deps/internal/cmds/completion"
@@ -9,8 +10,6 @@ import (
 	"github.com/depscloud/depscloud/deps/internal/cmds/get"
 	"github.com/depscloud/depscloud/deps/internal/writer"
 	"github.com/depscloud/depscloud/internal/v"
-
-	"github.com/sirupsen/logrus"
 
 	"github.com/spf13/cobra"
 )
@@ -70,6 +69,6 @@ func main() {
 	cmd.AddCommand(debug.Command(version))
 
 	if err := cmd.Execute(); err != nil {
-		logrus.Fatal(err)
+		log.Fatal(err)
 	}
 }

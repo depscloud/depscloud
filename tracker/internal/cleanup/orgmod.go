@@ -2,17 +2,21 @@ package cleanup
 
 import (
 	"context"
+	"go.uber.org/zap"
 
 	"github.com/depscloud/api/v1alpha/schema"
 	"github.com/depscloud/api/v1alpha/store"
 	"github.com/depscloud/depscloud/tracker/internal/services/v1alpha"
 	"github.com/depscloud/depscloud/tracker/internal/types"
-
-	"github.com/sirupsen/logrus"
 )
 
 func organizationModule(servers *Servers) error {
-	logrus.Infof("cleaning up organization/module semantic")
+	log, err := zap.NewProduction()
+	if err != nil {
+		return err
+	}
+
+	log.Info("cleaning up organization/module semantic")
 	ctx := context.Background()
 	count := 100
 

@@ -2,10 +2,9 @@ package v
 
 import (
 	"encoding/json"
-
-	"github.com/sirupsen/logrus"
 )
 
+// Info wraps version metadata about the current application.
 type Info struct {
 	Version string `json:"version"`
 	Commit  string `json:"commit"`
@@ -15,7 +14,7 @@ type Info struct {
 func (i Info) String() string {
 	data, err := json.Marshal(i)
 	if err != nil {
-		logrus.Fatal(err)
+		panic(err)
 	}
 	return string(data)
 }

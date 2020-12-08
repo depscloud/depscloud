@@ -3,6 +3,8 @@ package remotes
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/depscloud/depscloud/internal/logger"
+	"go.uber.org/zap"
 	"io/ioutil"
 	"net/http"
 
@@ -11,8 +13,6 @@ import (
 	jee "github.com/nytlabs/gojee"
 
 	"github.com/pkg/errors"
-
-	"github.com/sirupsen/logrus"
 )
 
 // NewGenericRemote constructs a new remote endpoint that
@@ -28,7 +28,10 @@ type genericRemote struct {
 	config *config.Generic
 }
 
-func (r *genericRemote) FetchRepositories(request *FetchRepositoriesRequest) (*FetchRepositoriesResponse, error) {
+func (r *genericRemote) FetchRepositories(req *FetchRepositoriesRequest) (*FetchRepositoriesResponse, error) {
+	log := logger.Extract(req.Context)
+	log = log.With(zap.String("baseURL", r.config.BaseUrl))
+
 	cloneConfig := r.config.GetClone()
 
 	tokens, err := jee.Lexer(r.config.Selector)
@@ -41,7 +44,7 @@ func (r *genericRemote) FetchRepositories(request *FetchRepositoriesRequest) (*F
 		return nil, err
 	}
 
-	logrus.Infof("[remotes.generic] requesting data from generic endpoint: %s", r.config.BaseUrl)
+	log.Info("fetching projects")
 
 	repositories := make([]*Repository, 0)
 	for page := 1; true; page++ {
@@ -62,7 +65,7 @@ func (r *genericRemote) FetchRepositories(request *FetchRepositoriesRequest) (*F
 		}
 
 		if resp.StatusCode == http.StatusNotFound {
-			logrus.Infof("[remotes.generic] encountered a 404. assuming end of data")
+			log.Info("encountered a 404. assuming end of data")
 			break
 		}
 
@@ -92,7 +95,7 @@ func (r *genericRemote) FetchRepositories(request *FetchRepositoriesRequest) (*F
 		}
 
 		if int32(len(resultArray)) < r.config.PageSize {
-			logrus.Infof("[remotes.generic] encountered an incomplete page. assuming end of data")
+			log.Info("encountered an incomplete page. assuming end of data")
 			break
 		}
 	}

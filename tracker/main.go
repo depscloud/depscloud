@@ -1,13 +1,16 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"net"
+	"net/http"
 	"os"
 	"strings"
 
 	apiv1alpha "github.com/depscloud/api/v1alpha/store"
 	apiv1beta "github.com/depscloud/api/v1beta/graphstore"
+	"github.com/depscloud/depscloud/internal/logger"
 	"github.com/depscloud/depscloud/internal/mux"
 	"github.com/depscloud/depscloud/internal/v"
 	"github.com/depscloud/depscloud/tracker/internal/checks"
@@ -28,9 +31,9 @@ import (
 
 	_ "github.com/mattn/go-sqlite3"
 
-	"github.com/sirupsen/logrus"
-
 	"github.com/urfave/cli/v2"
+
+	"go.uber.org/zap"
 
 	"google.golang.org/grpc"
 )
@@ -58,7 +61,7 @@ func graphStoreServers(driver, address, readOnlyAddress string) (apiv1alpha.Grap
 	return v1alphaGraphStore, &v1beta.GraphStoreServer{Driver: v1betaDriver}, nil
 }
 
-func startGraphStore(driver, address, readOnlyAddress string) error {
+func startGraphStore(log *zap.Logger, driver, address, readOnlyAddress string) error {
 	grpcServer := grpc.NewServer()
 
 	v1alphaGraphStore, v1betaGraphStore, err := graphStoreServers(driver, address, readOnlyAddress)
@@ -70,7 +73,7 @@ func startGraphStore(driver, address, readOnlyAddress string) error {
 	apiv1alpha.RegisterGraphStoreServer(grpcServer, v1alphaGraphStore)
 
 	// listen and serve
-	logrus.Infof("[graphstore] starting grpc on %s", sockAddr)
+	log.Info("starting graphstore grpc", zap.String("bind", sockAddr))
 	listener, err := net.Listen("tcp", sockAddr)
 	if err != nil {
 		return err
@@ -93,8 +96,6 @@ func registerV1Beta(v1betaClient apiv1beta.GraphStoreClient, server *grpc.Server
 }
 
 type trackerConfig struct {
-	httpPort               int
-	grpcPort               int
 	storageDriver          string
 	storageAddress         string
 	storageReadOnlyAddress string
@@ -108,10 +109,10 @@ var description = strings.TrimSpace(`
 func main() {
 	version := v.Info{Version: version, Commit: commit, Date: date}
 
-	tlsConfig := &mux.TLSConfig{}
+	loggerConfig, loggerFlags := logger.WithFlags(logger.DefaultConfig())
+	serverConfig, serverFlags := mux.WithFlags(mux.DefaultConfig(version))
+
 	cfg := &trackerConfig{
-		httpPort:               8080,
-		grpcPort:               8090,
 		storageDriver:          "sqlite",
 		storageAddress:         "file::memory:?cache=shared",
 		storageReadOnlyAddress: "",
@@ -140,6 +141,9 @@ func main() {
 			EnvVars:     []string{"STORAGE_READ_ONLY_ADDRESS"},
 		},
 	}
+
+	flags = append(flags, loggerFlags...)
+	flags = append(flags, serverFlags...)
 
 	app := &cli.App{
 		Name:        "tracker",
@@ -172,84 +176,46 @@ func main() {
 				},
 			},
 		},
-		Flags: append(flags, []cli.Flag{
-			&cli.IntFlag{
-				Name:        "http-port",
-				Usage:       "the port to run http on",
-				Value:       cfg.httpPort,
-				Destination: &cfg.httpPort,
-				EnvVars:     []string{"HTTP_PORT"},
-			},
-			&cli.IntFlag{
-				Name:        "grpc-port",
-				Aliases:     []string{"port"},
-				Usage:       "the port to run grpc on",
-				Value:       cfg.grpcPort,
-				Destination: &cfg.grpcPort,
-				EnvVars:     []string{"GRPC_PORT"},
-			},
-			&cli.StringFlag{
-				Name:        "tls-key",
-				Usage:       "path to the file containing the TLS private key",
-				Value:       tlsConfig.KeyPath,
-				Destination: &tlsConfig.KeyPath,
-				EnvVars:     []string{"TLS_KEY_PATH"},
-			},
-			&cli.StringFlag{
-				Name:        "tls-cert",
-				Usage:       "path to the file containing the TLS certificate",
-				Value:       tlsConfig.CertPath,
-				Destination: &tlsConfig.CertPath,
-				EnvVars:     []string{"TLS_CERT_PATH"},
-			},
-			&cli.StringFlag{
-				Name:        "tls-ca",
-				Usage:       "path to the file containing the TLS certificate authority",
-				Value:       tlsConfig.CAPath,
-				Destination: &tlsConfig.CAPath,
-				EnvVars:     []string{"TLS_CA_PATH"},
-			},
-		}...),
+		Flags: flags,
 		Action: func(c *cli.Context) error {
-			err := startGraphStore(cfg.storageDriver, cfg.storageAddress, cfg.storageReadOnlyAddress)
+			log := logger.MustGetLogger(loggerConfig)
+			ctx := logger.ToContext(c.Context, log)
+
+			err := startGraphStore(log, cfg.storageDriver, cfg.storageAddress, cfg.storageReadOnlyAddress)
 			if err != nil {
 				return err
 			}
 
 			cc, err := grpc.Dial(sockAddr,
 				grpc.WithInsecure(),
+				grpc.WithStreamInterceptor(grpc_middleware.ChainStreamClient(
+					grpc_prometheus.StreamClientInterceptor,
+				)),
 				grpc.WithUnaryInterceptor(grpc_middleware.ChainUnaryClient(
 					grpc_retry.UnaryClientInterceptor(grpc_retry.WithMax(5)),
 					grpc_prometheus.UnaryClientInterceptor,
-				)),
-				grpc.WithStreamInterceptor(grpc_middleware.ChainStreamClient(
-					grpc_prometheus.StreamClientInterceptor,
 				)),
 			)
 			if err != nil {
 				return err
 			}
 
-			grpcServer, httpServer := mux.DefaultServers()
-
-			v1betaClient := apiv1beta.NewGraphStoreClient(cc)
-			registerV1Beta(v1betaClient, grpcServer)
-
 			v1alphaClient := apiv1alpha.NewGraphStoreClient(cc)
-			registerV1Alpha(v1alphaClient, grpcServer)
+			v1betaClient := apiv1beta.NewGraphStoreClient(cc)
 
-			return mux.Serve(grpcServer, httpServer, &mux.Config{
-				Context:         c.Context,
-				BindAddressHTTP: fmt.Sprintf("0.0.0.0:%d", cfg.httpPort),
-				BindAddressGRPC: fmt.Sprintf("0.0.0.0:%d", cfg.grpcPort),
-				Checks:          checks.Checks(v1betaClient, v1alphaClient),
-				Version:         version,
-				TLSConfig:       tlsConfig,
-			})
+			// setup checks and any extra endpoints
+			serverConfig.Checks = checks.Checks(v1betaClient, v1alphaClient)
+			serverConfig.Endpoints = []mux.ServerEndpoint{
+				func(ctx context.Context, grpcServer *grpc.Server, httpServer *http.ServeMux) {
+					registerV1Alpha(v1alphaClient, grpcServer)
+					registerV1Beta(v1betaClient, grpcServer)
+				},
+			}
+
+			server := mux.NewServer(serverConfig)
+			return server.Serve(ctx)
 		},
 	}
 
-	if err := app.Run(os.Args); err != nil {
-		logrus.Fatal(err)
-	}
+	_ = app.Run(os.Args)
 }

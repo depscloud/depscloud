@@ -3,14 +3,14 @@ package v1alpha
 import (
 	"bytes"
 	"context"
+	"github.com/depscloud/depscloud/internal/logger"
+	"go.uber.org/zap"
 
 	"github.com/depscloud/api"
 	"github.com/depscloud/api/v1alpha/schema"
 	"github.com/depscloud/api/v1alpha/store"
 	"github.com/depscloud/api/v1alpha/tracker"
 	"github.com/depscloud/depscloud/tracker/internal/types"
-
-	"github.com/sirupsen/logrus"
 
 	"google.golang.org/grpc"
 )
@@ -27,6 +27,8 @@ type sourceService struct {
 var _ tracker.SourceServiceServer = &sourceService{}
 
 func (s *sourceService) List(ctx context.Context, req *tracker.ListRequest) (*tracker.ListSourceResponse, error) {
+	log := logger.Extract(ctx)
+
 	resp, err := s.gs.List(ctx, &store.ListRequest{
 		Page:  req.GetPage(),
 		Count: req.GetCount(),
@@ -34,7 +36,7 @@ func (s *sourceService) List(ctx context.Context, req *tracker.ListRequest) (*tr
 	})
 
 	if err != nil {
-		logrus.Errorf("[service.source] %s", err.Error())
+		log.Error("failed to list sources", zap.Error(err))
 		return nil, err
 	}
 
@@ -52,15 +54,21 @@ func (s *sourceService) List(ctx context.Context, req *tracker.ListRequest) (*tr
 }
 
 func (s *sourceService) Track(ctx context.Context, req *tracker.SourceRequest) (*tracker.TrackResponse, error) {
-	currentSet, err := s.getCurrent(ctx, req.GetSource())
+	source := req.GetSource()
+	log := logger.Extract(ctx).With(
+		zap.String("source_url", source.GetUrl()),
+		zap.String("source_kind", source.GetKind()),
+		zap.String("source_ref", source.GetRef()))
+
+	currentSet, err := s.getCurrent(ctx, source)
 	if err != nil {
-		logrus.Errorf("[service.source] %s", err.Error())
+		log.Error("failed to get current tree", zap.Error(err))
 		return nil, api.ErrModuleNotFound
 	}
 
 	proposedSet, err := s.getProposed(ctx, req)
 	if err != nil {
-		logrus.Errorf("[service.source] %s", err.Error())
+		log.Error("failed to get proposed tree", zap.Error(err))
 		return nil, api.ErrModuleNotFound
 	}
 
@@ -80,16 +88,19 @@ func (s *sourceService) Track(ctx context.Context, req *tracker.SourceRequest) (
 		toPut = append(toPut, item)
 	}
 
-	logrus.Infof("[service.source] currentSet=%d proposedSet=%d toDelete=%d toPut=%d",
-		len(currentSet), len(proposedSet), len(toDelete), len(toPut))
+	log.Info("proposed changes",
+		zap.Int("current_set", len(currentSet)),
+		zap.Int("proposed_set", len(proposedSet)),
+		zap.Int("to_put", len(toPut)),
+		zap.Int("to_delete", len(toDelete)))
 
 	if _, err := s.gs.Delete(ctx, &store.DeleteRequest{Items: toDelete}); err != nil {
-		logrus.Errorf("[service.source] %s", err.Error())
+		log.Error("failed to delete edge data", zap.Error(err))
 		return nil, api.ErrPartialDeletion
 	}
 
 	if _, err := s.gs.Put(ctx, &store.PutRequest{Items: toPut}); err != nil {
-		logrus.Errorf("[service.source] %s", err.Error())
+		log.Error("failed to put node and edge data", zap.Error(err))
 		return nil, api.ErrPartialInsertion
 	}
 
@@ -101,7 +112,6 @@ func (s *sourceService) getCurrent(ctx context.Context, source *schema.Source) (
 
 	item, err := Encode(source)
 	if err != nil {
-		logrus.Errorf("[service.source] %s", err.Error())
 		return nil, err
 	}
 
@@ -114,7 +124,6 @@ func (s *sourceService) getCurrent(ctx context.Context, source *schema.Source) (
 	})
 
 	if err != nil {
-		logrus.Errorf("[service.source] %s", err.Error())
 		return nil, err
 	}
 
@@ -130,7 +139,6 @@ func (s *sourceService) getCurrent(ctx context.Context, source *schema.Source) (
 		})
 
 		if err != nil {
-			logrus.Errorf("[service.source] %s", err.Error())
 			return nil, err
 		}
 
@@ -152,7 +160,6 @@ func (s *sourceService) getProposed(ctx context.Context, request *tracker.Source
 
 	source, err := Encode(request.GetSource())
 	if err != nil {
-		logrus.Errorf("[service.source] %s", err.Error())
 		return nil, err
 	}
 
@@ -167,7 +174,6 @@ func (s *sourceService) getProposed(ctx context.Context, request *tracker.Source
 		})
 
 		if err != nil {
-			logrus.Errorf("[service.source] %s", err.Error())
 			return nil, err
 		}
 
@@ -177,7 +183,6 @@ func (s *sourceService) getProposed(ctx context.Context, request *tracker.Source
 			Version:  managementFile.GetVersion(),
 		})
 		if err != nil {
-			logrus.Errorf("[service.source] %s", err.Error())
 			return nil, err
 		}
 
@@ -193,7 +198,6 @@ func (s *sourceService) getProposed(ctx context.Context, request *tracker.Source
 				Kind: "repository",
 			})
 			if err != nil {
-				logrus.Errorf("[service.source] %s", err.Error())
 				return nil, err
 			}
 
@@ -203,7 +207,6 @@ func (s *sourceService) getProposed(ctx context.Context, request *tracker.Source
 				Version:  managementFile.GetVersion(),
 			})
 			if err != nil {
-				logrus.Errorf("[service.source] %s", err.Error())
 				return nil, err
 			}
 
@@ -222,7 +225,6 @@ func (s *sourceService) getProposed(ctx context.Context, request *tracker.Source
 				Name:         dependency.GetName(),
 			})
 			if err != nil {
-				logrus.Errorf("[service.source] %s", err.Error())
 				return nil, err
 			}
 
@@ -233,7 +235,6 @@ func (s *sourceService) getProposed(ctx context.Context, request *tracker.Source
 				Ref:               request.GetSource().Ref,
 			})
 			if err != nil {
-				logrus.Errorf("[service.source] %s", err.Error())
 				return nil, err
 			}
 

@@ -9,8 +9,6 @@ import (
 	"github.com/depscloud/api/v1alpha/tracker"
 	"github.com/depscloud/depscloud/tracker/internal/types"
 
-	"github.com/sirupsen/logrus"
-
 	"google.golang.org/grpc"
 )
 
@@ -33,7 +31,6 @@ func (s *moduleService) List(ctx context.Context, req *tracker.ListRequest) (*tr
 	})
 
 	if err != nil {
-		logrus.Errorf("[service.module] %s", err.Error())
 		return nil, err
 	}
 

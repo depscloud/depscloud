@@ -10,13 +10,13 @@ import (
 	"github.com/depscloud/api/v1alpha/schema"
 	"github.com/depscloud/api/v1alpha/tracker"
 	"github.com/depscloud/depscloud/indexer/internal/remotes"
+	"github.com/depscloud/depscloud/internal/logger"
 
-	"github.com/sirupsen/logrus"
+	"go.uber.org/zap"
 
 	"gopkg.in/src-d/go-billy.v4/osfs"
 	"gopkg.in/src-d/go-git.v4"
 	"gopkg.in/src-d/go-git.v4/plumbing/cache"
-	"gopkg.in/src-d/go-git.v4/plumbing/transport"
 	"gopkg.in/src-d/go-git.v4/plumbing/transport/http"
 	"gopkg.in/src-d/go-git.v4/plumbing/transport/ssh"
 	"gopkg.in/src-d/go-git.v4/storage/filesystem"
@@ -24,57 +24,65 @@ import (
 
 // RepositoryConsumer represent the contract for consuming repositories
 type RepositoryConsumer interface {
-	Consume(repository *remotes.Repository)
+	Consume(ctx context.Context, repository *remotes.Repository)
 }
 
 // NewConsumer creates a consumer process that is agnostic to the ingress channel.
 func NewConsumer(
-	authMethod transport.AuthMethod,
-	desClient extractor.DependencyExtractorClient,
+	extractorService extractor.DependencyExtractorClient,
 	sourceService tracker.SourceServiceClient,
 ) RepositoryConsumer {
 	return &consumer{
-		authMethod:    authMethod,
-		desClient:     desClient,
-		sourceService: sourceService,
+		extractorService: extractorService,
+		sourceService:    sourceService,
 	}
 }
 
 type consumer struct {
-	authMethod    transport.AuthMethod
-	desClient     extractor.DependencyExtractorClient
-	sourceService tracker.SourceServiceClient
+	extractorService extractor.DependencyExtractorClient
+	sourceService    tracker.SourceServiceClient
 }
 
 var _ RepositoryConsumer = &consumer{}
 
-func (c *consumer) Consume(repository *remotes.Repository) {
-	repourl := repository.RepositoryURL
+func (c *consumer) Consume(ctx context.Context, repository *remotes.Repository) {
+	repoURL := repository.RepositoryURL
+
+	log := logger.Extract(ctx)
+	log = log.With(zap.String("repoURL", repoURL))
 
 	dir, err := ioutil.TempDir(os.TempDir(), "dis")
 	if err != nil {
-		logrus.Errorf("failed to create tempdir")
+		log.Error("failed to create temp directory",
+			zap.String("dir", dir),
+			zap.Error(err))
 		return
 	}
 
 	// ensure proper cleanup
 	defer func() {
-		logrus.Infof("[%s] cleaning up file system", repourl)
+		log.Info("cleaning up file system",
+			zap.String("dir", dir))
+
 		if err := os.RemoveAll(dir); err != nil {
-			logrus.Errorf("failed to cleanup scratch directory: %s", err.Error())
+			log.Error("failed to cleanup scratch directory",
+				zap.String("dir", dir),
+				zap.Error(err))
 		}
 	}()
 
 	fs := osfs.New(dir)
 	gitfs, err := fs.Chroot(git.GitDirName)
 	if err != nil {
-		logrus.Errorf("failed to chroot for .git: %v", err)
+		log.Error("failed to chroot for .git",
+			zap.String("dir", dir),
+			zap.Error(err))
 		return
 	}
 
 	storage := filesystem.NewStorage(gitfs, cache.NewObjectLRUDefault())
 	options := &git.CloneOptions{
-		URL:   repourl,
+		URL:   repoURL,
 		Depth: 1,
 	}
 
@@ -100,25 +108,24 @@ func (c *consumer) Consume(repository *remotes.Repository) {
 			}
 
 			if keys == nil || err != nil {
-				logrus.Errorf("[%s] failed to get public keys for repository", repourl)
+				log.Error("failed to get public keys for repository",
+					zap.Error(err))
 				return
 			}
 
 			options.Auth = keys
 		}
-	} else if c.authMethod != nil {
-		options.Auth = c.authMethod
 	}
 
-	logrus.Infof("[%s] cloning repository", repourl)
+	log.Info("cloning repository")
 	repo, err := git.Clone(storage, fs, options)
 
 	if err != nil {
-		logrus.Errorf("failed to clone: %v", err)
+		log.Error("failed to clone repository", zap.Error(err))
 		return
 	}
 
-	logrus.Infof("[%s] walking file system", repourl)
+	log.Info("walking file system")
 	queue := []string{""}
 	paths := make([]string, 0)
 
@@ -131,7 +138,7 @@ func (c *consumer) Consume(repository *remotes.Repository) {
 
 			finfos, err := fs.ReadDir(path)
 			if err != nil {
-				logrus.Errorf("failed to stat path: %v", err)
+				log.Error("failed to stat path", zap.Error(err))
 			}
 
 			for _, finfo := range finfos {
@@ -147,14 +154,14 @@ func (c *consumer) Consume(repository *remotes.Repository) {
 		queue = newQueue
 	}
 
-	logrus.Infof("[%s] matching dependency files", repourl)
-	matchedResponse, err := c.desClient.Match(context.Background(), &extractor.MatchRequest{
+	log.Info("matching dependency files")
+	matchedResponse, err := c.extractorService.Match(context.Background(), &extractor.MatchRequest{
 		Separator: string(filepath.Separator),
 		Paths:     paths,
 	})
 
 	if err != nil {
-		logrus.Errorf("[%s] failed to match patchs for repository", repourl)
+		log.Error("failed to match paths for repository")
 		return
 	}
 
@@ -162,28 +169,32 @@ func (c *consumer) Consume(repository *remotes.Repository) {
 	for _, matched := range matchedResponse.MatchedPaths {
 		file, err := fs.Open(matched)
 		if err != nil {
-			logrus.Warnf("failed to open file %s: %v", matched, err)
+			log.Warn("failed to open file",
+				zap.String("matched", matched),
+				zap.Error(err))
 			continue
 		}
 
 		data, err := ioutil.ReadAll(file)
 		if err != nil {
-			logrus.Warnf("failed to read file %s: %v", matched, err)
+			log.Warn("failed to read file",
+				zap.String("matched", matched),
+				zap.Error(err))
 			continue
 		}
 
 		fileContents[matched] = string(data)
 	}
 
-	logrus.Infof("[%s] extracting dependencies", repourl)
-	extractResponse, err := c.desClient.Extract(context.Background(), &extractor.ExtractRequest{
-		Url:          repourl,
+	log.Info("extracting dependencies")
+	extractResponse, err := c.extractorService.Extract(context.Background(), &extractor.ExtractRequest{
+		Url:          repoURL,
 		Separator:    string(filepath.Separator),
 		FileContents: fileContents,
 	})
 
 	if err != nil {
-		logrus.Errorf("failed to extract deps from repo: %s", repourl)
+		log.Error("failed to extract deps from repo", zap.Error(err))
 		return
 	}
 
@@ -192,10 +203,10 @@ func (c *consumer) Consume(repository *remotes.Repository) {
 		ref = head.Name().String()
 	}
 
-	logrus.Infof("[%s] storing dependencies", repourl)
+	log.Info("storing dependencies")
 	_, err = c.sourceService.Track(context.Background(), &tracker.SourceRequest{
 		Source: &schema.Source{
-			Url:  repourl,
+			Url:  repoURL,
 			Kind: "repository",
 			Ref:  ref,
 		},
@@ -203,6 +214,6 @@ func (c *consumer) Consume(repository *remotes.Repository) {
 	})
 
 	if err != nil {
-		logrus.Errorf("failed to update deps for repo: %s, %v", repourl, err)
+		log.Error("failed to update deps for repo", zap.Error(err))
 	}
 }

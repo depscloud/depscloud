@@ -8,8 +8,6 @@ import (
 	"time"
 
 	"github.com/depscloud/api/v1beta/graphstore"
-
-	"github.com/sirupsen/logrus"
 )
 
 // GraphStoreServer encapsulates the logic for storing a graph using a generic driver.
@@ -116,8 +114,6 @@ func (s *GraphStoreServer) List(ctx context.Context, request *graphstore.ListReq
 
 		node, edge, err := ConvertGraphData(item)
 		if err != nil {
-			logrus.Errorf("encountered issue decoding row [%s, %s, %s] in database: %v",
-				string(item.K1), string(item.K2), string(item.K3), err)
 			continue
 		}
 
@@ -142,8 +138,6 @@ func processNeighbors(neighborData []*GraphData, keyFn func(edge *graphstore.Edg
 	for _, neighbor := range neighborData {
 		node, edge, err := ConvertGraphData(neighbor)
 		if err != nil {
-			logrus.Errorf("encountered issue decoding row [%s, %s, %s] in database: %v",
-				string(neighbor.K1), string(neighbor.K2), string(neighbor.K3), err)
 			continue
 		}
 

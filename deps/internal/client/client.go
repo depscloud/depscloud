@@ -2,12 +2,11 @@ package client
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"runtime"
 
 	"github.com/depscloud/api/v1alpha/tracker"
-
-	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -53,7 +52,7 @@ func DefaultClient() Client {
 		return grpcDefaultClient(baseURL)
 	}
 
-	logrus.Warnf("the HTTP api is deprecated, please migrate to gRPC")
+	log.Print("[WARN] the HTTP api is deprecated, please migrate to gRPC")
 	return httpDefaltClient(baseURL)
 }
 

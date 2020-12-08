@@ -2,11 +2,11 @@ package remotes
 
 import (
 	"fmt"
+	"github.com/depscloud/depscloud/internal/logger"
+	"go.uber.org/zap"
 
 	"github.com/depscloud/depscloud/indexer/internal/config"
 	"github.com/depscloud/depscloud/indexer/internal/set"
-
-	"github.com/sirupsen/logrus"
 
 	"github.com/xanzy/go-gitlab"
 )
@@ -45,7 +45,9 @@ type gitlabRemote struct {
 	client *gitlab.Client
 }
 
-func (r *gitlabRemote) FetchRepositories(*FetchRepositoriesRequest) (*FetchRepositoriesResponse, error) {
+func (r *gitlabRemote) FetchRepositories(req *FetchRepositoriesRequest) (*FetchRepositoriesResponse, error) {
+	log := logger.Extract(req.Context)
+
 	cloneConfig := r.config.GetClone()
 
 	// if clone config is nil, fall back
@@ -61,7 +63,7 @@ func (r *gitlabRemote) FetchRepositories(*FetchRepositoriesRequest) (*FetchRepos
 		groups[group] = true
 	}
 
-	logrus.Infof("[remotes.gitlab] fetching groups")
+	log.Info("fetching groups")
 	page := 1
 	for page > 0 {
 		grps, resp, err := r.client.Groups.ListGroups(&gitlab.ListGroupsOptions{
@@ -72,7 +74,9 @@ func (r *gitlabRemote) FetchRepositories(*FetchRepositoriesRequest) (*FetchRepos
 		})
 
 		if err != nil {
-			logrus.Errorf("[remotes.gitlab] encountered err while fetching groups %v", err)
+			log.Error("failed to fetch groups",
+				zap.Int("page", page),
+				zap.Error(err))
 			break
 		}
 
@@ -84,7 +88,8 @@ func (r *gitlabRemote) FetchRepositories(*FetchRepositoriesRequest) (*FetchRepos
 	}
 
 	for _, user := range r.config.Users {
-		logrus.Infof("[remotes.gitlab] fetching projects for user: %s", user)
+		l := log.With(zap.String("user", user))
+		l.Info("fetching projects")
 
 		page = 1
 		for page > 0 {
@@ -96,7 +101,9 @@ func (r *gitlabRemote) FetchRepositories(*FetchRepositoriesRequest) (*FetchRepos
 			})
 
 			if err != nil {
-				logrus.Errorf("[remotes.gitlab] encountered err while fetching projects for user %s, %v", user, err)
+				l.Error("failed to fetch projects",
+					zap.Int("page", page),
+					zap.Error(err))
 				break
 			}
 
@@ -124,11 +131,14 @@ func (r *gitlabRemote) FetchRepositories(*FetchRepositoriesRequest) (*FetchRepos
 
 	skipGroups := set.FromSlice(r.config.SkipGroups)
 	for group := range groups {
+		l := log.With(zap.String("group", group))
+
 		if skipGroups.Contains(group) {
-			logrus.Infof("[remotes.gitlab] skipping group %q", group)
+			l.Info("skipping group")
 			continue
 		}
-		logrus.Infof("[remotes.gitlab] fetching projects for group: %s", group)
+
+		l.Info("fetching projects")
 
 		page = 1
 		for page > 0 {
@@ -140,7 +150,9 @@ func (r *gitlabRemote) FetchRepositories(*FetchRepositoriesRequest) (*FetchRepos
 			})
 
 			if err != nil {
-				logrus.Errorf("[remotes.gitlab] encountered err while fetching projects for group %s, %v", group, err)
+				l.Error("failed to fetch projects",
+					zap.Int("page", page),
+					zap.Error(err))
 				break
 			}
 
