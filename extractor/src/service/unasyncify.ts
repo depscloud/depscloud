@@ -17,7 +17,9 @@ export default function unasyncify(instance: AsyncDependencyExtractor): UntypedS
             instance.match(call)
                 .then((response) => callback(null, response))
                 .catch((error) => {
-                    logger.error(`[service] match error: ${toString(error)}`);
+                    logger.error("match error", {
+                        err: toString(error)
+                    });
                     callback(error, null);
                 });
         },
@@ -25,7 +27,9 @@ export default function unasyncify(instance: AsyncDependencyExtractor): UntypedS
             instance.extract(call)
                 .then((response) => callback(null, response))
                 .catch((error) => {
-                    logger.error(`[service] extract error: ${toString(error)}`);
+                    logger.error("extract error", {
+                        err: toString(error)
+                    });
                     callback(error, null);
                 });
         },
