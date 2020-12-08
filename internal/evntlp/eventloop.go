@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"sync"
 	"time"
-
-	"github.com/Workiva/go-datastructures/queue"
 )
 
 // Task represents a unit of work
@@ -17,7 +15,7 @@ func New() *EventLoop {
 	return &EventLoop{
 		wait:     200 * time.Millisecond,
 		mu:       &sync.Mutex{},
-		queue:    queue.New(0),
+		queue:    &LinkedList{},
 		shutdown: false,
 	}
 }
@@ -28,7 +26,7 @@ func New() *EventLoop {
 type EventLoop struct {
 	wait     time.Duration
 	mu       *sync.Mutex
-	queue    *queue.Queue
+	queue    *LinkedList
 	shutdown bool
 }
 
@@ -41,17 +39,17 @@ func (p *EventLoop) Submit(task Task) error {
 		return fmt.Errorf("evntlp shutdown, no longer accepting work")
 	}
 
-	return p.queue.Put(task)
+	p.queue.PushBack(task)
+	return nil
 }
 
 // Once is used to execute a single run of the event loop.
 func (p *EventLoop) Once(ctx context.Context) {
 	p.mu.Lock()
-	data, err := p.queue.Poll(1, p.wait)
+	task, ok := p.queue.PopFront().(Task)
 	p.mu.Unlock()
 
-	if err == nil && len(data) > 0 {
-		task := data[0].(Task)
+	if ok && task != nil {
 		task(ctx)
 	}
 }
@@ -66,7 +64,7 @@ func (p *EventLoop) Start(parent context.Context) error {
 
 		p.mu.Lock()
 		shutdown := p.shutdown
-		queued := p.queue.Len()
+		queued := p.queue.Size()
 		p.mu.Unlock()
 
 		if shutdown && queued == 0 {
@@ -79,7 +77,7 @@ func (p *EventLoop) Start(parent context.Context) error {
 func (p *EventLoop) GracefullyStop() error {
 	_ = p.Stop()
 
-	for p.queue.Len() > 0 {
+	for p.queue.Size() > 0 {
 		time.Sleep(p.wait)
 	}
 
@@ -89,7 +87,7 @@ func (p *EventLoop) GracefullyStop() error {
 // Stop shuts down the server and doesn't wait before returning.
 func (p *EventLoop) Stop() error {
 	p.mu.Lock()
+	defer p.mu.Unlock()
 	p.shutdown = true
-	p.mu.Unlock()
 	return nil
 }

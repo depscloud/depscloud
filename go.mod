@@ -4,7 +4,6 @@ go 1.15
 
 require (
 	github.com/Microsoft/go-winio v0.4.15 // indirect
-	github.com/Workiva/go-datastructures v1.0.52
 	github.com/davidji99/bitbucket-go v0.2.1
 	github.com/davidji99/simpleresty v0.2.3 // indirect
 	github.com/depscloud/api v0.1.18
