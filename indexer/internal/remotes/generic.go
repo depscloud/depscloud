@@ -3,16 +3,17 @@ package remotes
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/depscloud/depscloud/internal/logger"
-	"go.uber.org/zap"
 	"io/ioutil"
 	"net/http"
 
 	"github.com/depscloud/depscloud/indexer/internal/config"
+	"github.com/depscloud/depscloud/internal/logger"
 
 	jee "github.com/nytlabs/gojee"
 
 	"github.com/pkg/errors"
+
+	"go.uber.org/zap"
 )
 
 // NewGenericRemote constructs a new remote endpoint that

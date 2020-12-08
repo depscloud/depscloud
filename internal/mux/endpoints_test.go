@@ -2,11 +2,13 @@ package mux_test
 
 import (
 	"context"
-	"github.com/depscloud/depscloud/internal/mux"
-	"github.com/depscloud/depscloud/internal/v"
-	"google.golang.org/grpc"
 	"net/http"
 	"testing"
+
+	"github.com/depscloud/depscloud/internal/mux"
+	"github.com/depscloud/depscloud/internal/v"
+
+	"google.golang.org/grpc"
 )
 
 func testEndpoint(t *testing.T, endpoint mux.ServerEndpoint) {

@@ -3,14 +3,15 @@ package v1alpha
 import (
 	"bytes"
 	"context"
-	"github.com/depscloud/depscloud/internal/logger"
-	"go.uber.org/zap"
 
 	"github.com/depscloud/api"
 	"github.com/depscloud/api/v1alpha/schema"
 	"github.com/depscloud/api/v1alpha/store"
 	"github.com/depscloud/api/v1alpha/tracker"
+	"github.com/depscloud/depscloud/internal/logger"
 	"github.com/depscloud/depscloud/tracker/internal/types"
+
+	"go.uber.org/zap"
 
 	"google.golang.org/grpc"
 )

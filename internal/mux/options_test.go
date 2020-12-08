@@ -1,9 +1,11 @@
 package mux
 
 import (
-	"github.com/depscloud/depscloud/internal/v"
-	"go.uber.org/zap"
 	"testing"
+
+	"github.com/depscloud/depscloud/internal/v"
+
+	"go.uber.org/zap"
 )
 
 func testOption(t *testing.T, option ServerOption) {

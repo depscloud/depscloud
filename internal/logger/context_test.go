@@ -2,10 +2,13 @@ package logger_test
 
 import (
 	"context"
-	"github.com/depscloud/depscloud/internal/logger"
-	"github.com/stretchr/testify/require"
-	"go.uber.org/zap"
 	"testing"
+
+	"github.com/depscloud/depscloud/internal/logger"
+
+	"github.com/stretchr/testify/require"
+
+	"go.uber.org/zap"
 )
 
 func TestContext(t *testing.T) {

@@ -2,13 +2,14 @@ package remotes
 
 import (
 	"fmt"
-	"github.com/depscloud/depscloud/internal/logger"
-	"go.uber.org/zap"
 
 	"github.com/depscloud/depscloud/indexer/internal/config"
 	"github.com/depscloud/depscloud/indexer/internal/set"
+	"github.com/depscloud/depscloud/internal/logger"
 
 	"github.com/xanzy/go-gitlab"
+
+	"go.uber.org/zap"
 )
 
 // NewGitlabRemote constructs a new remote implementation that speaks with Gitlab

@@ -2,14 +2,15 @@ package remotes
 
 import (
 	"context"
-	"github.com/depscloud/depscloud/internal/logger"
-	"go.uber.org/zap"
 	"net/http"
 
 	"github.com/depscloud/depscloud/indexer/internal/config"
 	"github.com/depscloud/depscloud/indexer/internal/set"
+	"github.com/depscloud/depscloud/internal/logger"
 
 	"github.com/google/go-github/v20/github"
+
+	"go.uber.org/zap"
 
 	"golang.org/x/oauth2"
 )

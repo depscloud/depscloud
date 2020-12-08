@@ -1,10 +1,12 @@
 package mux_test
 
 import (
+	"testing"
+
 	"github.com/depscloud/depscloud/internal/mux"
 	"github.com/depscloud/depscloud/internal/v"
+
 	"github.com/stretchr/testify/require"
-	"testing"
 )
 
 func TestConfig(t *testing.T) {

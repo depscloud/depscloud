@@ -2,12 +2,13 @@ package cleanup
 
 import (
 	"context"
-	"go.uber.org/zap"
 
 	"github.com/depscloud/api/v1alpha/schema"
 	"github.com/depscloud/api/v1alpha/store"
 	"github.com/depscloud/depscloud/tracker/internal/services/v1alpha"
 	"github.com/depscloud/depscloud/tracker/internal/types"
+
+	"go.uber.org/zap"
 )
 
 func organizationModule(servers *Servers) error {

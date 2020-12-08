@@ -1,9 +1,11 @@
 package logger_test
 
 import (
-	"github.com/depscloud/depscloud/internal/logger"
-	"github.com/stretchr/testify/require"
 	"testing"
+
+	"github.com/depscloud/depscloud/internal/logger"
+
+	"github.com/stretchr/testify/require"
 )
 
 func Test_WithFlags(t *testing.T) {

@@ -2,10 +2,12 @@ package logger
 
 import (
 	"context"
+	"strings"
+
 	"go.uber.org/zap"
+
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
-	"strings"
 )
 
 // UnaryServerInterceptor attaches a logger to the context.
