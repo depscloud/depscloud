@@ -5,7 +5,7 @@ networks:
 
 services:
   cockroachdb:
-    image: cockroachdb/cockroach:v20.2.1
+    image: cockroachdb/cockroach:v20.2.2
     hostname: cockroachdb
     networks:
       - depscloud
