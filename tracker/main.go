@@ -109,7 +109,7 @@ var description = strings.TrimSpace(`
 func main() {
 	version := v.Info{Version: version, Commit: commit, Date: date}
 
-	loggerConfig, loggerFlags := logger.WithFlags(zap.NewProductionConfig())
+	loggerConfig, loggerFlags := logger.WithFlags(logger.DefaultConfig())
 	serverConfig, serverFlags := mux.WithFlags(mux.DefaultConfig(version))
 
 	cfg := &trackerConfig{

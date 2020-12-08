@@ -21,8 +21,6 @@ import (
 
 	"github.com/urfave/cli/v2"
 
-	"go.uber.org/zap"
-
 	"golang.org/x/net/context"
 
 	"google.golang.org/grpc"
@@ -42,7 +40,7 @@ type gatewayConfig struct {
 func main() {
 	version := v.Info{Version: version, Commit: commit, Date: date}
 
-	loggerConfig, loggerFlags := logger.WithFlags(zap.NewProductionConfig())
+	loggerConfig, loggerFlags := logger.WithFlags(logger.DefaultConfig())
 	serverConfig, serverFlags := mux.WithFlags(mux.DefaultConfig(version))
 
 	extractorConfig, extractorFlags := client.WithFlags("extractor", &client.Config{

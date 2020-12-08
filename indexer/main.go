@@ -18,8 +18,6 @@ import (
 
 	"github.com/urfave/cli/v2"
 
-	"go.uber.org/zap"
-
 	_ "google.golang.org/grpc/health"
 )
 
@@ -46,7 +44,7 @@ func main() {
 		configPath: "",
 	}
 
-	loggerConfig, loggerFlags := logger.WithFlags(zap.NewProductionConfig())
+	loggerConfig, loggerFlags := logger.WithFlags(logger.DefaultConfig())
 
 	extractorConfig, extractorFlags := client.WithFlags("extractor", &client.Config{
 		Address:       "extractor:8090",
@@ -78,6 +76,13 @@ func main() {
 			Value:       cfg.configPath,
 			Destination: &cfg.configPath,
 			EnvVars:     []string{"CONFIG_PATH"},
+		},
+		// TODO: remove these. right now, they're still referenced in the latest helm chart
+		&cli.StringFlag{
+			Name: "ssh-keypath",
+		},
+		&cli.StringFlag{
+			Name: "ssh-user",
 		},
 	}
 
