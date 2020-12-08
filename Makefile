@@ -34,7 +34,7 @@ generate:
 	docker run --rm -it \
 		-v $(PWD)/indexer:/go/src/github.com/depscloud/depscloud/indexer \
 		-w /go/src/github.com/depscloud/depscloud/indexer \
-		depscloud/builder-grpc-golang \
+		ocr.sh/depscloud/builder-grpc-golang \
 		go generate ./...
 	make fmt
 

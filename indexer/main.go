@@ -1,10 +1,10 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"strings"
-	"sync"
 
 	"github.com/depscloud/api/v1alpha/extractor"
 	"github.com/depscloud/api/v1alpha/tracker"
@@ -12,16 +12,15 @@ import (
 	"github.com/depscloud/depscloud/indexer/internal/consumer"
 	"github.com/depscloud/depscloud/indexer/internal/remotes"
 	"github.com/depscloud/depscloud/internal/client"
+	"github.com/depscloud/depscloud/internal/evntlp"
+	"github.com/depscloud/depscloud/internal/logger"
 	"github.com/depscloud/depscloud/internal/v"
-
-	"github.com/sirupsen/logrus"
 
 	"github.com/urfave/cli/v2"
 
-	_ "google.golang.org/grpc/health"
+	"go.uber.org/zap"
 
-	"gopkg.in/src-d/go-git.v4/plumbing/transport"
-	"gopkg.in/src-d/go-git.v4/plumbing/transport/ssh"
+	_ "google.golang.org/grpc/health"
 )
 
 // variables set during build using -X ldflag by goreleaser
@@ -29,19 +28,9 @@ var version string
 var commit string
 var date string
 
-// NewWorker encapsulates logic for pulling information off a channel and invoking the consumer
-func NewWorker(repositories chan *remotes.Repository, wg *sync.WaitGroup, rc consumer.RepositoryConsumer) {
-	for repository := range repositories {
-		rc.Consume(repository)
-		wg.Done()
-	}
-}
-
 type indexerConfig struct {
 	workers    int
 	configPath string
-	sshUser    string
-	sshKeyPath string
 }
 
 var description = strings.TrimSpace(`
@@ -55,9 +44,9 @@ func main() {
 	cfg := &indexerConfig{
 		workers:    5,
 		configPath: "",
-		sshUser:    "git",
-		sshKeyPath: "",
 	}
+
+	loggerConfig, loggerFlags := logger.WithFlags(zap.NewProductionConfig())
 
 	extractorConfig, extractorFlags := client.WithFlags("extractor", &client.Config{
 		Address:       "extractor:8090",
@@ -90,21 +79,9 @@ func main() {
 			Destination: &cfg.configPath,
 			EnvVars:     []string{"CONFIG_PATH"},
 		},
-		&cli.StringFlag{
-			Name:        "ssh-user",
-			Usage:       "the ssh user, typically git",
-			Value:       cfg.sshUser,
-			Destination: &cfg.sshUser,
-			EnvVars:     []string{"SSH_USER"},
-		},
-		&cli.StringFlag{
-			Name:        "ssh-keypath",
-			Usage:       "the path to the ssh key file",
-			Value:       cfg.sshKeyPath,
-			Destination: &cfg.sshKeyPath,
-			EnvVars:     []string{"SSH_KEYPATH"},
-		},
 	}
+
+	flags = append(flags, loggerFlags...)
 	flags = append(flags, extractorFlags...)
 	flags = append(flags, trackerFlags...)
 
@@ -125,7 +102,19 @@ func main() {
 			},
 		},
 		Flags: flags,
-		Action: func(context *cli.Context) error {
+		Action: func(c *cli.Context) error {
+			if len(cfg.configPath) == 0 {
+				return fmt.Errorf("--config must be provided")
+			}
+
+			remoteConfig, err := config.Load(cfg.configPath)
+			if err != nil {
+				return err
+			}
+
+			log := logger.MustGetLogger(loggerConfig)
+			ctx := logger.ToContext(c.Context, log)
+
 			extractorConn, err := client.Connect(extractorConfig)
 			if err != nil {
 				return err
@@ -138,64 +127,37 @@ func main() {
 			}
 			defer trackerConn.Close()
 
-			extractorClient := extractor.NewDependencyExtractorClient(extractorConn)
+			extractorService := extractor.NewDependencyExtractorClient(extractorConn)
 			sourceService := tracker.NewSourceServiceClient(trackerConn)
-
-			var remoteConfig *config.Configuration
-
-			if len(cfg.configPath) > 0 {
-				remoteConfig, err = config.Load(cfg.configPath)
-				if err != nil {
-					return err
-				}
-			} else {
-				return fmt.Errorf("--config must be provided")
-			}
+			rc := consumer.NewConsumer(extractorService, sourceService)
 
 			remote, err := remotes.ParseConfig(remoteConfig)
 			if err != nil {
 				return err
 			}
 
-			var authMethod transport.AuthMethod
-
-			if len(cfg.sshKeyPath) > 0 {
-				logrus.Infof("[main] loading ssh key")
-				authMethod, err = ssh.NewPublicKeysFromFile(cfg.sshUser, cfg.sshKeyPath, "")
-				if err != nil {
-					return err
-				}
-			}
-
-			resp, err := remote.FetchRepositories(&remotes.FetchRepositoriesRequest{})
+			resp, err := remote.FetchRepositories(&remotes.FetchRepositoriesRequest{
+				Context: ctx,
+			})
 			if err != nil {
 				return err
 			}
 
-			// start a wait group to track remaining work
-			wg := &sync.WaitGroup{}
-			wg.Add(len(resp.Repositories))
-
-			repositories := make(chan *remotes.Repository, cfg.workers)
-			defer close(repositories)
-
-			rc := consumer.NewConsumer(authMethod, extractorClient, sourceService)
+			eventLoop := evntlp.New()
 			for i := 0; i < cfg.workers; i++ {
-				go NewWorker(repositories, wg, rc)
+				go eventLoop.Start(ctx)
 			}
 
-			// feed until there are no more left
 			for _, repository := range resp.Repositories {
-				repositories <- repository
+				_ = eventLoop.Submit(func(ctx context.Context) {
+					rc.Consume(ctx, repository)
+				})
 			}
 
 			// wait for all work to be done
-			wg.Wait()
-			return nil
+			return eventLoop.GracefullyStop()
 		},
 	}
 
-	if err := app.Run(os.Args); err != nil {
-		logrus.Fatal(err)
-	}
+	_ = app.Run(os.Args)
 }

@@ -4,6 +4,7 @@ go 1.15
 
 require (
 	github.com/Microsoft/go-winio v0.4.15 // indirect
+	github.com/Workiva/go-datastructures v1.0.52
 	github.com/davidji99/bitbucket-go v0.2.1
 	github.com/davidji99/simpleresty v0.2.3 // indirect
 	github.com/depscloud/api v0.1.18
@@ -30,13 +31,13 @@ require (
 	github.com/rs/cors v1.7.0
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/sergi/go-diff v1.1.0 // indirect
-	github.com/sirupsen/logrus v1.7.0
 	github.com/slok/go-http-metrics v0.9.0
 	github.com/spf13/cobra v1.1.1
 	github.com/stretchr/testify v1.6.1
 	github.com/urfave/cli/v2 v2.3.0
 	github.com/xanzy/go-gitlab v0.40.1
 	github.com/xanzy/ssh-agent v0.3.0 // indirect
+	go.uber.org/zap v1.13.0
 	golang.org/x/crypto v0.0.0-20201203163018-be400aefbc4c // indirect
 	golang.org/x/net v0.0.0-20201202161906-c7110b5ffcbb
 	golang.org/x/oauth2 v0.0.0-20201203001011-0b49973bad19

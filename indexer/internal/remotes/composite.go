@@ -1,6 +1,9 @@
 package remotes
 
-import "github.com/sirupsen/logrus"
+import (
+	"github.com/depscloud/depscloud/internal/logger"
+	"go.uber.org/zap"
+)
 
 // NewCompositeRemote wraps the supplied remotes in a composite wrapper
 // which logs errors and continues processing remote endpoints.
@@ -16,13 +19,15 @@ type compositeRemote struct {
 	remotes []Remote
 }
 
-func (r *compositeRemote) FetchRepositories(request *FetchRepositoriesRequest) (*FetchRepositoriesResponse, error) {
+func (r *compositeRemote) FetchRepositories(req *FetchRepositoriesRequest) (*FetchRepositoriesResponse, error) {
+	log := logger.Extract(req.Context)
+
 	repositories := make([]*Repository, 0)
 	for _, remote := range r.remotes {
-		repos, err := remote.FetchRepositories(request)
+		repos, err := remote.FetchRepositories(req)
 
 		if err != nil {
-			logrus.Errorf("[remotes.composite] failed to list repositories from remote: %v", err)
+			log.Error("failed to list repositories from remote", zap.Error(err))
 		} else {
 			repositories = append(repositories, repos.Repositories...)
 		}

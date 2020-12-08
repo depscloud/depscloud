@@ -1,6 +1,9 @@
 package remotes
 
-import "github.com/depscloud/depscloud/indexer/internal/config"
+import (
+	"context"
+	"github.com/depscloud/depscloud/indexer/internal/config"
+)
 
 // Repository represents the combination of a URL and it's corresponding clone credentials.
 type Repository struct {
@@ -11,6 +14,7 @@ type Repository struct {
 // FetchRepositoriesRequest is a request wrapper that encapsulates request data.
 // Currently unused but may be leveraged for filters later on.
 type FetchRepositoriesRequest struct {
+	Context context.Context
 }
 
 // FetchRepositoriesResponse is a response wrapper that encapsulates response data.

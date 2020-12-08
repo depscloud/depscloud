@@ -2,14 +2,14 @@ package remotes
 
 import (
 	"context"
+	"github.com/depscloud/depscloud/internal/logger"
+	"go.uber.org/zap"
 	"net/http"
 
 	"github.com/depscloud/depscloud/indexer/internal/config"
 	"github.com/depscloud/depscloud/indexer/internal/set"
 
 	"github.com/google/go-github/v20/github"
-
-	"github.com/sirupsen/logrus"
 
 	"golang.org/x/oauth2"
 )
@@ -56,7 +56,9 @@ type githubRemote struct {
 	client *github.Client
 }
 
-func (r *githubRemote) FetchRepositories(*FetchRepositoriesRequest) (*FetchRepositoriesResponse, error) {
+func (r *githubRemote) FetchRepositories(req *FetchRepositoriesRequest) (*FetchRepositoriesResponse, error) {
+	log := logger.Extract(req.Context)
+
 	cloneConfig := r.config.GetClone()
 
 	// if clone config is nil, fall back
@@ -76,7 +78,8 @@ func (r *githubRemote) FetchRepositories(*FetchRepositoriesRequest) (*FetchRepos
 
 	// discover more from users
 	for _, user := range r.config.Users {
-		logrus.Infof("[remotes.github] processing organizations for user: %s", user)
+		l := log.With(zap.String("user", user))
+		l.Info("fetching organizations")
 
 		for orgPage := 1; orgPage != 0; {
 			orgs, response, err := r.client.Organizations.List(context.Background(), user, &github.ListOptions{
@@ -84,7 +87,9 @@ func (r *githubRemote) FetchRepositories(*FetchRepositoriesRequest) (*FetchRepos
 			})
 
 			if err != nil {
-				logrus.Errorf("[remotes.github] encountered err on orgPage %d, %v", orgPage, err)
+				l.Error("failed to fetch organizations",
+					zap.Int("page", orgPage),
+					zap.Error(err))
 				break
 			}
 
@@ -98,8 +103,7 @@ func (r *githubRemote) FetchRepositories(*FetchRepositoriesRequest) (*FetchRepos
 			orgPage = response.NextPage
 		}
 
-		logrus.Infof("[remotes.github] processing repositories for user: %s", user)
-
+		l.Info("fetching repositories")
 		for repoPage := 1; repoPage != 0; {
 			repos, response, err := r.client.Repositories.List(context.Background(), user, &github.RepositoryListOptions{
 				ListOptions: github.ListOptions{
@@ -108,7 +112,9 @@ func (r *githubRemote) FetchRepositories(*FetchRepositoriesRequest) (*FetchRepos
 			})
 
 			if err != nil {
-				logrus.Errorf("[remotes.github] encountered err on repoPage %d, %v", repoPage, err)
+				l.Error("failed to fetch repositories",
+					zap.Int("page", repoPage),
+					zap.Error(err))
 				break
 			}
 
@@ -136,11 +142,13 @@ func (r *githubRemote) FetchRepositories(*FetchRepositoriesRequest) (*FetchRepos
 
 	skipOrganizations := set.FromSlice(r.config.SkipOrganizations)
 	for _, organization := range organizations {
+		l := log.With(zap.String("organization", organization))
+
 		if skipOrganizations.Contains(organization) {
-			logrus.Infof("[remotes.github] skipping org %q", organization)
+			l.Info("skipping organization")
 			continue
 		}
-		logrus.Infof("[remotes.github] processing repositories for organization: %s", organization)
+		l.Info("fetching repositories")
 
 		for orgRepoPage := 1; orgRepoPage != 0; {
 			orgRepos, response, err := r.client.Repositories.ListByOrg(context.Background(), organization, &github.RepositoryListByOrgOptions{
@@ -150,7 +158,9 @@ func (r *githubRemote) FetchRepositories(*FetchRepositoriesRequest) (*FetchRepos
 			})
 
 			if err != nil {
-				logrus.Errorf("[remotes.github] encountered err on orgRepoPage %d, %v", orgRepoPage, err)
+				l.Error("failed to fetch repositories",
+					zap.Int("page", orgRepoPage),
+					zap.Error(err))
 				break
 			}
 

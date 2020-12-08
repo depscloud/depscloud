@@ -3,132 +3,151 @@ package mux
 import (
 	"context"
 	"crypto/tls"
-	"encoding/json"
+	"fmt"
 	"net"
 	"net/http"
 	"os"
 	"os/signal"
-	"strings"
+	"sync"
 	"syscall"
 
-	"github.com/depscloud/depscloud/internal/v"
+	"github.com/depscloud/depscloud/internal/logger"
 
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	grpc_recovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
 	grpc_prometheus "github.com/grpc-ecosystem/go-grpc-prometheus"
 
-	"github.com/mjpitz/go-gracefully/check"
-	"github.com/mjpitz/go-gracefully/health"
-	"github.com/mjpitz/go-gracefully/state"
-
-	"github.com/prometheus/client_golang/prometheus/promhttp"
-
-	"github.com/rs/cors"
-
-	"github.com/sirupsen/logrus"
-
-	metrics "github.com/slok/go-http-metrics/metrics/prometheus"
-	"github.com/slok/go-http-metrics/middleware"
-	std "github.com/slok/go-http-metrics/middleware/std"
-
-	"golang.org/x/net/http2"
-	"golang.org/x/net/http2/h2c"
+	"go.uber.org/zap"
 
 	"google.golang.org/grpc"
-	grpchealth "google.golang.org/grpc/health"
-	healthpb "google.golang.org/grpc/health/grpc_health_v1"
-	"google.golang.org/grpc/reflection"
 )
 
-type Config struct {
-	context.Context
-
-	BindAddressHTTP string
-	BindAddressGRPC string
-
-	Checks []check.Check
-
-	TLSConfig *TLSConfig
-
-	Version v.Info
-}
-
-func DefaultServers() (*grpc.Server, *http.ServeMux) {
+func newGRPC(log *zap.Logger) *grpc.Server {
 	grpcOpts := []grpc.ServerOption{
 		grpc.StreamInterceptor(grpc_middleware.ChainStreamServer(
 			grpc_prometheus.StreamServerInterceptor,
+			logger.StreamServerInterceptor(log),
 			grpc_recovery.StreamServerInterceptor(),
 		)),
 		grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(
 			grpc_prometheus.UnaryServerInterceptor,
+			logger.UnaryServerInterceptor(log),
 			grpc_recovery.UnaryServerInterceptor(),
 		)),
 	}
 
 	grpc_prometheus.EnableHandlingTimeHistogram()
 
-	return grpc.NewServer(grpcOpts...), http.NewServeMux()
+	return grpc.NewServer(grpcOpts...)
 }
 
-func registerHealth(grpcServer *grpc.Server, httpServer *http.ServeMux, config *Config) {
-	monitor := health.NewMonitor(config.Checks...)
-	reports, unsubscribe := monitor.Subscribe()
-	stopCh := config.Context.Done()
-
-	healthCheck := grpchealth.NewServer()
-
-	go func() {
-		defer unsubscribe()
-
-		for {
-			select {
-			case <-stopCh:
-				return
-			case report := <-reports:
-				if report.Check == nil {
-					if report.Result.State == state.Outage {
-						healthCheck.SetServingStatus("", healthpb.HealthCheckResponse_NOT_SERVING)
-					} else {
-						healthCheck.SetServingStatus("", healthpb.HealthCheckResponse_SERVING)
-					}
-				}
-			}
-		}
-	}()
-
-	handler := health.HandlerFunc(monitor)
-	httpServer.HandleFunc("/healthz", handler)
-	httpServer.HandleFunc("/health", handler)
-
-	healthpb.RegisterHealthServer(grpcServer, healthCheck)
-	_ = monitor.Start(config.Context)
+func newHTTP() *http.ServeMux {
+	return http.NewServeMux()
 }
 
-func registerMetrics(httpServer *http.ServeMux) {
-	httpServer.Handle("/metrics", promhttp.Handler())
+// NewServer constructs a server given the provided configuration. By default,
+// the server comes with the following:
+//
+//  * http server
+//    * /health,/healthz endpoints
+//    * /metrics endpoint
+//    * /version endpoint
+//    * prometheus metrics
+//    * dual serve gRPC
+//    * CORS
+//    * H2C
+//  * grpc server
+//    * healthcheck service
+//    * reflection service
+//    * prometheus metrics
+//
+func NewServer(cfg *Config) *Server {
+	endpoints := []ServerEndpoint{
+		WithHealthEndpoint(cfg.Checks...),
+		WithMetricsEndpoint(),
+		WithVersionEndpoint(cfg.Version),
+		WithReflectionEndpoint(),
+	}
+	endpoints = append(endpoints, cfg.Endpoints...)
+
+	options := []ServerOption{
+		WithMetrics(),
+		WithDualServe(),
+		WithCORS(),
+		WithH2C(),
+	}
+
+	return &Server{
+		mu:              &sync.Mutex{},
+		http:            nil,
+		httpBindAddress: fmt.Sprintf("0.0.0.0:%d", cfg.PortHTTP),
+		grpc:            nil,
+		grpcBindAddress: fmt.Sprintf("0.0.0.0:%d", cfg.PortGRPC),
+		endpoints:       endpoints,
+		options:         options,
+		tlsConfig:       cfg.TLSConfig,
+	}
 }
 
-func registerVersion(httpServer *http.ServeMux, config *Config) {
-	httpServer.HandleFunc("/version", func(writer http.ResponseWriter, request *http.Request) {
-		version, err := json.Marshal(config.Version)
-		if err != nil {
-			writer.WriteHeader(http.StatusInternalServerError)
-			return
-		}
-		writer.Header().Set("Content-Type", "application/json")
-		writer.WriteHeader(http.StatusOK)
-		writer.Write(version)
-	})
+// Server manages the various servers, endpoints, and options used to handle
+// traffic. It drastically simplifies setting up and tearing down two servers.
+type Server struct {
+	mu          *sync.Mutex
+	initialized bool
+
+	http            http.Handler
+	httpBindAddress string
+
+	grpc            *grpc.Server
+	grpcBindAddress string
+
+	endpoints []ServerEndpoint
+	options   []ServerOption
+
+	tlsConfig *TLSConfig
 }
 
-func monitorHandler(httpServer http.Handler) http.Handler {
-	mdlw := middleware.New(middleware.Config{
-		Recorder: metrics.NewRecorder(metrics.Config{}),
-	})
-	return std.Handler("", mdlw, httpServer)
+// init is responsible for lazily creating the servers, configuring the
+// endpoints, and setting up the various options. This block is protected
+// by a mu to prevent concurrent initializations of the same server.
+func (s *Server) init(root context.Context) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	if s.initialized {
+		return fmt.Errorf("already initialized")
+	}
+
+	log := logger.Extract(root)
+
+	grpcServer := newGRPC(log)
+	httpServer := newHTTP()
+
+	for _, ep := range s.endpoints {
+		ep(root, grpcServer, httpServer)
+	}
+
+	s.grpc = grpcServer
+	s.http = httpServer
+
+	for _, option := range s.options {
+		option(s)
+	}
+
+	s.initialized = true
+	return nil
 }
 
-func Serve(grpcServer *grpc.Server, httpServer http.Handler, config *Config) error {
+// Serve initializes and boots the server. If the server has already been
+// initialized, it returns an error.
+func (s *Server) Serve(root context.Context) error {
+	if err := s.init(root); err != nil {
+		return err
+	}
+
+	log := logger.Extract(root)
+	log.Info("initializing server")
+
 	stop := make(chan os.Signal)
 	signal.Notify(stop, syscall.SIGTERM, syscall.SIGINT)
 
@@ -136,54 +155,31 @@ func Serve(grpcServer *grpc.Server, httpServer http.Handler, config *Config) err
 		defer signal.Stop(stop)
 
 		<-stop
-		logrus.Infof("[runtime] received shutdown signal, gracefully shutting down")
-		go grpcServer.GracefulStop()
+		log.Info("gracefully shutting down")
+		go s.grpc.GracefulStop()
 
 		<-stop
-		logrus.Infof("[runtime] shutdown re-notified, forcing termination")
-		grpcServer.Stop()
+		log.Info("forcing termination")
+		s.grpc.Stop()
 	}()
-
-	// don't double report gRPC metrics, it has it's own
-	monitoredServer := monitorHandler(httpServer)
-
-	httpMux := http.NewServeMux()
-	httpMux.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
-		if request.ProtoMajor == 2 &&
-			strings.HasPrefix(request.Header.Get("Content-Type"), "application/grpc") {
-			grpcServer.ServeHTTP(writer, request)
-		} else {
-			monitoredServer.ServeHTTP(writer, request)
-		}
-	})
-
-	reflection.Register(grpcServer)
-	registerHealth(grpcServer, httpMux, config)
-	registerMetrics(httpMux)
-	registerVersion(httpMux, config)
-
-	grpc_prometheus.Register(grpcServer)
-
-	corsMux := cors.Default().Handler(httpMux)
-	h2cMux := h2c.NewHandler(corsMux, &http2.Server{})
-
-	var grpcListener net.Listener
-	var grpcErr error
 
 	var httpListener net.Listener
 	var httpErr error
 
-	tlsConfig, err := LoadTLSConfig(config.TLSConfig)
+	var grpcListener net.Listener
+	var grpcErr error
+
+	tlsConfig, err := LoadTLSConfig(s.tlsConfig)
 	if err != nil {
 		return err
 	}
 
 	if tlsConfig != nil {
-		httpListener, httpErr = tls.Listen("tcp", config.BindAddressHTTP, tlsConfig)
-		grpcListener, grpcErr = tls.Listen("tcp", config.BindAddressGRPC, tlsConfig)
+		httpListener, httpErr = tls.Listen("tcp", s.httpBindAddress, tlsConfig)
+		grpcListener, grpcErr = tls.Listen("tcp", s.grpcBindAddress, tlsConfig)
 	} else {
-		httpListener, httpErr = net.Listen("tcp", config.BindAddressHTTP)
-		grpcListener, grpcErr = net.Listen("tcp", config.BindAddressGRPC)
+		httpListener, httpErr = net.Listen("tcp", s.httpBindAddress)
+		grpcListener, grpcErr = net.Listen("tcp", s.grpcBindAddress)
 	}
 
 	if httpErr != nil {
@@ -196,9 +192,17 @@ func Serve(grpcServer *grpc.Server, httpServer http.Handler, config *Config) err
 	defer httpListener.Close()
 	defer grpcListener.Close()
 
-	logrus.Infof("[runtime] starting http on %s", config.BindAddressHTTP)
-	go http.Serve(httpListener, h2cMux)
+	log.Info("starting server",
+		zap.String("protocol", "http"),
+		zap.String("bind", s.httpBindAddress),
+		zap.Bool("tls", tlsConfig != nil))
 
-	logrus.Infof("[runtime] starting grpc on %s", config.BindAddressGRPC)
-	return grpcServer.Serve(grpcListener)
+	go http.Serve(httpListener, s.http)
+
+	log.Info("starting server",
+		zap.String("protocol", "grpc"),
+		zap.String("bind", s.grpcBindAddress),
+		zap.Bool("tls", tlsConfig != nil))
+
+	return s.grpc.Serve(grpcListener)
 }

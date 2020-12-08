@@ -9,8 +9,6 @@ import (
 	"github.com/depscloud/api/v1alpha/store"
 
 	"github.com/jmoiron/sqlx"
-
-	"github.com/sirupsen/logrus"
 )
 
 // Constants representing the DBMS's supported with a mapping to the underlying driver names used
@@ -132,9 +130,6 @@ func (gs *graphStore) Put(ctx context.Context, req *store.PutRequest) (*store.Pu
 	}
 
 	if len(errors) > 0 {
-		for _, err := range errors {
-			logrus.Errorf(err.Error())
-		}
 		return nil, api.ErrPartialInsertion
 	}
 
@@ -177,9 +172,6 @@ func (gs *graphStore) Delete(ctx context.Context, req *store.DeleteRequest) (*st
 	}
 
 	if len(errors) > 0 {
-		for _, err := range errors {
-			logrus.Errorf(err.Error())
-		}
 		return nil, api.ErrPartialDeletion
 	}
 

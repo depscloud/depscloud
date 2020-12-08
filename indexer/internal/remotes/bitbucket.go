@@ -2,13 +2,13 @@ package remotes
 
 import (
 	"fmt"
+	"github.com/depscloud/depscloud/internal/logger"
+	"go.uber.org/zap"
 
 	"github.com/davidji99/bitbucket-go/bitbucket"
 
 	"github.com/depscloud/depscloud/indexer/internal/config"
 	"github.com/depscloud/depscloud/indexer/internal/set"
-
-	"github.com/sirupsen/logrus"
 )
 
 // NewBitbucketRemote constructs a new remote implementation that speaks with Bitbucket
@@ -75,7 +75,9 @@ type bitbucketRemote struct {
 	config *config.Bitbucket
 }
 
-func (r *bitbucketRemote) FetchRepositories(*FetchRepositoriesRequest) (*FetchRepositoriesResponse, error) {
+func (r *bitbucketRemote) FetchRepositories(req *FetchRepositoriesRequest) (*FetchRepositoriesResponse, error) {
+	log := logger.Extract(req.Context)
+
 	pageLen := uint64(10)
 	allRepos := make([]*Repository, 0)
 	cloneConfig := r.config.GetClone()
@@ -88,7 +90,9 @@ func (r *bitbucketRemote) FetchRepositories(*FetchRepositoriesRequest) (*FetchRe
 	}
 
 	for _, user := range r.config.Users {
-		logrus.Infof("[remotes.bitbucket] fetching projects for user: %s", user)
+		l := log.With(zap.String("user", user))
+
+		l.Info("fetching projects")
 
 		for page := uint64(1); true; page++ {
 			repos, _, err := r.client.Repositories.List(user, &bitbucket.ListOpts{
@@ -97,8 +101,10 @@ func (r *bitbucketRemote) FetchRepositories(*FetchRepositoriesRequest) (*FetchRe
 			})
 
 			if err != nil {
-				logrus.Errorf("[remotes.bitbucket] encountered err while fetching projects for user %s, %v", user, err)
-				continue
+				l.Error("encountered err while fetching projects for user",
+					zap.Uint64("page", page),
+					zap.Error(err))
+				break
 			}
 
 			rr := convertRepositoriesResponse(repos, cloneConfig)
@@ -112,11 +118,13 @@ func (r *bitbucketRemote) FetchRepositories(*FetchRepositoriesRequest) (*FetchRe
 
 	skipTeams := set.FromSlice(r.config.SkipTeams)
 	for _, team := range r.config.Teams {
+		l := log.With(zap.String("team", team))
+
 		if skipTeams.Contains(team) {
-			logrus.Infof("[remotes.bitbucket] skipping team %q", team)
+			l.Info("skipping team")
 			continue
 		}
-		logrus.Infof("[remotes.bitbucket] fetching projects for team: %s", team)
+		l.Info("fetching projects for team")
 
 		for page := uint64(1); true; page++ {
 			repos, _, err := r.client.Repositories.List(team, &bitbucket.ListOpts{
@@ -125,8 +133,10 @@ func (r *bitbucketRemote) FetchRepositories(*FetchRepositoriesRequest) (*FetchRe
 			})
 
 			if err != nil {
-				logrus.Errorf("[remotes.bitbucket] encountered err while fetching projects for team %s, %v", team, err)
-				continue
+				l.Error("encountered err while fetching projects for team",
+					zap.Uint64("page", page),
+					zap.Error(err))
+				break
 			}
 
 			rr := convertRepositoriesResponse(repos, cloneConfig)
