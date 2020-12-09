@@ -1,4 +1,3 @@
-import {DependencyExtractor} from "@depscloud/api/v1alpha/extractor";
 import {ManifestExtractionService} from "@depscloud/api/v1beta";
 
 import {Server, ServerCredentials} from "@grpc/grpc-js";

@@ -2,6 +2,7 @@ package v1beta
 
 import (
 	"crypto/sha256"
+	"encoding/base64"
 	"encoding/binary"
 	"hash/crc32"
 	"strings"
@@ -74,6 +75,7 @@ func newNode(msg proto.Message) (*graphstore.Node, error) {
 		)
 	}
 
+	key = []byte(base64.StdEncoding.EncodeToString(key))
 	return &graphstore.Node{
 		Key:  key,
 		Body: any,

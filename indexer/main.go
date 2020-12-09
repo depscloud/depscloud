@@ -6,8 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/depscloud/api/v1alpha/extractor"
-	"github.com/depscloud/api/v1alpha/tracker"
+	"github.com/depscloud/api/v1beta"
 	"github.com/depscloud/depscloud/indexer/internal/config"
 	"github.com/depscloud/depscloud/indexer/internal/consumer"
 	"github.com/depscloud/depscloud/indexer/internal/remotes"
@@ -132,9 +131,9 @@ func main() {
 			}
 			defer trackerConn.Close()
 
-			extractorService := extractor.NewDependencyExtractorClient(extractorConn)
-			sourceService := tracker.NewSourceServiceClient(trackerConn)
-			rc := consumer.NewConsumer(extractorService, sourceService)
+			extractionService := v1beta.NewManifestExtractionServiceClient(extractorConn)
+			storageService := v1beta.NewManifestStorageServiceClient(trackerConn)
+			rc := consumer.NewConsumer(extractionService, storageService)
 
 			remote, err := remotes.ParseConfig(remoteConfig)
 			if err != nil {
