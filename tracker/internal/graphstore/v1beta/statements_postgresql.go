@@ -6,7 +6,7 @@ INSERT INTO graph_data
 VALUES (:k1, :k2, :k3, :kind, :encoding, :data, NULL, :last_modified)
 ON CONFLICT (k1, k2, k3) 
 DO UPDATE SET
-	kind = EXCLUDED.graph_item_data, 
+	kind = EXCLUDED.kind, 
 	encoding = EXCLUDED.encoding,
 	data = EXCLUDED.data,
 	date_deleted = NULL,
