@@ -1,14 +1,12 @@
-import {DependencyManagementFile} from "@depscloud/api/v1alpha/deps";
 import {
-    ExtractRequest, ExtractResponse, MatchRequest, MatchResponse,
-} from "@depscloud/api/v1alpha/extractor";
+    ExtractRequest, ExtractResponse, MatchRequest, MatchResponse, ManifestFile
+} from "@depscloud/api/v1beta";
 import {ServerUnaryCall} from "@grpc/grpc-js";
 import ExtractorFile from "../extractors/ExtractorFile";
-import AsyncDependencyExtractor from "./AsyncDependencyExtractor";
+import AsyncManifestExtractionService from "./AsyncManifestExtractionService";
 import MatcherAndExtractor from "./MatcherAndExtractor";
 
 import path = require("path")
-import {ManifestFile} from "@depscloud/api/v1beta";
 
 function constructTree(separator: string, paths: string[]): any {
     const root: any = {};
@@ -40,7 +38,7 @@ function normalizePaths(separator: string, paths: string[]): string[] {
     })
 }
 
-export default class DependencyExtractorImpl implements AsyncDependencyExtractor {
+export default class ManifestExtractionServiceImpl implements AsyncManifestExtractionService {
     private readonly matcherAndExtractors: MatcherAndExtractor[];
 
     constructor(matcherAndExtractors: MatcherAndExtractor[]) {
@@ -122,17 +120,12 @@ export default class DependencyExtractorImpl implements AsyncDependencyExtractor
     }
 
     public async extract(call: ServerUnaryCall<ExtractRequest, ExtractResponse>): Promise<ExtractResponse> {
-        const { url, separator, fileContents } = call.request;
+        const { sourceUrl, separator, fileContents } = call.request;
 
-        const manifestFiles = await this.extractInternal(url, separator, fileContents);
+        const manifestFiles = await this.extractInternal(sourceUrl, separator, fileContents);
 
         return {
-            managementFiles: manifestFiles.map((manifestFile) => {
-                const managementFile = manifestFile as DependencyManagementFile;
-                managementFile.organization = "";
-                managementFile.module = "";
-                return managementFile;
-            }),
+            manifestFiles: manifestFiles,
         };
     }
 }

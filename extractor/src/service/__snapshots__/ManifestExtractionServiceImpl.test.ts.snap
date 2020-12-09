@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DependencyExtractorImpl fullParse 1`] = `
+exports[`ManifestExtractionServiceImpl fullParse 1`] = `
 Array [
   "Cargo.toml",
   "Godeps.json",
@@ -15,7 +15,7 @@ Array [
 ]
 `;
 
-exports[`DependencyExtractorImpl fullParse 2`] = `
+exports[`ManifestExtractionServiceImpl fullParse 2`] = `
 Array [
   Object {
     "dependencies": Array [

@@ -1,7 +1,7 @@
 import fs = require("fs");
 import path = require("path");
 import ExtractorRegistry from "../extractors/ExtractorRegistry";
-import DependencyExtractorImpl from "./DependencyExtractorImpl";
+import ManifestExtractionServiceImpl from "./ManifestExtractionServiceImpl";
 import Matcher from "../matcher/Matcher";
 
 const fsp = fs.promises;
@@ -41,7 +41,7 @@ const files = [
     "settings.gradle",
 ];
 
-describe("DependencyExtractorImpl", () => {
+describe("ManifestExtractionServiceImpl", () => {
     test("fullParse", async () => {
         const extractorPromises = ExtractorRegistry.known()
             .map((registry) => ExtractorRegistry.resolve(registry, null));
@@ -55,7 +55,7 @@ describe("DependencyExtractorImpl", () => {
             }
         });
 
-        const extractorImpl = new DependencyExtractorImpl(matchersAndExtractors);
+        const extractorImpl = new ManifestExtractionServiceImpl(matchersAndExtractors);
 
         const matched = extractorImpl.matchInternal(path.sep, files);
 
