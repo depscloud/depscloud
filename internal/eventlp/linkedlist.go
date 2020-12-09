@@ -1,4 +1,4 @@
-package evntlp
+package eventlp
 
 // T is a definition for a generic value stored in the linked list
 type T interface{}

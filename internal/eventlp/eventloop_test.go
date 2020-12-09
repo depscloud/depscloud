@@ -1,16 +1,16 @@
-package evntlp_test
+package eventlp_test
 
 import (
 	"context"
 	"testing"
 
-	"github.com/depscloud/depscloud/internal/evntlp"
+	"github.com/depscloud/depscloud/internal/eventlp"
 
 	"github.com/stretchr/testify/require"
 )
 
 func TestEventLoop(t *testing.T) {
-	eventLoop := evntlp.New()
+	eventLoop := eventlp.New()
 	defer eventLoop.GracefullyStop()
 
 	ctx := context.Background()

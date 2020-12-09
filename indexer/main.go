@@ -12,7 +12,7 @@ import (
 	"github.com/depscloud/depscloud/indexer/internal/consumer"
 	"github.com/depscloud/depscloud/indexer/internal/remotes"
 	"github.com/depscloud/depscloud/internal/client"
-	"github.com/depscloud/depscloud/internal/evntlp"
+	"github.com/depscloud/depscloud/internal/eventlp"
 	"github.com/depscloud/depscloud/internal/logger"
 	"github.com/depscloud/depscloud/internal/v"
 
@@ -148,7 +148,7 @@ func main() {
 				return err
 			}
 
-			eventLoop := evntlp.New()
+			eventLoop := eventlp.New()
 			for i := 0; i < cfg.workers; i++ {
 				go eventLoop.Start(ctx)
 			}

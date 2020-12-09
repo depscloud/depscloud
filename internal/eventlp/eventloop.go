@@ -1,4 +1,4 @@
-package evntlp
+package eventlp
 
 import (
 	"context"
@@ -36,7 +36,7 @@ func (p *EventLoop) Submit(task Task) error {
 	defer p.mu.Unlock()
 
 	if p.shutdown {
-		return fmt.Errorf("evntlp shutdown, no longer accepting work")
+		return fmt.Errorf("event loop shutdown, no longer accepting work")
 	}
 
 	p.queue.PushBack(task)

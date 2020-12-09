@@ -1,16 +1,16 @@
-package evntlp_test
+package eventlp_test
 
 import (
 	"testing"
 
-	"github.com/depscloud/depscloud/internal/evntlp"
+	"github.com/depscloud/depscloud/internal/eventlp"
 
 	"github.com/stretchr/testify/require"
 )
 
 func TestLinkedList_Queue(t *testing.T) {
 	// ensures the linked list can behave like a queue
-	queue := &evntlp.LinkedList{}
+	queue := &eventlp.LinkedList{}
 
 	queue.PushBack("a")
 	queue.PushBack("b")
@@ -28,7 +28,7 @@ func TestLinkedList_Queue(t *testing.T) {
 
 func TestLinkedList_Stack(t *testing.T) {
 	// ensures the linked list can behave like a stack
-	stack := &evntlp.LinkedList{}
+	stack := &eventlp.LinkedList{}
 
 	stack.PushBack("a")
 	stack.PushBack("b")
