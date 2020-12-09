@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"sync"
 	"time"
+
+	"github.com/jonboulle/clockwork"
 )
 
 // Task represents a unit of work
@@ -13,6 +15,7 @@ type Task func(ctx context.Context)
 // New constructs an event loop.
 func New() *EventLoop {
 	return &EventLoop{
+		clock:    clockwork.NewRealClock(),
 		wait:     200 * time.Millisecond,
 		mu:       &sync.Mutex{},
 		queue:    &LinkedList{},
@@ -24,10 +27,17 @@ func New() *EventLoop {
 // are processed in the order they're received on the queue. Some tasks may
 // require less time to process.
 type EventLoop struct {
+	clock    clockwork.Clock
 	wait     time.Duration
 	mu       *sync.Mutex
 	queue    *LinkedList
 	shutdown bool
+}
+
+// Clock overrides the clock used for the event loop.
+func (p *EventLoop) WithClock(clock clockwork.Clock) *EventLoop {
+	p.clock = clock
+	return p
 }
 
 // Submit adds an item to the end of the queue
@@ -71,7 +81,7 @@ func (p *EventLoop) Start(parent context.Context) error {
 			return nil
 		}
 
-		time.Sleep(p.wait)
+		p.clock.Sleep(p.wait)
 	}
 }
 
@@ -80,7 +90,7 @@ func (p *EventLoop) GracefullyStop() error {
 	_ = p.Stop()
 
 	for p.queue.Size() > 0 {
-		time.Sleep(p.wait)
+		p.clock.Sleep(p.wait)
 	}
 
 	return nil
