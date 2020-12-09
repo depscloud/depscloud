@@ -70,6 +70,8 @@ func (p *EventLoop) Start(parent context.Context) error {
 		if shutdown && queued == 0 {
 			return nil
 		}
+
+		time.Sleep(p.wait)
 	}
 }
 
