@@ -8,6 +8,11 @@ services:
     restart: always
     image: depscloud/tracker:${TRACKER_VERSION:-latest}
     hostname: tracker
+    user: "0"
+    environment:
+      STORAGE_ADDRESS: file:/data/depscloud.db
+    volumes:
+      - ./data/:/data
     networks:
       - depscloud
 
@@ -37,6 +42,8 @@ services:
     restart: always
     image: depscloud/gateway:${GATEWAY_VERSION:-latest}
     hostname: gateway
+    environment:
+      LOG_LEVEL: debug
     networks:
       - depscloud
     depends_on:

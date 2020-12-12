@@ -18,6 +18,14 @@ services:
     ports:
       - 3306:3306
 
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8070:8080
+    networks:
+      - depscloud
+
   tracker:
     restart: always
     image: depscloud/tracker:${TRACKER_VERSION:-latest}
