@@ -48,7 +48,7 @@ type rawCodec struct {
 }
 
 func (c *rawCodec) Name() string {
-	return fmt.Sprintf("proxy>%s", c.parentCodec.Name())
+	return c.String()
 }
 
 func (c *rawCodec) Marshal(v interface{}) ([]byte, error) {
@@ -78,7 +78,7 @@ var _ encoding.Codec = &rawCodec{}
 type gogoProtoCodec struct{}
 
 func (c *gogoProtoCodec) Name() string {
-	return "proto"
+	return c.String()
 }
 
 func (c *gogoProtoCodec) Marshal(v interface{}) ([]byte, error) {
@@ -90,7 +90,7 @@ func (c *gogoProtoCodec) Unmarshal(data []byte, v interface{}) error {
 }
 
 func (c *gogoProtoCodec) String() string {
-	return "proto"
+	return "gogoproto"
 }
 
 var _ encoding.Codec = &gogoProtoCodec{}
