@@ -37,11 +37,6 @@ func (m *moduleService) List(ctx context.Context, request *v1beta.ListRequest) (
 		return nil, err
 	}
 
-	log.Info(moduleKind,
-		zap.Int("num_modules", len(resp.GetNodes())),
-		zap.Int32("page_size", request.GetPageSize()),
-		zap.String("page_token", request.GetPageToken()))
-
 	modules := make([]*v1beta.Module, 0, len(resp.GetNodes()))
 	for _, node := range resp.GetNodes() {
 		module := &v1beta.Module{}
