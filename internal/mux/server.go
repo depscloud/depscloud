@@ -22,19 +22,22 @@ import (
 	"google.golang.org/grpc"
 )
 
-func newGRPC(log *zap.Logger) *grpc.Server {
+func newGRPC(log *zap.Logger, extraOpts ...grpc.ServerOption) *grpc.Server {
 	grpcOpts := []grpc.ServerOption{
 		grpc.StreamInterceptor(grpc_middleware.ChainStreamServer(
 			grpc_prometheus.StreamServerInterceptor,
 			logger.StreamServerInterceptor(log),
+			//grpc_zap.StreamServerInterceptor(log),
 			grpc_recovery.StreamServerInterceptor(),
 		)),
 		grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(
 			grpc_prometheus.UnaryServerInterceptor,
 			logger.UnaryServerInterceptor(log),
+			//grpc_zap.UnaryServerInterceptor(log),
 			grpc_recovery.UnaryServerInterceptor(),
 		)),
 	}
+	grpcOpts = append(grpcOpts, extraOpts...)
 
 	grpc_prometheus.EnableHandlingTimeHistogram()
 
@@ -85,6 +88,7 @@ func NewServer(cfg *Config) *Server {
 		grpcBindAddress: fmt.Sprintf("0.0.0.0:%d", cfg.PortGRPC),
 		endpoints:       endpoints,
 		options:         options,
+		optionsGRPC:     cfg.GRPC.ServerOptions,
 		tlsConfig:       cfg.TLSConfig,
 	}
 }
@@ -101,8 +105,9 @@ type Server struct {
 	grpc            *grpc.Server
 	grpcBindAddress string
 
-	endpoints []ServerEndpoint
-	options   []ServerOption
+	endpoints   []ServerEndpoint
+	options     []ServerOption
+	optionsGRPC []grpc.ServerOption
 
 	tlsConfig *TLSConfig
 }
@@ -120,7 +125,7 @@ func (s *Server) init(root context.Context) error {
 
 	log := logger.Extract(root)
 
-	grpcServer := newGRPC(log)
+	grpcServer := newGRPC(log, s.optionsGRPC...)
 	httpServer := newHTTP()
 
 	for _, ep := range s.endpoints {

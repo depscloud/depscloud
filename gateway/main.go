@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"strings"
@@ -10,8 +11,9 @@ import (
 	"github.com/depscloud/api/swagger"
 	"github.com/depscloud/api/v1alpha/extractor"
 	"github.com/depscloud/api/v1alpha/tracker"
+	"github.com/depscloud/api/v1beta"
 	"github.com/depscloud/depscloud/gateway/internal/checks"
-	"github.com/depscloud/depscloud/gateway/internal/proxies"
+	"github.com/depscloud/depscloud/gateway/internal/proxy"
 	"github.com/depscloud/depscloud/internal/client"
 	"github.com/depscloud/depscloud/internal/logger"
 	"github.com/depscloud/depscloud/internal/mux"
@@ -32,16 +34,17 @@ var version string
 var commit string
 var date string
 
-type gatewayConfig struct {
-	httpPort int
-	grpcPort int
-}
-
 func main() {
 	version := v.Info{Version: version, Commit: commit, Date: date}
 
 	loggerConfig, loggerFlags := logger.WithFlags(logger.DefaultConfig())
 	serverConfig, serverFlags := mux.WithFlags(mux.DefaultConfig(version))
+
+	defaultDialOptions := []grpc.DialOption{
+		grpc.WithDefaultCallOptions(
+			grpc.ForceCodec(proxy.Codec()),
+		),
+	}
 
 	extractorConfig, extractorFlags := client.WithFlags("extractor", &client.Config{
 		Address:       "extractor:8090",
@@ -49,6 +52,7 @@ func main() {
 		LoadBalancer:  client.DefaultLoadBalancer,
 		TLS:           false,
 		TLSConfig:     &client.TLSConfig{},
+		DialOptions:   defaultDialOptions,
 	})
 
 	trackerConfig, trackerFlags := client.WithFlags("tracker", &client.Config{
@@ -57,6 +61,7 @@ func main() {
 		LoadBalancer:  client.DefaultLoadBalancer,
 		TLS:           false,
 		TLSConfig:     &client.TLSConfig{},
+		DialOptions:   defaultDialOptions,
 	})
 
 	flags := make([]cli.Flag, 0)
@@ -95,30 +100,76 @@ func main() {
 			}
 			defer trackerConn.Close()
 
-			sourceService := tracker.NewSourceServiceClient(trackerConn)
-			moduleService := tracker.NewModuleServiceClient(trackerConn)
-			dependencyService := tracker.NewDependencyServiceClient(trackerConn)
-			extractorService := extractor.NewDependencyExtractorClient(extractorConn)
-			searchService := tracker.NewSearchServiceClient(trackerConn)
+			gatewayConn, err := client.Connect(&client.Config{
+				Address: fmt.Sprintf("localhost:%d", serverConfig.PortGRPC),
+				TLSConfig: &client.TLSConfig{
+					CertPath: serverConfig.TLSConfig.CertPath,
+					KeyPath:  serverConfig.TLSConfig.KeyPath,
+					CAPath:   serverConfig.TLSConfig.CAPath,
+				},
+				DialOptions: defaultDialOptions,
+			})
+			if err != nil {
+				return err
+			}
+			defer gatewayConn.Close()
 
+			// setup a router with various backends
+			router, err := proxy.NewRouter([]*proxy.Backend{
+				{
+					ClientConn: extractorConn,
+					RegisterService: func(server *grpc.Server) {
+						extractor.RegisterDependencyExtractorServer(server, &extractor.UnimplementedDependencyExtractorServer{})
+						v1beta.RegisterManifestExtractionServiceServer(server, &v1beta.UnimplementedManifestExtractionServiceServer{})
+					},
+				},
+				{
+					ClientConn: trackerConn,
+					RegisterService: func(server *grpc.Server) {
+						tracker.RegisterSourceServiceServer(server, &tracker.UnimplementedSourceServiceServer{})
+						tracker.RegisterModuleServiceServer(server, &tracker.UnimplementedModuleServiceServer{})
+						tracker.RegisterDependencyServiceServer(server, &tracker.UnimplementedDependencyServiceServer{})
+						tracker.RegisterSearchServiceServer(server, &tracker.UnimplementedSearchServiceServer{})
+						v1beta.RegisterManifestStorageServiceServer(server, &v1beta.UnimplementedManifestStorageServiceServer{})
+						v1beta.RegisterModuleServiceServer(server, &v1beta.UnimplementedModuleServiceServer{})
+						v1beta.RegisterSourceServiceServer(server, &v1beta.UnimplementedSourceServiceServer{})
+						v1beta.RegisterTraversalServiceServer(server, &v1beta.UnimplementedTraversalServiceServer{})
+					},
+				},
+			}...)
+			if err != nil {
+				return err
+			}
+
+			extractorService := extractor.NewDependencyExtractorClient(gatewayConn)
+			//extractionService := v1beta.NewManifestExtractionServiceClient(gatewayConn)
+
+			sourceService := tracker.NewSourceServiceClient(gatewayConn)
+			moduleService := tracker.NewModuleServiceClient(gatewayConn)
+			//dependencyService := tracker.NewDependencyServiceClient(gatewayConn)
+			//storageService := v1beta.NewManifestStorageServiceClient(gatewayConn)
+			//storageService := v1beta.NewManifestStorageServiceClient(gatewayConn)
+
+			serverConfig.GRPC.ServerOptions = []grpc.ServerOption{
+				grpc.CustomCodec(proxy.ServerCodec()),
+				grpc.UnknownServiceHandler(proxy.UnknownServiceHandler(router)),
+			}
 			serverConfig.Checks = checks.Checks(extractorService, sourceService, moduleService)
 			serverConfig.Endpoints = []mux.ServerEndpoint{
 				func(ctx context.Context, grpcServer *grpc.Server, httpServer *http.ServeMux) {
 					gatewayMux := runtime.NewServeMux()
 
-					tracker.RegisterSourceServiceServer(grpcServer, proxies.NewSourceServiceProxy(sourceService))
-					_ = tracker.RegisterSourceServiceHandlerClient(ctx, gatewayMux, sourceService)
+					_ = extractor.RegisterDependencyExtractorHandler(ctx, gatewayMux, gatewayConn)
+					_ = v1beta.RegisterManifestExtractionServiceHandler(ctx, gatewayMux, gatewayConn)
 
-					tracker.RegisterModuleServiceServer(grpcServer, proxies.NewModuleServiceProxy(moduleService))
-					_ = tracker.RegisterModuleServiceHandlerClient(ctx, gatewayMux, moduleService)
+					_ = tracker.RegisterSourceServiceHandler(ctx, gatewayMux, gatewayConn)
+					_ = tracker.RegisterModuleServiceHandler(ctx, gatewayMux, gatewayConn)
+					_ = tracker.RegisterDependencyServiceHandler(ctx, gatewayMux, gatewayConn)
 
-					tracker.RegisterDependencyServiceServer(grpcServer, proxies.NewDependencyServiceProxy(dependencyService))
-					_ = tracker.RegisterDependencyServiceHandlerClient(ctx, gatewayMux, dependencyService)
-
-					extractor.RegisterDependencyExtractorServer(grpcServer, proxies.NewExtractorServiceProxy(extractorService))
-					_ = extractor.RegisterDependencyExtractorHandlerClient(ctx, gatewayMux, extractorService)
-
-					tracker.RegisterSearchServiceServer(grpcServer, proxies.NewSearchServiceProxy(searchService))
+					_ = v1beta.RegisterManifestStorageServiceHandler(ctx, gatewayMux, gatewayConn)
+					_ = v1beta.RegisterSourceServiceHandler(ctx, gatewayMux, gatewayConn)
+					_ = v1beta.RegisterModuleServiceHandler(ctx, gatewayMux, gatewayConn)
+					_ = v1beta.RegisterTraversalServiceHandler(ctx, gatewayMux, gatewayConn)
 
 					httpServer.HandleFunc("/swagger/", func(writer http.ResponseWriter, request *http.Request) {
 						assetPath := strings.TrimPrefix(request.URL.Path, "/swagger/")
@@ -152,5 +203,7 @@ func main() {
 		},
 	}
 
-	_ = app.Run(os.Args)
+	if err := app.Run(os.Args); err != nil {
+		log.Fatal(err)
+	}
 }

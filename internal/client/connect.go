@@ -17,6 +17,7 @@ func Connect(cfg *Config) (*grpc.ClientConn, error) {
 			grpc_prometheus.UnaryClientInterceptor,
 		)),
 	}
+	options = append(options, cfg.DialOptions...)
 
 	if cfg.ServiceConfig != "" {
 		options = append(options, grpc.WithDefaultServiceConfig(cfg.ServiceConfig))

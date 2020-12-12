@@ -6,7 +6,14 @@ import (
 	"github.com/mjpitz/go-gracefully/check"
 
 	"github.com/urfave/cli/v2"
+
+	"google.golang.org/grpc"
 )
+
+// ConfigGRPC allows callers to provide custom options to the gRPC server.
+type ConfigGRPC struct {
+	ServerOptions []grpc.ServerOption
+}
 
 // Config defines requirements for starting a server.
 type Config struct {
@@ -14,6 +21,7 @@ type Config struct {
 	PortGRPC  int
 	TLSConfig *TLSConfig
 
+	GRPC      *ConfigGRPC
 	Checks    []check.Check
 	Endpoints []ServerEndpoint
 	Version   v.Info
@@ -25,6 +33,7 @@ func DefaultConfig(version v.Info) *Config {
 		PortHTTP:  8080,
 		PortGRPC:  8090,
 		TLSConfig: &TLSConfig{},
+		GRPC:      &ConfigGRPC{},
 		Version:   version,
 	}
 }
