@@ -42,8 +42,6 @@ services:
     restart: always
     image: depscloud/gateway:${GATEWAY_VERSION:-latest}
     hostname: gateway
-    environment:
-      LOG_LEVEL: debug
     networks:
       - depscloud
     depends_on:
