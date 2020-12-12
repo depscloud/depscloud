@@ -154,8 +154,9 @@ func main() {
 			}
 
 			for _, repository := range resp.Repositories {
+				repo := repository
 				_ = eventLoop.Submit(func(ctx context.Context) {
-					rc.Consume(ctx, repository)
+					rc.Consume(ctx, repo)
 				})
 			}
 
