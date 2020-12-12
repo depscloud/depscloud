@@ -114,13 +114,7 @@ func main() {
 			}
 			defer gatewayConn.Close()
 
-			// Create fake servers. They collect service information about the backends we'll be exposing. Eventually,
-			// this should be encapsulated behind an abstraction. Maybe something like:
-			//
-			//   WithReflection(conn *grpc.ClientConn)
-			//   WithEndpoints(conn *grpc.ClientConn, endpoints func(*grpc.Server))
-			//
-
+			// setup a router with various backends
 			router, err := proxy.NewRouter([]*proxy.Backend{
 				{
 					ClientConn: extractorConn,
