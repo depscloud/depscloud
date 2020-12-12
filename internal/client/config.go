@@ -4,6 +4,8 @@ import (
 	"strings"
 
 	"github.com/urfave/cli/v2"
+
+	"google.golang.org/grpc"
 )
 
 // https://github.com/grpc/grpc/blob/master/doc/service_config.md
@@ -22,6 +24,7 @@ type Config struct {
 	LoadBalancer  string
 	TLS           bool
 	TLSConfig     *TLSConfig
+	DialOptions   []grpc.DialOption
 }
 
 func WithFlags(prefix string, cfg *Config) (*Config, []cli.Flag) {
