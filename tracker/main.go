@@ -23,6 +23,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
+	grpc_zap "github.com/grpc-ecosystem/go-grpc-middleware/logging/zap"
 	grpc_retry "github.com/grpc-ecosystem/go-grpc-middleware/retry"
 	grpc_prometheus "github.com/grpc-ecosystem/go-grpc-prometheus"
 
@@ -92,7 +93,9 @@ func registerV1Alpha(v1alphaClient apiv1alpha.GraphStoreClient, server *grpc.Ser
 
 func registerV1Beta(v1betaClient apiv1beta.GraphStoreClient, server *grpc.Server) {
 	svcsv1beta.RegisterManifestStorageServiceServer(server, v1betaClient)
-	// more eventually
+	svcsv1beta.RegisterModuleServiceServer(server, v1betaClient)
+	svcsv1beta.RegisterSourceServiceServer(server, v1betaClient)
+	svcsv1beta.RegisterTraversalServiceServer(server, v1betaClient)
 }
 
 type trackerConfig struct {
@@ -190,10 +193,12 @@ func main() {
 				grpc.WithInsecure(),
 				grpc.WithStreamInterceptor(grpc_middleware.ChainStreamClient(
 					grpc_prometheus.StreamClientInterceptor,
+					grpc_zap.StreamClientInterceptor(log),
 				)),
 				grpc.WithUnaryInterceptor(grpc_middleware.ChainUnaryClient(
 					grpc_retry.UnaryClientInterceptor(grpc_retry.WithMax(5)),
 					grpc_prometheus.UnaryClientInterceptor,
+					grpc_zap.UnaryClientInterceptor(log),
 				)),
 			)
 			if err != nil {
