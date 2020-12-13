@@ -7,7 +7,6 @@ import (
 	"github.com/depscloud/api/v1alpha/schema"
 	"github.com/depscloud/api/v1alpha/store"
 	"github.com/depscloud/api/v1alpha/tracker"
-	"github.com/depscloud/depscloud/tracker/internal/types"
 
 	"google.golang.org/grpc"
 )
@@ -27,7 +26,7 @@ func (s *moduleService) List(ctx context.Context, req *tracker.ListRequest) (*tr
 	resp, err := s.gs.List(ctx, &store.ListRequest{
 		Page:  req.GetPage(),
 		Count: req.GetCount(),
-		Type:  types.ModuleType,
+		Type:  ModuleType,
 	})
 
 	if err != nil {
@@ -52,8 +51,8 @@ func (s *moduleService) ListSources(ctx context.Context, req *schema.Module) (*t
 
 	response, err := s.gs.FindDownstream(ctx, &store.FindRequest{
 		Keys:      [][]byte{key},
-		EdgeTypes: []string{types.ManagesType},
-		NodeTypes: []string{types.SourceType},
+		EdgeTypes: []string{ManagesType},
+		NodeTypes: []string{SourceType},
 	})
 
 	if err != nil {
@@ -81,8 +80,8 @@ func (s *moduleService) ListManaged(ctx context.Context, req *schema.Source) (*t
 
 	response, err := s.gs.FindUpstream(ctx, &store.FindRequest{
 		Keys:      [][]byte{key},
-		EdgeTypes: []string{types.ManagesType},
-		NodeTypes: []string{types.ModuleType},
+		EdgeTypes: []string{ManagesType},
+		NodeTypes: []string{ModuleType},
 	})
 
 	if err != nil {

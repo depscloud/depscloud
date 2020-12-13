@@ -6,7 +6,6 @@ import (
 	"github.com/depscloud/api/v1alpha/schema"
 	"github.com/depscloud/api/v1alpha/store"
 	"github.com/depscloud/depscloud/tracker/internal/services/v1alpha"
-	"github.com/depscloud/depscloud/tracker/internal/types"
 
 	"go.uber.org/zap"
 )
@@ -25,7 +24,7 @@ func organizationModule(servers *Servers) error {
 		listResp, err := servers.v1alpha.List(ctx, &store.ListRequest{
 			Page:  int32(page),
 			Count: int32(count),
-			Type:  types.ModuleType,
+			Type:  v1alpha.ModuleType,
 		})
 		if err != nil {
 			return err

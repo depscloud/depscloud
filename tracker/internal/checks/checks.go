@@ -6,7 +6,7 @@ import (
 
 	apiv1alpha "github.com/depscloud/api/v1alpha/store"
 	apiv1beta "github.com/depscloud/api/v1beta/graphstore"
-	"github.com/depscloud/depscloud/tracker/internal/types"
+	"github.com/depscloud/depscloud/tracker/internal/services/v1alpha"
 
 	"github.com/mjpitz/go-gracefully/check"
 	"github.com/mjpitz/go-gracefully/state"
@@ -28,7 +28,7 @@ func Checks(
 			RunFunc: func(ctx context.Context) (state.State, error) {
 				_, err := v1betaGraphStore.List(ctx, &apiv1beta.ListRequest{
 					PageSize: 1,
-					Kind:     types.SourceType,
+					Kind:     v1alpha.SourceType,
 				})
 				if err != nil {
 					return state.Outage, err
@@ -47,7 +47,7 @@ func Checks(
 			RunFunc: func(ctx context.Context) (state.State, error) {
 				_, err := graphStore.List(ctx, &apiv1alpha.ListRequest{
 					Count: 1,
-					Type:  types.SourceType,
+					Type:  v1alpha.SourceType,
 				})
 				if err != nil {
 					return state.Outage, err

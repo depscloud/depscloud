@@ -7,7 +7,6 @@ import (
 	"github.com/depscloud/api/v1alpha/schema"
 	"github.com/depscloud/api/v1alpha/store"
 	"github.com/depscloud/api/v1alpha/tracker"
-	"github.com/depscloud/depscloud/tracker/internal/types"
 
 	"google.golang.org/grpc"
 )
@@ -37,8 +36,8 @@ func (d *dependencyService) ListDependents(ctx context.Context, req *tracker.Dep
 
 	response, err := d.gs.FindDownstream(ctx, &store.FindRequest{
 		Keys:      [][]byte{key},
-		EdgeTypes: []string{types.DependsType},
-		NodeTypes: []string{types.ModuleType},
+		EdgeTypes: []string{DependsType},
+		NodeTypes: []string{ModuleType},
 	})
 
 	if err != nil {
@@ -66,8 +65,8 @@ func (d *dependencyService) ListDependencies(ctx context.Context, req *tracker.D
 
 	response, err := d.gs.FindUpstream(ctx, &store.FindRequest{
 		Keys:      [][]byte{key},
-		EdgeTypes: []string{types.DependsType},
-		NodeTypes: []string{types.ModuleType},
+		EdgeTypes: []string{DependsType},
+		NodeTypes: []string{ModuleType},
 	})
 
 	if err != nil {

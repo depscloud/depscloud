@@ -6,7 +6,6 @@ import (
 
 	"github.com/depscloud/api/v1alpha/schema"
 	"github.com/depscloud/api/v1alpha/store"
-	"github.com/depscloud/depscloud/tracker/internal/types"
 )
 
 // Decode turns the provided GraphItem into the corresponding schmea type
@@ -15,13 +14,13 @@ func Decode(graphItem *store.GraphItem) (interface{}, error) {
 
 	var item interface{}
 
-	if itemType == types.SourceType {
+	if itemType == SourceType {
 		item = &schema.Source{}
-	} else if itemType == types.ManagesType {
+	} else if itemType == ManagesType {
 		item = &schema.Manages{}
-	} else if itemType == types.ModuleType {
+	} else if itemType == ModuleType {
 		item = &schema.Module{}
-	} else if itemType == types.DependsType {
+	} else if itemType == DependsType {
 		item = &schema.Depends{}
 	} else {
 		return nil, fmt.Errorf("unrecognized node type")

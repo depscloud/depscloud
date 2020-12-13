@@ -1,4 +1,4 @@
-package types
+package v1alpha
 
 // DataType defines the data type of the GraphItem
 type DataType = string

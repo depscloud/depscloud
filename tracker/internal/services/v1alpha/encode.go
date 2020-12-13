@@ -6,7 +6,6 @@ import (
 
 	"github.com/depscloud/api/v1alpha/schema"
 	"github.com/depscloud/api/v1alpha/store"
-	"github.com/depscloud/depscloud/tracker/internal/types"
 )
 
 // Encode turns the provided schma type into the corresponding GraphItem
@@ -18,19 +17,19 @@ func Encode(msg interface{}) (*store.GraphItem, error) {
 
 	switch msg.(type) {
 	case *schema.Source:
-		graphItemType = types.SourceType
+		graphItemType = SourceType
 		key := keyForSource(msg.(*schema.Source))
 		k1 = key
 		k2 = key
 	case *schema.Manages:
-		graphItemType = types.ManagesType
+		graphItemType = ManagesType
 	case *schema.Module:
-		graphItemType = types.ModuleType
+		graphItemType = ModuleType
 		key := keyForModule(msg.(*schema.Module))
 		k1 = key
 		k2 = key
 	case *schema.Depends:
-		graphItemType = types.DependsType
+		graphItemType = DependsType
 	default:
 		return nil, fmt.Errorf("unrecognized type")
 	}

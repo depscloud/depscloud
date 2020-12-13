@@ -9,7 +9,6 @@ import (
 	"github.com/depscloud/api/v1alpha/store"
 	"github.com/depscloud/api/v1alpha/tracker"
 	"github.com/depscloud/depscloud/internal/logger"
-	"github.com/depscloud/depscloud/tracker/internal/types"
 
 	"go.uber.org/zap"
 
@@ -33,7 +32,7 @@ func (s *sourceService) List(ctx context.Context, req *tracker.ListRequest) (*tr
 	resp, err := s.gs.List(ctx, &store.ListRequest{
 		Page:  req.GetPage(),
 		Count: req.GetCount(),
-		Type:  types.SourceType,
+		Type:  SourceType,
 	})
 
 	if err != nil {
@@ -78,7 +77,7 @@ func (s *sourceService) Track(ctx context.Context, req *tracker.SourceRequest) (
 		if _, ok := proposedSet[key]; !ok {
 			// don't delete modules from the graph when an edge to it is removed.
 			// we'll put a cleanup in later
-			if item.GetGraphItemType() != types.ModuleType {
+			if item.GetGraphItemType() != ModuleType {
 				toDelete = append(toDelete, item)
 			}
 		}
@@ -120,8 +119,8 @@ func (s *sourceService) getCurrent(ctx context.Context, source *schema.Source) (
 
 	manages, err := s.gs.FindUpstream(ctx, &store.FindRequest{
 		Keys:      [][]byte{keyForSource(source)},
-		EdgeTypes: []string{types.ManagesType},
-		NodeTypes: []string{types.ModuleType},
+		EdgeTypes: []string{ManagesType},
+		NodeTypes: []string{ModuleType},
 	})
 
 	if err != nil {
@@ -135,8 +134,8 @@ func (s *sourceService) getCurrent(ctx context.Context, source *schema.Source) (
 
 		depends, err := s.gs.FindUpstream(ctx, &store.FindRequest{
 			Keys:      [][]byte{managed.GetNode().GetK1()},
-			EdgeTypes: []string{types.DependsType},
-			NodeTypes: []string{types.ModuleType},
+			EdgeTypes: []string{DependsType},
+			NodeTypes: []string{ModuleType},
 		})
 
 		if err != nil {
