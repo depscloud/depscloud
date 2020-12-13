@@ -89,9 +89,20 @@ func paginate(lastToken string, pageSize int) (int, string) {
 	return offset, base32.StdEncoding.EncodeToString(nextToken)
 }
 
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+
 // List ...
 func (s *GraphStoreServer) List(ctx context.Context, request *graphstore.ListRequest) (*graphstore.ListResponse, error) {
 	limit := int(request.GetPageSize())
+	if limit == 0 {
+		limit = 10
+	}
+	limit = min(100, limit)
 
 	offset, nextPageToken := paginate(request.GetPageToken(), limit)
 
