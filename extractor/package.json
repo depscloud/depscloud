@@ -16,7 +16,7 @@
     "url": "git@github.com:depscloud/extractor.git"
   },
   "devDependencies": {
-    "@types/cheerio": "0.22.21",
+    "@types/cheerio": "0.22.23",
     "@types/jest": "26.0.17",
     "@types/js-yaml": "3.12.5",
     "@typescript-eslint/eslint-plugin": "4.8.2",
