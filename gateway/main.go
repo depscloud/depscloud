@@ -114,7 +114,14 @@ func main() {
 			}
 			defer gatewayConn.Close()
 
-			// setup a router with various backends
+			// Setup a router with various backends. To do this, we create fake gRPC servers that capture
+			// upstream services for a given client connection. Service information is extracted from the
+			// fake server. When a call comes in for a given service, it's routed to the first clientConn
+			// with the registered service.
+			//
+			// Eventually, we could look at leveraging the reflection service to make this proxy fully
+			// dynamic. Instead of having the client register relevant services, we can look them up using
+			// the reflection service and setup a dynamic routing table.
 			router, err := proxy.NewRouter([]*proxy.Backend{
 				{
 					ClientConn: extractorConn,
