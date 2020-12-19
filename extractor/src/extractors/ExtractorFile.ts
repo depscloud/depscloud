@@ -25,7 +25,7 @@ export default class ExtractorFile {
         return YAML.safeLoad(this.body);
     }
 
-    public xml(): Cheerio {
+    public xml(): cheerio.Cheerio {
         return cheerio.load(this.body).root();
     }
 }

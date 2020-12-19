@@ -24,11 +24,11 @@ export default class IvyXmlExtractor implements Extractor {
     public async extract(_: string, files: { [p: string]: ExtractorFile }): Promise<ManifestFile> {
         const xml = files["ivy.xml"].xml();
 
-        const infoNode: Cheerio = xml.find("ivy-module info");
-        const dependencyNodes: Cheerio = xml.find("ivy-module dependencies dependency");
+        const infoNode: cheerio.Cheerio = xml.find("ivy-module info");
+        const dependencyNodes: cheerio.Cheerio = xml.find("ivy-module dependencies dependency");
 
         const dependencies: ManifestDependency[] = [];
-        dependencyNodes.map((i, dependencyNode: CheerioElement) => {
+        dependencyNodes.map((i, dependencyNode: cheerio.Element) => {
             const dep = cheerio(dependencyNode);
             const confs = dep.attr("conf");
             const organization = dep.attr("org");

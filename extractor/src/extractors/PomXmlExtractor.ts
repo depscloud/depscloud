@@ -44,8 +44,8 @@ export default class PomXmlExtractor implements Extractor {
             });
         }
 
-        const matched: Cheerio = xml.find("project > dependencies > dependency");
-        matched.map((i, match: CheerioElement) => {
+        const matched: cheerio.Cheerio = xml.find("project > dependencies > dependency");
+        matched.map((i, match: cheerio.Element) => {
             const depGroupId = cheerio(match).find("> groupId").text();
             const depArtifactId = cheerio(match).find("> artifactId").text();
             const versionConstraint = cheerio(match).find("> version").text();
