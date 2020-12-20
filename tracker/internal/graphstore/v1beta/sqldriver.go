@@ -104,48 +104,12 @@ func (s *sqlDriver) neighbors(ctx context.Context, statement string, keys []stri
 
 	results := make([]*GraphData, 0)
 	for rows.Next() {
-		var (
-			g1K1       string
-			g1K2       string
-			g1K3       string
-			g1Kind     string
-			g1Encoding Encoding
-			g1Data     string
-
-			g2K1       string
-			g2K2       string
-			g2K3       string
-			g2Kind     string
-			g2Encoding Encoding
-			g2Data     string
-		)
-
-		err := rows.Scan(&g1K1, &g1K2, &g1K3, &g1Kind, &g1Encoding, &g1Data,
-			&g2K1, &g2K2, &g2K3, &g2Kind, &g2Encoding, &g2Data)
-
-		if err != nil {
+		item := &GraphData{}
+		if err := rows.StructScan(item); err != nil {
 			return nil, err
 		}
 
-		g1 := &GraphData{
-			K1:       g1K1,
-			K2:       g1K2,
-			K3:       g1K3,
-			Kind:     g1Kind,
-			Encoding: g1Encoding,
-			Data:     g1Data,
-		}
-
-		g2 := &GraphData{
-			K1:       g2K1,
-			K2:       g2K2,
-			K3:       g2K3,
-			Kind:     g2Kind,
-			Encoding: g2Encoding,
-			Data:     g2Data,
-		}
-
-		results = append(results, g1, g2)
+		results = append(results, item)
 	}
 
 	return results, nil

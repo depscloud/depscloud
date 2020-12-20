@@ -73,8 +73,10 @@ func startGraphStore(log *zap.Logger, driver, address, readOnlyAddress string) e
 	apiv1beta.RegisterGraphStoreServer(grpcServer, v1betaGraphStore)
 	apiv1alpha.RegisterGraphStoreServer(grpcServer, v1alphaGraphStore)
 
-	// listen and serve
-	log.Info("starting graphstore grpc", zap.String("bind", sockAddr))
+	log.Info("starting graphstore",
+		zap.String("bind", sockAddr),
+		zap.String("protocol", "grpc"))
+
 	listener, err := net.Listen("tcp", sockAddr)
 	if err != nil {
 		return err
