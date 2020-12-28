@@ -25,7 +25,7 @@ require (
 	github.com/mjpitz/go-gracefully v0.0.6
 	github.com/nytlabs/gojee v0.0.0-20140331152115-5a79a1542dc0
 	github.com/pkg/errors v0.9.1
-	github.com/prometheus/client_golang v1.8.0
+	github.com/prometheus/client_golang v1.9.0
 	github.com/prometheus/common v0.15.0 // indirect
 	github.com/rs/cors v1.7.0
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
@@ -42,7 +42,6 @@ require (
 	golang.org/x/lint v0.0.0-20201208152925-83fdc39ff7b5 // indirect
 	golang.org/x/net v0.0.0-20201209123823-ac852fbbde11
 	golang.org/x/oauth2 v0.0.0-20201208152858-08078c50e5b5
-	golang.org/x/sys v0.0.0-20201211090839-8ad439b19e0f // indirect
 	golang.org/x/text v0.3.4 // indirect
 	golang.org/x/time v0.0.0-20201208040808-7e3f01d25324 // indirect
 	golang.org/x/tools v0.0.0-20201211025543-abf6a1d87e11 // indirect
