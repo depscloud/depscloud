@@ -7,7 +7,7 @@ VALUES (:k1, :k2, :k3, :kind, :encoding, :data, NULL, :last_modified)
 ON DUPLICATE KEY UPDATE
 	kind = :kind,
 	encoding = :encoding,
-	graph_item_data = :graph_item_data, 
+	data = :data, 
 	date_deleted = NULL,
 	last_modified = :last_modified;
 `

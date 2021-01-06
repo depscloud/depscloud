@@ -44,7 +44,7 @@ var version string
 var commit string
 var date string
 
-const sockAddr = "localhost:47274"
+const sockAddr = "0.0.0.0:47274"
 
 func graphStoreServers(driver, address, readOnlyAddress string) (apiv1alpha.GraphStoreServer, apiv1beta.GraphStoreServer, error) {
 	// v1beta
