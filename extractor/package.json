@@ -18,7 +18,7 @@
   "devDependencies": {
     "@types/cheerio": "0.22.23",
     "@types/jest": "26.0.19",
-    "@types/js-yaml": "3.12.5",
+    "@types/js-yaml": "4.0.0",
     "@typescript-eslint/eslint-plugin": "4.12.0",
     "@typescript-eslint/parser": "4.12.0",
     "eslint": "7.16.0",
@@ -36,7 +36,7 @@
     "express-prometheus-middleware": "1.0.0",
     "gradle-to-js": "2.0.0",
     "grpc-health-check": "1.8.0",
-    "js-yaml": "3.14.1",
+    "js-yaml": "4.0.0",
     "log4js": "6.3.0",
     "minimatch": "3.0.4",
     "prom-client": "13.0.0",
