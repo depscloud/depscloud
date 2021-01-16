@@ -22,17 +22,19 @@ func requestToModule(req *tracker.DependencyRequest) *schema.Module {
 }
 
 func key(module *schema.Module) string {
-	return fmt.Sprintf("%s|%s|%s",
+	return fmt.Sprintf("%s|%s|%s|%s",
 		module.Language,
 		module.Organization,
-		module.Module)
+		module.Module,
+		module.Name)
 }
 
 func keyForRequest(req *tracker.DependencyRequest) string {
-	return fmt.Sprintf("%s|%s|%s",
+	return fmt.Sprintf("%s|%s|%s|%s",
 		req.Language,
 		req.Organization,
-		req.Module)
+		req.Module,
+		req.Name)
 }
 
 type convertRequest func(request *tracker.DependencyRequest) *tracker.SearchRequest
