@@ -112,10 +112,6 @@ func (t *traversalService) GetDependencies(ctx context.Context, dependency *v1be
 
 func (t *traversalService) Search(server v1beta.TraversalService_SearchServer) error {
 	ctx := server.Context()
-	call, err := t.gs.Traverse(ctx)
-	if err != nil {
-		return err
-	}
 
 	for {
 		var err error
@@ -126,9 +122,7 @@ func (t *traversalService) Search(server v1beta.TraversalService_SearchServer) e
 		}
 
 		if req.Cancel {
-			return call.Send(&graphstore.TraverseRequest{
-				Cancel: true,
-			})
+			return nil
 		}
 
 		resp := &v1beta.SearchResponse{
