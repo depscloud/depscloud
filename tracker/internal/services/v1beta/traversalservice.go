@@ -17,13 +17,15 @@ import (
 func RegisterTraversalServiceServer(server *grpc.Server, graphStore graphstore.GraphStoreClient) {
 	v1beta.RegisterTraversalServiceServer(server, &traversalService{
 		gs: graphStore,
+		ms: &moduleService{gs: graphStore},
+		ss: &sourceService{gs: graphStore},
 	})
 }
 
 type traversalService struct {
 	gs graphstore.GraphStoreClient
-	ms v1beta.ModuleServiceClient
-	ss v1beta.SourceServiceClient
+	ms v1beta.ModuleServiceServer
+	ss v1beta.SourceServiceServer
 }
 
 func (t *traversalService) GetDependents(ctx context.Context, dependency *v1beta.Dependency) (*v1beta.DependentsResponse, error) {
