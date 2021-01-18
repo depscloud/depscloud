@@ -2,6 +2,7 @@ package v1beta
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/depscloud/api/v1beta"
 	"github.com/depscloud/api/v1beta/graphstore"
@@ -21,6 +22,8 @@ func RegisterTraversalServiceServer(server *grpc.Server, graphStore graphstore.G
 
 type traversalService struct {
 	gs graphstore.GraphStoreClient
+	ms v1beta.ModuleServiceClient
+	ss v1beta.SourceServiceClient
 }
 
 func (t *traversalService) GetDependents(ctx context.Context, dependency *v1beta.Dependency) (*v1beta.DependentsResponse, error) {
@@ -108,7 +111,63 @@ func (t *traversalService) GetDependencies(ctx context.Context, dependency *v1be
 }
 
 func (t *traversalService) Search(server v1beta.TraversalService_SearchServer) error {
-	return status.Error(codes.Unimplemented, "unimplemented")
+	ctx := server.Context()
+	call, err := t.gs.Traverse(ctx)
+	if err != nil {
+		return err
+	}
+
+	for {
+		var err error
+
+		req, err := server.Recv()
+		if err != nil {
+			return err
+		}
+
+		if req.Cancel {
+			return call.Send(&graphstore.TraverseRequest{
+				Cancel: true,
+			})
+		}
+
+		resp := &v1beta.SearchResponse{
+			Request: req,
+		}
+
+		if req.DependenciesFor != nil {
+			r, e := t.GetDependencies(ctx, req.DependenciesFor)
+
+			resp.Dependencies = r.GetDependencies()
+			err = e
+		} else if req.DependentsOf != nil {
+			r, e := t.GetDependents(ctx, req.DependentsOf)
+
+			resp.Dependents = r.GetDependents()
+			err = e
+		} else if req.ModulesFor != nil {
+			r, e := t.ss.ListModules(ctx, req.ModulesFor)
+
+			resp.Modules = r.GetModules()
+			err = e
+		} else if req.SourcesOf != nil {
+			r, e := t.ms.ListSources(ctx, req.SourcesOf)
+
+			resp.Sources = r.GetSources()
+			err = e
+		} else {
+			return fmt.Errorf("unrecognized request")
+		}
+
+		if err != nil {
+			return err
+		}
+
+		err = server.Send(resp)
+		if err != nil {
+			return err
+		}
+	}
 }
 
 func (t *traversalService) BreadthFirstSearch(server v1beta.TraversalService_BreadthFirstSearchServer) error {
