@@ -2,16 +2,11 @@ package v1beta
 
 import (
 	"context"
-	"fmt"
-
 	"github.com/depscloud/api/v1beta"
 	"github.com/depscloud/api/v1beta/graphstore"
-
-	"github.com/golang/protobuf/ptypes"
-
+	"github.com/depscloud/depscloud/internal/logger"
+	"go.uber.org/zap"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
 func RegisterTraversalServiceServer(server *grpc.Server, graphStore graphstore.GraphStoreClient) {
@@ -29,40 +24,33 @@ type traversalService struct {
 }
 
 func (t *traversalService) GetDependents(ctx context.Context, dependency *v1beta.Dependency) (*v1beta.DependentsResponse, error) {
+	log := logger.Extract(ctx)
+
 	node, err := newNode(dependency.Module)
 	if err != nil {
-		return nil, err
+		log.Error("failed to convert module to node", zap.Error(err))
+		return nil, ErrInvalidRequest
 	}
 
 	resp, err := t.gs.Neighbors(ctx, &graphstore.NeighborsRequest{
 		To: node,
 	})
 	if err != nil {
-		return nil, err
+		log.Error("failed to retrieve dependents", zap.Error(err))
+		return nil, ErrQueryFailure
 	}
 
 	dependents := make([]*v1beta.Dependency, 0, len(resp.GetNeighbors()))
 	for _, neighbor := range resp.GetNeighbors() {
-		module := &v1beta.Module{}
-		err := ptypes.UnmarshalAny(neighbor.GetNode().GetBody(), module)
-		if err != nil {
-			continue
+		dependency, errors := neighborToDependency(neighbor)
+
+		for _, err := range errors {
+			log.Warn("encountered an issue converting dependent", zap.Error(err))
 		}
 
-		edgeData := make([]*v1beta.ModuleDependency, 0, len(neighbor.GetEdges()))
-		for _, edge := range neighbor.GetEdges() {
-			moduleDependency := &v1beta.ModuleDependency{}
-			err := ptypes.UnmarshalAny(edge.GetBody(), moduleDependency)
-			if err != nil {
-				continue
-			}
-			edgeData = append(edgeData, moduleDependency)
+		if dependency != nil {
+			dependents = append(dependents, dependency)
 		}
-
-		dependents = append(dependents, &v1beta.Dependency{
-			Module:   module,
-			EdgeData: edgeData,
-		})
 	}
 
 	return &v1beta.DependentsResponse{
@@ -71,40 +59,33 @@ func (t *traversalService) GetDependents(ctx context.Context, dependency *v1beta
 }
 
 func (t *traversalService) GetDependencies(ctx context.Context, dependency *v1beta.Dependency) (*v1beta.DependenciesResponse, error) {
+	log := logger.Extract(ctx)
+
 	node, err := newNode(dependency.Module)
 	if err != nil {
-		return nil, err
+		log.Error("failed to convert module to node", zap.Error(err))
+		return nil, ErrInvalidRequest
 	}
 
 	resp, err := t.gs.Neighbors(ctx, &graphstore.NeighborsRequest{
 		From: node,
 	})
 	if err != nil {
-		return nil, err
+		log.Error("failed to retrieve dependencies", zap.Error(err))
+		return nil, ErrQueryFailure
 	}
 
 	dependencies := make([]*v1beta.Dependency, 0, len(resp.GetNeighbors()))
 	for _, neighbor := range resp.GetNeighbors() {
-		module := &v1beta.Module{}
-		err := ptypes.UnmarshalAny(neighbor.GetNode().GetBody(), module)
-		if err != nil {
-			continue
+		dependency, errors := neighborToDependency(neighbor)
+
+		for _, err := range errors {
+			log.Warn("encountered an issue converting dependency", zap.Error(err))
 		}
 
-		edgeData := make([]*v1beta.ModuleDependency, 0, len(neighbor.GetEdges()))
-		for _, edge := range neighbor.GetEdges() {
-			moduleDependency := &v1beta.ModuleDependency{}
-			err := ptypes.UnmarshalAny(edge.GetBody(), moduleDependency)
-			if err != nil {
-				continue
-			}
-			edgeData = append(edgeData, moduleDependency)
+		if dependency != nil {
+			dependencies = append(dependencies, dependency)
 		}
-
-		dependencies = append(dependencies, &v1beta.Dependency{
-			Module:   module,
-			EdgeData: edgeData,
-		})
 	}
 
 	return &v1beta.DependenciesResponse{
@@ -112,66 +93,30 @@ func (t *traversalService) GetDependencies(ctx context.Context, dependency *v1be
 	}, nil
 }
 
-func (t *traversalService) Search(server v1beta.TraversalService_SearchServer) error {
-	ctx := server.Context()
+var _ v1beta.TraversalServiceServer = &traversalService{}
 
-	for {
-		var err error
 
-		req, err := server.Recv()
+// neighborToDependency is a helper function used to convert a neighbor structure to a dependency structure.
+func neighborToDependency(neighbor *graphstore.Neighbor) (*v1beta.Dependency, []error) {
+	module, err := fromNodeOrEdge(neighbor.GetNode(), &v1beta.Module{})
+	if err != nil {
+		return nil, []error{err}
+	}
+
+	errors := make([]error, 0)
+
+	edgeData := make([]*v1beta.ModuleDependency, 0, len(neighbor.GetEdges()))
+	for _, edge := range neighbor.GetEdges() {
+		moduleDependency, err := fromNodeOrEdge(edge, &v1beta.ModuleDependency{})
 		if err != nil {
-			return err
-		}
-
-		if req.Cancel {
-			return nil
-		}
-
-		resp := &v1beta.SearchResponse{
-			Request: req,
-		}
-
-		if req.DependenciesFor != nil {
-			r, e := t.GetDependencies(ctx, req.DependenciesFor)
-
-			resp.Dependencies = r.GetDependencies()
-			err = e
-		} else if req.DependentsOf != nil {
-			r, e := t.GetDependents(ctx, req.DependentsOf)
-
-			resp.Dependents = r.GetDependents()
-			err = e
-		} else if req.ModulesFor != nil {
-			r, e := t.ss.ListModules(ctx, req.ModulesFor)
-
-			resp.Modules = r.GetModules()
-			err = e
-		} else if req.SourcesOf != nil {
-			r, e := t.ms.ListSources(ctx, req.SourcesOf)
-
-			resp.Sources = r.GetSources()
-			err = e
+			errors = append(errors, err)
 		} else {
-			return fmt.Errorf("unrecognized request")
-		}
-
-		if err != nil {
-			return err
-		}
-
-		err = server.Send(resp)
-		if err != nil {
-			return err
+			edgeData = append(edgeData, moduleDependency.(*v1beta.ModuleDependency))
 		}
 	}
-}
 
-func (t *traversalService) BreadthFirstSearch(server v1beta.TraversalService_BreadthFirstSearchServer) error {
-	return status.Error(codes.Unimplemented, "unimplemented")
+	return &v1beta.Dependency{
+		Module:   module.(*v1beta.Module),
+		EdgeData: edgeData,
+	}, nil
 }
-
-func (t *traversalService) DepthFirstSearch(server v1beta.TraversalService_DepthFirstSearchServer) error {
-	return status.Error(codes.Unimplemented, "unimplemented")
-}
-
-var _ v1beta.TraversalServiceServer = &traversalService{}

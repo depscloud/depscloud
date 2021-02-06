@@ -4,13 +4,13 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"github.com/depscloud/depscloud/internal/logger"
+	"go.uber.org/zap"
 
 	"github.com/depscloud/api/v1beta"
 	"github.com/depscloud/api/v1beta/graphstore"
 
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
 // TODO: move this to internal to be shared between indexer and tracker
@@ -105,11 +105,9 @@ func (m *manifestStorageService) GetStored(ctx context.Context, source *graphsto
 	if err != nil {
 		return nil, nil, err
 	}
-	defer func() {
-		call.SendMsg(&graphstore.TraverseRequest{
-			Cancel: true,
-		})
-	}()
+	defer call.SendMsg(&graphstore.TraverseRequest{
+		Cancel: true,
+	})
 
 	tier := map[string]*graphstore.Node{
 		string(source.Key): source,
@@ -160,6 +158,8 @@ func (m *manifestStorageService) GetStored(ctx context.Context, source *graphsto
 }
 
 func (m *manifestStorageService) Store(ctx context.Context, request *v1beta.StoreRequest) (*v1beta.StoreResponse, error) {
+	log := logger.Extract(ctx)
+
 	proposedNodes, proposedEdges := m.GetProposed(request)
 
 	// last node is the provided source
@@ -168,7 +168,8 @@ func (m *manifestStorageService) Store(ctx context.Context, request *v1beta.Stor
 	// we don't care about stored nodes in this process because we don't ever delete nodes
 	_, storedEdges, err := m.GetStored(ctx, source)
 	if err != nil {
-		return nil, status.Error(codes.Internal, "failed to retrieve stored data")
+		log.Error(ErrQueryFailure.Error(), zap.Error(err))
+		return nil, ErrQueryFailure
 	}
 
 	edgeIndex := make(map[string]*graphstore.Edge, len(proposedEdges))
@@ -195,14 +196,16 @@ func (m *manifestStorageService) Store(ctx context.Context, request *v1beta.Stor
 		Edges: proposedEdges,
 	})
 	if err != nil {
-		return nil, status.Error(codes.Internal, "failed to update proposal")
+		log.Error("failed to update graph with new data", zap.Error(err))
+		return nil, ErrUpdateFailure
 	}
 
 	_, err = m.graphStore.Delete(ctx, &graphstore.DeleteRequest{
 		Edges: edgesToDelete,
 	})
 	if err != nil {
-		return nil, status.Error(codes.Internal, "failed to remove outdated edges")
+		log.Error("failed to remove outdated edges", zap.Error(err))
+		return nil, ErrPruneFailure
 	}
 
 	return &v1beta.StoreResponse{}, nil

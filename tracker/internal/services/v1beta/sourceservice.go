@@ -34,7 +34,8 @@ func (s *sourceService) List(ctx context.Context, request *v1beta.ListRequest) (
 		Kind:      sourceKind,
 	})
 	if err != nil {
-		return nil, err
+		log.Error("failed to lookup sources", zap.Error(err))
+		return nil, ErrQueryFailure
 	}
 
 	sources := make([]*v1beta.Source, 0, len(resp.GetNodes()))
@@ -42,7 +43,7 @@ func (s *sourceService) List(ctx context.Context, request *v1beta.ListRequest) (
 		source := &v1beta.Source{}
 		err := ptypes.UnmarshalAny(node.GetBody(), source)
 		if err != nil {
-			log.Error("failed parse source", zap.Error(err))
+			log.Warn("failed parse source", zap.Error(err))
 			continue
 		}
 		sources = append(sources, source)
@@ -55,40 +56,33 @@ func (s *sourceService) List(ctx context.Context, request *v1beta.ListRequest) (
 }
 
 func (s *sourceService) ListModules(ctx context.Context, source *v1beta.ManagedSource) (*v1beta.ListManagedModulesResponse, error) {
+	log := logger.Extract(ctx)
+
 	node, err := newNode(source.Source)
 	if err != nil {
-		return nil, err
+		log.Error("failed to parse source into node", zap.Error(err))
+		return nil, ErrInvalidRequest
 	}
 
 	resp, err := s.gs.Neighbors(ctx, &graphstore.NeighborsRequest{
 		From: node,
 	})
 	if err != nil {
-		return nil, err
+		log.Error("failed to query for modules", zap.Error(err))
+		return nil, ErrQueryFailure
 	}
 
 	modules := make([]*v1beta.ManagedModule, 0, len(resp.GetNeighbors()))
 	for _, neighbor := range resp.GetNeighbors() {
-		module := &v1beta.Module{}
-		err := ptypes.UnmarshalAny(neighbor.GetNode().GetBody(), module)
-		if err != nil {
-			continue
+		managedModule, errors := neighborToManagedModule(neighbor)
+
+		for _, err := range errors {
+			log.Warn("encountered an issue converting managed module", zap.Error(err))
 		}
 
-		edgeData := make([]*v1beta.SourceModule, 0, len(neighbor.GetEdges()))
-		for _, edge := range neighbor.GetEdges() {
-			sourceModule := &v1beta.SourceModule{}
-			err := ptypes.UnmarshalAny(edge.GetBody(), sourceModule)
-			if err != nil {
-				continue
-			}
-			edgeData = append(edgeData, sourceModule)
+		if managedModule != nil {
+			modules = append(modules, managedModule)
 		}
-
-		modules = append(modules, &v1beta.ManagedModule{
-			Module:   module,
-			EdgeData: edgeData,
-		})
 	}
 
 	return &v1beta.ListManagedModulesResponse{
@@ -97,3 +91,25 @@ func (s *sourceService) ListModules(ctx context.Context, source *v1beta.ManagedS
 }
 
 var _ v1beta.SourceServiceServer = &sourceService{}
+
+func neighborToManagedModule(neighbor *graphstore.Neighbor) (_ *v1beta.ManagedModule, errors []error) {
+	module, err := fromNodeOrEdge(neighbor.GetNode(), &v1beta.Module{})
+	if err != nil {
+		return nil, []error{err}
+	}
+
+	edgeData := make([]*v1beta.SourceModule, 0, len(neighbor.GetEdges()))
+	for _, edge := range neighbor.GetEdges() {
+		sourceModule, err := fromNodeOrEdge(edge, &v1beta.SourceModule{})
+		if err != nil {
+			errors = append(errors, err)
+		} else {
+			edgeData = append(edgeData, sourceModule.(*v1beta.SourceModule))
+		}
+	}
+
+	return &v1beta.ManagedModule{
+		Module:   module.(*v1beta.Module),
+		EdgeData: edgeData,
+	}, errors
+}

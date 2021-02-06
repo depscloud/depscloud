@@ -36,20 +36,26 @@ type consumable interface {
 }
 
 func consumeStream(ctx context.Context, c consumable) chan *tracker.SearchRequest {
-	done := ctx.Done()
 	stream := make(chan *tracker.SearchRequest, 2)
 
 	go func() {
-		select {
-		case <-done:
-			break
-		default:
-			req, err := c.Recv()
-			if err != nil {
-				break
+		defer func() {
+			stream <- &tracker.SearchRequest{
+				Cancel: true,
 			}
+		}()
 
-			stream <- req
+		for {
+			select {
+			case <-ctx.Done():
+				return
+			default:
+				req, err := c.Recv()
+				if err != nil {
+					return
+				}
+				stream <- req
+			}
 		}
 	}()
 

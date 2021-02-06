@@ -7,8 +7,6 @@ import (
 	"github.com/depscloud/api/v1beta/graphstore"
 	"github.com/depscloud/depscloud/internal/logger"
 
-	"github.com/golang/protobuf/ptypes"
-
 	"go.uber.org/zap"
 
 	"google.golang.org/grpc"
@@ -34,18 +32,18 @@ func (m *moduleService) List(ctx context.Context, request *v1beta.ListRequest) (
 		Kind:      moduleKind,
 	})
 	if err != nil {
-		return nil, err
+		log.Error("failed to list modules", zap.Error(err))
+		return nil, ErrInvalidRequest
 	}
 
 	modules := make([]*v1beta.Module, 0, len(resp.GetNodes()))
 	for _, node := range resp.GetNodes() {
-		module := &v1beta.Module{}
-		err := ptypes.UnmarshalAny(node.GetBody(), module)
+		module, err := fromNodeOrEdge(node, &v1beta.Module{})
 		if err != nil {
-			log.Error("failed to parse module", zap.Error(err))
+			log.Warn("failed to parse module", zap.Error(err))
 			continue
 		}
-		modules = append(modules, module)
+		modules = append(modules, module.(*v1beta.Module))
 	}
 
 	return &v1beta.ListModulesResponse{
@@ -55,40 +53,33 @@ func (m *moduleService) List(ctx context.Context, request *v1beta.ListRequest) (
 }
 
 func (m *moduleService) ListSources(ctx context.Context, module *v1beta.ManagedModule) (*v1beta.ListManagedSourcesResponse, error) {
+	log := logger.Extract(ctx)
+
 	node, err := newNode(module.Module)
 	if err != nil {
-		return nil, err
+		log.Error("failed to parse module into node", zap.Error(err))
+		return nil, ErrInvalidRequest
 	}
 
 	resp, err := m.gs.Neighbors(ctx, &graphstore.NeighborsRequest{
 		To: node,
 	})
 	if err != nil {
-		return nil, err
+		log.Error("failed to query graph", zap.Error(err))
+		return nil, ErrQueryFailure
 	}
 
 	sources := make([]*v1beta.ManagedSource, 0, len(resp.GetNeighbors()))
 	for _, neighbor := range resp.GetNeighbors() {
-		source := &v1beta.Source{}
-		err := ptypes.UnmarshalAny(neighbor.GetNode().GetBody(), source)
-		if err != nil {
-			continue
+		managedSource, errors := neighborToManagedSource(neighbor)
+
+		for _, err := range errors {
+			log.Warn("encountered an issue converting managed source", zap.Error(err))
 		}
 
-		edgeData := make([]*v1beta.SourceModule, 0, len(neighbor.GetEdges()))
-		for _, edge := range neighbor.GetEdges() {
-			sourceModule := &v1beta.SourceModule{}
-			err := ptypes.UnmarshalAny(edge.GetBody(), sourceModule)
-			if err != nil {
-				continue
-			}
-			edgeData = append(edgeData, sourceModule)
+		if managedSource != nil {
+			sources = append(sources, managedSource)
 		}
-
-		sources = append(sources, &v1beta.ManagedSource{
-			Source:   source,
-			EdgeData: edgeData,
-		})
 	}
 
 	return &v1beta.ListManagedSourcesResponse{
@@ -97,3 +88,26 @@ func (m *moduleService) ListSources(ctx context.Context, module *v1beta.ManagedM
 }
 
 var _ v1beta.ModuleServiceServer = &moduleService{}
+
+
+func neighborToManagedSource(neighbor *graphstore.Neighbor) (_ *v1beta.ManagedSource, errors []error) {
+	source, err := fromNodeOrEdge(neighbor.GetNode(), &v1beta.Source{})
+	if err != nil {
+		return nil, []error{err}
+	}
+
+	edgeData := make([]*v1beta.SourceModule, 0, len(neighbor.GetEdges()))
+	for _, edge := range neighbor.GetEdges() {
+		sourceModule, err := fromNodeOrEdge(edge, &v1beta.SourceModule{})
+		if err != nil {
+			errors = append(errors, err)
+		} else {
+			edgeData = append(edgeData, sourceModule.(*v1beta.SourceModule))
+		}
+	}
+
+	return &v1beta.ManagedSource{
+		Source:   source.(*v1beta.Source),
+		EdgeData: edgeData,
+	}, errors
+}
