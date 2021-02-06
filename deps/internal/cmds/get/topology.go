@@ -9,6 +9,7 @@ import (
 	"github.com/depscloud/api/v1alpha/tracker"
 	"github.com/depscloud/depscloud/deps/internal/util"
 	"github.com/depscloud/depscloud/deps/internal/writer"
+	"github.com/depscloud/depscloud/internal/eventlp"
 
 	"github.com/spf13/cobra"
 )
@@ -216,15 +217,13 @@ func getAllPaths(ctx context.Context, searchService tracker.SearchServiceClient,
 		return nil, fmt.Errorf("failed to determine root key for topological paths")
 	}
 
-	stack := [][]string{{rootKey}}
+	stack := &eventlp.LinkedList{}
+	stack.PushBack([]string{rootKey})
 	result := [][]*schema.Module{{}}
 
-	for length := len(stack); length > 0; length = len(stack) {
+	for length := stack.Size(); length > 0; length = stack.Size() {
 		next := make([][]string, 0)
-
-		// Pop
-		path := stack[length-1]
-		stack = stack[0:(length - 1)]
+		path := stack.PopFront().([]string)
 
 		if len(path) == 0 {
 			continue // a path in the stack should ideally never be empty
@@ -249,7 +248,6 @@ func getAllPaths(ctx context.Context, searchService tracker.SearchServiceClient,
 		for _, newEdge := range nodeEdges {
 			edgeExists := false
 			// Check and avoid cycles
-			// TODO: Can we do better than this? Currently, it iterates over the path for every new edge
 			for _, edgeInPath := range path {
 				if edgeInPath == newEdge {
 					edgeExists = true
@@ -264,7 +262,10 @@ func getAllPaths(ctx context.Context, searchService tracker.SearchServiceClient,
 				next = append(next, append(pathCopy, newEdge))
 			}
 		}
-		stack = append(stack, next...)
+
+		for nextPaths := range next {
+			stack.PushBack(nextPaths)
+		}
 	}
 
 	return result, nil
