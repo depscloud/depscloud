@@ -6,7 +6,6 @@ import (
 	"github.com/depscloud/api/v1beta/graphstore"
 	"github.com/depscloud/depscloud/internal/logger"
 	"go.uber.org/zap"
-	"strings"
 )
 
 
@@ -56,7 +55,7 @@ func (t *traversalService) BreadthFirstSearch(server v1beta.TraversalService_Bre
 
 			if req.DependenciesFor != nil {
 				for _, dependency := range resp.Dependencies {
-					key := strings.Join([]string{dependency.Module.Language, dependency.Module.Name}, "---")
+					key := moduleKey(dependency.Module)
 					if !seen[key] {
 						seen[key] = true
 						queue = append(queue, &v1beta.SearchRequest{
@@ -66,7 +65,7 @@ func (t *traversalService) BreadthFirstSearch(server v1beta.TraversalService_Bre
 				}
 			} else if req.DependentsOf != nil {
 				for _, dependency := range resp.Dependents {
-					key := strings.Join([]string{dependency.Module.Language, dependency.Module.Name}, "---")
+					key := moduleKey(dependency.Module)
 					if !seen[key] {
 						seen[key] = true
 						queue = append(queue, &v1beta.SearchRequest{
