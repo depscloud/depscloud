@@ -3,7 +3,6 @@ package v1beta
 import (
 	"crypto/sha256"
 	"encoding/binary"
-	"google.golang.org/protobuf/types/known/anypb"
 	"hash/crc32"
 	"strings"
 
@@ -12,6 +11,8 @@ import (
 
 	"github.com/golang/protobuf/proto"
 	"github.com/golang/protobuf/ptypes"
+
+	"google.golang.org/protobuf/types/known/anypb"
 )
 
 var moduleKind string

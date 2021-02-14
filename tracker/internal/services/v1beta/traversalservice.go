@@ -2,10 +2,13 @@ package v1beta
 
 import (
 	"context"
+
 	"github.com/depscloud/api/v1beta"
 	"github.com/depscloud/api/v1beta/graphstore"
 	"github.com/depscloud/depscloud/internal/logger"
+
 	"go.uber.org/zap"
+
 	"google.golang.org/grpc"
 )
 
@@ -94,7 +97,6 @@ func (t *traversalService) GetDependencies(ctx context.Context, dependency *v1be
 }
 
 var _ v1beta.TraversalServiceServer = &traversalService{}
-
 
 // neighborToDependency is a helper function used to convert a neighbor structure to a dependency structure.
 func neighborToDependency(neighbor *graphstore.Neighbor) (*v1beta.Dependency, []error) {

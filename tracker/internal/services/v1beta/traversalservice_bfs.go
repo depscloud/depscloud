@@ -2,12 +2,13 @@ package v1beta
 
 import (
 	"context"
+
 	"github.com/depscloud/api/v1beta"
 	"github.com/depscloud/api/v1beta/graphstore"
 	"github.com/depscloud/depscloud/internal/logger"
+
 	"go.uber.org/zap"
 )
-
 
 func (t *traversalService) BreadthFirstSearch(server v1beta.TraversalService_BreadthFirstSearchServer) error {
 	ctx, cancel := context.WithCancel(server.Context())

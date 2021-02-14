@@ -89,7 +89,6 @@ func (m *moduleService) ListSources(ctx context.Context, module *v1beta.ManagedM
 
 var _ v1beta.ModuleServiceServer = &moduleService{}
 
-
 func neighborToManagedSource(neighbor *graphstore.Neighbor) (_ *v1beta.ManagedSource, errors []error) {
 	source, err := fromNodeOrEdge(neighbor.GetNode(), &v1beta.Source{})
 	if err != nil {

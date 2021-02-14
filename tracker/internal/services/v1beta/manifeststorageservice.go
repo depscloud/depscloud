@@ -4,11 +4,12 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"github.com/depscloud/depscloud/internal/logger"
-	"go.uber.org/zap"
 
 	"github.com/depscloud/api/v1beta"
 	"github.com/depscloud/api/v1beta/graphstore"
+	"github.com/depscloud/depscloud/internal/logger"
+
+	"go.uber.org/zap"
 
 	"google.golang.org/grpc"
 )
