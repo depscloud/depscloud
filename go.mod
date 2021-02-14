@@ -26,7 +26,6 @@ require (
 	github.com/nytlabs/gojee v0.0.0-20140331152115-5a79a1542dc0
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.9.0
-	github.com/prometheus/common v0.15.0 // indirect
 	github.com/rs/cors v1.7.0
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/sergi/go-diff v1.1.0 // indirect
@@ -44,7 +43,7 @@ require (
 	golang.org/x/oauth2 v0.0.0-20201208152858-08078c50e5b5
 	golang.org/x/text v0.3.4 // indirect
 	golang.org/x/time v0.0.0-20201208040808-7e3f01d25324 // indirect
-	golang.org/x/tools v0.0.0-20201211025543-abf6a1d87e11 // indirect
+	golang.org/x/tools v0.1.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20201211151036-40ec1c210f7a // indirect
 	google.golang.org/grpc v1.34.0
