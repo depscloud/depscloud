@@ -4,16 +4,18 @@ import (
 	"context"
 	"time"
 
-	"github.com/depscloud/api/v1beta"
+	// TODO: move over to v1beta post v0.3.0
+	"github.com/depscloud/api/v1alpha/extractor"
+	"github.com/depscloud/api/v1alpha/tracker"
 
 	"github.com/mjpitz/go-gracefully/check"
 	"github.com/mjpitz/go-gracefully/state"
 )
 
 func Checks(
-	extractionService v1beta.ManifestExtractionServiceClient,
-	sourceService v1beta.SourceServiceClient,
-	moduleService v1beta.ModuleServiceClient,
+	extractionService extractor.DependencyExtractorClient,
+	sourceService tracker.SourceServiceClient,
+	moduleService tracker.ModuleServiceClient,
 ) []check.Check {
 	return []check.Check{
 		&check.Periodic{
@@ -24,7 +26,7 @@ func Checks(
 			Interval: time.Second * 5,
 			Timeout:  time.Second * 5,
 			RunFunc: func(ctx context.Context) (state.State, error) {
-				_, err := extractionService.Match(ctx, &v1beta.MatchRequest{})
+				_, err := extractionService.Match(ctx, &extractor.MatchRequest{})
 				if err != nil {
 					return state.Outage, err
 				}
@@ -39,7 +41,7 @@ func Checks(
 			Interval: time.Second * 5,
 			Timeout:  time.Second * 5,
 			RunFunc: func(ctx context.Context) (state.State, error) {
-				_, err := sourceService.List(ctx, &v1beta.ListRequest{})
+				_, err := sourceService.List(ctx, &tracker.ListRequest{})
 				if err != nil {
 					return state.Outage, err
 				}
@@ -54,7 +56,7 @@ func Checks(
 			Interval: time.Second * 5,
 			Timeout:  time.Second * 5,
 			RunFunc: func(ctx context.Context) (state.State, error) {
-				_, err := moduleService.List(ctx, &v1beta.ListRequest{})
+				_, err := moduleService.List(ctx, &tracker.ListRequest{})
 				if err != nil {
 					return state.Outage, err
 				}

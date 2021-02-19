@@ -148,10 +148,16 @@ func main() {
 				return err
 			}
 
-			// used only for health checks, don't route through self.
-			extractionService := v1beta.NewManifestExtractionServiceClient(extractorConn)
-			sourceService := v1beta.NewSourceServiceClient(trackerConn)
-			moduleService := v1beta.NewModuleServiceClient(trackerConn)
+			// used only for health checks, don't route through self
+			// TODO: move over to v1beta post v0.3.0
+
+			extractionService := extractor.NewDependencyExtractorClient(extractorConn)
+			sourceService := tracker.NewSourceServiceClient(trackerConn)
+			moduleService := tracker.NewModuleServiceClient(trackerConn)
+
+			//extractionService := v1beta.NewManifestExtractionServiceClient(extractorConn)
+			//sourceService := v1beta.NewSourceServiceClient(trackerConn)
+			//moduleService := v1beta.NewModuleServiceClient(trackerConn)
 
 			serverConfig.GRPC.ServerOptions = []grpc.ServerOption{
 				grpc.CustomCodec(proxy.ServerCodec()),
