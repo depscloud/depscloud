@@ -148,9 +148,10 @@ func main() {
 				return err
 			}
 
-			extractionService := v1beta.NewManifestExtractionServiceClient(gatewayConn)
-			sourceService := v1beta.NewSourceServiceClient(gatewayConn)
-			moduleService := v1beta.NewModuleServiceClient(gatewayConn)
+			// used only for health checks, don't route through self.
+			extractionService := v1beta.NewManifestExtractionServiceClient(extractorConn)
+			sourceService := v1beta.NewSourceServiceClient(trackerConn)
+			moduleService := v1beta.NewModuleServiceClient(trackerConn)
 
 			serverConfig.GRPC.ServerOptions = []grpc.ServerOption{
 				grpc.CustomCodec(proxy.ServerCodec()),
