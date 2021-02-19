@@ -3,18 +3,18 @@ package get
 import (
 	"strings"
 
-	"github.com/depscloud/api/v1alpha/tracker"
+	"github.com/depscloud/api/v1beta"
+
 	"github.com/depscloud/depscloud/deps/internal/writer"
 
 	"github.com/spf13/cobra"
 )
 
 func DependentsCommand(
-	dependencyClient tracker.DependencyServiceClient,
-	searchClient tracker.SearchServiceClient,
+	traversalService v1beta.TraversalServiceClient,
 	writer writer.Writer,
 ) *cobra.Command {
-	req := &tracker.DependencyRequest{}
+	req := &v1beta.Module{}
 
 	cmd := &cobra.Command{
 		Use:     "dependents",
@@ -25,13 +25,10 @@ func DependentsCommand(
 			"deps get dependents -l go -n github.com/depscloud/api",
 		}, "\n"),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			if err := validateDependencyRequest(req); err != nil {
-				return err
-			}
-
 			ctx := cmd.Context()
-
-			response, err := dependencyClient.ListDependents(ctx, req)
+			response, err := traversalService.GetDependents(ctx, &v1beta.Dependency{
+				Module: req,
+			})
 			if err != nil {
 				return err
 			}
@@ -44,14 +41,16 @@ func DependentsCommand(
 		},
 	}
 
-	topologyCmd := topologyCommand(writer, searchClient, func(depRequest *tracker.DependencyRequest) *tracker.SearchRequest {
-		return &tracker.SearchRequest{
-			DependentsOf: depRequest,
+	topologyCmd := topologyCommand(writer, traversalService, func(module *v1beta.Module) *v1beta.SearchRequest {
+		return &v1beta.SearchRequest{
+			DependentsOf: &v1beta.Dependency{
+				Module: module,
+			},
 		}
 	})
 
 	cmd.AddCommand(topologyCmd)
-	addDependencyRequestFlags(cmd, req)
+	addModuleFlags(cmd, req)
 
 	return cmd
 }

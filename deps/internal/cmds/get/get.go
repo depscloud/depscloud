@@ -16,9 +16,9 @@ func Command(
 		Short: "Retrieve information from the graph",
 	}
 
-	cmd.AddCommand(DependenciesCommand(client.Dependencies(), client.Search(), writer))
-	cmd.AddCommand(DependentsCommand(client.Dependencies(), client.Search(), writer))
-	cmd.AddCommand(ModulesCommand(client.Modules(), writer))
+	cmd.AddCommand(DependenciesCommand(client.Traversal(), writer))
+	cmd.AddCommand(DependentsCommand(client.Traversal(), writer))
+	cmd.AddCommand(ModulesCommand(client.Sources(), client.Modules(), writer))
 	cmd.AddCommand(SourcesCommand(client.Sources(), client.Modules(), writer))
 
 	return cmd

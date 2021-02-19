@@ -3,18 +3,19 @@ package get
 import (
 	"strings"
 
-	"github.com/depscloud/api/v1alpha/schema"
-	"github.com/depscloud/api/v1alpha/tracker"
+	"github.com/depscloud/api/v1beta"
+
 	"github.com/depscloud/depscloud/deps/internal/writer"
 
 	"github.com/spf13/cobra"
 )
 
 func ModulesCommand(
-	modulesClient tracker.ModuleServiceClient,
+	sourceService v1beta.SourceServiceClient,
+	moduleService v1beta.ModuleServiceClient,
 	writer writer.Writer,
 ) *cobra.Command {
-	source := &schema.Source{}
+	source := &v1beta.Source{}
 
 	cmd := &cobra.Command{
 		Use:     "modules",
@@ -28,7 +29,9 @@ func ModulesCommand(
 			ctx := cmd.Context()
 
 			if source.Url != "" {
-				response, err := modulesClient.ListManaged(ctx, source)
+				response, err := sourceService.ListModules(ctx, &v1beta.ManagedSource{
+					Source: source,
+				})
 				if err != nil {
 					return err
 				}
@@ -40,12 +43,10 @@ func ModulesCommand(
 				return nil
 			}
 
-			pageSize := 100
-
-			for i := 1; true; i++ {
-				response, err := modulesClient.List(ctx, &tracker.ListRequest{
-					Page:  int32(i),
-					Count: int32(pageSize),
+			pageToken := ""
+			for {
+				response, err := moduleService.List(ctx, &v1beta.ListRequest{
+					PageToken: pageToken,
 				})
 				if err != nil {
 					return err
@@ -55,9 +56,10 @@ func ModulesCommand(
 					_ = writer.Write(module)
 				}
 
-				if len(response.Modules) < pageSize {
+				if response.NextPageToken == "" {
 					break
 				}
+				pageToken = response.NextPageToken
 			}
 
 			return nil
