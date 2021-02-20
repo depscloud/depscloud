@@ -1,10 +1,10 @@
-import {DependencyExtractor} from "@depscloud/api/v1alpha/extractor";
+import {ManifestExtractionService} from "@depscloud/api/v1beta";
 
 import {Server, ServerCredentials} from "@grpc/grpc-js";
 import {addLayout, configure, getLogger} from "log4js";
 import ExtractorRegistry from "./extractors/ExtractorRegistry";
-import AsyncDependencyExtractor from "./service/AsyncDependencyExtractor";
-import DependencyExtractorImpl from "./service/DependencyExtractorImpl";
+import AsyncManifestExtractionService from "./service/AsyncManifestExtractionService";
+import ManifestExtractionServiceImpl from "./service/ManifestExtractionServiceImpl";
 import unasyncify from "./service/unasyncify";
 
 import express = require("express");
@@ -79,7 +79,7 @@ program.name("extractor")
             }
         });
 
-        const impl: AsyncDependencyExtractor = new DependencyExtractorImpl(matchersAndExtractors);
+        const impl: AsyncManifestExtractionService = new ManifestExtractionServiceImpl(matchersAndExtractors);
 
         const healthcheck = new health.Implementation({
             "": healthv1.HealthCheckResponse.ServingStatus.SERVING,
@@ -88,7 +88,7 @@ program.name("extractor")
         // healthcheck.setStatus("", healthv1.HealthCheckResponse.ServingStatus.NOT_SERVING);
 
         const server = new Server();
-        server.addService(DependencyExtractor.service, unasyncify(impl));
+        server.addService(ManifestExtractionService.service, unasyncify(impl));
         server.addService(health.service, healthcheck);
 
         let credentials = ServerCredentials.createInsecure();
@@ -116,7 +116,7 @@ program.name("extractor")
             }
 
             logger.info("starting server", {
-                "protocol": "http",
+                "protocol": "grpc",
                 "bind": `${bindAddress}:${grpcPort}`,
                 "tls": options.tlsKey && options.tlsCert && options.tlsCa,
             });

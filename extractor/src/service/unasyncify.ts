@@ -1,6 +1,6 @@
 import {UntypedServiceImplementation} from "@grpc/grpc-js";
 import {getLogger} from "log4js";
-import AsyncDependencyExtractor from "./AsyncDependencyExtractor";
+import AsyncManifestExtractionService from "./AsyncManifestExtractionService";
 
 const logger = getLogger();
 
@@ -11,7 +11,7 @@ function toString(error: Error): string {
     return `${error.name}: ${error.message}`;
 }
 
-export default function unasyncify(instance: AsyncDependencyExtractor): UntypedServiceImplementation {
+export default function unasyncify(instance: AsyncManifestExtractionService): UntypedServiceImplementation {
     return {
         match(call, callback) {
             instance.match(call)

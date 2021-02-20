@@ -10,16 +10,7 @@ import (
 
 func TestGraphData_TableName(t *testing.T) {
 	{
-		data := &v1beta.GraphData{
-			CollectionName: "",
-		}
+		data := &v1beta.GraphData{}
 		require.Equal(t, "graph_data", data.TableName())
-	}
-
-	{
-		data := &v1beta.GraphData{
-			CollectionName: "my_collection",
-		}
-		require.Equal(t, "my_collection", data.TableName())
 	}
 }

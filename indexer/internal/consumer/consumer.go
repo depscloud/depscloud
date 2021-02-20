@@ -6,9 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/depscloud/api/v1alpha/extractor"
-	"github.com/depscloud/api/v1alpha/schema"
-	"github.com/depscloud/api/v1alpha/tracker"
+	"github.com/depscloud/api/v1beta"
 	"github.com/depscloud/depscloud/indexer/internal/remotes"
 	"github.com/depscloud/depscloud/internal/logger"
 
@@ -29,18 +27,18 @@ type RepositoryConsumer interface {
 
 // NewConsumer creates a consumer process that is agnostic to the ingress channel.
 func NewConsumer(
-	extractorService extractor.DependencyExtractorClient,
-	sourceService tracker.SourceServiceClient,
+	extractionService v1beta.ManifestExtractionServiceClient,
+	storageService v1beta.ManifestStorageServiceClient,
 ) RepositoryConsumer {
 	return &consumer{
-		extractorService: extractorService,
-		sourceService:    sourceService,
+		extractionService: extractionService,
+		storageService:    storageService,
 	}
 }
 
 type consumer struct {
-	extractorService extractor.DependencyExtractorClient
-	sourceService    tracker.SourceServiceClient
+	extractionService v1beta.ManifestExtractionServiceClient
+	storageService    v1beta.ManifestStorageServiceClient
 }
 
 var _ RepositoryConsumer = &consumer{}
@@ -155,7 +153,7 @@ func (c *consumer) Consume(ctx context.Context, repository *remotes.Repository) 
 	}
 
 	log.Info("matching dependency files")
-	matchedResponse, err := c.extractorService.Match(context.Background(), &extractor.MatchRequest{
+	matchedResponse, err := c.extractionService.Match(ctx, &v1beta.MatchRequest{
 		Separator: string(filepath.Separator),
 		Paths:     paths,
 	})
@@ -187,8 +185,8 @@ func (c *consumer) Consume(ctx context.Context, repository *remotes.Repository) 
 	}
 
 	log.Info("extracting dependencies")
-	extractResponse, err := c.extractorService.Extract(context.Background(), &extractor.ExtractRequest{
-		Url:          repoURL,
+	extractResponse, err := c.extractionService.Extract(ctx, &v1beta.ExtractRequest{
+		SourceUrl:    repoURL,
 		Separator:    string(filepath.Separator),
 		FileContents: fileContents,
 	})
@@ -204,13 +202,11 @@ func (c *consumer) Consume(ctx context.Context, repository *remotes.Repository) 
 	}
 
 	log.Info("storing dependencies")
-	_, err = c.sourceService.Track(context.Background(), &tracker.SourceRequest{
-		Source: &schema.Source{
-			Url:  repoURL,
-			Kind: "repository",
-			Ref:  ref,
-		},
-		ManagementFiles: extractResponse.GetManagementFiles(),
+	_, err = c.storageService.Store(ctx, &v1beta.StoreRequest{
+		Url:           repoURL,
+		Kind:          "repository",
+		Ref:           ref,
+		ManifestFiles: extractResponse.GetManifestFiles(),
 	})
 
 	if err != nil {
