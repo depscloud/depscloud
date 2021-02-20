@@ -3,19 +3,19 @@ package get
 import (
 	"strings"
 
-	"github.com/depscloud/api/v1alpha/schema"
-	"github.com/depscloud/api/v1alpha/tracker"
+	"github.com/depscloud/api/v1beta"
+
 	"github.com/depscloud/depscloud/deps/internal/writer"
 
 	"github.com/spf13/cobra"
 )
 
 func SourcesCommand(
-	sourcesClient tracker.SourceServiceClient,
-	modulesClient tracker.ModuleServiceClient,
+	sourceService v1beta.SourceServiceClient,
+	moduleService v1beta.ModuleServiceClient,
 	writer writer.Writer,
 ) *cobra.Command {
-	module := &schema.Module{}
+	module := &v1beta.Module{}
 
 	cmd := &cobra.Command{
 		Use:     "sources",
@@ -29,11 +29,12 @@ func SourcesCommand(
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx := cmd.Context()
 
-			// at least one field was provided
-			if err := validateModule(module); !isEmpty(module) && err != nil {
-				return err
-			} else if err == nil {
-				response, err := modulesClient.ListSources(ctx, module)
+			if module.Language != "" && module.Name != "" {
+				// list sources for module
+
+				response, err := moduleService.ListSources(ctx, &v1beta.ManagedModule{
+					Module: module,
+				})
 				if err != nil {
 					return err
 				}
@@ -45,12 +46,10 @@ func SourcesCommand(
 				return nil
 			}
 
-			pageSize := 100
-
-			for i := 1; true; i++ {
-				response, err := sourcesClient.List(ctx, &tracker.ListRequest{
-					Page:  int32(i),
-					Count: int32(pageSize),
+			pageToken := ""
+			for {
+				response, err := sourceService.List(ctx, &v1beta.ListRequest{
+					PageToken: pageToken,
 				})
 				if err != nil {
 					return err
@@ -60,9 +59,10 @@ func SourcesCommand(
 					_ = writer.Write(source)
 				}
 
-				if len(response.Sources) < pageSize {
+				if response.NextPageToken == "" {
 					break
 				}
+				pageToken = response.NextPageToken
 			}
 
 			return nil

@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	// TODO: move over to v1beta post v0.3.0
 	"github.com/depscloud/api/v1alpha/extractor"
 	"github.com/depscloud/api/v1alpha/tracker"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func Checks(
-	dependencyExtractor extractor.DependencyExtractorClient,
+	extractionService extractor.DependencyExtractorClient,
 	sourceService tracker.SourceServiceClient,
 	moduleService tracker.ModuleServiceClient,
 ) []check.Check {
@@ -25,7 +26,7 @@ func Checks(
 			Interval: time.Second * 5,
 			Timeout:  time.Second * 5,
 			RunFunc: func(ctx context.Context) (state.State, error) {
-				_, err := dependencyExtractor.Match(ctx, &extractor.MatchRequest{})
+				_, err := extractionService.Match(ctx, &extractor.MatchRequest{})
 				if err != nil {
 					return state.Outage, err
 				}

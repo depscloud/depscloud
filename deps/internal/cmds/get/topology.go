@@ -5,41 +5,20 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/depscloud/api/v1alpha/schema"
-	"github.com/depscloud/api/v1alpha/tracker"
+	"github.com/depscloud/api/v1beta"
+
 	"github.com/depscloud/depscloud/deps/internal/writer"
 
 	"github.com/spf13/cobra"
 )
 
-func requestToModule(req *tracker.DependencyRequest) *schema.Module {
-	return &schema.Module{
-		Language:     req.Language,
-		Organization: req.Organization,
-		Module:       req.Module,
-		Name:         req.Name,
-	}
+func key(module *v1beta.Module) string {
+	return fmt.Sprintf("%s|%s", module.Language, module.Name)
 }
 
-func key(module *schema.Module) string {
-	return fmt.Sprintf("%s|%s|%s|%s",
-		module.Language,
-		module.Organization,
-		module.Module,
-		module.Name)
-}
+type convertRequest func(request *v1beta.Module) *v1beta.SearchRequest
 
-func keyForRequest(req *tracker.DependencyRequest) string {
-	return fmt.Sprintf("%s|%s|%s|%s",
-		req.Language,
-		req.Organization,
-		req.Module,
-		req.Name)
-}
-
-type convertRequest func(request *tracker.DependencyRequest) *tracker.SearchRequest
-
-func topology(ctx context.Context, searchService tracker.SearchServiceClient, request *tracker.SearchRequest) ([][]*schema.Module, error) {
+func topology(ctx context.Context, searchService v1beta.TraversalServiceClient, request *v1beta.SearchRequest) ([][]*v1beta.Module, error) {
 	call, err := searchService.BreadthFirstSearch(ctx)
 	if err != nil {
 		return nil, err
@@ -49,8 +28,8 @@ func topology(ctx context.Context, searchService tracker.SearchServiceClient, re
 		return nil, err
 	}
 
+	nodes := make(map[string]*v1beta.Module)
 	counter := make(map[string]map[string]bool)
-	nodes := make(map[string]*schema.Module)
 	edges := make(map[string][]string)
 
 	for resp, err := call.Recv(); true; resp, err = call.Recv() {
@@ -60,23 +39,20 @@ func topology(ctx context.Context, searchService tracker.SearchServiceClient, re
 			return nil, err
 		}
 
-		var source *tracker.DependencyRequest
-		var items []*tracker.Dependency
+		var source *v1beta.Dependency
+		var items []*v1beta.Dependency
 
 		if source = resp.GetRequest().GetDependentsOf(); source != nil {
 			items = resp.GetDependents()
-		} else if source = resp.GetRequest().GetDependenciesOf(); source != nil {
+		} else if source = resp.GetRequest().GetDependenciesFor(); source != nil {
 			items = resp.GetDependencies()
-		}
-
-		if source == nil {
+		} else {
 			return nil, fmt.Errorf("source module not included")
 		}
 
-		module := requestToModule(source)
-		moduleKey := key(module)
+		moduleKey := key(source.Module)
 		if _, ok := nodes[moduleKey]; !ok {
-			nodes[moduleKey] = module
+			nodes[moduleKey] = source.Module
 			counter[moduleKey] = make(map[string]bool)
 		}
 
@@ -97,24 +73,25 @@ func topology(ctx context.Context, searchService tracker.SearchServiceClient, re
 		edges[moduleKey] = dependencyKeys
 	}
 
-	var rootKey string
-
-	if req := request.GetDependentsOf(); req != nil {
-		rootKey = keyForRequest(req)
-	} else if req := request.GetDependenciesOf(); req != nil {
-		rootKey = keyForRequest(req)
+	var root *v1beta.Dependency
+	if root = request.GetDependentsOf(); root != nil {
+		// empty
+	} else if root = request.GetDependenciesFor(); root != nil {
+		// empty
 	} else {
 		return nil, fmt.Errorf("failed to determine root key for topological sort")
 	}
 
+	rootKey := key(root.Module)
+
 	modules := []string{rootKey}
-	result := [][]*schema.Module{{nodes[rootKey]}}
+	result := [][]*v1beta.Module{{nodes[rootKey]}}
 	delete(nodes, rootKey)
 	delete(counter, rootKey)
 
 	for length := len(modules); length > 0; length = len(modules) {
 		next := make([]string, 0)
-		tier := make([]*schema.Module, 0)
+		tier := make([]*v1beta.Module, 0)
 
 		for i := 0; i < length; i++ {
 			key := modules[i]
@@ -151,10 +128,10 @@ func topology(ctx context.Context, searchService tracker.SearchServiceClient, re
 
 func topologyCommand(
 	writer writer.Writer,
-	searchService tracker.SearchServiceClient,
+	traversalService v1beta.TraversalServiceClient,
 	requestConverter convertRequest,
 ) *cobra.Command {
-	req := &tracker.DependencyRequest{}
+	req := &v1beta.Module{}
 	tiered := false
 
 	cmd := &cobra.Command{
@@ -162,11 +139,7 @@ func topologyCommand(
 		Aliases: []string{"topo"},
 		Short:   "Get the associated topology",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			if err := validateDependencyRequest(req); err != nil {
-				return err
-			}
-
-			results, err := topology(cmd.Context(), searchService, requestConverter(req))
+			results, err := topology(cmd.Context(), traversalService, requestConverter(req))
 
 			if err != nil {
 				return err
@@ -190,7 +163,7 @@ func topologyCommand(
 		},
 	}
 
-	addDependencyRequestFlags(cmd, req)
+	addModuleFlags(cmd, req)
 
 	cmd.Flags().BoolVar(&tiered, "tiered", tiered, "Produce a tiered output instead of a flat stream")
 

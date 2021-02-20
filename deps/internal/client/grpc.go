@@ -4,7 +4,8 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/depscloud/api/v1alpha/tracker"
+	"github.com/depscloud/api/v1beta"
+
 	"github.com/depscloud/depscloud/internal/client"
 )
 
@@ -42,10 +43,9 @@ func grpcDefaultClient(baseURL string) Client {
 		panic(err)
 	}
 
-	return &httpClient{
-		dependencies: tracker.NewDependencyServiceClient(conn),
-		modules:      tracker.NewModuleServiceClient(conn),
-		sources:      tracker.NewSourceServiceClient(conn),
-		search:       tracker.NewSearchServiceClient(conn),
+	return &internalClient{
+		moduleService:    v1beta.NewModuleServiceClient(conn),
+		sourceService:    v1beta.NewSourceServiceClient(conn),
+		traversalService: v1beta.NewTraversalServiceClient(conn),
 	}
 }
