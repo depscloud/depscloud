@@ -42,17 +42,12 @@ func (m *manifestStorageService) GetProposed(request *v1beta.StoreRequest) ([]*g
 		Url:  request.GetUrl(),
 	})
 
-	ref := request.GetRef()
+	ref := request.GetUrl()
 
 	for _, manifestFile := range request.GetManifestFiles() {
 		language := manifestFile.GetLanguage()
 		system := manifestFile.GetSystem()
 		version := manifestFile.GetVersion()
-
-		reportedSource, _ := newNode(&v1beta.Source{
-			Kind: RepositoryDefaultKind,
-			Url:  manifestFile.GetSourceUrl(),
-		})
 
 		module, _ := newNode(&v1beta.Module{
 			Language: language,
@@ -67,10 +62,6 @@ func (m *manifestStorageService) GetProposed(request *v1beta.StoreRequest) ([]*g
 		sourceModule, _ := newEdge(sm)
 		sourceModule.FromKey = source.Key
 		sourceModule.ToKey = module.Key
-
-		reportedSourceModule, _ := newEdge(sm)
-		reportedSourceModule.FromKey = reportedSource.Key
-		reportedSourceModule.ToKey = module.Key
 
 		for _, manifestDependency := range manifestFile.GetDependencies() {
 			dependency, _ := newNode(&v1beta.Module{
@@ -92,8 +83,24 @@ func (m *manifestStorageService) GetProposed(request *v1beta.StoreRequest) ([]*g
 			edges = append(edges, moduleDependency)
 		}
 
-		nodes = append(nodes, reportedSource, module)
-		edges = append(edges, sourceModule, reportedSourceModule)
+		nodes = append(nodes, module)
+		edges = append(edges, sourceModule)
+
+		// look for a reported source url
+
+		if sourceURL := manifestFile.GetSourceUrl(); sourceURL != "" {
+			reportedSource, _ := newNode(&v1beta.Source{
+				Kind: RepositoryDefaultKind,
+				Url:  sourceURL,
+			})
+
+			reportedSourceModule, _ := newEdge(sm)
+			reportedSourceModule.FromKey = reportedSource.Key
+			reportedSourceModule.ToKey = module.Key
+
+			nodes = append(nodes, reportedSource)
+			edges = append(edges, reportedSourceModule)
+		}
 	}
 
 	nodes = append(nodes, source)

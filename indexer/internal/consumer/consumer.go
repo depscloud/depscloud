@@ -116,7 +116,7 @@ func (c *consumer) Consume(ctx context.Context, repository *remotes.Repository) 
 	}
 
 	log.Info("cloning repository")
-	repo, err := git.Clone(storage, fs, options)
+	_, err = git.Clone(storage, fs, options)
 
 	if err != nil {
 		log.Error("failed to clone repository", zap.Error(err))
@@ -196,16 +196,10 @@ func (c *consumer) Consume(ctx context.Context, repository *remotes.Repository) 
 		return
 	}
 
-	ref := ""
-	if head, err := repo.Head(); err == nil {
-		ref = head.Name().String()
-	}
-
 	log.Info("storing dependencies")
 	_, err = c.storageService.Store(ctx, &v1beta.StoreRequest{
 		Url:           repoURL,
 		Kind:          "repository",
-		Ref:           ref,
 		ManifestFiles: extractResponse.GetManifestFiles(),
 	})
 
