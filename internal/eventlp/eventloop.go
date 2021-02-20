@@ -27,11 +27,12 @@ func New() *EventLoop {
 // are processed in the order they're received on the queue. Some tasks may
 // require less time to process.
 type EventLoop struct {
-	clock    clockwork.Clock
-	wait     time.Duration
-	mu       *sync.Mutex
-	queue    *LinkedList
-	shutdown bool
+	clock      clockwork.Clock
+	wait       time.Duration
+	mu         *sync.Mutex
+	queue      *LinkedList
+	inProgress int
+	shutdown   bool
 }
 
 // Clock overrides the clock used for the event loop.
@@ -57,11 +58,16 @@ func (p *EventLoop) Submit(task Task) error {
 func (p *EventLoop) Once(ctx context.Context) {
 	p.mu.Lock()
 	task, ok := p.queue.PopFront().(Task)
+	p.inProgress++
 	p.mu.Unlock()
 
 	if ok && task != nil {
 		task(ctx)
 	}
+
+	p.mu.Lock()
+	p.inProgress--
+	p.mu.Unlock()
 }
 
 // Start runs the event loop.
@@ -89,7 +95,7 @@ func (p *EventLoop) Start(parent context.Context) error {
 func (p *EventLoop) GracefullyStop() error {
 	_ = p.Stop()
 
-	for p.queue.Size() > 0 {
+	for p.queue.Size() > 0 || p.inProgress > 0 {
 		p.clock.Sleep(p.wait)
 	}
 
