@@ -7,7 +7,9 @@ import (
 
 	"github.com/depscloud/api/v1alpha/schema"
 	"github.com/depscloud/api/v1alpha/tracker"
+	"github.com/depscloud/depscloud/deps/internal/util"
 	"github.com/depscloud/depscloud/deps/internal/writer"
+	"github.com/depscloud/depscloud/internal/eventlp"
 
 	"github.com/spf13/cobra"
 )
@@ -149,6 +151,126 @@ func topology(ctx context.Context, searchService tracker.SearchServiceClient, re
 	return result, nil
 }
 
+func getAllPaths(ctx context.Context, searchService tracker.SearchServiceClient, request *tracker.SearchRequest, destinationNodeKey string) ([][]*schema.Module, error) {
+	// Unclear as to what's the significant advantage we are achieving with using DFS over BFS
+	// As it's written right now, we do wait until the search is fully exhausted (the for loop below) anyway,
+	// before we begin to build the topology
+	call, err := searchService.DepthFirstSearch(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := call.Send(request); err != nil {
+		return nil, err
+	}
+	nodes := make(map[string]*schema.Module) // key: Module, value: Metadata of the module
+	edges := make(map[string][]string)       // key: Module, value: adjacency list of the module
+
+	// loop until all the responses are received from the server
+	for resp, err := call.Recv(); true; resp, err = call.Recv() {
+		if err == io.EOF {
+			break
+		} else if err != nil {
+			return nil, err
+		}
+
+		var source *tracker.DependencyRequest
+		var items []*tracker.Dependency
+
+		if source = resp.GetRequest().GetDependentsOf(); source != nil {
+			items = resp.GetDependents()
+		} else if source = resp.GetRequest().GetDependenciesOf(); source != nil {
+			items = resp.GetDependencies()
+		}
+
+		if source == nil {
+			return nil, fmt.Errorf("source module not included")
+		}
+
+		module := requestToModule(source)
+		moduleKey := key(module)
+		if _, ok := nodes[moduleKey]; !ok {
+			nodes[moduleKey] = module
+		}
+
+		dependencyKeys := make([]string, len(items))
+
+		for i, dependency := range items {
+			dependencyKey := key(dependency.Module)
+
+			if _, ok := nodes[dependencyKey]; !ok {
+				nodes[dependencyKey] = dependency.Module
+			}
+
+			dependencyKeys[i] = dependencyKey
+		}
+
+		edges[moduleKey] = dependencyKeys
+	}
+
+	var rootKey string
+	if req := request.GetDependentsOf(); req != nil {
+		rootKey = keyForRequest(req)
+	} else if req := request.GetDependenciesOf(); req != nil {
+		rootKey = keyForRequest(req)
+	} else {
+		return nil, fmt.Errorf("failed to determine root key for topological paths")
+	}
+
+	stack := &eventlp.LinkedList{}
+	stack.PushBack([]string{rootKey})
+	result := [][]*schema.Module{{}}
+
+	for length := stack.Size(); length > 0; length = stack.Size() {
+		next := make([][]string, 0)
+		path := stack.PopFront().([]string)
+
+		if len(path) == 0 {
+			continue // a path in the stack should ideally never be empty
+		}
+
+		// Continue exploration of this path
+		node := path[len(path)-1]
+		if node == destinationNodeKey {
+			// We've found a matching path
+			var modules []*schema.Module
+			for _, moduleKey := range path {
+				// Translate keys to metadata of the module
+				modules = append(modules, nodes[moduleKey])
+			}
+			result = append(result, modules)
+
+			continue
+		}
+
+		// Append new edges to the path to continue the search for destination node
+		nodeEdges := edges[node]
+		for _, newEdge := range nodeEdges {
+			edgeExists := false
+			// Check and avoid cycles
+			for _, edgeInPath := range path {
+				if edgeInPath == newEdge {
+					edgeExists = true
+					break
+				}
+			}
+
+			if !edgeExists {
+				// Copy "path" and append, so we push only "distinct" paths to the stack
+				pathCopy := make([]string, len(path), cap(path)+1)
+				copy(pathCopy, path)
+				next = append(next, append(pathCopy, newEdge))
+			}
+		}
+
+		for nextPaths := range next {
+			stack.PushBack(nextPaths)
+		}
+	}
+
+	return result, nil
+}
+
 func topologyCommand(
 	writer writer.Writer,
 	searchService tracker.SearchServiceClient,
@@ -156,6 +278,7 @@ func topologyCommand(
 ) *cobra.Command {
 	req := &tracker.DependencyRequest{}
 	tiered := false
+	var destinationModuleName string
 
 	cmd := &cobra.Command{
 		Use:     "topology",
@@ -164,6 +287,26 @@ func topologyCommand(
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if err := validateDependencyRequest(req); err != nil {
 				return err
+			}
+
+			if !(destinationModuleName == "") {
+				module := util.SetModuleFields(&schema.Module{
+					Language: req.GetLanguage(),
+					Name:     destinationModuleName,
+				})
+				destinationModuleKey := key(module)
+
+				results, err := getAllPaths(cmd.Context(), searchService, requestConverter(req), destinationModuleKey)
+				if err != nil {
+					return err
+				}
+				for _, paths := range results {
+					if err := writer.Write(paths); err != nil {
+						return err
+					}
+				}
+
+				return nil
 			}
 
 			results, err := topology(cmd.Context(), searchService, requestConverter(req))
@@ -193,6 +336,7 @@ func topologyCommand(
 	addDependencyRequestFlags(cmd, req)
 
 	cmd.Flags().BoolVar(&tiered, "tiered", tiered, "Produce a tiered output instead of a flat stream")
+	cmd.Flags().StringVarP(&destinationModuleName, "destinationModuleName", "", "dest", "Get all the ways the module provided with --name flag is connected to this destination module")
 
 	return cmd
 }

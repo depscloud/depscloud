@@ -305,7 +305,7 @@ func (s *searchService) DepthFirstSearch(server tracker.SearchService_DepthFirst
 
 			return status.Error(codes.InvalidArgument, "unexpected request body")
 		default:
-			stack = next
+			stack = append(stack, next...)
 		}
 	}
 
