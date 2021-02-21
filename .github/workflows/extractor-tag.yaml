@@ -42,10 +42,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up Docker Buildx
-        id: buildx
         uses: docker/setup-buildx-action@v1
-        with:
-          version: latest
 
       - name: Login to GitHub Docker Registry
         run: echo "${REGISTRY_PASSWORD}" | docker login -u "${REGISTRY_USERNAME}" --password-stdin
@@ -56,7 +53,7 @@ jobs:
       - name: Build Container Image
         run: |
           docker buildx build \
-            --platform linux/amd64,linux/arm64,linux/arm/v7 \
+            --platform linux/amd64,linux/arm64 \
             --build-arg VERSION=${GITHUB_REF##*/v} \
             --tag depscloud/extractor:latest \
             --tag depscloud/extractor:${GITHUB_REF##*/v} \

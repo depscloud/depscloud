@@ -1,24 +1,18 @@
-ARG BINARY=""
-
-FROM ocr.sh/depscloud/download:latest AS BUILDER
-
-ARG BINARY
-ARG VERSION=0.0.1
-ARG HEALTH_PROBE_VERSION=0.3.1
-ENV RELEASE_CHAIN=goreleaser
-
-RUN install-grpc-probe ${HEALTH_PROBE_VERSION}
-RUN install-depscloud-binary depscloud ${VERSION} ${BINARY}
-
 FROM ocr.sh/depscloud/base:latest
 
-ARG BINARY
-
-COPY --from=BUILDER /usr/bin/grpc_health_probe /usr/bin/grpc_health_probe
-COPY --from=BUILDER /usr/bin/${BINARY} /usr/bin/${BINARY}
-RUN ln -s /usr/bin/${BINARY} /usr/bin/entrypoint
-
 WORKDIR /home/depscloud
+
+ARG VERSION=0.2.10
+ARG BINARY=""
+ARG TARGETOS
+ARG TARGETARCH
+
+ADD https://github.com/depscloud/depscloud/releases/download/v${VERSION}/${BINARY}_${VERSION}_${TARGETOS}_${TARGETARCH}.tar.gz ${BINARY}.tar.gz
+RUN tar zxf ${BINARY}.tar.gz && \
+    rm ${BINARY}.tar.gz && \
+    mv ${BINARY} /usr/bin/${BINARY} && \
+    ln -s /usr/bin/${BINARY} /usr/bin/entrypoint
+
 USER 13490:13490
 
 ENTRYPOINT [ "/usr/bin/entrypoint" ]
