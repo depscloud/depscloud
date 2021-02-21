@@ -19,7 +19,6 @@ RUN make ${BINARY}/install VERSION="${VERSION}" GIT_SHA="${GIT_SHA}"
 FROM ocr.sh/depscloud/base:latest
 ARG BINARY
 
-COPY --from=builder /go/bin/grpc-health-probe /usr/bin/grpc_health_probe
 COPY --from=builder /go/bin/${BINARY} /usr/bin/${BINARY}
 RUN ln -s /usr/bin/${BINARY} /usr/bin/entrypoint
 
