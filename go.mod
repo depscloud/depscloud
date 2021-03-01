@@ -31,7 +31,7 @@ require (
 	github.com/sergi/go-diff v1.1.0 // indirect
 	github.com/slok/go-http-metrics v0.9.0
 	github.com/spf13/cobra v1.1.1
-	github.com/stretchr/testify v1.6.1
+	github.com/stretchr/testify v1.7.0
 	github.com/urfave/cli/v2 v2.3.0
 	github.com/xanzy/go-gitlab v0.40.1
 	github.com/xanzy/ssh-agent v0.3.0 // indirect
