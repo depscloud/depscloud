@@ -1,0 +1,179 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RequirementsTxtExtractor fullParse 1`] = `
+Object {
+  "dependencies": Array [
+    Object {
+      "name": "nose",
+      "scopes": Array [
+        "",
+      ],
+      "versionConstraint": "*",
+    },
+    Object {
+      "name": "nose-cov",
+      "scopes": Array [
+        "",
+      ],
+      "versionConstraint": "*",
+    },
+    Object {
+      "name": "beautifulsoup4",
+      "scopes": Array [
+        "",
+      ],
+      "versionConstraint": "*",
+    },
+    Object {
+      "name": "docopt",
+      "scopes": Array [
+        "",
+      ],
+      "versionConstraint": "== 0.6.1",
+    },
+    Object {
+      "name": "keyring",
+      "scopes": Array [
+        "",
+      ],
+      "versionConstraint": ">= 4.1.1",
+    },
+    Object {
+      "name": "coverage",
+      "scopes": Array [
+        "",
+      ],
+      "versionConstraint": "!= 3.5",
+    },
+    Object {
+      "name": "Mopidy-Dirble",
+      "scopes": Array [
+        "",
+      ],
+      "versionConstraint": "~= 1.1",
+    },
+    Object {
+      "name": "./downloads/numpy-1.9.2-cp34-none-win32.whl",
+      "scopes": Array [
+        "",
+      ],
+      "versionConstraint": "*",
+    },
+    Object {
+      "name": "http://wxpython.org/Phoenix/snapshot-builds/wxPython_Phoenix-3.0.3.dev1820+49a8884-cp34-none-win_amd64.whl",
+      "scopes": Array [
+        "",
+      ],
+      "versionConstraint": "*",
+    },
+    Object {
+      "name": "rejected",
+      "scopes": Array [
+        "",
+      ],
+      "versionConstraint": "*",
+    },
+    Object {
+      "name": "green",
+      "scopes": Array [
+        "",
+      ],
+      "versionConstraint": "*",
+    },
+  ],
+  "language": "python",
+  "name": "python-web",
+  "sourceUrl": "",
+  "system": "pip",
+  "version": "*",
+}
+`;
+
+exports[`RequirementsTxtExtractor fullParse 2`] = `
+"{
+  \\"language\\": \\"python\\",
+  \\"system\\": \\"pip\\",
+  \\"sourceUrl\\": \\"\\",
+  \\"name\\": \\"python-web\\",
+  \\"version\\": \\"*\\",
+  \\"dependencies\\": [
+    {
+      \\"name\\": \\"nose\\",
+      \\"versionConstraint\\": \\"*\\",
+      \\"scopes\\": [
+        \\"\\"
+      ]
+    },
+    {
+      \\"name\\": \\"nose-cov\\",
+      \\"versionConstraint\\": \\"*\\",
+      \\"scopes\\": [
+        \\"\\"
+      ]
+    },
+    {
+      \\"name\\": \\"beautifulsoup4\\",
+      \\"versionConstraint\\": \\"*\\",
+      \\"scopes\\": [
+        \\"\\"
+      ]
+    },
+    {
+      \\"name\\": \\"docopt\\",
+      \\"versionConstraint\\": \\"== 0.6.1\\",
+      \\"scopes\\": [
+        \\"\\"
+      ]
+    },
+    {
+      \\"name\\": \\"keyring\\",
+      \\"versionConstraint\\": \\">= 4.1.1\\",
+      \\"scopes\\": [
+        \\"\\"
+      ]
+    },
+    {
+      \\"name\\": \\"coverage\\",
+      \\"versionConstraint\\": \\"!= 3.5\\",
+      \\"scopes\\": [
+        \\"\\"
+      ]
+    },
+    {
+      \\"name\\": \\"Mopidy-Dirble\\",
+      \\"versionConstraint\\": \\"~= 1.1\\",
+      \\"scopes\\": [
+        \\"\\"
+      ]
+    },
+    {
+      \\"name\\": \\"./downloads/numpy-1.9.2-cp34-none-win32.whl\\",
+      \\"versionConstraint\\": \\"*\\",
+      \\"scopes\\": [
+        \\"\\"
+      ]
+    },
+    {
+      \\"name\\": \\"http://wxpython.org/Phoenix/snapshot-builds/wxPython_Phoenix-3.0.3.dev1820+49a8884-cp34-none-win_amd64.whl\\",
+      \\"versionConstraint\\": \\"*\\",
+      \\"scopes\\": [
+        \\"\\"
+      ]
+    },
+    {
+      \\"name\\": \\"rejected\\",
+      \\"versionConstraint\\": \\"*\\",
+      \\"scopes\\": [
+        \\"\\"
+      ]
+    },
+    {
+      \\"name\\": \\"green\\",
+      \\"versionConstraint\\": \\"*\\",
+      \\"scopes\\": [
+        \\"\\"
+      ]
+    }
+  ]
+}"
+`;

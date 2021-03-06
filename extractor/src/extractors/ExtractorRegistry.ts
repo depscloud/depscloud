@@ -12,6 +12,8 @@ import PackageJsonExtractor from "./PackageJsonExtractor";
 import PomXmlExtractor from "./PomXmlExtractor";
 import VendorConfExtractor from "./VendorConfExtractor";
 import JsonnetfileJsonExtractor from "./JsonnetfileJsonExtractor";
+import PipfileExtractor from "./PipfileExtractor";
+import RequirementsTxtExtractor from "./RequirementsTxtExtractor";
 
 const ExtractorRegistry = new Registry<Extractor>("Extractor");
 
@@ -28,6 +30,8 @@ ExtractorRegistry.registerAll({
     "bower.json": async () => new BowerJsonExtractor(),
     "vendor.conf": async () => new VendorConfExtractor(),
     "jsonnetfile.json": async() => new JsonnetfileJsonExtractor(),
+    "Pipfile": async() => new PipfileExtractor(),
+    "requirements.txt": async() => new RequirementsTxtExtractor(),
 });
 
 export default ExtractorRegistry;
