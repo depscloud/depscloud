@@ -30,6 +30,10 @@ const Languages = {
     get PYTHON() : string {
         return "python";
     },
+
+    get HELM() : string {
+        return "helm";
+    },
 };
 
 export default Languages;

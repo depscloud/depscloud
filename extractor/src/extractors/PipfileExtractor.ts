@@ -18,7 +18,7 @@ const transform = (scope: string, name: string, val: any): ManifestDependency =>
     return {
         name,
         versionConstraint,
-        scopes: [ scope ],
+        scopes: scope ? [ scope ] : [],
     }
 }
 

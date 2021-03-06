@@ -43,7 +43,7 @@ export default class RequirementsTxtExtractor implements Extractor {
             dependencies.push({
                 name,
                 versionConstraint: (versionConstraint || "*"),
-                scopes: [""],
+                scopes: [],
             });
         });
 

@@ -1,0 +1,43 @@
+apiVersion: v2
+type: application
+name: depscloud
+description: Track, monitor, and connect project dependencies across languages and toolchains.
+icon: https://deps.cloud/favicons/logo-small-rounded.png
+home: https://deps.cloud
+sources:
+  - https://github.com/depscloud/depscloud
+  - https://github.com/depscloud/deploy
+maintainers:
+  - name: Mya Pitzeruse
+    email: mjpitz@deps.cloud
+    url: https://mjpitz.com
+version: 0.2.33
+appVersion: 0.2.33
+dependencies:
+  - name: beacon
+    repository: https://mjpitz.github.io/charts/
+    version: 0.0.2
+  - name: mysql
+    repository: https://charts.bitnami.com/bitnami
+    version: 8.0.0
+    condition: mysql.enabled
+  - name: postgresql
+    repository: https://charts.bitnami.com/bitnami
+    version: 10.1.3
+    condition: postgres.enabled
+  - name: extractor
+    repository: file://../extractor
+    version: 0.2.33
+    condition: extractor.enabled
+  - name: gateway
+    repository: file://../gateway
+    version: 0.2.33
+    condition: gateway.enabled
+  - name: indexer
+    repository: file://../indexer
+    version: 0.2.33
+    condition: indexer.enabled
+  - name: tracker
+    repository: file://../tracker
+    version: 0.2.33
+    condition: tracker.enabled
