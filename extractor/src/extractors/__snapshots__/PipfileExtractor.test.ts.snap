@@ -1,0 +1,137 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PipfileExtractor fullParse 1`] = `
+Object {
+  "dependencies": Array [
+    Object {
+      "name": "requests",
+      "scopes": Array [
+        "",
+      ],
+      "versionConstraint": "*",
+    },
+    Object {
+      "name": "records",
+      "scopes": Array [
+        "",
+      ],
+      "versionConstraint": ">0.5.0",
+    },
+    Object {
+      "name": "django",
+      "scopes": Array [
+        "",
+      ],
+      "versionConstraint": "1.11.4",
+    },
+    Object {
+      "name": "e682b37",
+      "scopes": Array [
+        "",
+      ],
+      "versionConstraint": "*",
+    },
+    Object {
+      "name": "e1839a8",
+      "scopes": Array [
+        "",
+      ],
+      "versionConstraint": "*",
+    },
+    Object {
+      "name": "pywinusb",
+      "scopes": Array [
+        "",
+      ],
+      "versionConstraint": "*",
+    },
+    Object {
+      "name": "nose",
+      "scopes": Array [
+        "dev",
+      ],
+      "versionConstraint": "*",
+    },
+    Object {
+      "name": "unittest2",
+      "scopes": Array [
+        "dev",
+      ],
+      "versionConstraint": ">=1.0,<3.0",
+    },
+  ],
+  "language": "python",
+  "name": "pypi",
+  "sourceUrl": "https://pypi.python.org/simple",
+  "system": "pipfile",
+  "version": "*",
+}
+`;
+
+exports[`PipfileExtractor fullParse 2`] = `
+"{
+  \\"language\\": \\"python\\",
+  \\"system\\": \\"pipfile\\",
+  \\"name\\": \\"pypi\\",
+  \\"version\\": \\"*\\",
+  \\"sourceUrl\\": \\"https://pypi.python.org/simple\\",
+  \\"dependencies\\": [
+    {
+      \\"name\\": \\"requests\\",
+      \\"versionConstraint\\": \\"*\\",
+      \\"scopes\\": [
+        \\"\\"
+      ]
+    },
+    {
+      \\"name\\": \\"records\\",
+      \\"versionConstraint\\": \\">0.5.0\\",
+      \\"scopes\\": [
+        \\"\\"
+      ]
+    },
+    {
+      \\"name\\": \\"django\\",
+      \\"versionConstraint\\": \\"1.11.4\\",
+      \\"scopes\\": [
+        \\"\\"
+      ]
+    },
+    {
+      \\"name\\": \\"e682b37\\",
+      \\"versionConstraint\\": \\"*\\",
+      \\"scopes\\": [
+        \\"\\"
+      ]
+    },
+    {
+      \\"name\\": \\"e1839a8\\",
+      \\"versionConstraint\\": \\"*\\",
+      \\"scopes\\": [
+        \\"\\"
+      ]
+    },
+    {
+      \\"name\\": \\"pywinusb\\",
+      \\"versionConstraint\\": \\"*\\",
+      \\"scopes\\": [
+        \\"\\"
+      ]
+    },
+    {
+      \\"name\\": \\"nose\\",
+      \\"versionConstraint\\": \\"*\\",
+      \\"scopes\\": [
+        \\"dev\\"
+      ]
+    },
+    {
+      \\"name\\": \\"unittest2\\",
+      \\"versionConstraint\\": \\">=1.0,<3.0\\",
+      \\"scopes\\": [
+        \\"dev\\"
+      ]
+    }
+  ]
+}"
+`;

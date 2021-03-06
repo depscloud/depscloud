@@ -1,14 +1,14 @@
-import inferImportPath from "./inferImportPath";
+import inferGoImportPath from "./inferGoImportPath";
 
 describe("inferImportPath", () => {
     test("git-ssh", () => {
-        const importPath = inferImportPath("git@github.com:depscloud/depscloud-project.git");
+        const importPath = inferGoImportPath("git@github.com:depscloud/depscloud-project.git");
 
         expect(importPath).toBe("github.com/depscloud/depscloud-project");
     });
 
     test("git-https", () => {
-        const importPath = inferImportPath("https://github.com/depscloud/depscloud-project.git");
+        const importPath = inferGoImportPath("https://github.com/depscloud/depscloud-project.git");
 
         expect(importPath).toBe("github.com/depscloud/depscloud-project");
     });

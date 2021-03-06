@@ -25,7 +25,11 @@ const Languages = {
 
     get JSONNET() : string {
         return "jsonnet";
-    }
+    },
+
+    get PYTHON() : string {
+        return "python";
+    },
 };
 
 export default Languages;

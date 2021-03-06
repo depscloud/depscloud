@@ -1,6 +1,7 @@
+import path = require("path");
 import url = require("url");
 
-export default function inferImportPath(href: string): string {
+export default function inferPythonName(href: string): string {
     if (!href) {
         return "";
     }
@@ -15,5 +16,5 @@ export default function inferImportPath(href: string): string {
 
     const parts = url.parse(href);
 
-    return parts.host + parts.path.substr(0, parts.path.length - 4);
+    return path.basename(parts.path, path.extname(parts.path))
 }

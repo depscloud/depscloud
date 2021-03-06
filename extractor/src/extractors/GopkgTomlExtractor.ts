@@ -1,6 +1,6 @@
 import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
-import inferImportPath from "./goutils/inferImportPath";
+import inferGoImportPath from "./utils/inferGoImportPath";
 import Languages from "./Languages";
 import MatchConfig from "../matcher/MatchConfig";
 import {ManifestDependency, ManifestFile} from "@depscloud/api/v1beta";
@@ -57,7 +57,7 @@ export default class GopkgTomlExtractor implements Extractor {
     }
 
     public async extract(url: string, files: { [p: string]: ExtractorFile }): Promise<ManifestFile> {
-        const name = inferImportPath(url);
+        const name = inferGoImportPath(url);
 
         const toml = files["Gopkg.toml"].toml();
 
