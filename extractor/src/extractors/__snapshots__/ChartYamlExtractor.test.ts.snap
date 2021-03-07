@@ -4,51 +4,51 @@ exports[`ChartYamlExtractor fullParse 1`] = `
 Object {
   "dependencies": Array [
     Object {
-      "name": "https://mjpitz.github.io/charts/beacon",
+      "name": "beacon",
       "scopes": Array [],
-      "versionConstraint": "0.0.2",
+      "versionConstraint": "https://mjpitz.github.io/charts/#0.0.2",
     },
     Object {
-      "name": "https://charts.bitnami.com/bitnami/mysql",
+      "name": "mysql",
       "scopes": Array [
         "mysql.enabled",
       ],
-      "versionConstraint": "8.0.0",
+      "versionConstraint": "https://charts.bitnami.com/bitnami#8.0.0",
     },
     Object {
-      "name": "https://charts.bitnami.com/bitnami/postgresql",
+      "name": "postgresql",
       "scopes": Array [
         "postgres.enabled",
       ],
-      "versionConstraint": "10.1.3",
+      "versionConstraint": "https://charts.bitnami.com/bitnami#10.1.3",
     },
     Object {
-      "name": "file://../extractor",
+      "name": "extractor",
       "scopes": Array [
         "extractor.enabled",
       ],
-      "versionConstraint": "0.2.33",
+      "versionConstraint": "file://../extractor#0.2.33",
     },
     Object {
-      "name": "file://../gateway",
+      "name": "gateway",
       "scopes": Array [
         "gateway.enabled",
       ],
-      "versionConstraint": "0.2.33",
+      "versionConstraint": "file://../gateway#0.2.33",
     },
     Object {
-      "name": "file://../indexer",
+      "name": "indexer",
       "scopes": Array [
         "indexer.enabled",
       ],
-      "versionConstraint": "0.2.33",
+      "versionConstraint": "file://../indexer#0.2.33",
     },
     Object {
-      "name": "file://../tracker",
+      "name": "tracker",
       "scopes": Array [
         "tracker.enabled",
       ],
-      "versionConstraint": "0.2.33",
+      "versionConstraint": "file://../tracker#0.2.33",
     },
   ],
   "language": "helm",
@@ -68,48 +68,48 @@ exports[`ChartYamlExtractor fullParse 2`] = `
   \\"sourceUrl\\": \\"\\",
   \\"dependencies\\": [
     {
-      \\"name\\": \\"https://mjpitz.github.io/charts/beacon\\",
-      \\"versionConstraint\\": \\"0.0.2\\",
+      \\"name\\": \\"beacon\\",
+      \\"versionConstraint\\": \\"https://mjpitz.github.io/charts/#0.0.2\\",
       \\"scopes\\": []
     },
     {
-      \\"name\\": \\"https://charts.bitnami.com/bitnami/mysql\\",
-      \\"versionConstraint\\": \\"8.0.0\\",
+      \\"name\\": \\"mysql\\",
+      \\"versionConstraint\\": \\"https://charts.bitnami.com/bitnami#8.0.0\\",
       \\"scopes\\": [
         \\"mysql.enabled\\"
       ]
     },
     {
-      \\"name\\": \\"https://charts.bitnami.com/bitnami/postgresql\\",
-      \\"versionConstraint\\": \\"10.1.3\\",
+      \\"name\\": \\"postgresql\\",
+      \\"versionConstraint\\": \\"https://charts.bitnami.com/bitnami#10.1.3\\",
       \\"scopes\\": [
         \\"postgres.enabled\\"
       ]
     },
     {
-      \\"name\\": \\"file://../extractor\\",
-      \\"versionConstraint\\": \\"0.2.33\\",
+      \\"name\\": \\"extractor\\",
+      \\"versionConstraint\\": \\"file://../extractor#0.2.33\\",
       \\"scopes\\": [
         \\"extractor.enabled\\"
       ]
     },
     {
-      \\"name\\": \\"file://../gateway\\",
-      \\"versionConstraint\\": \\"0.2.33\\",
+      \\"name\\": \\"gateway\\",
+      \\"versionConstraint\\": \\"file://../gateway#0.2.33\\",
       \\"scopes\\": [
         \\"gateway.enabled\\"
       ]
     },
     {
-      \\"name\\": \\"file://../indexer\\",
-      \\"versionConstraint\\": \\"0.2.33\\",
+      \\"name\\": \\"indexer\\",
+      \\"versionConstraint\\": \\"file://../indexer#0.2.33\\",
       \\"scopes\\": [
         \\"indexer.enabled\\"
       ]
     },
     {
-      \\"name\\": \\"file://../tracker\\",
-      \\"versionConstraint\\": \\"0.2.33\\",
+      \\"name\\": \\"tracker\\",
+      \\"versionConstraint\\": \\"file://../tracker#0.2.33\\",
       \\"scopes\\": [
         \\"tracker.enabled\\"
       ]

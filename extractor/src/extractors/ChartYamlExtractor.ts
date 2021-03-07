@@ -13,17 +13,14 @@ export default class ChartYamlExtractor implements Extractor {
         } = files["Chart.yaml"].yaml();
 
         const dependencies: Array<ManifestDependency> = (deps || []).map((dep) => {
-            let fullName = String(dep.repository || "").trim();
-            if (!fullName.startsWith("file://")) {
-                if (fullName[fullName.length - 1] !== "/") {
-                    fullName += "/";
-                }
-                fullName += dep.name;
+            let versionConstraint = dep.repository || "";
+            if (versionConstraint !== "" && dep.version) {
+                versionConstraint += "#" + dep.version
             }
 
             return {
-                name: fullName,
-                versionConstraint: dep.version,
+                name: dep.name,
+                versionConstraint,
                 scopes: dep.condition ? [ dep.condition ] : [],
             }
         })
