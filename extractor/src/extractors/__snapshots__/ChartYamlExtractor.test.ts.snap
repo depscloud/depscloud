@@ -1,0 +1,119 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChartYamlExtractor fullParse 1`] = `
+Object {
+  "dependencies": Array [
+    Object {
+      "name": "beacon",
+      "scopes": Array [],
+      "versionConstraint": "https://mjpitz.github.io/charts/#0.0.2",
+    },
+    Object {
+      "name": "mysql",
+      "scopes": Array [
+        "mysql.enabled",
+      ],
+      "versionConstraint": "https://charts.bitnami.com/bitnami#8.0.0",
+    },
+    Object {
+      "name": "postgresql",
+      "scopes": Array [
+        "postgres.enabled",
+      ],
+      "versionConstraint": "https://charts.bitnami.com/bitnami#10.1.3",
+    },
+    Object {
+      "name": "extractor",
+      "scopes": Array [
+        "extractor.enabled",
+      ],
+      "versionConstraint": "file://../extractor#0.2.33",
+    },
+    Object {
+      "name": "gateway",
+      "scopes": Array [
+        "gateway.enabled",
+      ],
+      "versionConstraint": "file://../gateway#0.2.33",
+    },
+    Object {
+      "name": "indexer",
+      "scopes": Array [
+        "indexer.enabled",
+      ],
+      "versionConstraint": "file://../indexer#0.2.33",
+    },
+    Object {
+      "name": "tracker",
+      "scopes": Array [
+        "tracker.enabled",
+      ],
+      "versionConstraint": "file://../tracker#0.2.33",
+    },
+  ],
+  "language": "helm",
+  "name": "depscloud",
+  "sourceUrl": "",
+  "system": "helm",
+  "version": "0.2.33",
+}
+`;
+
+exports[`ChartYamlExtractor fullParse 2`] = `
+"{
+  \\"language\\": \\"helm\\",
+  \\"system\\": \\"helm\\",
+  \\"name\\": \\"depscloud\\",
+  \\"version\\": \\"0.2.33\\",
+  \\"sourceUrl\\": \\"\\",
+  \\"dependencies\\": [
+    {
+      \\"name\\": \\"beacon\\",
+      \\"versionConstraint\\": \\"https://mjpitz.github.io/charts/#0.0.2\\",
+      \\"scopes\\": []
+    },
+    {
+      \\"name\\": \\"mysql\\",
+      \\"versionConstraint\\": \\"https://charts.bitnami.com/bitnami#8.0.0\\",
+      \\"scopes\\": [
+        \\"mysql.enabled\\"
+      ]
+    },
+    {
+      \\"name\\": \\"postgresql\\",
+      \\"versionConstraint\\": \\"https://charts.bitnami.com/bitnami#10.1.3\\",
+      \\"scopes\\": [
+        \\"postgres.enabled\\"
+      ]
+    },
+    {
+      \\"name\\": \\"extractor\\",
+      \\"versionConstraint\\": \\"file://../extractor#0.2.33\\",
+      \\"scopes\\": [
+        \\"extractor.enabled\\"
+      ]
+    },
+    {
+      \\"name\\": \\"gateway\\",
+      \\"versionConstraint\\": \\"file://../gateway#0.2.33\\",
+      \\"scopes\\": [
+        \\"gateway.enabled\\"
+      ]
+    },
+    {
+      \\"name\\": \\"indexer\\",
+      \\"versionConstraint\\": \\"file://../indexer#0.2.33\\",
+      \\"scopes\\": [
+        \\"indexer.enabled\\"
+      ]
+    },
+    {
+      \\"name\\": \\"tracker\\",
+      \\"versionConstraint\\": \\"file://../tracker#0.2.33\\",
+      \\"scopes\\": [
+        \\"tracker.enabled\\"
+      ]
+    }
+  ]
+}"
+`;

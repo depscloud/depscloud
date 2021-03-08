@@ -5,44 +5,32 @@ Object {
   "dependencies": Array [
     Object {
       "name": "requests",
-      "scopes": Array [
-        "",
-      ],
+      "scopes": Array [],
       "versionConstraint": "*",
     },
     Object {
       "name": "records",
-      "scopes": Array [
-        "",
-      ],
+      "scopes": Array [],
       "versionConstraint": ">0.5.0",
     },
     Object {
       "name": "django",
-      "scopes": Array [
-        "",
-      ],
+      "scopes": Array [],
       "versionConstraint": "1.11.4",
     },
     Object {
       "name": "e682b37",
-      "scopes": Array [
-        "",
-      ],
+      "scopes": Array [],
       "versionConstraint": "*",
     },
     Object {
       "name": "e1839a8",
-      "scopes": Array [
-        "",
-      ],
+      "scopes": Array [],
       "versionConstraint": "*",
     },
     Object {
       "name": "pywinusb",
-      "scopes": Array [
-        "",
-      ],
+      "scopes": Array [],
       "versionConstraint": "*",
     },
     Object {
@@ -79,44 +67,32 @@ exports[`PipfileExtractor fullParse 2`] = `
     {
       \\"name\\": \\"requests\\",
       \\"versionConstraint\\": \\"*\\",
-      \\"scopes\\": [
-        \\"\\"
-      ]
+      \\"scopes\\": []
     },
     {
       \\"name\\": \\"records\\",
       \\"versionConstraint\\": \\">0.5.0\\",
-      \\"scopes\\": [
-        \\"\\"
-      ]
+      \\"scopes\\": []
     },
     {
       \\"name\\": \\"django\\",
       \\"versionConstraint\\": \\"1.11.4\\",
-      \\"scopes\\": [
-        \\"\\"
-      ]
+      \\"scopes\\": []
     },
     {
       \\"name\\": \\"e682b37\\",
       \\"versionConstraint\\": \\"*\\",
-      \\"scopes\\": [
-        \\"\\"
-      ]
+      \\"scopes\\": []
     },
     {
       \\"name\\": \\"e1839a8\\",
       \\"versionConstraint\\": \\"*\\",
-      \\"scopes\\": [
-        \\"\\"
-      ]
+      \\"scopes\\": []
     },
     {
       \\"name\\": \\"pywinusb\\",
       \\"versionConstraint\\": \\"*\\",
-      \\"scopes\\": [
-        \\"\\"
-      ]
+      \\"scopes\\": []
     },
     {
       \\"name\\": \\"nose\\",

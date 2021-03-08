@@ -1,10 +1,10 @@
-import {Dependency, DependencyManagementFile} from "@depscloud/api/v1alpha/deps";
 import MatchConfig from "../matcher/MatchConfig";
 import Extractor from "./Extractor";
 import ExtractorFile from "./ExtractorFile";
 import Languages from "./Languages";
+import {ManifestDependency, ManifestFile} from "@depscloud/api/v1beta";
 
-const extract = (dependency: any):Dependency => {
+const extract = (dependency: any):ManifestDependency => {
     const { source, version } = dependency;
     const { git } = (source || {});
     const { subdir, remote } = (git || {});
@@ -13,13 +13,11 @@ const extract = (dependency: any):Dependency => {
         name: remote,
         versionConstraint: version,
         scopes: subdir ? [ subdir ] : [],
-        organization: "", // deprecated
-        module: "", // deprecated
     };
 }
 
 export default class JsonnetfileJsonExtractor implements Extractor {
-    matchConfig(): MatchConfig {
+    public matchConfig(): MatchConfig {
         return {
             includes: [
                 "**/jsonnetfile.json",
@@ -27,10 +25,12 @@ export default class JsonnetfileJsonExtractor implements Extractor {
             excludes: [],
         };
     }
-    requires(): string[] {
+
+    public requires(): string[] {
         return [ "jsonnetfile.json" ];
     }
-    public async extract(url: string, files: { [key: string]: ExtractorFile }): Promise<DependencyManagementFile> {
+
+    public async extract(url: string, files: { [key: string]: ExtractorFile }): Promise<ManifestFile> {
         const {
             version,
             dependencies,
@@ -44,8 +44,6 @@ export default class JsonnetfileJsonExtractor implements Extractor {
             system:"jsonnet-bundler",
             dependencies: deps,
             name: url,
-            organization:"",
-            module:"", //deprecated
             sourceUrl:"",
             version
         }

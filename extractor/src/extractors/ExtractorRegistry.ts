@@ -14,6 +14,7 @@ import VendorConfExtractor from "./VendorConfExtractor";
 import JsonnetfileJsonExtractor from "./JsonnetfileJsonExtractor";
 import PipfileExtractor from "./PipfileExtractor";
 import RequirementsTxtExtractor from "./RequirementsTxtExtractor";
+import ChartYamlExtractor from "./ChartYamlExtractor";
 
 const ExtractorRegistry = new Registry<Extractor>("Extractor");
 
@@ -32,6 +33,7 @@ ExtractorRegistry.registerAll({
     "jsonnetfile.json": async() => new JsonnetfileJsonExtractor(),
     "Pipfile": async() => new PipfileExtractor(),
     "requirements.txt": async() => new RequirementsTxtExtractor(),
+    "Chart.yaml": async() => new ChartYamlExtractor(),
 });
 
 export default ExtractorRegistry;
