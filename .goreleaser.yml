@@ -95,6 +95,8 @@ brews:
       email: mjpitz@deps.cloud
     homepage: https://deps.cloud/
     description: Command line interface to the deps.cloud API
+    install: |
+      bin.install "deps"
 
 nfpms:
   - id: depscloud-cli-deb
