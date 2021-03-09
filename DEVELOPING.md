@@ -43,22 +43,20 @@ You can run other platforms like CockroachDB, MariaDB, PostgreSQL, and MySQL as 
 
 ## Rebuilding the base images
 
-These images are are used to to build the remainder of the application as well as a base
-for the runtime docker images. The default is to build the base images without a registry
-prefix:
+These images provide the foundation for building the rest of the application.
+The default is to build the base images without a registry prefix.
 
 ```bash
 make dockerfiles
 ```
 
-To build the base images locally tagged as required for the downstream builds:
+To build the base images locally tagged as required for the downstream builds set `USE_REGISTRY=1`.
 
 ```bash
 make USE_REGISTRY=1 dockerfiles
 ```
 
-Remember that an explicit pull or removal of the locally built images maybe neccessary to
-use the public versions
+Remember that an explicit pull or removal of the locally built images maybe neccessary to use the public versions.
 
 ```
 docker pull ocr.sh/depscloud/base
