@@ -37,7 +37,7 @@ export default class ChartYamlExtractor implements Extractor {
 
     public matchConfig(): MatchConfig {
         return {
-            includes: [ "Chart.yaml" ],
+            includes: [ "**/Chart.yaml" ],
             excludes: [],
         };
     }
