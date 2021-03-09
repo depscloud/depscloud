@@ -107,7 +107,10 @@ extractor/docker:
 extractor/install:
 	@cd extractor && npm run build
 
-extractor/test:
+extractor/node_modules: extractor/package-lock.json
+	@cd extractor && npm ci
+
+extractor/test: extractor/node_modules
 	@cd extractor && npm run test
 
 
