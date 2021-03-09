@@ -41,4 +41,28 @@ make run/docker
 By default, we run with a SQLite configuration.
 You can run other platforms like CockroachDB, MariaDB, PostgreSQL, and MySQL as well.
 
+## Rebuilding the base images
+
+These images are are used to to build the remainder of the application as well as a base
+for the runtime docker images. The default is to build the base images without a registry
+prefix:
+
+```bash
+make dockerfiles
+```
+
+To build the base images locally tagged as required for the downstream builds:
+
+```bash
+make USE_REGISTRY=1 dockerfiles
+```
+
+Remember that an explicit pull or removal of the locally built images maybe neccessary to
+use the public versions
+
+```
+docker pull ocr.sh/depscloud/base
+docker pull ocr.sh/depscloud/devbase
+```
+
 [docker]: https://deps.cloud/docs/deploy/docker/

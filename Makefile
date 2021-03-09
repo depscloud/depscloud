@@ -3,6 +3,11 @@ VERSION ?= local
 TIMESTAMP ?= $(shell date +%Y-%m-%dT%T)
 LD_FLAGS := -X main.version=${VERSION} -X main.commit=${GIT_SHA} -X main.date=${TIMESTAMP}
 
+# Use a registry prefix when building the docker images localy.
+ifeq (${USE_REGISTRY},1)
+	REGISTRY_PREFIX = ocr.sh/
+endif
+
 default: docker
 
 build-deps: .build-deps
@@ -78,11 +83,11 @@ dockerfiles: base/docker devbase/docker
 
 ## Build the `depscloud/base:latest` development container
 base/docker:
-	docker build ./dockerfiles/base -t depscloud/base:latest
+	docker build ./dockerfiles/base -t ${REGISTRY_PREFIX}depscloud/base:latest
 
 ## Build the `depscloud/devbase:latest` development container
 devbase/docker:
-	docker build ./dockerfiles/devbase -t depscloud/devbase:latest
+	docker build ./dockerfiles/devbase -t ${REGISTRY_PREFIX}depscloud/devbase:latest
 
 ## Build `depscloud/deps:latest` development container
 deps/docker:
