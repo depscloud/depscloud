@@ -18,7 +18,7 @@ build-deps: .build-deps
 #	GO111MODULE=off go get -u github.com/google/addlicense
 
 deps: .deps
-# seeL https://stackoverflow.com/a/59272238 for explination of if block.
+# see: https://stackoverflow.com/a/59272238 for explination of if block.
 .deps:  | $(if $(wildcard extractor), extractor/node_modules)
 	go mod download
 	go mod verify
