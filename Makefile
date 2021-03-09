@@ -73,6 +73,17 @@ test: internal/hack/ extractor/test
 .install:
 	go install -ldflags="${LD_FLAGS}" ./${BINARY}/
 
+# Build the dockerfiles
+dockerfiles: base/docker devbase/docker
+
+## Build the `depscloud/base:latest` development container
+base/docker:
+	docker build ./dockerfiles/base -t depscloud/base:latest
+
+## Build the `depscloud/devbase:latest` development container
+devbase/docker:
+	docker build ./dockerfiles/devbase -t depscloud/devbase:latest
+
 ## Build `depscloud/deps:latest` development container
 deps/docker:
 	@make .docker BINARY=deps
