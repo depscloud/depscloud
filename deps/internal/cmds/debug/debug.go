@@ -7,8 +7,7 @@ import (
 
 	"github.com/depscloud/depscloud/deps/internal/client"
 	"github.com/depscloud/depscloud/internal/v"
-
-	"github.com/mjpitz/go-gracefully/report"
+	"github.com/mjpitz/go-gracefully/check"
 
 	"github.com/spf13/cobra"
 )
@@ -31,14 +30,14 @@ func Command(version v.Info) *cobra.Command {
 
 			// Printing Server version information
 			if versionErr != nil {
-				fmt.Println(fmt.Sprintf("Error While retrieving server version"))
+				fmt.Println(fmt.Sprintf("Error While retrieving server version"), versionErr)
 			} else {
 				fmt.Println(fmt.Sprintf("Server Version: %s", serverVersion))
 			}
 
 			// Printing Server Health information
 			if healthErr != nil {
-				fmt.Println(fmt.Sprintf("Error While retrieving server health"))
+				fmt.Println(fmt.Sprintf("Error While retrieving server health"), healthErr)
 			} else {
 				fmt.Println(fmt.Sprintf("Server Health: %s", healthString))
 			}
@@ -77,13 +76,12 @@ func (s *httpDebugClient) GetHealth() (string, error) {
 	}
 	defer resp.Body.Close()
 
-	r := report.Report{}
+	r := check.Result{}
 	err = json.NewDecoder(resp.Body).Decode(&r)
 	if err != nil {
 		return "", err
 	}
 
-	r.Results = nil
 	healthString, err := json.Marshal(r)
 	if err != nil {
 		return "", err
