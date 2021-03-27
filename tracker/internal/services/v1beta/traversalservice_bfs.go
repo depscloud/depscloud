@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/depscloud/api/v1beta"
-	"github.com/depscloud/api/v1beta/graphstore"
 	"github.com/depscloud/depscloud/internal/logger"
 
 	"go.uber.org/zap"
@@ -15,15 +14,6 @@ func (t *traversalService) BreadthFirstSearch(server v1beta.TraversalService_Bre
 	defer cancel()
 
 	log := logger.Extract(ctx)
-
-	call, err := t.gs.Traverse(ctx)
-	if err != nil {
-		log.Error("", zap.Error(err))
-		return ErrQueryFailure
-	}
-	defer call.Send(&graphstore.TraverseRequest{
-		Cancel: true,
-	})
 
 	stream := consumeStream(ctx, server)
 
