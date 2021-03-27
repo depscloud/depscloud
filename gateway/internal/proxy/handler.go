@@ -88,7 +88,10 @@ func passthru(log *zap.Logger, ss grpc.ServerStream, cs grpc.ClientStream) error
 		case serverErr := <-serverChan:
 			ss.SetTrailer(cs.Trailer())
 
-			if serverErr != io.EOF {
+			// special case eof for streaming operations
+			if serverErr == io.EOF {
+				return nil
+			} else if serverErr != nil {
 				return serverErr
 			}
 		}
