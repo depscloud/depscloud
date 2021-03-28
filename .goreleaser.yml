@@ -53,8 +53,7 @@ builds:
     dir: tracker
     main: ./main.go
     binary: tracker
-    env:
-      - CGO_ENABLED=0
+    # don't set cgo, otherwise sqlite won't work
     goos:
       - linux
     goarch:
