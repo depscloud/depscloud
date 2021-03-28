@@ -149,21 +149,18 @@ func main() {
 			}
 
 			// used only for health checks, don't route through self
-			// TODO: move over to v1beta post v0.3.0
-
-			extractionService := extractor.NewDependencyExtractorClient(extractorConn)
-			sourceService := tracker.NewSourceServiceClient(trackerConn)
-			moduleService := tracker.NewModuleServiceClient(trackerConn)
-
-			//extractionService := v1beta.NewManifestExtractionServiceClient(extractorConn)
-			//sourceService := v1beta.NewSourceServiceClient(trackerConn)
-			//moduleService := v1beta.NewModuleServiceClient(trackerConn)
 
 			serverConfig.GRPC.ServerOptions = []grpc.ServerOption{
 				grpc.CustomCodec(proxy.ServerCodec()),
 				grpc.UnknownServiceHandler(proxy.UnknownServiceHandler(router)),
 			}
-			serverConfig.Checks = checks.Checks(extractionService, sourceService, moduleService)
+
+			serverConfig.Checks = checks.Checks(
+				v1beta.NewManifestExtractionServiceClient(extractorConn),
+				v1beta.NewSourceServiceClient(trackerConn),
+				v1beta.NewModuleServiceClient(trackerConn),
+			)
+
 			serverConfig.Endpoints = []mux.ServerEndpoint{
 				func(ctx context.Context, grpcServer *grpc.Server, httpServer *http.ServeMux) {
 					gatewayMux := runtime.NewServeMux()
