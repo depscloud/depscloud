@@ -46,7 +46,7 @@ require (
 	golang.org/x/tools v0.1.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20201211151036-40ec1c210f7a // indirect
-	google.golang.org/grpc v1.34.0
+	google.golang.org/grpc v1.37.1
 	google.golang.org/protobuf v1.25.1-0.20200805231151-a709e31e5d12
 	gopkg.in/src-d/go-billy.v4 v4.3.2
 	gopkg.in/src-d/go-git.v4 v4.13.1
