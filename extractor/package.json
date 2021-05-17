@@ -31,7 +31,7 @@
     "@grpc/grpc-js": "1.2.2",
     "@grpc/proto-loader": "0.6.2",
     "caporal": "latest",
-    "cheerio": "1.0.0-rc.5",
+    "cheerio": "1.0.0-rc.9",
     "express": "4.17.1",
     "express-prometheus-middleware": "1.0.0",
     "gradle-to-js": "2.0.0",
