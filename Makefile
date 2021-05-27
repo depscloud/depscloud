@@ -3,7 +3,7 @@ VERSION ?= local
 TIMESTAMP ?= $(shell date +%Y-%m-%dT%T)
 LD_FLAGS := -X main.version=${VERSION} -X main.commit=${GIT_SHA} -X main.date=${TIMESTAMP}
 
-# Use a registry prefix when building the docker images localy.
+# Use a registry prefix when building the docker images locally.
 ifeq (${USE_REGISTRY},1)
 	REGISTRY_PREFIX = ocr.sh/
 endif
@@ -18,7 +18,7 @@ build-deps: .build-deps
 #	GO111MODULE=off go get -u github.com/google/addlicense
 
 deps: .deps
-# see: https://stackoverflow.com/a/59272238 for explination of if block.
+# see: https://stackoverflow.com/a/59272238 for explanation of if block.
 .deps:  | $(if $(wildcard extractor), extractor/node_modules)
 	go mod download
 	go mod verify
