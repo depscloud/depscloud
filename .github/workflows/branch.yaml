@@ -23,8 +23,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      GOPATH: "~/go"
     steps:
       - name: Prepare
         run: sudo apt-get update && sudo apt-get install -y sqlite3 ca-certificates git
@@ -43,6 +41,7 @@ jobs:
 
       - name: Resolve dependencies
         run: |
+          export GOPATH="$HOME/go"
           echo "${GOPATH}/bin" >> $GITHUB_PATH
           make build-deps deps
 
