@@ -34,36 +34,35 @@ The second is the domain specific interface which focuses on modeling relationsh
 
 ## Navigating the repo
 
-`deps/` - This directory contains all the source code specific to the `deps` component.
-
 `docker/` - This directory contains docker-compose configuration for spinning up depscloud with different databases.
 This was ported in from the [depscloud/deploy](https://github.com/depscloud/deploy) repository to help simplify development.
 
 `dockerfiles/` - This directory contains various `Dockerfile` used to build different parts of the project.
 The only Dockerfile that isn't under this directory is the one used for the `extractor` process.
 
-`extractor/` - This directory contains all the source code specific to the `extractor` component.
+`internal/` - This directory contains source code shared by many of the Go processes.
+
+`services/` - Contains the various components of the deps.cloud ecosystem.
+
+`services/deps/` - This directory contains all the source code specific to the `deps` component.
+It's currently the primary form of interaction with the API.
+
+`services/extractor/` - This directory contains all the source code specific to the `extractor` component.
 This service is entirely stateless.
 It's only responsibility is to parse string text for the various files and return a standard dependency format.
 This makes it easy to scale out as needed. 
 
-`gateway/` - This directory contains all the source code specific to the `gateway` component.
+`services/gateway/` - This directory contains all the source code specific to the `gateway` component.
 It serves a generic gRPC proxy that makes it easy to route requests to the appropriate backend services.
 It also leverages `grpc-gateway` to map RESTful routes to gRPC services.
 Because the upstream `tracker` process leverages long-lived streams, `gateway` must also support them.
 This requires a little more attention on the load balancing side of the world.
 
-`indexer/` - This directory contains all the source code specific to the `indexer` component.
+`services/indexer/` - This directory contains all the source code specific to the `indexer` component.
 While it currently runs as a CronJob, the next step is to turn this more into a controller.
 It will be responsible for pulling your upstream VCS provider and determining when changes have occurred.
 This will allow for a more real-time update of information.
 
-`internal/` - This directory contains source code shared by many of the Go processes.
-
-`monorepo/` - Mostly scripts I (@mjpitz) have used to merge the once numerous repositories into a single repo.
-Using git-subtree made it easy to migrate git-history.
-Not deleted yet, as I'm contemplating just how far I want to go down the monorepo route.
-
-`tracker/` - This directory contains all the source code specific to the `tracker` component.
+`services/tracker/` - This directory contains all the source code specific to the `tracker` component.
 This service is stateless and relatively easy to scale out.
 The gRPC services it offers leverage long-lived streams so load balancing requires a little more attention.

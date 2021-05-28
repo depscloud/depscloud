@@ -1,8 +1,6 @@
 # deps.cloud
 
-<img alt="logo" width="64" src="https://deps.cloud/favicons/android-chrome-512x512.png"/>
-
-deps.cloud is a tool to help understand how projects relate to one another.
+deps.cloud is a tool to help companies understand what libraries and projects their systems use.
 It works by detecting dependencies defined in common [manifest files] (`pom.xml`, `package.json`, `go.mod`, etc).
 Using this information, we’re able to answer questions about project dependencies.
 
@@ -10,7 +8,7 @@ Using this information, we’re able to answer questions about project dependenc
 * Which projects use _eslint_ as a non-dev dependency?
 * What open source libraries do we use the most?
 
-[manifest files]: https://deps.cloud/docs/concepts/manifests/
+[manifest files]: https://deps.cloud/docs/concepts/terminology/#manifest-file
 
 ## To start using deps.cloud
 
@@ -46,12 +44,6 @@ We also have a [Slack] channel.
 [![coverage](https://img.shields.io/codecov/c/gh/depscloud/depscloud/main)](https://codecov.io/gh/depscloud/depscloud)
 [![dockerfiles workflow](https://github.com/depscloud/depscloud/workflows/dockerfiles/badge.svg?branch=main)](https://github.com/depscloud/depscloud/actions?query=workflow%3Adockerfiles+branch%3Amain)
 [![goreleaser branch workflow](https://github.com/depscloud/depscloud/workflows/goreleaser-branch/badge.svg?branch=main)](https://github.com/depscloud/depscloud/actions?query=workflow%3Agoreleaser-branch+branch%3Amain)
-
-[![deps integration workflow](https://github.com/depscloud/depscloud/workflows/deps-integration/badge.svg?branch=main)](https://github.com/depscloud/depscloud/actions?query=workflow%3Adeps-integration+branch%3Amain)
-[![extractor integration workflow](https://github.com/depscloud/depscloud/workflows/extractor-integration/badge.svg?branch=main)](https://github.com/depscloud/depscloud/actions?query=workflow%3Aextractor-integration+branch%3Amain)
-[![gateway integration workflow](https://github.com/depscloud/depscloud/workflows/gateway-integration/badge.svg?branch=main)](https://github.com/depscloud/depscloud/actions?query=workflow%3Agateway-integration+branch%3Amain)
-[![indexer integration workflow](https://github.com/depscloud/depscloud/workflows/indexer-integration/badge.svg?branch=main)](https://github.com/depscloud/depscloud/actions?query=workflow%3Aindexer-integration+branch%3Amain)
-[![tracker integration workflow](https://github.com/depscloud/depscloud/workflows/tracker-integration/badge.svg?branch=main)](https://github.com/depscloud/depscloud/actions?query=workflow%3Atracker-integration+branch%3Amain)
 
 ## Release Checks
 
