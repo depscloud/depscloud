@@ -138,6 +138,9 @@ docker-extractor:
 install-extractor:
 	@cd services/extractor && npm run build
 
+package-extractor:
+	@cd services/extractor && npm run build && npm run package
+
 services/extractor/node_modules: services/extractor/package-lock.json
 	@cd services/extractor && npm install
 

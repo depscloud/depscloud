@@ -35,4 +35,4 @@ jobs:
       - name: Retag and Push
         run: | 
           docker tag depscloud/${{ matrix.component }}:latest depscloud/${{ matrix.component }}:nightly
-          docker push depscloud/${{ matrix.component }}:nightly 
+          docker push depscloud/${{ matrix.component }}:nightly

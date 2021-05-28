@@ -17,8 +17,6 @@ RUN npm install
 COPY services/${BINARY}/ .
 
 RUN npm run build && \
-    npm run lint && \
-    npm run test && \
     npm run prepackage
 
 USER 13490:13490
