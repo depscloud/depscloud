@@ -47,13 +47,12 @@ build-deps: .build-deps
 #	GO111MODULE=off go get -u github.com/google/addlicense
 
 deps: .deps
-# see: https://stackoverflow.com/a/59272238 for explanation of if block.
-.deps:  | $(if $(wildcard extractor), services/extractor/node_modules)
+.deps: services/extractor/node_modules
 	go mod download
 	go mod verify
 
 fmt: .fmt
-.fmt:  | $(if $(wildcard extractor), services/extractor/node_modules)
+.fmt:
 	cd services/extractor && npm run lint
 
 	ls -1 services | grep -v extractor | xargs -I{} echo -n "./services/{} " | \
