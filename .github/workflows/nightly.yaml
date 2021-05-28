@@ -30,7 +30,7 @@ jobs:
         env:
           VERSION: nightly
         run: |
-          make ${{ matrix.component }}/docker
+          make docker-${{ matrix.component }}
         
       - name: Retag and Push
         run: | 

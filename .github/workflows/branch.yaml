@@ -4,12 +4,8 @@ on:
   pull_request:
     paths:
       - ".github/workflows/branch.yaml"
-      - "deps/**"
-      - "extractor/**"
-      - "gateway/**"
-      - "indexer/**"
       - "internal/**"
-      - "tracker/**"
+      - "services/**"
       - ".goreleaser.yml"
       - "codecov.yml"
       - "go.mod"
@@ -17,12 +13,8 @@ on:
   push:
     paths:
       - ".github/workflows/branch.yaml"
-      - "deps/**"
-      - "extractor/**"
-      - "gateway/**"
-      - "indexer/**"
       - "internal/**"
-      - "tracker/**"
+      - "services/**"
       - ".goreleaser.yml"
       - "codecov.yml"
       - "go.mod"
