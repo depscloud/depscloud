@@ -1,3 +1,31 @@
+define WELCOME
+
+Welcome to the deps.cloud project's source repository!
+
+  :service must be one of - deps, extractor, gateway, indexer, tracker
+  :db must be one of - cockroachdb, mariadb, mysql, postgres, sqlite
+
+Available Targets:
+
+        build-deps    install some development tools you need for the project
+              deps    install software dependencies for the project
+
+              test    runs unit tests for all projects
+     test-:service    run unit tests for :service
+
+            docker    build all containers using docker (common)
+   docker-:service    build the container for :service using docker
+
+        run-docker    run the stack using docker and a sqlite backend
+    run-docker-:db    run the stack using docker and a :db backend
+
+           install    installs all application binaries locally (rarely used)
+  install-:service    install a specific service locally (often used for deps)
+
+
+endef
+export WELCOME
+
 GIT_SHA ?= $(shell git rev-parse HEAD)
 VERSION ?= local
 TIMESTAMP ?= $(shell date +%Y-%m-%dT%T)
@@ -8,7 +36,8 @@ ifeq (${USE_REGISTRY},1)
 	REGISTRY_PREFIX = ocr.sh/
 endif
 
-default: docker
+help:
+	@echo "$$WELCOME"
 
 build-deps: .build-deps
 .build-deps:
@@ -18,22 +47,20 @@ build-deps: .build-deps
 #	GO111MODULE=off go get -u github.com/google/addlicense
 
 deps: .deps
-# see: https://stackoverflow.com/a/59272238 for explanation of if block.
-.deps:  | $(if $(wildcard extractor), extractor/node_modules)
+.deps: services/extractor/node_modules
 	go mod download
 	go mod verify
 
 fmt: .fmt
 .fmt:
-	cd extractor && npm run lint
-	goimports -w ./deps ./gateway ./indexer ./tracker ./internal
-	go-groups -w ./deps ./gateway ./indexer ./tracker ./internal
-	gofmt -s -w ./deps ./gateway ./indexer ./tracker ./internal
-#	addlicense -c deps.cloud -l mit ./deps/**/*.go ./extractor/src/**/*.ts ./gateway/**/*.go ./indexer/**/*.go ./tracker/**/*.go ./internal/**/*.go
+	cd services/extractor && npm run lint
 
-docker: deps/docker extractor/docker gateway/docker indexer/docker tracker/docker
+	ls -1 services | grep -v extractor | xargs -I{} echo -n "./services/{} " | \
+		xargs -I++ bash -c '{ goimports -w ./internal ++ ; go-groups -w ./internal ++ ; gofmt -s -w ./internal ++ ; }'
 
-install: deps/install extractor/install gateway/install indexer/install tracker/install
+docker: docker-deps docker-extractor docker-gateway docker-indexer docker-tracker
+
+install: install-deps install-extractor install-gateway install-indexer install-tracker
 
 generate:
 	docker run --rm -it \
@@ -60,12 +87,15 @@ internal/hack/:
             -CA internal/hack/ca.crt -CAkey internal/hack/ca.key \
             -set_serial 01 -out internal/hack/test.crt
 
-test: internal/hack/ extractor/test
-	@make .test PACKAGES="./deps/... ./gateway/... ./indexer/... ./tracker/... ./internal/..."
+test: internal/hack/ test-extractor
+	@ls -1 services | grep -v extractor | xargs -I{} echo -n "./services/{}/... " | \
+		xargs -I{} make .test PACKAGES="./internal/... {}"
 
 ##===
 ## Common
 ##===
+
+LANG ?= go
 
 .docker:
 	docker build . \
@@ -73,97 +103,100 @@ test: internal/hack/ extractor/test
 		--build-arg VERSION=${VERSION} \
 		--build-arg GIT_SHA=${GIT_SHA} \
 		-t depscloud/${BINARY}:latest \
-		-f dockerfiles/go-branch/Dockerfile
+		-f dockerfiles/${LANG}-branch/Dockerfile
 
 .install:
-	go install -ldflags="${LD_FLAGS}" ./${BINARY}/
+	go install -ldflags="${LD_FLAGS}" ./services/${BINARY}/
 
 # Build the dockerfiles
-dockerfiles: base/docker devbase/docker
+dockerfiles: docker-base docker-devbase
 
 ## Build the `depscloud/base:latest` development container
-base/docker:
+docker-base:
 	docker build ./dockerfiles/base -t ${REGISTRY_PREFIX}depscloud/base:latest
 
 ## Build the `depscloud/devbase:latest` development container
-devbase/docker:
+docker-devbase:
 	docker build ./dockerfiles/devbase -t ${REGISTRY_PREFIX}depscloud/devbase:latest
 
 ## Build `depscloud/deps:latest` development container
-deps/docker:
+docker-deps:
 	@make .docker BINARY=deps
 
-deps/install:
+install-deps:
 	@make .install BINARY=deps
 
-deps/test:
-	@make .test PACKAGES="./deps/..."
+test-deps:
+	@make .test PACKAGES="./services/deps/..."
 
 
 ## Build `depscloud/extractor:latest` development container
-extractor/docker:
-	@cd extractor && npm run docker
+docker-extractor:
+	@make .docker BINARY=extractor LANG=node
 
-extractor/install:
-	@cd extractor && npm run build
+install-extractor:
+	@cd services/extractor && npm run build
 
-extractor/node_modules: extractor/package-lock.json
-	@cd extractor && npm install
+package-extractor:
+	@cd services/extractor && npm run build && npm run package
 
-extractor/test: extractor/node_modules
-	@cd extractor && npm run test
+services/extractor/node_modules: services/extractor/package-lock.json
+	@cd services/extractor && npm install
+
+test-extractor: services/extractor/node_modules
+	@cd services/extractor && npm run test
 
 
 ## Build `depscloud/gateway:latest` development container
-gateway/docker:
+docker-gateway:
 	@make .docker BINARY=gateway
 
-gateway/install:
+install-gateway:
 	@make .install BINARY=gateway
 
-gateway/test:
-	@make .test PACKAGES="./gateway/..."
+test-gateway:
+	@make .test PACKAGES="./services/gateway/..."
 
 
 ## Build `depscloud/deps:latest` development container
-indexer/docker:
+docker-indexer:
 	@make .docker BINARY=indexer
 
-indexer/install:
+install-indexer:
 	@make .install BINARY=indexer
 
-indexer/test:
-	@make .test PACKAGES="./indexer/..."
+test-indexer:
+	@make .test PACKAGES="./services/indexer/..."
 
 
 ## Build `depscloud/deps:latest` development container
-tracker/docker:
+docker-tracker:
 	@make .docker BINARY=tracker
 
-tracker/install:
+install-tracker:
 	@make .install BINARY=tracker
 
-tracker/test:
-	@make .test PACKAGES="./tracker/..."
+test-tracker:
+	@make .test PACKAGES="./services/tracker/..."
 
 ## helper docker-compose configurations
 
 .run:
 	@cd docker/$(PLATFORM) && docker-compose up
 
-run/docker/cockroachdb:
+run-docker-cockroachdb:
 	@make .run PLATFORM=cockroachdb
 
-run/docker/mariadb:
+run-docker-mariadb:
 	@make .run PLATFORM=mariadb
 
-run/docker/mysql:
+run-docker-mysql:
 	@make .run PLATFORM=mysql
 
-run/docker/postgres:
+run-docker-postgres:
 	@make .run PLATFORM=postgres
 
-run/docker/sqlite:
+run-docker-sqlite:
 	@make .run PLATFORM=sqlite
 
-run/docker: run/docker/sqlite
+run-docker: run-docker-sqlite

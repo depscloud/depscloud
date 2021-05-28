@@ -30,9 +30,9 @@ jobs:
         env:
           VERSION: nightly
         run: |
-          make ${{ matrix.component }}/docker
+          make docker-${{ matrix.component }}
         
       - name: Retag and Push
         run: | 
           docker tag depscloud/${{ matrix.component }}:latest depscloud/${{ matrix.component }}:nightly
-          docker push depscloud/${{ matrix.component }}:nightly 
+          docker push depscloud/${{ matrix.component }}:nightly

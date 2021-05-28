@@ -6,7 +6,7 @@ snapshot:
 builds:
   # deps command line interface
   - id: deps
-    dir: deps
+    dir: services/deps
     main: ./main.go
     binary: deps
     env:
@@ -24,7 +24,7 @@ builds:
 
   # gateway service
   - id: gateway
-    dir: gateway
+    dir: services/gateway
     main: ./main.go
     binary: gateway
     env:
@@ -37,7 +37,7 @@ builds:
 
   # indexing cron
   - id: indexer
-    dir: indexer
+    dir: services/indexer
     main: ./main.go
     binary: indexer
     env:
@@ -50,7 +50,7 @@ builds:
 
   # tracker service
   - id: tracker
-    dir: tracker
+    dir: services/tracker
     main: ./main.go
     binary: tracker
     # don't set cgo, otherwise sqlite won't work

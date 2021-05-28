@@ -9,12 +9,13 @@ COPY go.sum .
 COPY Makefile .
 RUN make build-deps deps
 
-COPY . .
-
 ARG VERSION=""
 ARG GIT_SHA=""
 ARG BINARY
-RUN make ${BINARY}/install VERSION="${VERSION}" GIT_SHA="${GIT_SHA}"
+
+COPY internal/ internal/
+COPY services/${BINARY}/ services/${BINARY}/
+RUN make install-${BINARY} VERSION="${VERSION}" GIT_SHA="${GIT_SHA}"
 
 FROM ocr.sh/depscloud/base:latest
 ARG BINARY

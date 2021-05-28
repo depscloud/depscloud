@@ -3,5 +3,4 @@
 dist/
 docker/
 dockerfiles/
-extractor/
-monorepo/
+services/**/node_modules

@@ -5,21 +5,14 @@ on:
     paths:
       - ".goreleaser.yml"
       - ".github/workflows/goreleaser-branch.yaml"
-      - "deps/**"
-      - "gateway/**"
-      - "indexer/**"
-      - "internal/**"
-      - "tracker/**"
+      - "services/**/*.go"
       - "go.mod"
       - "go.sum"
   push:
     paths:
       - ".goreleaser.yml"
       - ".github/workflows/goreleaser-branch.yaml"
-      - "deps/**"
-      - "gateway/**"
-      - "indexer/**"
-      - "tracker/**"
+      - "services/**/*.go"
       - "go.mod"
       - "go.sum"
 

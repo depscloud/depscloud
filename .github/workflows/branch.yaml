@@ -4,12 +4,8 @@ on:
   pull_request:
     paths:
       - ".github/workflows/branch.yaml"
-      - "deps/**"
-      - "extractor/**"
-      - "gateway/**"
-      - "indexer/**"
       - "internal/**"
-      - "tracker/**"
+      - "services/**"
       - ".goreleaser.yml"
       - "codecov.yml"
       - "go.mod"
@@ -17,12 +13,8 @@ on:
   push:
     paths:
       - ".github/workflows/branch.yaml"
-      - "deps/**"
-      - "extractor/**"
-      - "gateway/**"
-      - "indexer/**"
       - "internal/**"
-      - "tracker/**"
+      - "services/**"
       - ".goreleaser.yml"
       - "codecov.yml"
       - "go.mod"
@@ -42,19 +34,27 @@ jobs:
 
       - uses: actions/setup-node@v2-beta
         with:
-          node-version: '12'
+          node-version: '16'
 
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Build
+      - name: Resolve dependencies
         run: |
-          export GOPATH="${HOME}/go"
-          export PATH="${GOPATH}/bin:${PATH}"
-          VERSION=${GITHUB_REF##*/} make build-deps deps install test
+          export GOPATH="$HOME/go"
+          echo "${GOPATH}/bin" >> $GITHUB_PATH
+          make build-deps deps
 
-      - name: Upload coverage to Codecov
+      - name: Compile binaries
+        run: |
+          VERSION=${GITHUB_REF##*/} make install
+
+      - name: Run tests
+        run: |
+          make test
+
+      - name: Upload coverage
         uses: codecov/codecov-action@v1
         if: github.ref == 'refs/heads/main'
         with:
-          files: ./extractor/coverage/clover.xml,./coverage.txt
+          files: ./services/extractor/coverage/clover.xml,./coverage.txt
