@@ -95,7 +95,7 @@ test: internal/hack/ test-extractor
 ## Common
 ##===
 
-LANG ?= go
+APP_LANG ?= go
 
 .docker:
 	docker build . \
@@ -103,7 +103,7 @@ LANG ?= go
 		--build-arg VERSION=${VERSION} \
 		--build-arg GIT_SHA=${GIT_SHA} \
 		-t depscloud/${BINARY}:latest \
-		-f dockerfiles/${LANG}-branch/Dockerfile
+		-f dockerfiles/${APP_LANG}-branch/Dockerfile
 
 .install:
 	go install -ldflags="${LD_FLAGS}" ./services/${BINARY}/
@@ -132,7 +132,7 @@ test-deps:
 
 ## Build `depscloud/extractor:latest` development container
 docker-extractor:
-	@make .docker BINARY=extractor LANG=node
+	@make .docker BINARY=extractor APP_LANG=node
 
 install-extractor:
 	@cd services/extractor && npm run build
