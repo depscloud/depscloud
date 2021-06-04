@@ -37,6 +37,7 @@ import (
 	"go.uber.org/zap"
 
 	"google.golang.org/grpc"
+	_ "google.golang.org/grpc/health"
 )
 
 // variables set during build using -X ldflag

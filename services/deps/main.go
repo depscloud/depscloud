@@ -12,6 +12,8 @@ import (
 	"github.com/depscloud/depscloud/services/deps/internal/writer"
 
 	"github.com/spf13/cobra"
+
+	_ "google.golang.org/grpc/health"
 )
 
 const long = `
