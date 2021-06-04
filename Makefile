@@ -47,9 +47,9 @@ build-deps: .build-deps
 #	GO111MODULE=off go get -u github.com/google/addlicense
 
 deps: .deps
-.deps: services/extractor/node_modules
-	go mod download
-	go mod verify
+.deps:
+	[[ -e services/extractor ]] && { make services/extractor/node_modules; }
+	[[ -e go.mod ]] && { go mod download; go mod verify; }
 
 fmt: .fmt
 .fmt:
