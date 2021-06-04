@@ -48,8 +48,8 @@ build-deps: .build-deps
 
 deps: .deps
 .deps:
-	[[ -e services/extractor ]] && { make services/extractor/node_modules; }
-	[[ -e go.mod ]] && { go mod download; go mod verify; }
+	[[ ! -e services/extractor ]] || { make services/extractor/node_modules; }
+	[[ ! -e go.mod ]] || { go mod download; go mod verify; }
 
 fmt: .fmt
 .fmt:
@@ -64,10 +64,10 @@ install: install-deps install-extractor install-gateway install-indexer install-
 
 generate:
 	docker run --rm -it \
-		-v $(PWD)/indexer:/go/src/github.com/depscloud/depscloud/indexer \
-		-w /go/src/github.com/depscloud/depscloud/indexer \
-		ocr.sh/depscloud/builder-grpc-golang \
-		go generate ./...
+		-v $(PWD)/services/indexer/internal/config:/depscloud \
+		-w /depscloud \
+		depscloud/builder-grpc-golang \
+		protoc -I=. --go_out=paths=source_relative:. ./config.proto
 	make fmt
 
 .test:
