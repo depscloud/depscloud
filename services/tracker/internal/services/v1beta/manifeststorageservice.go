@@ -30,6 +30,8 @@ func RegisterManifestStorageServiceServer(server *grpc.Server, graphStore graphs
 }
 
 type manifestStorageService struct {
+	v1beta.UnsafeManifestStorageServiceServer
+
 	graphStore graphstore.GraphStoreClient
 }
 

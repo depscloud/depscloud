@@ -12,6 +12,8 @@ import (
 
 // GraphStoreServer encapsulates the logic for storing a graph using a generic driver.
 type GraphStoreServer struct {
+	graphstore.UnsafeGraphStoreServer
+
 	Driver Driver
 }
 

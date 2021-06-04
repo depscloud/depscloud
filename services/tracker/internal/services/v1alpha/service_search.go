@@ -24,6 +24,8 @@ func RegisterSearchService(server *grpc.Server, gs store.GraphStoreClient) {
 }
 
 type searchService struct {
+	tracker.UnsafeSearchServiceServer
+
 	gs store.GraphStoreClient
 
 	ss tracker.SourceServiceServer

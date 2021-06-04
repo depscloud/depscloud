@@ -21,6 +21,8 @@ func RegisterTraversalServiceServer(server *grpc.Server, graphStore graphstore.G
 }
 
 type traversalService struct {
+	v1beta.UnsafeTraversalServiceServer
+
 	gs graphstore.GraphStoreClient
 	ms v1beta.ModuleServiceServer
 	ss v1beta.SourceServiceServer

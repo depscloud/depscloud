@@ -21,6 +21,8 @@ func RegisterSourceService(server *grpc.Server, gs store.GraphStoreClient) {
 }
 
 type sourceService struct {
+	tracker.UnsafeSourceServiceServer
+
 	gs store.GraphStoreClient
 }
 

@@ -3,10 +3,9 @@ package proxy
 import (
 	"fmt"
 
-	"github.com/gogo/protobuf/proto"
-
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/encoding"
+	"google.golang.org/protobuf/proto"
 
 	"google.golang.org/protobuf/runtime/protoiface"
 )
@@ -17,12 +16,12 @@ func init() {
 
 // ServerCodec exposes a grpc.Codec that can be used by a grpc.Server.
 func ServerCodec() grpc.Codec {
-	return &rawCodec{&gogoProtoCodec{}}
+	return &rawCodec{&protoCodec{}}
 }
 
 // Codec exposes a grpc Codec.
 func Codec() encoding.Codec {
-	return &rawCodec{&gogoProtoCodec{}}
+	return &rawCodec{&protoCodec{}}
 }
 
 // frame allows the proxy to transparently pass along messages to the backend.
@@ -74,23 +73,23 @@ func (c *rawCodec) String() string {
 
 var _ encoding.Codec = &rawCodec{}
 
-// gogoProtoCodec is a proto codec using gogo/protobuf
-type gogoProtoCodec struct{}
+// protoCodec is a proto codec using google/protobuf
+type protoCodec struct{}
 
-func (c *gogoProtoCodec) Name() string {
+func (c *protoCodec) Name() string {
 	return c.String()
 }
 
-func (c *gogoProtoCodec) Marshal(v interface{}) ([]byte, error) {
+func (c *protoCodec) Marshal(v interface{}) ([]byte, error) {
 	return proto.Marshal(v.(proto.Message))
 }
 
-func (c *gogoProtoCodec) Unmarshal(data []byte, v interface{}) error {
+func (c *protoCodec) Unmarshal(data []byte, v interface{}) error {
 	return proto.Unmarshal(data, v.(proto.Message))
 }
 
-func (c *gogoProtoCodec) String() string {
-	return "gogoproto"
+func (c *protoCodec) String() string {
+	return "proto"
 }
 
-var _ encoding.Codec = &gogoProtoCodec{}
+var _ encoding.Codec = &protoCodec{}
