@@ -134,9 +134,9 @@ func topologyCommand(
 	tiered := false
 
 	cmd := &cobra.Command{
-		Use:     "topology",
-		Aliases: []string{"topo"},
-		Short:   "Get the associated topology",
+		Use:     "tree",
+		Aliases: []string{"topology", "topo"},
+		Short:   "Get the associated tree using the provided module as the root",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			results, err := topology(cmd.Context(), traversalService, requestConverter(req))
 

@@ -12,6 +12,7 @@ import (
 	"github.com/depscloud/api/v1alpha/extractor"
 	"github.com/depscloud/api/v1alpha/tracker"
 	"github.com/depscloud/api/v1beta"
+
 	"github.com/depscloud/depscloud/internal/client"
 	"github.com/depscloud/depscloud/internal/logger"
 	"github.com/depscloud/depscloud/internal/mux"

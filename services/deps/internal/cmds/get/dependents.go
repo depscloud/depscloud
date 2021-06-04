@@ -20,8 +20,8 @@ func DependentsCommand(
 		Aliases: []string{"dependent"},
 		Short:   "Get the list of modules that depend on the given module",
 		Example: strings.Join([]string{
-			"deps get dependents -l go -o github.com -m depscloud/api",
 			"deps get dependents -l go -n github.com/depscloud/api",
+			"deps get dependents -l node -n @depscloud/api",
 		}, "\n"),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx := cmd.Context()
