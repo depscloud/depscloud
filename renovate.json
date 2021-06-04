@@ -4,6 +4,6 @@
     "schedule:weekly"
   ],
   "excludeCommitPaths": [
-    "extractor/**/testdata/**"
+    "**/extractor/**/testdata/**"
   ]
 }
