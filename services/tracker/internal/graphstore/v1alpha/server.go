@@ -86,6 +86,8 @@ func NewSQLGraphStore(rwdb, rodb *sqlx.DB, statements *Statements) (store.GraphS
 }
 
 type graphStore struct {
+	store.UnsafeGraphStoreServer
+
 	rwdb       *sqlx.DB
 	rodb       *sqlx.DB
 	statements *Statements

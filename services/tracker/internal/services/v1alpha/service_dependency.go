@@ -17,6 +17,8 @@ func RegisterDependencyService(server *grpc.Server, gs store.GraphStoreClient) {
 }
 
 type dependencyService struct {
+	tracker.UnsafeDependencyServiceServer
+
 	gs store.GraphStoreClient
 }
 

@@ -21,6 +21,8 @@ func RegisterSourceServiceServer(server *grpc.Server, graphStore graphstore.Grap
 }
 
 type sourceService struct {
+	v1beta.UnsafeSourceServiceServer
+
 	gs graphstore.GraphStoreClient
 }
 

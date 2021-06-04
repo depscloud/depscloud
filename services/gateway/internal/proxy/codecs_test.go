@@ -5,8 +5,7 @@ import (
 	"testing"
 
 	"github.com/depscloud/api/v1beta"
-
-	"github.com/gogo/protobuf/proto"
+	"google.golang.org/protobuf/proto"
 
 	"github.com/stretchr/testify/require"
 )
@@ -23,7 +22,7 @@ func TestCodecs(t *testing.T) {
 	// frame => proto
 	rawCodec := Codec()
 
-	require.Equal(t, "proxy>gogoproto", rawCodec.Name())
+	require.Equal(t, "proxy>proto", rawCodec.Name())
 
 	// verify marshal passes through
 	// (proxy flow - client sends request to proxy)

@@ -7,13 +7,13 @@ import (
 
 	"github.com/ghodss/yaml"
 
-	"github.com/gogo/protobuf/jsonpb"
-	"github.com/gogo/protobuf/proto"
+	"github.com/golang/protobuf/jsonpb"
 
 	"github.com/pkg/errors"
-)
 
-//go:generate protoc -I=. -I=$GOPATH/src --gogo_out=. config.proto
+	"google.golang.org/protobuf/encoding/prototext"
+	"google.golang.org/protobuf/proto"
+)
 
 func jsn(body []byte) (*Configuration, error) {
 	cfg := &Configuration{}
@@ -33,7 +33,7 @@ func protobin(body []byte) (*Configuration, error) {
 
 func prototxt(body []byte) (*Configuration, error) {
 	cfg := &Configuration{}
-	if err := proto.UnmarshalText(string(body), cfg); err != nil {
+	if err := prototext.Unmarshal(body, cfg); err != nil {
 		return nil, err
 	}
 	return cfg, nil

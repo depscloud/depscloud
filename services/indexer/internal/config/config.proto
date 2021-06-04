@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package cloud.deps.indexer.config;
 
-option go_package="config";
+option go_package="github.com/depscloud/depscloud/services/indexer/internal/config;config";
 
 enum CloneStrategy {
     SSH = 0;

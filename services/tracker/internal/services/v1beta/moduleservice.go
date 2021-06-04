@@ -19,6 +19,8 @@ func RegisterModuleServiceServer(server *grpc.Server, graphStore graphstore.Grap
 }
 
 type moduleService struct {
+	v1beta.UnsafeModuleServiceServer
+
 	gs graphstore.GraphStoreClient
 }
 

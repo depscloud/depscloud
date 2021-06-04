@@ -86,14 +86,14 @@ func startGraphStore(log *zap.Logger, driver, address, readOnlyAddress string) e
 	return nil
 }
 
-func registerV1Alpha(v1alphaClient apiv1alpha.GraphStoreClient, server *grpc.Server) {
+func registerV1Alpha(server *grpc.Server, v1alphaClient apiv1alpha.GraphStoreClient) {
 	svcsv1alpha.RegisterDependencyService(server, v1alphaClient)
 	svcsv1alpha.RegisterModuleService(server, v1alphaClient)
 	svcsv1alpha.RegisterSourceService(server, v1alphaClient)
 	svcsv1alpha.RegisterSearchService(server, v1alphaClient)
 }
 
-func registerV1Beta(v1betaClient apiv1beta.GraphStoreClient, server *grpc.Server) {
+func registerV1Beta(server *grpc.Server, v1betaClient apiv1beta.GraphStoreClient) {
 	svcsv1beta.RegisterManifestStorageServiceServer(server, v1betaClient)
 	svcsv1beta.RegisterModuleServiceServer(server, v1betaClient)
 	svcsv1beta.RegisterSourceServiceServer(server, v1betaClient)
@@ -214,8 +214,8 @@ func main() {
 			serverConfig.Checks = checks.Checks(v1betaClient, v1alphaClient)
 			serverConfig.Endpoints = []mux.ServerEndpoint{
 				func(ctx context.Context, grpcServer *grpc.Server, httpServer *http.ServeMux) {
-					registerV1Alpha(v1alphaClient, grpcServer)
-					registerV1Beta(v1betaClient, grpcServer)
+					registerV1Alpha(grpcServer, v1alphaClient)
+					registerV1Beta(grpcServer, v1betaClient)
 				},
 			}
 
