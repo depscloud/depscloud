@@ -71,7 +71,7 @@ Object {
     },
   ],
   "language": "go",
-  "name": "github.com/testMainOrg/testMainModule",
+  "name": "github.com/depscloud/depscloud",
   "sourceUrl": "",
   "system": "vendor",
   "version": "latest",
@@ -83,7 +83,7 @@ exports[`VendorConfExtractor fullParse 2`] = `
   \\"language\\": \\"go\\",
   \\"system\\": \\"vendor\\",
   \\"sourceUrl\\": \\"\\",
-  \\"name\\": \\"github.com/testMainOrg/testMainModule\\",
+  \\"name\\": \\"github.com/depscloud/depscloud\\",
   \\"version\\": \\"latest\\",
   \\"dependencies\\": [
     {

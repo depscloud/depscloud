@@ -3,6 +3,7 @@ import ExtractorFile from "./ExtractorFile";
 import Languages from "./Languages";
 import MatchConfig from "../matcher/MatchConfig";
 import {ManifestDependency, ManifestFile} from "@depscloud/api/v1beta";
+import inferGoImportPath from "./utils/inferGoImportPath";
 
 export default class VendorConfExtractor implements Extractor {
     public matchConfig(): MatchConfig {
@@ -21,14 +22,13 @@ export default class VendorConfExtractor implements Extractor {
         return [ "vendor.conf" ];
     }
 
-    public async extract(_: string, files: { [p: string]: ExtractorFile }): Promise<ManifestFile> {
+    public async extract(href: string, files: { [p: string]: ExtractorFile }): Promise<ManifestFile> {
         const content = files["vendor.conf"].raw();
+        const name = inferGoImportPath(href);
 
         const lines = content.split(/\n+/g);
 
-        let idFlag = true;
         const dependencies = [];
-        let name = null;
 
         for (const line of lines) {
             const trimmedLine = line.trim();
@@ -39,11 +39,6 @@ export default class VendorConfExtractor implements Extractor {
             const parts = trimmedLine.split(/\s+/);
             const directive = parts[0];
             if (directive === "#") {
-                continue;
-            }
-            if (idFlag) {
-                name = trimmedLine;
-                idFlag = false;
                 continue;
             }
 
