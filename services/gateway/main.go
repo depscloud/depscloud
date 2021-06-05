@@ -29,11 +29,6 @@ import (
 	_ "google.golang.org/grpc/health"
 )
 
-// variables set during build using -X ldflag
-var version string
-var commit string
-var date string
-
 func main() {
 	version := appconf.Current()
 

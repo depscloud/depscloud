@@ -13,7 +13,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func Command(version appconf.V) *cobra.Command {
+func Command(version *appconf.V) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "debug",
 		Short: "Output information helpful for debugging",

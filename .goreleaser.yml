@@ -9,6 +9,11 @@ builds:
     dir: services/deps
     main: ./main.go
     binary: deps
+    ldflags:
+      - -s -w
+      - -X github.com/depscloud/depscloud/internal/appconf.Version={{.Version}}
+      - -X github.com/depscloud/depscloud/internal/appconf.Commit={{.Commit}}
+      - -X github.com/depscloud/depscloud/internal/appconf.Date={{.Date}}
     env:
       - CGO_ENABLED=0
     goos:
@@ -27,6 +32,11 @@ builds:
     dir: services/gateway
     main: ./main.go
     binary: gateway
+    ldflags:
+      - -s -w
+      - -X github.com/depscloud/depscloud/internal/appconf.Version={{.Version}}
+      - -X github.com/depscloud/depscloud/internal/appconf.Commit={{.Commit}}
+      - -X github.com/depscloud/depscloud/internal/appconf.Date={{.Date}}
     env:
       - CGO_ENABLED=0
     goos:
@@ -40,6 +50,11 @@ builds:
     dir: services/indexer
     main: ./main.go
     binary: indexer
+    ldflags:
+      - -s -w
+      - -X github.com/depscloud/depscloud/internal/appconf.Version={{.Version}}
+      - -X github.com/depscloud/depscloud/internal/appconf.Commit={{.Commit}}
+      - -X github.com/depscloud/depscloud/internal/appconf.Date={{.Date}}
     env:
       - CGO_ENABLED=0
     goos:
@@ -53,6 +68,11 @@ builds:
     dir: services/tracker
     main: ./main.go
     binary: tracker
+    ldflags:
+      - -s -w
+      - -X github.com/depscloud/depscloud/internal/appconf.Version={{.Version}}
+      - -X github.com/depscloud/depscloud/internal/appconf.Commit={{.Commit}}
+      - -X github.com/depscloud/depscloud/internal/appconf.Date={{.Date}}
     # don't set cgo, otherwise sqlite won't work
     goos:
       - linux

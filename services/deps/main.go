@@ -36,13 +36,8 @@ deps provides command line access to information stored in a deps.cloud API.
   deps get dependencies -l go -n github.com/depscloud/api
 `
 
-// variables set by build using -X ldflag
-var version string
-var commit string
-var date string
-
 func main() {
-	version := appconf.V{Version: version, Commit: commit, Date: date}
+	version := appconf.Current()
 
 	c := client.DefaultClient()
 	w := writer.Default

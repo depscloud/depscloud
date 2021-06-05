@@ -29,7 +29,9 @@ export WELCOME
 GIT_SHA ?= $(shell git rev-parse HEAD)
 VERSION ?= local
 TIMESTAMP ?= $(shell date +%Y-%m-%dT%T)
-LD_FLAGS := -X main.version=${VERSION} -X main.commit=${GIT_SHA} -X main.date=${TIMESTAMP}
+LD_FLAGS := -X github.com/depscloud/depscloud/internal/appconf.Version=${VERSION} \
+			-X github.com/depscloud/depscloud/internal/appconf.Commit=${GIT_SHA} \
+			-X github.com/depscloud/depscloud/internal/appconf.Date=${TIMESTAMP}
 
 # Use a registry prefix when building the docker images locally.
 ifeq (${USE_REGISTRY},1)
