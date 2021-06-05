@@ -112,8 +112,8 @@ func registerV1Alpha(server *grpc.Server, v1alphaClient apiv1alpha.GraphStoreCli
 	svcsv1alpha.RegisterSearchService(server, v1alphaClient)
 }
 
-func registerV1Beta(server *grpc.Server, v1betaClient apiv1beta.GraphStoreClient) {
-	svcsv1beta.RegisterManifestStorageServiceServer(server, v1betaClient)
+func registerV1Beta(server *grpc.Server, v1betaClient apiv1beta.GraphStoreClient, index svcsv1beta.IndexService) {
+	svcsv1beta.RegisterManifestStorageServiceServer(server, v1betaClient, index)
 	svcsv1beta.RegisterModuleServiceServer(server, v1betaClient)
 	svcsv1beta.RegisterSourceServiceServer(server, v1betaClient)
 	svcsv1beta.RegisterTraversalServiceServer(server, v1betaClient)
@@ -236,13 +236,14 @@ func main() {
 
 			v1alphaClient := apiv1alpha.NewGraphStoreClient(cc)
 			v1betaClient := apiv1beta.NewGraphStoreClient(cc)
+			index := svcsv1beta.NewSQLIndexService(rw, ro)
 
 			// setup checks and any extra endpoints
 			serverConfig.Checks = checks.Checks(v1betaClient, v1alphaClient)
 			serverConfig.Endpoints = []mux.ServerEndpoint{
 				func(ctx context.Context, grpcServer *grpc.Server, httpServer *http.ServeMux) {
 					registerV1Alpha(grpcServer, v1alphaClient)
-					registerV1Beta(grpcServer, v1betaClient)
+					registerV1Beta(grpcServer, v1betaClient, index)
 				},
 			}
 
