@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/depscloud/depscloud/internal/v"
+	"github.com/depscloud/depscloud/internal/appconf"
 	"github.com/depscloud/depscloud/services/deps/internal/client"
 
 	"github.com/mjpitz/go-gracefully/check"
@@ -13,7 +13,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func Command(version v.Info) *cobra.Command {
+func Command(version appconf.V) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "debug",
 		Short: "Output information helpful for debugging",
@@ -25,7 +25,7 @@ func Command(version v.Info) *cobra.Command {
 			healthString, healthErr := debugClient.GetHealth()
 
 			// Printing Client environment variables
-			fmt.Println(fmt.Sprintf("System Info: %s", systemInfo))
+			fmt.Println(fmt.Sprintf("System V: %s", systemInfo))
 			// Printing Client version information
 			fmt.Println(fmt.Sprintf("Client Version: %s", version))
 
@@ -53,7 +53,7 @@ type httpDebugClient struct {
 	baseURL string
 }
 
-func (s *httpDebugClient) GetServerVersion() (version v.Info, err error) {
+func (s *httpDebugClient) GetServerVersion() (version appconf.V, err error) {
 	uri := fmt.Sprintf("%s/version", s.baseURL)
 
 	r, err := s.client.Get(uri)

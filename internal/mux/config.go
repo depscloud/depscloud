@@ -1,7 +1,7 @@
 package mux
 
 import (
-	"github.com/depscloud/depscloud/internal/v"
+	"github.com/depscloud/depscloud/internal/appconf"
 
 	"github.com/mjpitz/go-gracefully/check"
 
@@ -24,11 +24,11 @@ type Config struct {
 	GRPC      *ConfigGRPC
 	Checks    []check.Check
 	Endpoints []ServerEndpoint
-	Version   v.Info
+	Version   *appconf.V
 }
 
 // DefaultConfig will construct the default configuration used by projects.
-func DefaultConfig(version v.Info) *Config {
+func DefaultConfig(version *appconf.V) *Config {
 	return &Config{
 		PortHTTP:  8080,
 		PortGRPC:  8090,

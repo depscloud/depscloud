@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/depscloud/depscloud/internal/v"
+	"github.com/depscloud/depscloud/internal/appconf"
 	"github.com/depscloud/depscloud/services/deps/internal/client"
 	"github.com/depscloud/depscloud/services/deps/internal/cmds/completion"
 	"github.com/depscloud/depscloud/services/deps/internal/cmds/debug"
@@ -42,7 +42,7 @@ var commit string
 var date string
 
 func main() {
-	version := v.Info{Version: version, Commit: commit, Date: date}
+	version := appconf.V{Version: version, Commit: commit, Date: date}
 
 	c := client.DefaultClient()
 	w := writer.Default

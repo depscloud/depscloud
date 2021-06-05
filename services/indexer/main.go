@@ -7,10 +7,10 @@ import (
 	"strings"
 
 	"github.com/depscloud/api/v1beta"
+	"github.com/depscloud/depscloud/internal/appconf"
 	"github.com/depscloud/depscloud/internal/client"
 	"github.com/depscloud/depscloud/internal/eventlp"
 	"github.com/depscloud/depscloud/internal/logger"
-	"github.com/depscloud/depscloud/internal/v"
 	"github.com/depscloud/depscloud/services/indexer/internal/config"
 	"github.com/depscloud/depscloud/services/indexer/internal/consumer"
 	"github.com/depscloud/depscloud/services/indexer/internal/remotes"
@@ -19,11 +19,6 @@ import (
 
 	_ "google.golang.org/grpc/health"
 )
-
-// variables set during build using -X ldflag by goreleaser
-var version string
-var commit string
-var date string
 
 type indexerConfig struct {
 	workers    int
@@ -36,7 +31,7 @@ var description = strings.TrimSpace(`
 `)
 
 func main() {
-	version := v.Info{Version: version, Commit: commit, Date: date}
+	version := appconf.Current()
 
 	cfg := &indexerConfig{
 		workers:    5,
