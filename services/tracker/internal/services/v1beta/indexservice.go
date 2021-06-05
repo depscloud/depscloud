@@ -81,9 +81,14 @@ func (i *indexService) Distinct(filter *Index) ([]string, error) {
 func (i *indexService) Query(filter *Index) ([]*Index, error) {
 	results := make([]*Index, 0)
 
+	// convert Value to valueLike for wildcard search
+	valueLike := "%" + filter.Value + "%"
+	filter.Value = ""
+
 	err := i.ro.Transaction(func(tx *gorm.DB) error {
 		return tx.
 			Where(filter).
+			Where("value LIKE ?", valueLike).
 			Find(&results).
 			Error
 	}, &sql.TxOptions{
