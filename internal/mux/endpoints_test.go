@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/depscloud/depscloud/internal/appconf"
 	"github.com/depscloud/depscloud/internal/mux"
-	"github.com/depscloud/depscloud/internal/v"
 
 	"google.golang.org/grpc"
 )
@@ -27,7 +27,7 @@ func TestWithMetricsEndpoint(t *testing.T) {
 }
 
 func TestWithVersionEndpoint(t *testing.T) {
-	testEndpoint(t, mux.WithVersionEndpoint(v.Info{}))
+	testEndpoint(t, mux.WithVersionEndpoint(&appconf.V{}))
 }
 
 func TestWithReflectionEndpoint(t *testing.T) {

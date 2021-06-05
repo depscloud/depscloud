@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/depscloud/depscloud/internal/v"
+	"github.com/depscloud/depscloud/internal/appconf"
 
 	"github.com/mjpitz/go-gracefully/check"
 	"github.com/mjpitz/go-gracefully/health"
@@ -66,7 +66,7 @@ func WithMetricsEndpoint() ServerEndpoint {
 }
 
 // WithVersionEndpoint sets up an endpoint that announces version metadata about the process.
-func WithVersionEndpoint(version v.Info) ServerEndpoint {
+func WithVersionEndpoint(version *appconf.V) ServerEndpoint {
 	return func(_ context.Context, _ *grpc.Server, httpServer *http.ServeMux) {
 		httpServer.HandleFunc("/version", func(writer http.ResponseWriter, request *http.Request) {
 			writer.Header().Set("Content-Type", "application/json")

@@ -4,14 +4,23 @@ import (
 	"context"
 
 	"github.com/depscloud/api"
+	"github.com/depscloud/depscloud/services/tracker/internal/db/core"
 
 	"github.com/jmoiron/sqlx"
 )
 
+func NewSQLDriver(rwdb, rodb *sqlx.DB, statements *core.Statements) Driver {
+	return &sqlDriver{
+		rwdb:       rwdb,
+		rodb:       rodb,
+		statements: statements,
+	}
+}
+
 type sqlDriver struct {
 	rwdb       *sqlx.DB
 	rodb       *sqlx.DB
-	statements *Statements
+	statements *core.Statements
 }
 
 func (s *sqlDriver) Put(ctx context.Context, items []*GraphData) error {
@@ -116,11 +125,11 @@ func (s *sqlDriver) neighbors(ctx context.Context, statement string, keys []stri
 }
 
 func (s *sqlDriver) NeighborsTo(ctx context.Context, toKeys []string) ([]*GraphData, error) {
-	return s.neighbors(ctx, s.statements.SelectToNeighbor, toKeys)
+	return s.neighbors(ctx, s.statements.SelectInTreeNeighbors, toKeys)
 }
 
 func (s *sqlDriver) NeighborsFrom(ctx context.Context, fromKeys []string) ([]*GraphData, error) {
-	return s.neighbors(ctx, s.statements.SelectFromNeighbor, fromKeys)
+	return s.neighbors(ctx, s.statements.SelectOutTreeNeighbors, fromKeys)
 }
 
 var _ Driver = &sqlDriver{}

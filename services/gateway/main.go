@@ -12,11 +12,10 @@ import (
 	"github.com/depscloud/api/v1alpha/extractor"
 	"github.com/depscloud/api/v1alpha/tracker"
 	"github.com/depscloud/api/v1beta"
-
+	"github.com/depscloud/depscloud/internal/appconf"
 	"github.com/depscloud/depscloud/internal/client"
 	"github.com/depscloud/depscloud/internal/logger"
 	"github.com/depscloud/depscloud/internal/mux"
-	"github.com/depscloud/depscloud/internal/v"
 	"github.com/depscloud/depscloud/services/gateway/internal/checks"
 	"github.com/depscloud/depscloud/services/gateway/internal/proxy"
 
@@ -30,13 +29,8 @@ import (
 	_ "google.golang.org/grpc/health"
 )
 
-// variables set during build using -X ldflag
-var version string
-var commit string
-var date string
-
 func main() {
-	version := v.Info{Version: version, Commit: commit, Date: date}
+	version := appconf.Current()
 
 	loggerConfig, loggerFlags := logger.WithFlags(logger.DefaultConfig())
 	serverConfig, serverFlags := mux.WithFlags(mux.DefaultConfig(version))

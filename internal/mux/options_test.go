@@ -3,13 +3,13 @@ package mux
 import (
 	"testing"
 
-	"github.com/depscloud/depscloud/internal/v"
+	"github.com/depscloud/depscloud/internal/appconf"
 
 	"go.uber.org/zap"
 )
 
 func testOption(t *testing.T, option ServerOption) {
-	server := NewServer(DefaultConfig(v.Info{}))
+	server := NewServer(DefaultConfig(&appconf.V{}))
 	server.grpc = newGRPC(zap.NewNop())
 	server.http = newHTTP()
 	option(server)

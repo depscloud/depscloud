@@ -2,78 +2,80 @@ package v1alpha
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/depscloud/api"
 	"github.com/depscloud/api/v1alpha/store"
+	"github.com/depscloud/depscloud/services/tracker/internal/db"
+	"github.com/depscloud/depscloud/services/tracker/internal/db/core"
 
 	"github.com/jmoiron/sqlx"
 )
 
-// Constants representing the DBMS's supported with a mapping to the underlying driver names used
-const (
-	mysql    = "mysql"
-	sqlite   = "sqlite3"
-	postgres = "pgx"
-)
+const sqliteCreateTable = `
+CREATE TABLE IF NOT EXISTS dts_graphdata(
+  graph_item_type VARCHAR(55),
+  k1 CHAR(64),
+  k2 CHAR(64),
+  k3 VARCHAR(64),
+  encoding TINYINT,
+  graph_item_data TEXT,
+  last_modified DATETIME,
+  date_deleted DATETIME DEFAULT NULL,
+  PRIMARY KEY (graph_item_type, k1, k2, k3)
+);
+CREATE INDEX IF NOT EXISTS secondary ON dts_graphdata(graph_item_type, k2, k1, k3);
+CREATE INDEX IF NOT EXISTS date_deleted ON dts_graphdata(date_deleted);
+`
 
-// ResolveDriverName resolves the sql driver to use for the given dbms system
-func ResolveDriverName(dbmsName string) (string, error) {
-	switch dbmsName {
-	case "mysql":
-		return mysql, nil
+const mysqlCreateTable = `
+CREATE TABLE IF NOT EXISTS dts_graphdata(
+  graph_item_type VARCHAR(55),
+  k1 CHAR(64),
+  k2 CHAR(64),
+  k3 VARCHAR(64),
+  encoding TINYINT,
+  graph_item_data TEXT,
+  last_modified DATETIME,
+  date_deleted DATETIME DEFAULT NULL,
+  PRIMARY KEY (graph_item_type, k1, k2, k3),
+  KEY secondary (graph_item_type, k2, k1, k3),
+  KEY (date_deleted)
+);
+`
 
-	case "sqlite":
-		return sqlite, nil
-
-	case "postgres":
-		return postgres, nil
-	}
-
-	return "", fmt.Errorf("%s not supported, specify one of the supported systems; mysql/postgres/sqlite", dbmsName)
-}
-
-func NewGraphStoreFor(storageDriver, storageAddress, storageReadOnlyAddress string) (server store.GraphStoreServer, err error) {
-	storageDriver, err = ResolveDriverName(storageDriver)
-	if err != nil {
-		return nil, err
-	}
-
-	var rwdb *sqlx.DB
-
-	if len(storageAddress) > 0 {
-		rwdb, err = sqlx.Open(storageDriver, storageAddress)
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	rodb := rwdb
-	if len(storageReadOnlyAddress) > 0 {
-		rodb, err = sqlx.Open(storageDriver, storageReadOnlyAddress)
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	if rodb == nil && rwdb == nil {
-		return nil, fmt.Errorf("either a storage-address or storage-readonly-address must be provided")
-	}
-
-	statements, err := DefaultStatementsFor(storageDriver)
-	if err != nil {
-		return nil, err
-	}
-
-	return NewSQLGraphStore(rwdb, rodb, statements)
-}
+const postgresqlCreateTable = `
+CREATE TABLE IF NOT EXISTS dts_graphdata(
+  graph_item_type VARCHAR(55),
+  k1 CHAR(64),
+  k2 CHAR(64),
+  k3 VARCHAR(64),
+  encoding SMALLINT,
+  graph_item_data TEXT,
+  last_modified TIMESTAMP,
+  date_deleted TIMESTAMP DEFAULT NULL,
+  PRIMARY KEY (graph_item_type, k1, k2, k3)
+);
+CREATE INDEX IF NOT EXISTS secondary ON dts_graphdata(graph_item_type, k2, k1, k3);
+CREATE INDEX IF NOT EXISTS date_deleted ON dts_graphdata(date_deleted);
+`
 
 // NewSQLGraphStore constructs a new GraphStore with a sql driven backend. Current
 // queries support sqlite3 but should be able to work on mysql as well.
-func NewSQLGraphStore(rwdb, rodb *sqlx.DB, statements *Statements) (store.GraphStoreServer, error) {
+func NewSQLGraphStore(rwdb, rodb *sqlx.DB, statements *core.Statements) (store.GraphStoreServer, error) {
 	if rwdb != nil {
-		if _, err := rwdb.Exec(statements.CreateGraphDataTable); err != nil {
+		createTable := sqliteCreateTable
+
+		switch rwdb.DriverName() {
+		case db.SQLiteDriverName:
+			createTable = sqliteCreateTable
+		case db.MySQLDriverName:
+			createTable = mysqlCreateTable
+		case db.PostgreSQLDriverName:
+			createTable = postgresqlCreateTable
+		}
+
+		if _, err := rwdb.Exec(createTable); err != nil {
 			return nil, err
 		}
 	}
@@ -90,7 +92,7 @@ type graphStore struct {
 
 	rwdb       *sqlx.DB
 	rodb       *sqlx.DB
-	statements *Statements
+	statements *core.Statements
 }
 
 func (gs *graphStore) Put(ctx context.Context, req *store.PutRequest) (*store.PutResponse, error) {
@@ -226,7 +228,7 @@ func (gs *graphStore) FindUpstream(ctx context.Context, req *store.FindRequest) 
 		keys[i] = Base64encode(key)
 	}
 
-	query, args, err := sqlx.Named(gs.statements.SelectGraphDataUpstreamDependencies, map[string]interface{}{
+	query, args, err := sqlx.Named(gs.statements.SelectOutTreeNeighbors, map[string]interface{}{
 		"keys":       keys,
 		"edge_types": req.GetEdgeTypes(),
 		"node_types": req.GetNodeTypes(),
@@ -264,7 +266,7 @@ func (gs *graphStore) FindDownstream(ctx context.Context, req *store.FindRequest
 		keys[i] = Base64encode(key)
 	}
 
-	query, args, err := sqlx.Named(gs.statements.SelectGraphDataDownstreamDependencies, map[string]interface{}{
+	query, args, err := sqlx.Named(gs.statements.SelectInTreeNeighbors, map[string]interface{}{
 		"keys":       keys,
 		"edge_types": req.GetEdgeTypes(),
 		"node_types": req.GetNodeTypes(),

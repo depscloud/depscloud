@@ -10,11 +10,12 @@ import (
 
 	apiv1alpha "github.com/depscloud/api/v1alpha/store"
 	apiv1beta "github.com/depscloud/api/v1beta/graphstore"
+	"github.com/depscloud/depscloud/internal/appconf"
 	"github.com/depscloud/depscloud/internal/logger"
 	"github.com/depscloud/depscloud/internal/mux"
-	"github.com/depscloud/depscloud/internal/v"
 	"github.com/depscloud/depscloud/services/tracker/internal/checks"
 	"github.com/depscloud/depscloud/services/tracker/internal/cleanup"
+	"github.com/depscloud/depscloud/services/tracker/internal/db"
 	"github.com/depscloud/depscloud/services/tracker/internal/graphstore/v1alpha"
 	"github.com/depscloud/depscloud/services/tracker/internal/graphstore/v1beta"
 	svcsv1alpha "github.com/depscloud/depscloud/services/tracker/internal/services/v1alpha"
@@ -38,35 +39,52 @@ import (
 
 	"google.golang.org/grpc"
 	_ "google.golang.org/grpc/health"
-)
 
-// variables set during build using -X ldflag
-var version string
-var commit string
-var date string
+	"gorm.io/gorm"
+)
 
 const sockAddr = "0.0.0.0:47274"
 
-func graphStoreServers(driver, address, readOnlyAddress string) (apiv1alpha.GraphStoreServer, apiv1beta.GraphStoreServer, error) {
-	// v1beta
-	v1betaDriver, err := v1beta.Resolve(driver, address, readOnlyAddress)
+func graphStoreServers(name string, rw, ro *gorm.DB) (apiv1alpha.GraphStoreServer, apiv1beta.GraphStoreServer, error) {
+	v1alphaStatements := db.StatementsFor(name, "v1alpha")
+	v1betaStatements := db.StatementsFor(name, "v1beta")
+
+	if rw != nil {
+		err := rw.AutoMigrate(
+			&v1beta.GraphData{},
+		)
+
+		if err != nil {
+			return nil, nil, err
+		}
+	}
+
+	sqlxRW, err := db.ToSQLX(name, rw)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	// v1alpha
-	v1alphaGraphStore, err := v1alpha.NewGraphStoreFor(driver, address, readOnlyAddress)
+	sqlxRO, err := db.ToSQLX(name, ro)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	return v1alphaGraphStore, &v1beta.GraphStoreServer{Driver: v1betaDriver}, nil
+	v1alphaGraphStore, err := v1alpha.NewSQLGraphStore(sqlxRW, sqlxRO, v1alphaStatements)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	v1betaGraphStore := &v1beta.GraphStoreServer{
+		Driver: v1beta.NewSQLDriver(sqlxRW, sqlxRO, v1betaStatements),
+	}
+
+	return v1alphaGraphStore, v1betaGraphStore, nil
 }
 
-func startGraphStore(log *zap.Logger, driver, address, readOnlyAddress string) error {
+func startGraphStore(log *zap.Logger, driver string, rw, ro *gorm.DB) error {
 	grpcServer := grpc.NewServer()
 
-	v1alphaGraphStore, v1betaGraphStore, err := graphStoreServers(driver, address, readOnlyAddress)
+	v1alphaGraphStore, v1betaGraphStore, err := graphStoreServers(driver, rw, ro)
 	if err != nil {
 		return err
 	}
@@ -113,7 +131,7 @@ var description = strings.TrimSpace(`
 `)
 
 func main() {
-	version := v.Info{Version: version, Commit: commit, Date: date}
+	version := appconf.Current()
 
 	loggerConfig, loggerFlags := logger.WithFlags(logger.DefaultConfig())
 	serverConfig, serverFlags := mux.WithFlags(mux.DefaultConfig(version))
@@ -161,9 +179,12 @@ func main() {
 				Usage: "Cleanup data in the database",
 				Flags: flags,
 				Action: func(context *cli.Context) error {
-					v1alphaGraphStore, v1betaGraphStore, err := graphStoreServers(
-						cfg.storageDriver, cfg.storageAddress, cfg.storageReadOnlyAddress)
+					name, rw, ro, err := db.Resolve(cfg.storageDriver, cfg.storageAddress, cfg.storageReadOnlyAddress)
+					if err != nil {
+						return err
+					}
 
+					v1alphaGraphStore, v1betaGraphStore, err := graphStoreServers(name, rw, ro)
 					if err != nil {
 						return err
 					}
@@ -187,7 +208,12 @@ func main() {
 			log := logger.MustGetLogger(loggerConfig)
 			ctx := logger.ToContext(c.Context, log)
 
-			err := startGraphStore(log, cfg.storageDriver, cfg.storageAddress, cfg.storageReadOnlyAddress)
+			name, rw, ro, err := db.Resolve(cfg.storageDriver, cfg.storageAddress, cfg.storageReadOnlyAddress)
+			if err != nil {
+				return err
+			}
+
+			err = startGraphStore(log, name, rw, ro)
 			if err != nil {
 				return err
 			}

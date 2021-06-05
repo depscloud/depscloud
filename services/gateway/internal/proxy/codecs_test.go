@@ -5,9 +5,10 @@ import (
 	"testing"
 
 	"github.com/depscloud/api/v1beta"
-	"google.golang.org/protobuf/proto"
 
 	"github.com/stretchr/testify/require"
+
+	"google.golang.org/protobuf/proto"
 )
 
 // Tests the codecs entirely. This tries to mimic the serialization / deserialization flow of a request.
