@@ -29,12 +29,12 @@ SELECT g1.graph_item_type, g1.k1, g1.k2, g1.encoding, g1.graph_item_data,
 FROM dts_graphdata AS g1
 INNER JOIN dts_graphdata AS g2 ON g1.k1 = g2.k2
 WHERE g2.k1 IN (:keys) 
-AND g2.graph_item_type IN (:edge_types) 
-AND g2.k1 != g2.k2 
-AND g2.date_deleted IS NULL
-AND g1.graph_item_type IN (:node_types)
-AND g1.k1 = g1.k2 
-AND g1.date_deleted IS NULL;
+	AND g2.graph_item_type IN (:edge_types) 
+	AND g2.k1 != g2.k2 
+	AND g2.date_deleted IS NULL
+	AND g1.graph_item_type IN (:node_types)
+	AND g1.k1 = g1.k2 
+	AND g1.date_deleted IS NULL;
 `
 
 const v1alphaSelectToNeighbor = `
@@ -43,12 +43,12 @@ SELECT g1.graph_item_type, g1.k1, g1.k2, g1.encoding, g1.graph_item_data,
 FROM dts_graphdata AS g1
 INNER JOIN dts_graphdata AS g2 ON g1.k2 = g2.k1
 WHERE g2.k2 IN (:keys) 
-AND g2.graph_item_type IN (:edge_types) 
-AND g2.k1 != g2.k2 
-AND g2.date_deleted IS NULL
-AND g1.graph_item_type IN (:node_types)
-AND g1.k1 = g1.k2 
-AND g1.date_deleted IS NULL;
+	AND g2.graph_item_type IN (:edge_types) 
+	AND g2.k1 != g2.k2 
+	AND g2.date_deleted IS NULL
+	AND g1.graph_item_type IN (:node_types)
+	AND g1.k1 = g1.k2 
+	AND g1.date_deleted IS NULL;
 `
 
 // V1Alpha expose statements that are specific to the V1Alpha SQLite backend.

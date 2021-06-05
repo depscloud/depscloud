@@ -6,9 +6,10 @@ import (
 )
 
 const v1alphaInsertGraphData = `
-INSERT INTO dts_graphdata 
+INSERT INTO dts_graphdata
 	(graph_item_type, k1, k2, k3, encoding, graph_item_data, last_modified, date_deleted)
-VALUES (:graph_item_type, :k1, :k2, :k3, :encoding, :graph_item_data, :last_modified, NULL)
+VALUES
+	(:graph_item_type, :k1, :k2, :k3, :encoding, :graph_item_data, :last_modified, NULL)
 ON DUPLICATE KEY UPDATE
 	encoding = :encoding,
 	graph_item_data = :graph_item_data, 
