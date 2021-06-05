@@ -9,6 +9,6 @@ type Statements struct {
 	// SelectOutTreeNeighbors - out-tree refers to traversing edges pointing away from the current node.
 	SelectOutTreeNeighbors string `json:"selectFromNeighbors"`
 
-	// SelectInTreeNeighbors - in-tree refers to traversing edges pointing away from the current node.
+	// SelectInTreeNeighbors - in-tree refers to traversing edges pointing toward the current node.
 	SelectInTreeNeighbors string `json:"selectToNeighbors"`
 }
