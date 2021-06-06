@@ -26,7 +26,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GORELEASER_TOKEN }}
         run: |
           curl -sfL https://install.goreleaser.com/github.com/goreleaser/goreleaser.sh | sh
-          ./bin/goreleaser
+          ./bin/goreleaser --release-notes <(./scripts/gen-changelog.sh)
           find dist/ -iname *.deb | xargs -I{} curl -F package=@{} https://${GEMFURY_TOKEN}@push.fury.io/depscloud/
 
   ##===
