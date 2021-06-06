@@ -25,7 +25,7 @@ jobs:
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: extractor/extractor-*
+          file: services/extractor/extractor-*
           tag: ${{ github.ref }}
           file_glob: true
 

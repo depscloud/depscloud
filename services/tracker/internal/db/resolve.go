@@ -72,6 +72,10 @@ func Resolve(driver, storageAddress, storageReadOnlyAddress string) (name string
 
 // ToSQLX converts the provided gorm db to a SQLX one.
 func ToSQLX(name string, gormDB *gorm.DB) (*sqlx.DB, error) {
+	if gormDB == nil {
+		return nil, nil
+	}
+
 	db, err := gormDB.DB()
 	if err != nil {
 		return nil, err
