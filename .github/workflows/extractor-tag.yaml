@@ -48,7 +48,7 @@ jobs:
 
       - name: Build Container Image
         run: |
-          docker buildx build \
+          docker buildx build . \
             --platform linux/amd64,linux/arm64 \
             --build-arg BINARY=extractor \
             --build-arg VERSION=${GITHUB_REF##*/v} \
