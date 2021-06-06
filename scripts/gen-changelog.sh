@@ -13,5 +13,5 @@ $(git log --format="- %s [%h](https://github.com/depscloud/depscloud/commit/%H)"
 
 ## Contributors
 
-$(git log --format="- [%an](https://github.com/depscloud)" HEAD...${since} | grep -v bot | sort | uniq)
+$(git log --format="- [%an](https://github.com/)" HEAD...${since} | grep -v bot | sort | uniq)
 EOF
