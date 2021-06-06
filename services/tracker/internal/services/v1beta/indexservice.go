@@ -8,12 +8,15 @@ import (
 	"gorm.io/gorm/clause"
 )
 
-// Index defines a generic structure that allows us to index some data. Right now, the only use case is
-// to index some Node data to help improve some of the usability of the tooling. There's a discoverability
-// element that's currently missing... The general idea here is:
+// Index defines a generic structure that allows us to index data on structures. The general format for the table is
+// as follows. Note, we currently don't support querying across multiple fields (ie. language=go and name like ...) but
+// I think we can add support for something like that later on? For now, we can filter in memory as this is already
+// much better to navigate than before.
 //
-//   Module => Name => "github.com/depscloud/depscloud" => K1 (node)
-//   Depends => Version => "v0.1.0" => K3 (edge)
+//   Kind      Field     Value                             Key
+//   ----      -----     -----                             ---
+//   Module    Name      github.com/depscloud/depscloud    K1 (node)
+//   Depends   Version   v0.1.0                            K3 (edge)
 //
 type Index struct {
 	Kind  string `gorm:"column:kind;varchar(255);primaryKey;"`
@@ -26,6 +29,7 @@ func (i *Index) TableName() string {
 	return "graph_data_index"
 }
 
+// NewSQLIndexService constructs an IndexService that's backed by an SQL database.
 func NewSQLIndexService(rw, ro *gorm.DB) IndexService {
 	if rw != nil {
 		_ = rw.AutoMigrate(&Index{})

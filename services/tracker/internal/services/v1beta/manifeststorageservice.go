@@ -89,12 +89,12 @@ func (m *manifestStorageService) GetProposed(request *v1beta.StoreRequest) ([]*g
 			edges = append(edges, moduleDependency)
 			index = append(index,
 				&Index{
-					Kind:  dependency.GetBody().GetTypeUrl(),
+					Kind:  moduleKind,
 					Field: "language",
 					Value: language,
 					Key:   base64.StdEncoding.EncodeToString(dependency.Key),
 				}, &Index{
-					Kind:  dependency.GetBody().GetTypeUrl(),
+					Kind:  moduleKind,
 					Field: "name",
 					Value: manifestDependency.GetName(),
 					Key:   base64.StdEncoding.EncodeToString(dependency.Key),
@@ -106,12 +106,12 @@ func (m *manifestStorageService) GetProposed(request *v1beta.StoreRequest) ([]*g
 		edges = append(edges, sourceModule)
 		index = append(index,
 			&Index{
-				Kind:  module.GetBody().GetTypeUrl(),
+				Kind:  moduleKind,
 				Field: "language",
 				Value: language,
 				Key:   base64.StdEncoding.EncodeToString(module.Key),
 			}, &Index{
-				Kind:  module.GetBody().GetTypeUrl(),
+				Kind:  moduleKind,
 				Field: "name",
 				Value: manifestFile.GetName(),
 				Key:   base64.StdEncoding.EncodeToString(module.Key),
@@ -134,7 +134,7 @@ func (m *manifestStorageService) GetProposed(request *v1beta.StoreRequest) ([]*g
 			edges = append(edges, reportedSourceModule)
 			index = append(index,
 				&Index{
-					Kind:  reportedSource.GetBody().GetTypeUrl(),
+					Kind:  sourceKind,
 					Field: "url",
 					Value: sourceURL,
 					Key:   base64.StdEncoding.EncodeToString(reportedSource.Key),
@@ -146,7 +146,7 @@ func (m *manifestStorageService) GetProposed(request *v1beta.StoreRequest) ([]*g
 	nodes = append(nodes, source)
 	index = append(index,
 		&Index{
-			Kind:  source.GetBody().GetTypeUrl(),
+			Kind:  sourceKind,
 			Field: "url",
 			Value: ref,
 			Key:   base64.StdEncoding.EncodeToString(source.Key),
