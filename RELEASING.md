@@ -24,30 +24,11 @@ To release a new version of the deps.cloud source, you simply need to push a tag
 
 ### Writing release notes
 
-I've found that many people ignore automated release notes.
-They are often terse and difficult to read.
-To alleviate some of this, I've tried to work with the following format.
-This includes a small hand written summary and enumerates changes from the last version.
-
-```markdown
-## Changelog
-
-### Summary
-
-- Bulleted list of major fixes and feature development
-- Hand written by release manager, can be highlights from commits
-
-### Commits
-
-- Because we squash commits going into main, we can be smart about the messages
-- This section is computer generated and can be obtained using git-log
-
-   $ start=$(git tag -l | tail -n 2 | head -n 1)
-   $ end=$(git tag -l | tail -n 1)
-   $ git log --format="%h: %s" ${start}...${end} | pbcopy
-```
-
-For an example, see our [v0.2.28 release notes](https://github.com/depscloud/depscloud/releases/tag/v0.2.28).
+Most release notes are auto-generated today.
+When we introduce a major feature, we write a small markdown file to provide a summary.
+Then at build time, we use a combination of hand written feature announcements and auto-detected fixes to generate notes.
+To get a better idea for how this works, see the `./scripts/gen-changelog.sh` script.
+One task that is currently manual is tracking down the GitHub handles for contributors to a release. 
 
 ## Post-release checklist
 
