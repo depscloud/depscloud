@@ -35,15 +35,21 @@ func DefaultClient() Client {
 }
 
 type Client interface {
+	Languages() v1beta.LanguageServiceClient
 	Modules() v1beta.ModuleServiceClient
 	Sources() v1beta.SourceServiceClient
 	Traversal() v1beta.TraversalServiceClient
 }
 
 type internalClient struct {
+	languageService  v1beta.LanguageServiceClient
 	moduleService    v1beta.ModuleServiceClient
 	sourceService    v1beta.SourceServiceClient
 	traversalService v1beta.TraversalServiceClient
+}
+
+func (c *internalClient) Languages() v1beta.LanguageServiceClient {
+	return c.languageService
 }
 
 func (c *internalClient) Modules() v1beta.ModuleServiceClient {

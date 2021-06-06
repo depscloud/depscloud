@@ -18,6 +18,7 @@ func Command(
 
 	cmd.AddCommand(DependenciesCommand(client.Traversal(), writer))
 	cmd.AddCommand(DependentsCommand(client.Traversal(), writer))
+	cmd.AddCommand(LanguagesCommand(client.Languages(), writer))
 	cmd.AddCommand(ModulesCommand(client.Sources(), client.Modules(), writer))
 	cmd.AddCommand(SourcesCommand(client.Sources(), client.Modules(), writer))
 
