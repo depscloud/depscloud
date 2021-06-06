@@ -3,7 +3,7 @@
   "version": "0.2.20",
   "scripts": {
     "prepackage": "bash scripts/prepackage.sh",
-    "package": "tar -czvf extractor-${VERSION:-next}.tar.gz lib/ ../LICENSE package.json package-lock.json",
+    "package": "tar -czvf extractor-${VERSION:-next}.tar.gz lib/ ../../LICENSE package.json package-lock.json",
     "build": "tsc",
     "lint": "eslint --fix src/**/*.ts",
     "test": "jest --coverage",
