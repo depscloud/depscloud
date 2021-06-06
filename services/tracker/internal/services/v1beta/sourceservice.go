@@ -14,16 +14,43 @@ import (
 	"google.golang.org/grpc"
 )
 
-func RegisterSourceServiceServer(server *grpc.Server, graphStore graphstore.GraphStoreClient) {
+func RegisterSourceServiceServer(server *grpc.Server, graphStore graphstore.GraphStoreClient, index IndexService) {
 	v1beta.RegisterSourceServiceServer(server, &sourceService{
-		gs: graphStore,
+		gs:    graphStore,
+		index: index,
 	})
 }
 
 type sourceService struct {
 	v1beta.UnsafeSourceServiceServer
 
-	gs graphstore.GraphStoreClient
+	gs    graphstore.GraphStoreClient
+	index IndexService
+}
+
+func (s *sourceService) Search(ctx context.Context, request *v1beta.SourcesSearchRequest) (*v1beta.ListSourcesResponse, error) {
+	log := logger.Extract(ctx)
+
+	results, err := s.index.Query(ctx, &Index{
+		Kind:  sourceKind,
+		Field: "url",
+		Value: request.Like.Url,
+	})
+	if err != nil {
+		log.Error("failed to search modules", zap.Error(err))
+		return nil, ErrQueryFailure
+	}
+
+	sources := make([]*v1beta.Source, 0, len(results))
+	for _, result := range results {
+		sources = append(sources, &v1beta.Source{
+			Url: result.Value,
+		})
+	}
+
+	return &v1beta.ListSourcesResponse{
+		Sources: sources,
+	}, nil
 }
 
 func (s *sourceService) List(ctx context.Context, request *v1beta.ListRequest) (*v1beta.ListSourcesResponse, error) {

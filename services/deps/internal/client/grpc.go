@@ -43,6 +43,7 @@ func grpcDefaultClient(baseURL string) Client {
 	}
 
 	return &internalClient{
+		languageService:  v1beta.NewLanguageServiceClient(conn),
 		moduleService:    v1beta.NewModuleServiceClient(conn),
 		sourceService:    v1beta.NewSourceServiceClient(conn),
 		traversalService: v1beta.NewTraversalServiceClient(conn),

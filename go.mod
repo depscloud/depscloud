@@ -6,7 +6,7 @@ require (
 	github.com/Microsoft/go-winio v0.5.0 // indirect
 	github.com/davidji99/bitbucket-go v0.2.1
 	github.com/davidji99/simpleresty v0.3.0 // indirect
-	github.com/depscloud/api v0.3.2
+	github.com/depscloud/api v0.3.3
 	github.com/ghodss/yaml v1.0.0
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/golang/protobuf v1.5.2

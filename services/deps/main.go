@@ -9,6 +9,7 @@ import (
 	"github.com/depscloud/depscloud/services/deps/internal/cmds/completion"
 	"github.com/depscloud/depscloud/services/deps/internal/cmds/debug"
 	"github.com/depscloud/depscloud/services/deps/internal/cmds/get"
+	"github.com/depscloud/depscloud/services/deps/internal/cmds/search"
 	"github.com/depscloud/depscloud/services/deps/internal/writer"
 
 	"github.com/spf13/cobra"
@@ -49,6 +50,7 @@ func main() {
 
 	cmd.AddCommand(completion.Command())
 	cmd.AddCommand(get.Command(c, w))
+	cmd.AddCommand(search.Command(c, w))
 
 	cmd.AddCommand(&cobra.Command{
 		Use:   "version",

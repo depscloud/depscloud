@@ -19,8 +19,6 @@ const (
 	EncodingProtocolBuffers
 )
 
-const defaultCollectionName = "graph_data"
-
 // GraphData describes how the data is stored
 type GraphData struct {
 	K1           string        `json:"k1"           db:"k1"            gorm:"column:k1;type:varchar(64);primaryKey;index:secondary,priority:2"`
@@ -35,7 +33,7 @@ type GraphData struct {
 
 // TableName returns the name of the collection or the default if not set.
 func (d *GraphData) TableName() string {
-	return defaultCollectionName
+	return "graph_data"
 }
 
 var _ schema.Tabler = &GraphData{}

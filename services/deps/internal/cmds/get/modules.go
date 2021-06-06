@@ -21,8 +21,8 @@ func ModulesCommand(
 		Aliases: []string{"module", "mods", "mod"},
 		Short:   "Get a list of modules from the service",
 		Example: strings.Join([]string{
-			"deps get modules",
-			"deps get modules --url https://github.com/depscloud/api.git",
+			"  deps get modules",
+			"  deps get modules --url https://github.com/depscloud/api.git",
 		}, "\n"),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx := cmd.Context()

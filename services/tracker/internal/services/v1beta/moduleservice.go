@@ -12,16 +12,43 @@ import (
 	"google.golang.org/grpc"
 )
 
-func RegisterModuleServiceServer(server *grpc.Server, graphStore graphstore.GraphStoreClient) {
+func RegisterModuleServiceServer(server *grpc.Server, graphStore graphstore.GraphStoreClient, index IndexService) {
 	v1beta.RegisterModuleServiceServer(server, &moduleService{
-		gs: graphStore,
+		gs:    graphStore,
+		index: index,
 	})
 }
 
 type moduleService struct {
 	v1beta.UnsafeModuleServiceServer
 
-	gs graphstore.GraphStoreClient
+	gs    graphstore.GraphStoreClient
+	index IndexService
+}
+
+func (m *moduleService) Search(ctx context.Context, request *v1beta.ModulesSearchRequest) (*v1beta.ListModulesResponse, error) {
+	log := logger.Extract(ctx)
+
+	results, err := m.index.Query(ctx, &Index{
+		Kind:  moduleKind,
+		Field: "name",
+		Value: request.Like.Name,
+	})
+	if err != nil {
+		log.Error("failed to search modules", zap.Error(err))
+		return nil, ErrQueryFailure
+	}
+
+	modules := make([]*v1beta.Module, 0, len(results))
+	for _, result := range results {
+		modules = append(modules, &v1beta.Module{
+			Name: result.Value,
+		})
+	}
+
+	return &v1beta.ListModulesResponse{
+		Modules: modules,
+	}, nil
 }
 
 func (m *moduleService) List(ctx context.Context, request *v1beta.ListRequest) (*v1beta.ListModulesResponse, error) {
@@ -42,7 +69,7 @@ func (m *moduleService) List(ctx context.Context, request *v1beta.ListRequest) (
 	for _, node := range resp.GetNodes() {
 		module, err := fromNodeOrEdge(node, &v1beta.Module{})
 		if err != nil {
-			log.Warn("failed to parse module", zap.Error(err))
+			log.Debug("failed to parse module", zap.Error(err))
 			continue
 		}
 		modules = append(modules, module.(*v1beta.Module))
@@ -76,7 +103,7 @@ func (m *moduleService) ListSources(ctx context.Context, module *v1beta.ManagedM
 		managedSource, errors := neighborToManagedSource(neighbor)
 
 		for _, err := range errors {
-			log.Warn("encountered an issue converting managed source", zap.Error(err))
+			log.Debug("encountered an issue converting managed source", zap.Error(err))
 		}
 
 		if managedSource != nil {
