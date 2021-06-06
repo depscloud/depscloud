@@ -4,3 +4,4 @@
 coverage.txt
 internal/hack/
 *.db
+changelog.md
