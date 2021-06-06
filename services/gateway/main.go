@@ -133,6 +133,7 @@ func main() {
 						tracker.RegisterDependencyServiceServer(server, &tracker.UnimplementedDependencyServiceServer{})
 						tracker.RegisterSearchServiceServer(server, &tracker.UnimplementedSearchServiceServer{})
 						v1beta.RegisterManifestStorageServiceServer(server, &v1beta.UnimplementedManifestStorageServiceServer{})
+						v1beta.RegisterLanguageServiceServer(server, &v1beta.UnimplementedLanguageServiceServer{})
 						v1beta.RegisterModuleServiceServer(server, &v1beta.UnimplementedModuleServiceServer{})
 						v1beta.RegisterSourceServiceServer(server, &v1beta.UnimplementedSourceServiceServer{})
 						v1beta.RegisterTraversalServiceServer(server, &v1beta.UnimplementedTraversalServiceServer{})
@@ -168,6 +169,7 @@ func main() {
 					_ = tracker.RegisterDependencyServiceHandler(ctx, gatewayMux, gatewayConn)
 
 					_ = v1beta.RegisterManifestStorageServiceHandler(ctx, gatewayMux, gatewayConn)
+					_ = v1beta.RegisterLanguageServiceHandler(ctx, gatewayMux, gatewayConn)
 					_ = v1beta.RegisterSourceServiceHandler(ctx, gatewayMux, gatewayConn)
 					_ = v1beta.RegisterModuleServiceHandler(ctx, gatewayMux, gatewayConn)
 					_ = v1beta.RegisterTraversalServiceHandler(ctx, gatewayMux, gatewayConn)

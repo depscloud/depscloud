@@ -1,6 +1,7 @@
 package v1beta
 
 import (
+	"context"
 	"database/sql"
 
 	"gorm.io/gorm"
@@ -21,6 +22,10 @@ type Index struct {
 	Key   string `gorm:"column:key;varchar(64);primaryKey;"`
 }
 
+func (i *Index) TableName() string {
+	return "graph_data_index"
+}
+
 func NewSQLIndexService(rw, ro *gorm.DB) IndexService {
 	if rw != nil {
 		_ = rw.AutoMigrate(&Index{})
@@ -33,9 +38,9 @@ func NewSQLIndexService(rw, ro *gorm.DB) IndexService {
 }
 
 type IndexService interface {
-	Index(fields []*Index) error
-	Distinct(filter *Index) ([]string, error)
-	Query(filter *Index) ([]*Index, error)
+	Index(ctx context.Context, fields []*Index) error
+	Distinct(ctx context.Context, filter *Index) ([]string, error)
+	Query(ctx context.Context, filter *Index) ([]*Index, error)
 }
 
 type indexService struct {
@@ -43,9 +48,10 @@ type indexService struct {
 	ro *gorm.DB
 }
 
-func (i *indexService) Index(fields []*Index) error {
+func (i *indexService) Index(ctx context.Context, fields []*Index) error {
 	return i.rw.Transaction(func(tx *gorm.DB) error {
 		return tx.
+			WithContext(ctx).
 			Clauses(clause.OnConflict{
 				Columns: []clause.Column{
 					{Name: "kind"},
@@ -62,11 +68,13 @@ func (i *indexService) Index(fields []*Index) error {
 	})
 }
 
-func (i *indexService) Distinct(filter *Index) ([]string, error) {
+func (i *indexService) Distinct(ctx context.Context, filter *Index) ([]string, error) {
 	results := make([]string, 0)
 
 	err := i.ro.Transaction(func(tx *gorm.DB) error {
 		return tx.
+			WithContext(ctx).
+			Model(&Index{}).
 			Where(filter).
 			Distinct("value").
 			Find(&results).
@@ -78,7 +86,7 @@ func (i *indexService) Distinct(filter *Index) ([]string, error) {
 	return results, err
 }
 
-func (i *indexService) Query(filter *Index) ([]*Index, error) {
+func (i *indexService) Query(ctx context.Context, filter *Index) ([]*Index, error) {
 	results := make([]*Index, 0)
 
 	// convert Value to valueLike for wildcard search
@@ -87,6 +95,7 @@ func (i *indexService) Query(filter *Index) ([]*Index, error) {
 
 	err := i.ro.Transaction(func(tx *gorm.DB) error {
 		return tx.
+			WithContext(ctx).
 			Where(filter).
 			Where("value LIKE ?", valueLike).
 			Find(&results).

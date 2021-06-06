@@ -264,7 +264,7 @@ func (m *manifestStorageService) Store(ctx context.Context, request *v1beta.Stor
 		return nil, ErrPruneFailure
 	}
 
-	err = m.index.Index(indexFields)
+	err = m.index.Index(ctx, indexFields)
 
 	return &v1beta.StoreResponse{}, err
 }

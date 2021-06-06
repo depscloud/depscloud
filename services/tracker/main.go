@@ -113,9 +113,10 @@ func registerV1Alpha(server *grpc.Server, v1alphaClient apiv1alpha.GraphStoreCli
 }
 
 func registerV1Beta(server *grpc.Server, v1betaClient apiv1beta.GraphStoreClient, index svcsv1beta.IndexService) {
+	svcsv1beta.RegisterLanguageService(server, index)
 	svcsv1beta.RegisterManifestStorageServiceServer(server, v1betaClient, index)
-	svcsv1beta.RegisterModuleServiceServer(server, v1betaClient)
-	svcsv1beta.RegisterSourceServiceServer(server, v1betaClient)
+	svcsv1beta.RegisterModuleServiceServer(server, v1betaClient, index)
+	svcsv1beta.RegisterSourceServiceServer(server, v1betaClient, index)
 	svcsv1beta.RegisterTraversalServiceServer(server, v1betaClient)
 }
 
