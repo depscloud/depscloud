@@ -6,6 +6,7 @@ import (
 	"io"
 
 	"github.com/depscloud/api/v1beta"
+
 	"github.com/depscloud/depscloud/services/deps/internal/writer"
 
 	"github.com/spf13/cobra"
@@ -122,7 +123,16 @@ func topology(ctx context.Context, searchService v1beta.TraversalServiceClient, 
 		}
 	}
 
+	if len(counter) > 0 {
+		return result, fmt.Errorf("encountered cycle in graph")
+	}
+
 	return result, nil
+}
+
+type Error struct {
+	Error    string `json:"error"`
+	IssueRef string `json:"issue_ref"`
 }
 
 func topologyCommand(
@@ -134,13 +144,14 @@ func topologyCommand(
 	tiered := false
 
 	cmd := &cobra.Command{
-		Use:     "tree",
-		Aliases: []string{"topology", "topo"},
-		Short:   "Get the associated tree using the provided module as the root",
+		Use:     "topology",
+		Aliases: []string{"topo"},
+		Short:   "Get the topology using the provided module as the root",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			results, err := topology(cmd.Context(), traversalService, requestConverter(req))
 
-			if err != nil {
+			// print results when there is a cycle in the graph, but write an error at the end
+			if err != nil && err.Error() != "encountered cycle in graph" {
 				return err
 			}
 
@@ -156,6 +167,13 @@ func topologyCommand(
 						}
 					}
 				}
+			}
+
+			if err != nil {
+				return writer.Write(&Error{
+					Error:    err.Error(),
+					IssueRef: "https://github.com/depscloud/depscloud/issues/133",
+				})
 			}
 
 			return nil
