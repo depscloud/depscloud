@@ -40,15 +40,17 @@ func DependentsCommand(
 		},
 	}
 
-	topologyCmd := topologyCommand(writer, traversalService, func(module *v1beta.Module) *v1beta.SearchRequest {
+	converter := func(module *v1beta.Module) *v1beta.SearchRequest {
 		return &v1beta.SearchRequest{
 			DependentsOf: &v1beta.Dependency{
 				Module: module,
 			},
 		}
-	})
+	}
 
-	cmd.AddCommand(topologyCmd)
+	cmd.AddCommand(topologyCommand(writer, traversalService, converter))
+	cmd.AddCommand(treeCommand(writer, traversalService, converter))
+
 	addModuleFlags(cmd, req)
 
 	return cmd
