@@ -5,7 +5,7 @@ networks:
 
 services:
   postgres:
-    image: postgres:12.6
+    image: postgres:13.3
     hostname: postgres
     networks:
       - depscloud
