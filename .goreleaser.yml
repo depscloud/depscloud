@@ -129,5 +129,22 @@ nfpms:
     formats:
       - deb
 
+blobs:
+  - provider: s3
+    endpoint: https://sfo2.digitaloceanspaces.com
+    region: us-west-2
+    bucket: depscloud-artifacts
+    folder: releases/{{ .Project }}/{{ .Tag }}
+    ids:
+      - deps
+      - gateway
+      - indexer
+      - tracker
+      - depscloud-cli
+      - depscloud-cli-deb
+    extra_files:
+      - glob: ./dist/checksums.txt
+      - glob: ./changelog*
+
 checksum:
   name_template: 'checksums.txt'

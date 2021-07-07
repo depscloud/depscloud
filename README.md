@@ -38,19 +38,24 @@ We also have a [Slack] channel.
 [mailing list]: https://groups.google.com/a/deps.cloud/forum/#!forum/community/join
 [Slack]: https://depscloud.slack.com/join/shared_invite/zt-fd03dm8x-L5Vxh07smWr_vlK9Qg9q5A
 
-## Branch Checks
+## Checks
+
+![](https://img.shields.io/badge/dynamic/json?color=blue&label=api.deps.cloud%20status&query=%24.state&url=https%3A%2F%2Fapi.deps.cloud%2Fhealth)
+
+**Branch**
 
 [![branch workflow](https://github.com/depscloud/depscloud/workflows/branch/badge.svg?branch=main)](https://github.com/depscloud/depscloud/actions?query=workflow%3Abranch+branch%3Amain)
 [![coverage](https://img.shields.io/codecov/c/gh/depscloud/depscloud/main)](https://codecov.io/gh/depscloud/depscloud)
 [![dockerfiles workflow](https://github.com/depscloud/depscloud/workflows/dockerfiles/badge.svg?branch=main)](https://github.com/depscloud/depscloud/actions?query=workflow%3Adockerfiles+branch%3Amain)
 [![goreleaser branch workflow](https://github.com/depscloud/depscloud/workflows/goreleaser-branch/badge.svg?branch=main)](https://github.com/depscloud/depscloud/actions?query=workflow%3Agoreleaser-branch+branch%3Amain)
 
-## Release Checks
+**Release**
 
 [![nightly workflow](https://github.com/depscloud/depscloud/workflows/nightly/badge.svg?branch=main)](https://github.com/depscloud/depscloud/actions?query=workflow%3Anightly+branch%3Amain)
-
 [![extractor-tag workflow](https://github.com/depscloud/depscloud/workflows/extractor-tag/badge.svg)](https://github.com/depscloud/depscloud/actions?query=workflow%3Aextractor-tag)
 [![goreleaser-tag workflow](https://github.com/depscloud/depscloud/workflows/goreleaser-tag/badge.svg)](https://github.com/depscloud/depscloud/actions?query=workflow%3Agoreleaser-tag)
+
+**Image**
 
 [![extractor docker hub](https://img.shields.io/docker/v/depscloud/extractor?color=blue&label=extractor%20version&sort=semver)](https://hub.docker.com/r/depscloud/extractor/tags)
 [![extractor image](https://img.shields.io/docker/image-size/depscloud/extractor?label=extractor%20image&sort=semver)](https://hub.docker.com/r/depscloud/extractor/tags)
@@ -68,7 +73,7 @@ We also have a [Slack] channel.
 [![tracker image](https://img.shields.io/docker/image-size/depscloud/tracker?label=tracker%20image&sort=semver)](https://hub.docker.com/r/depscloud/tracker/tags)
 [![tracker pulls](https://img.shields.io/docker/pulls/depscloud/tracker?label=tracker%20pulls)](https://hub.docker.com/r/depscloud/tracker/tags)
 
-## License Checks
+**License**
 
 [![fossa](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdepscloud%2Fdepscloud.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdepscloud%2Fdepscloud?ref=badge_large)
 ![analytics](https://www.google-analytics.com/collect?v=1&cid=555&t=pageview&ec=repo&ea=open&dp=depscloud&dt=depscloud&tid=UA-143087272-2)
