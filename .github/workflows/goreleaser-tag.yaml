@@ -22,6 +22,8 @@ jobs:
 
       - name: Build
         env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.ARTIFACTS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.ARTIFACTS_SECRET_ACCESS_KEY }}
           GEMFURY_TOKEN: ${{ secrets.GEMFURY_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GORELEASER_TOKEN }}
         run: |
