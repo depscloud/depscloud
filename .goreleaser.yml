@@ -134,7 +134,6 @@ blobs:
     endpoint: https://sfo2.digitaloceanspaces.com
     region: us-west-2
     bucket: depscloud-artifacts
-    folder: releases/{{ .Project }}/{{ .Tag }}
     ids:
       - deps
       - gateway
