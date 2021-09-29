@@ -1,5 +1,12 @@
 # deps.cloud
 
+_⚠️ After much internal conflict, I've decided to move this project into maintenance mode. This comes after a long 3+ 
+years of working on this project in open source with little to no involvement from others. After trying to present this 
+at several conferences, it's clear either the community isn't ready for or does not require such a building block. Most
+individuals that have come to the project open issues, but have not seemed interested in contributing anything beyond
+a ticket. **IF interest picks up again, I'm always happy to take the project off the back burner.** For now, I'm just
+too burnt out managing a project that doesn't seem wanted / needed / desired._
+
 deps.cloud is a tool to help companies understand what libraries and projects their systems use.
 It works by detecting dependencies defined in common [manifest files] (`pom.xml`, `package.json`, `go.mod`, etc).
 Using this information, we’re able to answer questions about project dependencies.
