@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@depscloud/api": "0.3.3",
-    "@grpc/grpc-js": "1.4.1",
+    "@grpc/grpc-js": "1.4.4",
     "@grpc/proto-loader": "0.6.6",
     "caporal": "latest",
     "cheerio": "1.0.0-rc.5",
