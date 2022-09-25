@@ -33,12 +33,12 @@ require (
 	github.com/sergi/go-diff v1.2.0 // indirect
 	github.com/slok/go-http-metrics v0.9.0
 	github.com/spf13/cobra v1.1.3
-	github.com/stretchr/testify v1.7.0
+	github.com/stretchr/testify v1.8.0
 	github.com/urfave/cli/v2 v2.3.0
 	github.com/xanzy/go-gitlab v0.52.2
 	github.com/xanzy/ssh-agent v0.3.0 // indirect
 	go.uber.org/multierr v1.7.0 // indirect
-	go.uber.org/zap v1.17.0
+	go.uber.org/zap v1.23.0
 	golang.org/x/crypto v0.0.0-20210513164829-c07d793c2f9a // indirect
 	golang.org/x/net v0.0.0-20210525063256-abc453219eb5
 	golang.org/x/oauth2 v0.0.0-20211104180415-d3ed0bb246c8
