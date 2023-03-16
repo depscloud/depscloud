@@ -27,7 +27,7 @@ require (
 	github.com/mjpitz/go-gracefully v0.0.6
 	github.com/nytlabs/gojee v0.0.0-20140331152115-5a79a1542dc0
 	github.com/pkg/errors v0.9.1
-	github.com/prometheus/client_golang v1.11.0
+	github.com/prometheus/client_golang v1.11.1
 	github.com/rs/cors v1.7.0
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/sergi/go-diff v1.2.0 // indirect
