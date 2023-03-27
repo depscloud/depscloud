@@ -29,7 +29,7 @@
     "cheerio": "1.0.0-rc.5",
     "express": "4.17.1",
     "express-prometheus-middleware": "1.2.0",
-    "gradle-to-js": "2.0.0",
+    "gradle-to-js": "2.0.1",
     "grpc-health-check": "1.8.0",
     "js-yaml": "3.14.1",
     "log4js": "6.3.0",
