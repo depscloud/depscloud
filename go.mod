@@ -20,7 +20,7 @@ require (
 	github.com/hashicorp/go-retryablehttp v0.7.0 // indirect
 	github.com/jackc/pgproto3/v2 v2.0.7 // indirect
 	github.com/jackc/pgx/v4 v4.11.0
-	github.com/jmoiron/sqlx v1.3.4
+	github.com/jmoiron/sqlx v1.3.5
 	github.com/jonboulle/clockwork v0.2.2
 	github.com/kevinburke/ssh_config v1.1.0 // indirect
 	github.com/mattn/go-sqlite3 v1.14.9
