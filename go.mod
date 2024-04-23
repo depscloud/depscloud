@@ -8,7 +8,7 @@ require (
 	github.com/davidji99/simpleresty v0.3.0 // indirect
 	github.com/depscloud/api v0.3.3
 	github.com/ghodss/yaml v1.0.0
-	github.com/go-sql-driver/mysql v1.6.0
+	github.com/go-sql-driver/mysql v1.8.1
 	github.com/golang/protobuf v1.5.2
 	github.com/google/go-github/v20 v20.0.0
 	github.com/google/go-querystring v1.1.0 // indirect
@@ -20,10 +20,10 @@ require (
 	github.com/hashicorp/go-retryablehttp v0.7.0 // indirect
 	github.com/jackc/pgproto3/v2 v2.0.7 // indirect
 	github.com/jackc/pgx/v4 v4.11.0
-	github.com/jmoiron/sqlx v1.3.4
+	github.com/jmoiron/sqlx v1.4.0
 	github.com/jonboulle/clockwork v0.2.2
 	github.com/kevinburke/ssh_config v1.1.0 // indirect
-	github.com/mattn/go-sqlite3 v1.14.9
+	github.com/mattn/go-sqlite3 v1.14.22
 	github.com/mjpitz/go-gracefully v0.0.6
 	github.com/nytlabs/gojee v0.0.0-20140331152115-5a79a1542dc0
 	github.com/pkg/errors v0.9.1
