@@ -32,7 +32,7 @@
     "gradle-to-js": "2.0.0",
     "grpc-health-check": "1.8.0",
     "js-yaml": "3.14.1",
-    "log4js": "6.3.0",
+    "log4js": "6.4.0",
     "minimatch": "3.0.4",
     "prom-client": "13.2.0",
     "toml": "3.0.0"
