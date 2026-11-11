@@ -18,7 +18,7 @@
     "@typescript-eslint/parser": "4.33.0",
     "eslint": "7.32.0",
     "jest": "27.0.6",
-    "ts-jest": "27.1.1",
+    "ts-jest": "27.1.5",
     "typescript": "4.4.4"
   },
   "dependencies": {
